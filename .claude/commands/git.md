@@ -115,30 +115,8 @@ When `/git` sees your prompt, it derives a branch name, ensures the correct sour
 ```
 
 - `type ∈ {feature, fix, refactor, docs, chore, test, build, ci}`
-- **Never commit secrets** or large binaries (use Git LFS if necessary).
 
 `/git` auto-generates commit messages from your prompt and the change context; include a task/issue key in your prompt if you want it in the header.
-
----
-
-## Releases & Versioning (SemVer)
-
-- Recommend **semantic-release** or **changesets** automation.
-- Auto-bump rules derived from commit types:
-  - `feature:` → **minor**
-  - `fix:` → **patch**
-  - `feature!` or `BREAKING CHANGE:` → **major**
-
-`/git` can open and maintain the `release/*` branch based on your prompt. It will not tag or publish unless CI is configured for that.
-
----
-
-## Hotfix Policy
-
-- Create `hotfix/<short-desc>` from `release/x.y.z` (preferred) or `main`.
-- Open PR into the current release branch and **also** ensure changes are merged forward/back to `main`.
-
-`/git` will enforce the two-path merge (release and main) when you request a hotfix.
 
 ---
 
@@ -172,6 +150,38 @@ Enhanced secret detection patterns:
 
 ---
 
+## Safety Guards
+
+- Detect and block **direct pushes** to protected branches.
+- Disallow **force-push**.
+- Warn or block on **large binary** additions without LFS.
+- Refuse to commit files that look like **secrets**.
+- Require successful local checks (if configured) **before opening PR**.
+
+---
+
+## Troubleshooting
+
+- **Branch name rejected:** ensure it matches the regex policy above.
+- **Checks failing:** fix lint/tests/build locally and re-run `/git`.
+- **No PR opened:** check `--no-pr` flag or repository permissions.
+
+---
+
+## Conflict Resolution
+
+When merge conflicts occur, /git provides smart resolution assistance:
+
+- /git resolve conflicts --interactive
+- /git merge main with preview
+
+- Auto-detects conflict types (code, config, documentation)
+- Suggests resolution strategies based on change patterns
+- Preview mode shows merge result before applying
+- Interactive guidance for complex conflicts with context
+
+---
+
 ## Examples
 
 - **New feature (auth device flow):**
@@ -202,20 +212,3 @@ Enhanced secret detection patterns:
 
 ---
 
-## Safety Guards
-
-- Detect and block **direct pushes** to protected branches.
-- Disallow **force-push**.
-- Warn or block on **large binary** additions without LFS.
-- Refuse to commit files that look like **secrets**.
-- Require successful local checks (if configured) **before opening PR**.
-
----
-
-## Troubleshooting
-
-- **Branch name rejected:** ensure it matches the regex policy above.
-- **Checks failing:** fix lint/tests/build locally and re-run `/git`.
-- **No PR opened:** check `--no-pr` flag or repository permissions.
-
----
