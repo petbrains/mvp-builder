@@ -1,12 +1,18 @@
-# `/git` + [prompt] command that will help you work with git
+---
+allowed-tools: git mcp
+argument-hint: [prompt]
+description: Implements a simple git workflow
+---
 
-A focused, safe, and policy-compliant Git workflow that Claude Code executes through **git mcp server** when you run:
+## What `/git` Does
 
-```
-/git <prompt>
-```
-
-> **Goal:** Turn a natural-language task prompt into a clean, reviewable branch, a series of logically scoped commits, and (optionally) a pull request — all following the repository’s branch, commit, and release policies.
+1. **Read your prompt** and infer intent (feature, fix, refactor, docs etc.).
+2. **Initialize & inspect repos** git_init creates a repo; git_status shows the working tree; git_branch lists local/remote/all branches with optional contains/not_contains filters.
+3. **Review changes precisely** git_diff_unstaged and git_diff_staged show local edits; git_diff <target> compares against a branch/commit, all with configurable context_lines.
+4. **Stage, unstage, commit** git_add <files> → git_commit "message" (returns the new commit hash); undo staging with git_reset.
+5. **Work with branches** create from a chosen point using git_create_branch <name> and switch via git_checkout <name>.
+6. **Audit history & contents** git_log surfaces recent commits; git_show <revision> reveals a commit’s contents; pair with git_diff for targeted reviews.
+7. **Local-only, automation-friendly outputs** commands return plain text/structured results (e.g., commit hash) suitable for CI/scripts—no network ops (push/PR) implied.
 
 ---
 
@@ -38,25 +44,11 @@ This prevents incorrect assumptions and ensures the right workflow is chosen.
 
 ---
 
-## What `/git` Does
-
-1. **Read your prompt** and infer intent (feature, fix, refactor, docs, chore, etc.).
-2. **Ensure you’re not on a protected branch** and **create a working branch** from the correct source (usually `main`, see rules below).
-3. **Apply the changes** needed for the task, splitting them into **small, logical commits**.
-4. **Format commit messages** using **Conventional Commits** (+ optional task key).
-5. **Run basic checks** available locally (lint/tests/build) if configured.
-6. **Push the branch** and (optionally) **open a PR** using the standard PR template.
-7. **Never force-push**, **never commit secrets**, and **never push directly to protected branches**.
-
----
-
 ## Protected Branch Policy
 
 The command **refuses to push** directly to any of the following:
 
 - `main`, `master`, `release/*`, `hotfix/*`, `prod/*`
-
-Pull requests into protected branches must satisfy repository rules (reviews and status checks). The command will open PRs but will not bypass required checks or reviews.
 
 ---
 
@@ -120,20 +112,6 @@ When `/git` sees your prompt, it derives a branch name, ensures the correct sour
 
 ---
 
-## Pull Request Requirements
-
-PR descriptions should include:
-
-- **What changed** (short bullet list).
-- **Context/motivation** and links to issues/specs.
-- **How to test** (commands, scenarios, screenshots if relevant).
-- **API/schema/migration** notes.
-- **Checklist:** tests, lint, docs updated.
-
-If the repository has `.github/pull_request_template.md`, `/git` will prefill the PR using that template.
-
----
-
 ## Security & Compliance
 
 - Respect **CODEOWNERS** for critical areas.
@@ -156,7 +134,6 @@ Enhanced secret detection patterns:
 - Disallow **force-push**.
 - Warn or block on **large binary** additions without LFS.
 - Refuse to commit files that look like **secrets**.
-- Require successful local checks (if configured) **before opening PR**.
 
 ---
 
@@ -164,7 +141,6 @@ Enhanced secret detection patterns:
 
 - **Branch name rejected:** ensure it matches the regex policy above.
 - **Checks failing:** fix lint/tests/build locally and re-run `/git`.
-- **No PR opened:** check `--no-pr` flag or repository permissions.
 
 ---
 
@@ -184,31 +160,37 @@ When merge conflicts occur, /git provides smart resolution assistance:
 
 ## Examples
 
-- **New feature (auth device flow):**
-  ```
-  /git Implement device authorization flow for OAuth
-  ```
-  - Creates `feature/auth/device-authorization` from `main`.
-  - Makes incremental commits like:
-    - `feature(auth): add device grant endpoint contracts`
-    - `feature(auth): implement device code polling`
-    - `test(auth): cover device flow edge cases`
+<gitInstructions version="1.0">
+  <example id="feature-auth-device-flow" kind="feature">
+    <title>New feature (auth device flow)</title>
+    <command>/git Implement device authorization flow for OAuth</command>
+    <branch>
+      <name>feature/auth/device-authorization</name>
+      <from>main</from>
+    </branch>
+    <commits>
+      <commit>feature(auth): add device grant endpoint contracts</commit>
+      <commit>feature(auth): implement device code polling</commit>
+      <commit>test(auth): cover device flow edge cases</commit>
+    </commits>
+  </example>
 
-- **Bug fix (payments rounding):**
-  ```
-  /git Fix rounding bug in VAT calculation (KEY-451)
-  ```
-  - Creates `fix/payments/rounding-bug` from `main`.
-  - Commits:
-    - `[KEY-451] fix(payments): correct VAT rounding to bankers rounding`
-    - `[KEY-451] test(payments): add regression cases for .5 values`
-
-- **Hotfix:**
-  ```
-  /git Hotfix production NPE in auth callback
-  ```
-  - Creates `hotfix/auth-callback-npe` from active `release/x.y.z` (or `main`).
-  - Opens PR to the release branch and a follow-up sync to `main`.
+  <example id="bugfix-payments-rounding" kind="bugfix">
+    <title>Bug fix (payments rounding)</title>
+    <command>/git Fix rounding bug in VAT calculation (KEY-451)</command>
+    <branch>
+      <name>fix/payments/rounding-bug</name>
+      <from>main</from>
+    </branch>
+    <tracking>
+      <ticket system="Jira">KEY-451</ticket>
+    </tracking>
+    <commits>
+      <commit>[KEY-451] fix(payments): correct VAT rounding to bankers rounding</commit>
+      <commit>[KEY-451] test(payments): add regression cases for .5 values</commit>
+    </commits>
+  </example>
+</gitInstructions>
 
 ---
 
