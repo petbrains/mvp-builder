@@ -4,15 +4,27 @@ argument-hint: [prompt]
 description: Implements a simple git workflow
 ---
 
-## What `/git` Does
+## Context
 
-1. **Read your prompt** and infer intent (feature, fix, refactor, docs etc.).
-2. **Initialize & inspect repos** git_init creates a repo; git_status shows the working tree; git_branch lists local/remote/all branches with optional contains/not_contains filters.
-3. **Review changes precisely** git_diff_unstaged and git_diff_staged show local edits; git_diff <target> compares against a branch/commit, all with configurable context_lines.
-4. **Stage, unstage, commit** git_add <files> → git_commit "message" (returns the new commit hash); undo staging with git_reset.
-5. **Work with branches** create from a chosen point using git_create_branch <name> and switch via git_checkout <name>.
-6. **Audit history & contents** git_log surfaces recent commits; git_show <revision> reveals a commit’s contents; pair with git_diff for targeted reviews.
-7. **Local-only, automation-friendly outputs** commands return plain text/structured results (e.g., commit hash) suitable for CI/scripts—no network ops (push/PR) implied.
+- Determine intent from the prompt (feature/fix/refactor/docs).
+- Initialize a repository: !'/mcp__git__git_init' repo_path="<path>"
+- Show working tree status: !'/mcp__git__git_status' repo_path="<path>"
+- List branches (local/remote/all, with optional contains/not_contains filters): !'/mcp__git__git_branch' repo_path="<path>" branch_type="all" [contains="<sha>"] [not_contains="<sha>"]
+- Precise change review — unstaged: !'/mcp__git__git_diff_unstaged' repo_path="<path>" [context_lines=3]
+- Precise change review — staged: !'/mcp__git__git_diff_staged' repo_path="<path>" [context_lines=3]
+- Compare against a branch/commit: !'/mcp__git__git_diff' repo_path="<path>" target="<branch|commit>" [context_lines=3]
+- Stage files: !'/mcp__git__git_add' repo_path="<path>" files=["<file1>", "<file2>", ...]
+- Commit staged changes (returns hash): !/mcp__git__git_commit repo_path="<path>" message="..."
+- Unstage all changes: !'/mcp__git__git_reset' repo_path="<path>"
+- Create a branch from a start point: !/mcp__git__git_create_branch repo_path="<path>" branch_name="<name>" [start_point="<sha|branch>"]
+- Switch branches: !'/mcp__git__git_checkout' repo_path="<path>" branch_name="<name>"
+- Recent commits: !'/mcp__git__git_log' repo_path="<path>" max_count=10
+- Show a commit’s contents: !'/mcp__git__git_show' repo_path="<path>" revision="<sha|ref>"
+- Outputs are local and automation-friendly; no network operations (push/PR) are performed.
+
+## Your task
+
+Based on the commands described in the context and rules described below, perform work with git mcp based on [prompt].
 
 ---
 
@@ -85,14 +97,6 @@ release/<version>
 - `release/x.y.z`: from `main`.
 
 When `/git` sees your prompt, it derives a branch name, ensures the correct source branch, and creates the new branch if needed.
-
----
-
-## Merge Strategy
-
-- Into `main` and `release/*` → **Squash merge** (1 commit per PR in history).
-- Working branches may have multiple commits as long as they are **logically separated**.
-- The command **won’t merge** if required checks haven’t passed or if target is protected.
 
 ---
 
