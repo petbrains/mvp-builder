@@ -6,21 +6,7 @@ description: Implements a simple git workflow
 
 ## Context
 
-- Determine intent from the prompt (feature/fix/refactor/docs).
-- Initialize a repository: !'/mcp__git__git_init' repo_path="<path>"
-- Show working tree status: !'/mcp__git__git_status' repo_path="<path>"
-- List branches (local/remote/all, with optional contains/not_contains filters): !'/mcp__git__git_branch' repo_path="<path>" branch_type="all" [contains="<sha>"] [not_contains="<sha>"]
-- Precise change review — unstaged: !'/mcp__git__git_diff_unstaged' repo_path="<path>" [context_lines=3]
-- Precise change review — staged: !'/mcp__git__git_diff_staged' repo_path="<path>" [context_lines=3]
-- Compare against a branch/commit: !'/mcp__git__git_diff' repo_path="<path>" target="<branch|commit>" [context_lines=3]
-- Stage files: !'/mcp__git__git_add' repo_path="<path>" files=["<file1>", "<file2>", ...]
-- Commit staged changes (returns hash): !/mcp__git__git_commit repo_path="<path>" message="..."
-- Unstage all changes: !'/mcp__git__git_reset' repo_path="<path>"
-- Create a branch from a start point: !/mcp__git__git_create_branch repo_path="<path>" branch_name="<name>" [start_point="<sha|branch>"]
-- Switch branches: !'/mcp__git__git_checkout' repo_path="<path>" branch_name="<name>"
-- Recent commits: !'/mcp__git__git_log' repo_path="<path>" max_count=10
-- Show a commit’s contents: !'/mcp__git__git_show' repo_path="<path>" revision="<sha|ref>"
-- Outputs are local and automation-friendly; no network operations (push/PR) are performed.
+- Use the instructions for mcp commands from @~/.claude/tools/git.md
 
 ## Your task
 
@@ -164,6 +150,7 @@ When merge conflicts occur, /git provides smart resolution assistance:
 
 ## Examples
 
+```xml
 <gitInstructions version="1.0">
   <example id="feature-auth-device-flow" kind="feature">
     <title>New feature (auth device flow)</title>
@@ -178,7 +165,9 @@ When merge conflicts occur, /git provides smart resolution assistance:
       <commit>test(auth): cover device flow edge cases</commit>
     </commits>
   </example>
+```
 
+```xml
   <example id="bugfix-payments-rounding" kind="bugfix">
     <title>Bug fix (payments rounding)</title>
     <command>/git Fix rounding bug in VAT calculation (KEY-451)</command>
@@ -195,6 +184,7 @@ When merge conflicts occur, /git provides smart resolution assistance:
     </commits>
   </example>
 </gitInstructions>
+```
 
 ---
 
