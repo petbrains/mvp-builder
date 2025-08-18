@@ -1,12 +1,12 @@
 ---
-allowed-tools: git mcp
+allowed-tools: mcp__git
 argument-hint: [prompt]
-description: Implements a simple git workflow
+description: Implements a git workflow
 ---
 
 ## Context
 
-- Use the instructions for mcp commands from @~/.claude/tools/git.md
+- Use the instructions for mcp commands from @.claude/tools/git.md
 
 ## Your task
 
@@ -151,7 +151,6 @@ When merge conflicts occur, /git provides smart resolution assistance:
 ## Examples
 
 ```xml
-<gitInstructions version="1.0">
   <example id="feature-auth-device-flow" kind="feature">
     <title>New feature (auth device flow)</title>
     <command>/git Implement device authorization flow for OAuth</command>
@@ -183,7 +182,6 @@ When merge conflicts occur, /git provides smart resolution assistance:
       <commit>[KEY-451] test(payments): add regression cases for .5 values</commit>
     </commits>
   </example>
-</gitInstructions>
 ```
 
 ---
