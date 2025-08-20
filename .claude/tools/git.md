@@ -1,5 +1,33 @@
 # Git mcp commands:
 
+## Branch Naming Rules
+
+Use one of the allowed prefixes:
+
+```
+feature/<scope>/<short-desc>
+fix/<scope>/<short-desc>
+refactor/<scope>/<short-desc>
+docs/<scope>/<short-desc>
+chore/<scope>/<short-desc>
+hotfix/<short-desc>
+release/<version>
+```
+
+- Lowercase letters, numbers, dot, dash, underscore only.
+- Recommended regex policy:
+
+```
+^(?:
+ (?:feature|fix|refactor|docs|chore)/[a-z0-9._-]+/[a-z0-9._-]+
+|(?:hotfix|release)/[a-z0-9._-]+
+)$
+```
+
+**Examples:** `feature/auth/device-flow`, `fix/payments/rounding-bug`, `release/1.4.0`.
+
+---
+
 ### !`/mcp__git__git_add` - Add selected files to the index. Use to prepare minimal, atomic commits. 
 **Params:**
 - repo_path="./" 
