@@ -3,9 +3,17 @@ description: Generate comprehensive Product Requirements Documents (PRDs) with s
 allowed-tools: context7, sequential-thinking, git, Read, Write, Bash, Grep, LS
 ---
 
-## Context
+## PRD Command
 
-- Use the instructions for commands from @.claude/tools/prd.md
+### !`/create_prd` - Generate Product Requirements Document. 
+**Params:**
+- path="./prd.md" - Optional: Output file location (default: ./prd.md)
+
+```xml
+<example>
+/create_prd path="./docs/requirements.md"
+</example>
+```
 
 ## Instructions
 
@@ -133,7 +141,7 @@ User story template:
 
 **Each story must be independently testable with unique IDs (PRD-001, PRD-002, etc.)**
 
-Quality Checklist:
+**Quality Checklist:**
 
 - All required inputs collected and validated
 - Every user story is testable with clear acceptance criteria
@@ -160,17 +168,17 @@ Execution steps:
 
 PRD Structure:
 
-Section 1: Product overview
+**Section 1: Product overview**
 - Document metadata + elevator pitch + 2-3 paragraph summary
-Section 2: Goals
+**Section 2: Goals**
 - Business goals, user goals, non-goals
-Section 3: User personas
+**Section 3: User personas**
 - Primary persona with role, age range, context, pain points, goals
-Section 4: Functional requirements
+**Section 4: Functional requirements**
 - High/Medium/Low priority features with specific requirements
-Section 5: Technical considerations
+**Section 5: Technical considerations**
 - Architecture decisions, integration points, scalability requirements
-Section 6: Success metrics
+**Section 6: Success metrics**
 - User and business metrics (specific, measurable, time-bound)
 
 ---
