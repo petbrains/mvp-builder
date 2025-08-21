@@ -48,8 +48,6 @@ release/<version>
 
 - `type ∈ {feature, fix, refactor, docs, chore, test, build, ci}`
 
-`/git` auto-generates commit messages from your prompt and the change context; include a task/issue key in your prompt if you want it in the header.
-
 ---
 
 ### !`/mcp__git__git_add` - Add selected files to the index. Use to prepare minimal, atomic commits. 

@@ -4,10 +4,6 @@ argument-hint: [prompt]
 description: Implements a git workflow
 ---
 
-## Context
-
-- Use the instructions for mcp commands from @.claude/tools/git.md
-
 ## Your task
 
 Based on the commands described in the context and rules described below, perform work with git mcp based on [prompt].
@@ -18,7 +14,7 @@ Based on the commands described in the context and rules described below, perfor
 
 If you run `/git` with **no prompt** (i.e., just `/git` or only whitespace), Claude Code will show a concise help message explaining the command’s purpose and how to use it, plus quick examples.
 
-**Purpose:** Turn a natural-language instruction into a compliant Git workflow (create a branch, make scoped commits, push, and optionally open a PR) via **MCP Git**, respecting repository policies.
+**Purpose:** Turn a natural-language instruction into a compliant Git workflow (create a branch, make scoped commits, push, and optionally open a PR) via **mcp__git**, respecting repository policies.
 
 **Quick examples:**
 - `/git create branch for new feature`
@@ -45,22 +41,23 @@ This prevents incorrect assumptions and ensures the right workflow is chosen.
 
 ---
 
-## Protected Branch Policy
-
-The command **refuses to push** directly to any of the following:
-
-- `main`, `master`, `release/*`, `hotfix/*`, `prod/*`
-
----
-
-## Branch and Commit Guidelines
+## Context
 
 For detailed information on:
 - Branch naming conventions and rules
 - Source branch requirements  
 - Commit message format (Conventional Commits)
+- Instructions for mcp commands
 
-See `.claude/tools/git.md`
+See @.claude/tools/git.md
+
+---
+
+## Protected Branch Policy
+
+The command **refuses to push** directly to any of the following:
+
+- `main`, `master`, `release/*`, `hotfix/*`, `prod/*`
 
 ---
 
