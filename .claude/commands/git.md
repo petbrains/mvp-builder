@@ -32,12 +32,15 @@ If you run `/git` with **no prompt** (i.e., just `/git` or only whitespace), Cla
 When /git encounters ambiguous prompts, it enters interactive mode:
 /git update auth system
 
-→ "I see several possible actions:
-   1. Add new authentication method
-   2. Create new branch for update auth method
-   3. Commit updated auth method
-   
-   Which one matches your intent? (or provide more details)"
+```
+"I see several possible actions:
+1. Add new authentication method
+2. Create new branch for update auth method
+3. Commit updated auth method
+
+Which one matches your intent? (or provide more details)"
+```
+
 This prevents incorrect assumptions and ensures the right workflow is chosen.
 
 ---
@@ -50,29 +53,14 @@ The command **refuses to push** directly to any of the following:
 
 ---
 
-## Source Branch
+## Branch and Commit Guidelines
 
-- `feature/*`, `fix/*`, `refactor/*`, `docs/*`, `chore/*`: **create from latest `main`**.
-- `hotfix/*`: from active `release/x.y.z` if present, otherwise from `main`.
-- `release/x.y.z`: from `main`.
+For detailed information on:
+- Branch naming conventions and rules
+- Source branch requirements  
+- Commit message format (Conventional Commits)
 
-When `/git` sees your prompt, it derives a branch name, ensures the correct source branch, and creates the new branch if needed.
-
----
-
-## Commit Message Format (Conventional Commits)
-
-```
-[KEY-123] <type>(<scope>)!: <short summary>
-
-[optional body — reasoning, links, decisions]
-
-[optional footer — BREAKING CHANGE: ..., Closes #...]
-```
-
-- `type ∈ {feature, fix, refactor, docs, chore, test, build, ci}`
-
-`/git` auto-generates commit messages from your prompt and the change context; include a task/issue key in your prompt if you want it in the header.
+See `.claude/tools/git.md`
 
 ---
 

@@ -28,6 +28,30 @@ release/<version>
 
 ---
 
+## Source Branch
+
+- `feature/*`, `fix/*`, `refactor/*`, `docs/*`, `chore/*`: **create from latest `main`**.
+- `hotfix/*`: from active `release/x.y.z` if present, otherwise from `main`.
+- `release/x.y.z`: from `main`.
+
+---
+
+## Commit Message Format (Conventional Commits)
+
+```
+[KEY-123] <type>(<scope>)!: <short summary>
+
+[optional body — reasoning, links, decisions]
+
+[optional footer — BREAKING CHANGE: ..., Closes #...]
+```
+
+- `type ∈ {feature, fix, refactor, docs, chore, test, build, ci}`
+
+`/git` auto-generates commit messages from your prompt and the change context; include a task/issue key in your prompt if you want it in the header.
+
+---
+
 ### !`/mcp__git__git_add` - Add selected files to the index. Use to prepare minimal, atomic commits. 
 **Params:**
 - repo_path="./" 
