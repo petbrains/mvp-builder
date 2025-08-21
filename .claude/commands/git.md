@@ -8,6 +8,8 @@ description: Implements a git workflow
 
 Based on the commands described in the context and rules described below, perform work with git mcp based on [prompt].
 
+**For detailed workflow rules:** See @.claude/tools/git.md for branch naming conventions, commit message format, and source branch requirements.
+
 ---
 
 ## No Prompt / Help Mode
@@ -38,18 +40,6 @@ Which one matches your intent? (or provide more details)"
 ```
 
 This prevents incorrect assumptions and ensures the right workflow is chosen.
-
----
-
-## Context
-
-For detailed information on:
-- Branch naming conventions and rules
-- Source branch requirements  
-- Commit message format (Conventional Commits)
-- Instructions for mcp commands
-
-See @.claude/tools/git.md
 
 ---
 
