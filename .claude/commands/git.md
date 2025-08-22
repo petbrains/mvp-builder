@@ -4,13 +4,11 @@ argument-hint: [prompt]
 description: Implements a git workflow
 ---
 
-## Context
-
-- Use the instructions for mcp commands from @.claude/tools/git.md
-
 ## Your task
 
 Based on the commands described in the context and rules described below, perform work with git mcp based on [prompt].
+
+**For detailed workflow rules:** See @.claude/tools/git.md for branch naming conventions, commit message format, and source branch requirements.
 
 ---
 
@@ -18,7 +16,7 @@ Based on the commands described in the context and rules described below, perfor
 
 If you run `/git` with **no prompt** (i.e., just `/git` or only whitespace), Claude Code will show a concise help message explaining the command’s purpose and how to use it, plus quick examples.
 
-**Purpose:** Turn a natural-language instruction into a compliant Git workflow (create a branch, make scoped commits, push, and optionally open a PR) via **MCP Git**, respecting repository policies.
+**Purpose:** Turn a natural-language instruction into a compliant Git workflow (create a branch, make scoped commits, push, and optionally open a PR) via **mcp__git**, respecting repository policies.
 
 **Quick examples:**
 - `/git create branch for new feature`
@@ -32,12 +30,15 @@ If you run `/git` with **no prompt** (i.e., just `/git` or only whitespace), Cla
 When /git encounters ambiguous prompts, it enters interactive mode:
 /git update auth system
 
-→ "I see several possible actions:
-   1. Add new authentication method
-   2. Create new branch for update auth method
-   3. Commit updated auth method
-   
-   Which one matches your intent? (or provide more details)"
+```
+"I see several possible actions:
+1. Add new authentication method
+2. Create new branch for update auth method
+3. Commit updated auth method
+
+Which one matches your intent? (or provide more details)"
+```
+
 This prevents incorrect assumptions and ensures the right workflow is chosen.
 
 ---
@@ -47,58 +48,6 @@ This prevents incorrect assumptions and ensures the right workflow is chosen.
 The command **refuses to push** directly to any of the following:
 
 - `main`, `master`, `release/*`, `hotfix/*`, `prod/*`
-
----
-
-## Branch Naming Rules
-
-Use one of the allowed prefixes:
-
-```
-feature/<scope>/<short-desc>
-fix/<scope>/<short-desc>
-refactor/<scope>/<short-desc>
-docs/<scope>/<short-desc>
-chore/<scope>/<short-desc>
-hotfix/<short-desc>
-release/<version>
-```
-
-- Lowercase letters, numbers, dot, dash, underscore only.
-- Recommended regex policy for GitHub/GitLab:
-
-```
-^(?:
- (?:feature|fix|refactor|docs|chore)/[a-z0-9._-]+/[a-z0-9._-]+
-|(?:hotfix|release)/[a-z0-9._-]+
-)$
-```
-
-**Examples:** `feature/auth/device-flow`, `fix/payments/rounding-bug`, `release/1.4.0`.
-
-### Source Branch
-
-- `feature/*`, `fix/*`, `refactor/*`, `docs/*`, `chore/*`: **create from latest `main`**.
-- `hotfix/*`: from active `release/x.y.z` if present, otherwise from `main`.
-- `release/x.y.z`: from `main`.
-
-When `/git` sees your prompt, it derives a branch name, ensures the correct source branch, and creates the new branch if needed.
-
----
-
-## Commit Message Format (Conventional Commits)
-
-```
-[KEY-123] <type>(<scope>)!: <short summary>
-
-[optional body — reasoning, links, decisions]
-
-[optional footer — BREAKING CHANGE: ..., Closes #...]
-```
-
-- `type ∈ {feature, fix, refactor, docs, chore, test, build, ci}`
-
-`/git` auto-generates commit messages from your prompt and the change context; include a task/issue key in your prompt if you want it in the header.
 
 ---
 

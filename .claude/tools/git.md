@@ -1,5 +1,55 @@
 # Git mcp commands:
 
+## Branch Naming Rules
+
+Use one of the allowed prefixes:
+
+```
+feature/<scope>/<short-desc>
+fix/<scope>/<short-desc>
+refactor/<scope>/<short-desc>
+docs/<scope>/<short-desc>
+chore/<scope>/<short-desc>
+hotfix/<short-desc>
+release/<version>
+```
+
+- Lowercase letters, numbers, dot, dash, underscore only.
+- Recommended regex policy:
+
+```
+^(?:
+ (?:feature|fix|refactor|docs|chore)/[a-z0-9._-]+/[a-z0-9._-]+
+|(?:hotfix|release)/[a-z0-9._-]+
+)$
+```
+
+**Examples:** `feature/auth/device-flow`, `fix/payments/rounding-bug`, `release/1.4.0`.
+
+---
+
+## Source Branch
+
+- `feature/*`, `fix/*`, `refactor/*`, `docs/*`, `chore/*`: **create from latest `main`**.
+- `hotfix/*`: from active `release/x.y.z` if present, otherwise from `main`.
+- `release/x.y.z`: from `main`.
+
+---
+
+## Commit Message Format (Conventional Commits)
+
+```
+[KEY-123] <type>(<scope>)!: <short summary>
+
+[optional body — reasoning, links, decisions]
+
+[optional footer — BREAKING CHANGE: ..., Closes #...]
+```
+
+- `type ∈ {feature, fix, refactor, docs, chore, test, build, ci}`
+
+---
+
 ### !`/mcp__git__git_add` - Add selected files to the index. Use to prepare minimal, atomic commits. 
 **Params:**
 - repo_path="./" 
