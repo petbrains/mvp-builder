@@ -282,7 +282,7 @@ Summary of key decisions:
 - For: {user} solving {problem}
 - Core Feature: {feature}
 - Tech Stack: {stack}
-- Ux Requirements: - {interface}
+- UX Requirements: - {interface}
 
 Full PRD saved at ./PRD.md
 
