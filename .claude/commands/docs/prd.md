@@ -78,7 +78,7 @@ Questions to ask:
 
 After gathering answers:
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with user-problem fit, explore solution effectiveness,
 generate hypothesis about problem-solution alignment, verify assumptions.
 Focus on: user specificity, problem clarity, solution feasibility.
@@ -127,7 +127,7 @@ Questions to ask:
 
 After gathering requirements:
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with flow effectiveness, explore feature necessity,
 generate MVP scope hypothesis, verify solution completeness.
 Focus on: user journey clarity, feature minimalism, dependency mapping.
@@ -168,7 +168,7 @@ Questions to ask:
 
 Stack analysis:
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with technical requirements, explore stack options,
 generate technology hypothesis, verify technical feasibility.
 Focus on: development speed, technical stability, simplicity, scalability.
@@ -219,7 +219,7 @@ Questions to ask:
 "Any additional design or interface requirements?"
 ```
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with interface requirements, explore UX patterns,
 generate design hypothesis, verify user experience flow.
 Focus on: interface consistency, user accessibility, platform requirements.
@@ -248,7 +248,7 @@ Confirmation message:
 
 Action: Read ./mvp_docs/PRD.md
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with document coherence, explore requirement completeness,
 generate readiness hypothesis, verify implementation clarity.
 Focus on: section alignment, requirement clarity, scope validation, development readiness.
