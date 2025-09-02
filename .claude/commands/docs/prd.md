@@ -33,17 +33,9 @@ Action: Read ./PRD.md
 
 If PRD.md found:
 - Note previous product details for context
-- Proceed to backup
-
-```bash
-# Create backup
-cp ./PRD.md "./PRD_backup_$(date +%Y%m%d_%H%M%S).md"
-echo "✅ Backup created"
-```
 
 ```dialogue
-"📋 Found existing PRD for '{product_name}'
-✅ Backup created: PRD_backup_[timestamp].md
+"📋 Found existing PRD
 
 Starting fresh PRD generation..."
 ```
@@ -86,7 +78,7 @@ Questions to ask:
 
 After gathering answers:
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with user-problem fit, explore solution effectiveness,
 generate hypothesis about problem-solution alignment, verify assumptions.
 Focus on: user specificity, problem clarity, solution feasibility.
@@ -97,7 +89,12 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 1:** (only after 'ok')
 
-Action: Write to ./PRD.md
+```bash
+# Create folder if none
+mkdir -p ./mvp_docs
+```
+
+Action: Write to ./mvp_docs/PRD.md
 
 ```markdown
 # [Product Name] - PRD
@@ -110,7 +107,7 @@ Action: Write to ./PRD.md
 
 Confirmation message:
 ```dialogue
-"✅ Saved core proposition to PRD.md"
+"✅ Saved core proposition to mvp_docs/PRD.md"
 ```
 
 #### Stage 2: Solution Design
@@ -130,7 +127,7 @@ Questions to ask:
 
 After gathering requirements:
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with flow effectiveness, explore feature necessity,
 generate MVP scope hypothesis, verify solution completeness.
 Focus on: user journey clarity, feature minimalism, dependency mapping.
@@ -141,8 +138,8 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 2:** (only after 'ok')
 
-Action: Read ./PRD.md
-Action: Write updated ./PRD.md with Solution Design section added:
+Action: Read ./mvp_docs/PRD.md
+Action: Write updated ./mvp_docs/PRD.md with Solution Design section added:
 
 ```markdown
 ## 2. Solution Design
@@ -153,7 +150,7 @@ Action: Write updated ./PRD.md with Solution Design section added:
 
 Confirmation message:
 ```dialogue
-"✅ Saved solution design to PRD.md"
+"✅ Saved solution design to mvp_docs/PRD.md"
 ```
 
 #### Stage 3: Technical Requirements
@@ -171,7 +168,7 @@ Questions to ask:
 
 Stack analysis:
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with technical requirements, explore stack options,
 generate technology hypothesis, verify technical feasibility.
 Focus on: development speed, technical stability, simplicity, scalability.
@@ -195,8 +192,8 @@ Confirm or suggest changes?"
 
 **Save after Stage 3:** (only after 'ok')
 
-Action: Read ./PRD.md
-Action: Write updated ./PRD.md with Technical Requirements section added:
+Action: Read ./mvp_docs/PRD.md
+Action: Write updated ./mvp_docs/PRD.md with Technical Requirements section added:
 
 ```markdown
 ## 3. Technical Requirements
@@ -206,7 +203,7 @@ Action: Write updated ./PRD.md with Technical Requirements section added:
 
 Confirmation message:
 ```dialogue
-"✅ Saved technical requirements to PRD.md"
+"✅ Saved technical requirements to mvp_docs/PRD.md"
 ```
 
 #### Stage 4: UX Details
@@ -222,7 +219,7 @@ Questions to ask:
 "Any additional design or interface requirements?"
 ```
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with interface requirements, explore UX patterns,
 generate design hypothesis, verify user experience flow.
 Focus on: interface consistency, user accessibility, platform requirements.
@@ -233,8 +230,8 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 4:** (only after 'ok')
 
-Action: Read ./PRD.md
-Action: Write updated ./PRD.md with UX Details section added:
+Action: Read ./mvp_docs/PRD.md
+Action: Write updated ./mvp_docs/PRD.md with UX Details section added:
 
 ```markdown
 ## 4. UX Details
@@ -243,15 +240,15 @@ Action: Write updated ./PRD.md with UX Details section added:
 
 Confirmation message:
 ```dialogue
-"✅ Saved UX details to PRD.md"
+"✅ Saved UX details to mvp_docs/PRD.md"
 "✅ PRD complete! All sections saved."
 ```
 
 ### Phase 3: Finalization & Validation
 
-Action: Read ./PRD.md
+Action: Read ./mvp_docs/PRD.md
 
-Use !`/mcp__sequential-thinking__sequentialthinking` tool to analyze:
+Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with document coherence, explore requirement completeness,
 generate readiness hypothesis, verify implementation clarity.
 Focus on: section alignment, requirement clarity, scope validation, development readiness.
@@ -267,11 +264,11 @@ If any issues found:
 Would you like to address these? (specify / 'ok' to proceed)"
 ```
 
-Action: Fix issues and Write updated PRD.md (only after 'ok')
+Action: Fix issues and Write updated mvp_docs/PRD.md (only after 'ok')
 
 ### Phase 4: Review & Iteration
 
-Action: Read ./PRD.md
+Action: Read ./mvp_docs/PRD.md
 
 Present summary:
 ```dialogue
@@ -284,7 +281,7 @@ Summary of key decisions:
 - Tech Stack: {stack}
 - UX Requirements: - {interface}
 
-Full PRD saved at ./PRD.md
+Full PRD saved at ./mvp_docs/PRD.md
 
 Review the document. Would you like to:
 1. Modify any section
@@ -296,9 +293,9 @@ Your choice:"
 
 If modifications requested:
 
-Action: Read ./PRD.md
+Action: Read ./mvp_docs/PRD.md
 - Update specific section
-- Write updated ./PRD.md
+- Write updated ./mvp_docs/PRD.md
 - Show what was changed
 - Loop until 'done'
 
