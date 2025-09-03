@@ -1,24 +1,10 @@
 # Context7 MCP Commands
 
-Context7 provides up-to-date documentation retrieval for libraries and packages. Follow the chain-of-thought process: THINK → RESOLVE → FETCH → APPLY
+Context7 provides up-to-date documentation retrieval for libraries and packages. Follow the process: THINK → RESOLVE → FETCH → APPLY
 
 ---
 
-### Command: `!/mcp__context7__resolve-library-id` - Resolves a package name to a Context7-compatible library ID
-
-**Purpose**: Returns a list of matching libraries with metadata for selection.
-
-**Required:** Must call this BEFORE `get-library-docs` UNLESS the user explicitly provides a library ID in `/org/project` or `/org/project/version` format.
-
-**When to skip resolve-library-id:**
-- User explicitly mentions a path like `/vercel/next.js`
-- User says "use /mongodb/docs" or "fetch from /facebook/react"
-- The query contains a clear library ID format with forward slashes
-
-**When to always use resolve-library-id:**
-- User mentions library by name only: "React", "Next.js", "MongoDB"
-- User says generic terms: "React docs", "Next documentation"
-- Any ambiguity about which library to use
+### Command: !`/mcp__context7__resolve-library-id` - Resolves a package name to a Context7-compatible library ID
 
 ### Parameters
 - `libraryName` (required, string): Library name to search for
@@ -52,15 +38,23 @@ List of ALL matching libraries (typically 10-30+ results), each containing:
 - Multiple UI libraries: Match description to user's specific need
 - Version variants: Use default unless user specifies version
 
-### Chain-of-Thought
-Before executing, think:
+**When to skip resolve-library-id:**
+- User explicitly mentions a path like `/vercel/next.js`
+- User says "use /mongodb/docs" or "fetch from /facebook/react"
+- The query contains a clear library ID format with forward slashes
+
+**When to always use resolve-library-id:**
+- User mentions library by name only: "React", "Next.js", "MongoDB"
+- User says generic terms: "React docs", "Next documentation"
+- Any ambiguity about which library to use
+
+### Before executing, think:
 - What's the exact package name vs common variations?
 - Is this a framework, library, or tool?
 - What naming conventions might apply?
 
 ### Examples
 
-```xml
 <example>
 <thinking>User needs React. Common package name is "react"</thinking>
 <command>/mcp__context7__resolve-library-id libraryName="react"</command>
@@ -73,9 +67,7 @@ Before executing, think:
 </returns>
 <selection>Select /reactjs/react.dev - highest trust, official docs</selection>
 </example>
-```
 
-```xml
 <example>
 <thinking>Next.js could be "next.js", "nextjs", or "next"</thinking>
 <command>/mcp__context7__resolve-library-id libraryName="next.js"</command>
@@ -87,9 +79,7 @@ Before executing, think:
 </returns>
 <selection>Select /vercel/next.js - official library, highest trust</selection>
 </example>
-```
 
-```xml
 <example>
 <thinking>Vue framework search</thinking>
 <command>/mcp__context7__resolve-library-id libraryName="vue"</command>
@@ -102,13 +92,9 @@ Before executing, think:
 </returns>
 <selection>Select /vuejs/core - exact name match, core library</selection>
 </example>
-```
-
 ---
 
-### Command: `/mcp__context7__get-library-docs` - Fetches up-to-date documentation for a library using exact Context7-compatible library ID.
-
-**Required:** Must call `resolve-library-id` first UNLESS user provides library ID in `/org/project` format.
+### Command: !`/mcp__context7__get-library-docs` - Fetches up-to-date documentation for a library using exact Context7-compatible library ID.
 
 ### Parameters
 - `context7CompatibleLibraryID` (required, string): Exact ID from resolve-library-id or user (e.g., `/vercel/next.js`)
@@ -141,37 +127,29 @@ Be specific with multi-word topics:
 - Avoid: "hooks" → Use: "useState useEffect lifecycle"
 - Avoid: "css" → Use: "responsive design breakpoints"
 
-### Chain-of-Thought
-Before executing, think:
+### Before executing, think:
 - What specific aspect of the library is needed?
 - How much context is appropriate?
 - Should I fetch multiple topics?
 
 ### Examples
 
-```xml
 <example>
 <thinking>Routing in Next.js - need App Router docs</thinking>
 <command>/mcp__context7__get-library-docs context7CompatibleLibraryID="/vercel/next.js" topic="app router routing" tokens="12000"</command>
 </example>
-```
 
-```xml
 <example>
 <thinking>User provided ID directly, skip resolve</thinking>
 <query>Get docs for /mongodb/docs about aggregation</query>
 <command>/mcp__context7__get-library-docs context7CompatibleLibraryID="/mongodb/docs" topic="aggregation pipeline" tokens="15000"</command>
 </example>
-```
 
-```xml
 <example>
 <thinking>Performance issue needs optimization docs</thinking>
 <command>/mcp__context7__get-library-docs context7CompatibleLibraryID="/facebook/react" topic="memo useMemo performance" tokens="10000"</command>
 </example>
-```
 
-```xml
 <workflow>
 <query>How to implement infinite scroll in React?</query>
 <thinking>Need React virtualization and hooks documentation</thinking>
@@ -185,9 +163,7 @@ Before executing, think:
 <selection>Select /reactjs/react.dev for official documentation</selection>
 <fetch>/mcp__context7__get-library-docs context7CompatibleLibraryID="/reactjs/react.dev" topic="infinite scroll virtualization" tokens="12000"</fetch>
 </workflow>
-```
 
-```xml
 <workflow>
 <query>Debug Next.js hydration errors</query>
 <thinking>SSR-specific issue, need debugging docs</thinking>
@@ -201,9 +177,7 @@ Before executing, think:
 <selection>Select /vercel/next.js - official library</selection>
 <fetch>/mcp__context7__get-library-docs context7CompatibleLibraryID="/vercel/next.js" topic="hydration errors debugging SSR" tokens="15000"</fetch>
 </workflow>
-```
 
-```xml
 <workflow>
 <query>Learn Tailwind CSS basics</query>
 <thinking>New user needs comprehensive introduction</thinking>
@@ -218,7 +192,6 @@ Before executing, think:
 <fetch>/mcp__context7__get-library-docs context7CompatibleLibraryID="/tailwindlabs/tailwindcss" topic="getting started" tokens="15000"</fetch>
 <fetch>/mcp__context7__get-library-docs context7CompatibleLibraryID="/tailwindlabs/tailwindcss" topic="utility classes" tokens="10000"</fetch>
 </workflow>
-```
 
 ---
 
@@ -252,10 +225,8 @@ Before executing, think:
 
 ## Quick Reference
 
-```
 1. THINK: What library and specific documentation needed?
 2. RESOLVE: /mcp__context7__resolve-library-id libraryName="[package]"
 3. SELECT: Choose based on trust, snippets, relevance
 4. FETCH: /mcp__context7__get-library-docs context7CompatibleLibraryID="[id]" topic="[specific]" tokens="[appropriate]"
 5. APPLY: Use documentation to answer user's question
-```
