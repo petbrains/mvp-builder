@@ -6,7 +6,7 @@ description: Implements a git workflow using Bash commands
 
 ## Your task
 
-Based on the git workflow rules and instructions in @.claude/tools/git.md, perform the requested git operations using Bash commands based on [prompt].
+Based on the git workflow rules and instructions in @.claude/tools/git.xml, perform the requested git operations using Bash commands based on [prompt].
 
 **Important:** Follow the detailed instructions and examples in @.claude/tools/git.md for all git operations, branch naming conventions, commit message formats, and safety checks.
 
