@@ -50,189 +50,256 @@ release/<version>
 
 ---
 
-### !`/mcp__git__git_add` - Add selected files to the index. Use to prepare minimal, atomic commits. 
-**Params:**
-- repo_path="./" 
-- files=["<file1>", "<file2>", ...]
+## Git Commands (Bash)
 
-```xml
+### !`git add` - Add selected files to the index. Use to prepare minimal, atomic commits.
+**Usage:**
+- `git add <file1> <file2> ...` - Add specific files
+- `git add .` - Add all changes in current directory
+- `git add -p` - Interactive staging (choose hunks)
+
+```bash
 <example>
-/mcp__git__git_add  repo_path="./"  files="[\"src/index.ts\", \"README.md\"]"
+git add src/index.ts README.md
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_branch` - List branches (local/remote/all). Use for navigation and for filtering by commit containment via contains/not_contains.
-**Params:**
-- repo_path="./" 
-- branch_type="all" 
-- contains="<sha>" 
-- not_contains="<sha>"
+### !`git branch` - List branches (local/remote/all). Use for navigation and for filtering by commit containment.
+**Usage:**
+- `git branch` - List local branches
+- `git branch -r` - List remote branches  
+- `git branch -a` - List all branches
+- `git branch --contains <sha>` - Branches containing a commit
+- `git branch --no-contains <sha>` - Branches NOT containing a commit
 
-```xml
+```bash
 <example>
-/mcp__git__git_branch  repo_path="./"  branch_type="all"
+git branch -a
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_checkout` - Switch to an existing branch. Use to change the working context. 
-**Params:**
-- repo_path="./" 
-- branch_name="<name>".
+### !`git checkout` / `git switch` - Switch to an existing branch. Use to change the working context.
+**Usage:**
+- `git checkout <branch-name>` - Switch to branch
+- `git switch <branch-name>` - Modern alternative to checkout
 
-```xml
+```bash
 <example>
-/mcp__git__git_checkout  repo_path="./"  branch_name="feature/ui/buttons"
+git checkout feature/ui/buttons
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_commit` - Record staged changes with a message. Use frequently in small, logical steps. Returns commit hash. 
-**Params:**
-- repo_path="./" 
-- message="..." 
+### !`git commit` - Record staged changes with a message. Use frequently in small, logical steps. Returns commit hash.
+**Usage:**
+- `git commit -m "<message>"` - Single line message
+- `git commit -m "<title>" -m "<description>"` - Multi-line message
+- `git commit --amend` - Amend last commit
 
-```xml
+```bash
 <example>
-/mcp__git__git_commit  repo_path="./"  message="[ABC-123] feat: add index bootstrap"
+git commit -m "[ABC-123] feat: add index bootstrap"
 </example>
 ```
 
-```xml
+```bash
 <bad_example>
-/mcp__git__git_commit  repo_path="./"  message="fix"
+git commit -m "fix"
 </bad_example>
 ```
 
 ---
 
-### !`/mcp__git__git_create_branch` - Create a new branch from a specific start point. Use to isolate tasks and experiments. **Params:**
-- repo_path="./" 
-- branch_name="<name>" 
-- start_point="<sha|branch>"
+### !`git checkout -b` / `git branch` - Create a new branch from a specific start point. Use to isolate tasks and experiments.
+**Usage:**
+- `git checkout -b <branch-name> [<start-point>]` - Create and switch
+- `git branch <branch-name> [<start-point>]` - Just create
 
-```xml
+```bash
 <example>
-/mcp__git__git_create_branch  repo_path="./"  branch_name="feature/ui/buttons" start_point="main"
+git checkout -b feature/ui/buttons main
 </example>
 ```
 
-
-```xml
+```bash
 <bad_example>
-/mcp__git__git_create_branch  repo_path="./"  branch_name="Feature/X Big Thing"
+git checkout -b "Feature/X Big Thing"
 </bad_example>
 ```
 
 ---
 
-### !`/mcp__git__git_diff` - Compare the working copy or HEAD with a given branch/commit. Use to review differences between branches/history points. 
-**Params:**
-- repo_path="./" 
-- target="<branch|commit>" 
-- context_lines=3
+### !`git diff` - Compare the working copy or HEAD with a given branch/commit. Use to review differences between branches/history points.
+**Usage:**
+- `git diff` - Unstaged changes
+- `git diff <branch|commit>` - Compare with branch/commit
+- `git diff -U<n>` - Show n lines of context (default 3)
+- `git diff <branch1>..<branch2>` - Compare two branches
 
-```xml
+```bash
 <example>
-/mcp__git__git_diff  repo_path="./"  target="main" context_lines="3"
+git diff main -U3
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_diff_staged` - Review staged changes. Use right before committing.
-**Params:**
-- repo_path="./" 
-- context_lines=3
+### !`git diff --staged` / `git diff --cached` - Review staged changes. Use right before committing.
+**Usage:**
+- `git diff --staged` - Show staged changes
+- `git diff --staged -U<n>` - With n lines of context
 
-```xml
+```bash
 <example>
-/mcp__git__git_diff_staged  repo_path="./"  context_lines="3"
+git diff --staged -U3
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_diff_unstaged` - Review unstaged changes precisely. Use before `git add` to double-check edits. 
-**Params:**
-- repo_path="./" 
-- context_lines=3
+### !`git diff` (unstaged) - Review unstaged changes precisely. Use before `git add` to double-check edits.
+**Usage:**
+- `git diff` - Show unstaged changes
+- `git diff -U<n>` - With n lines of context
 
-```xml
+```bash
 <example>
-/mcp__git__git_diff_unstaged  repo_path="./"  context_lines="3"
+git diff -U3
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_init` - Initialize a new repository at the target directory. Use once before starting work or to turn an existing folder into a Git repository.
-**Params:**
-- repo_path="<path>"
+### !`git init` - Initialize a new repository at the target directory. Use once before starting work or to turn an existing folder into a Git repository.
+**Usage:**
+- `git init` - Initialize in current directory
+- `git init <path>` - Initialize in specific directory
 
-```xml
+```bash
 <example>
-/mcp__git__git_init  repo_path="./" 
+git init
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_log` - Show commit history. Use to navigate changes and find a target revision. 
-**Params:**
-- repo_path="./" 
-- max_count=10
+### !`git log` - Show commit history. Use to navigate changes and find a target revision.
+**Usage:**
+- `git log --oneline -n <count>` - Compact format
+- `git log --stat -n <count>` - With file statistics
+- `git log --graph --all` - Visual branch graph
 
-```xml
+```bash
 <example>
-/mcp__git__git_log  repo_path="./"  max_count="20"
+git log --oneline -n 20
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_reset` - Unstage files (without discarding local edits). Use to undo an accidental `git add`.
-**Params:**
-- repo_path="./"
+### !`git reset` - Unstage files (without discarding local edits). Use to undo an accidental `git add`.
+**Usage:**
+- `git reset` - Unstage all files
+- `git reset <file>` - Unstage specific file
+- `git reset --hard` - Discard all changes (DANGEROUS)
 
-```xml
+```bash
 <example>
-/mcp__git__git_reset  repo_path="./" 
+git reset
 </example>
 ```
 
-```xml
+```bash
 <bad_example>
-/mcp__git__git_reset
+git reset --hard  # Without understanding consequences
 </bad_example>
 ```
 
 ---
 
-### !`/mcp__git__git_show` - Show the contents and metadata of a specific commit/object. Use to inspect a precise change. 
-**Params:**
-- repo_path="./" 
-- revision="<sha|ref>"
+### !`git show` - Show the contents and metadata of a specific commit/object. Use to inspect a precise change.
+**Usage:**
+- `git show <sha|ref>` - Show commit details
+- `git show HEAD~1` - Show previous commit
 
-```xml
+```bash
 <example>
-/mcp__git__git_show  repo_path="./"  revision="HEAD~1"
+git show HEAD~1
 </example>
 ```
 
 ---
 
-### !`/mcp__git__git_status` - Show the working tree and index status. Use before diff/commit to assess pending changes.
-**Params:**
-- repo_path="<path>"
+### !`git status` - Show the working tree and index status. Use before diff/commit to assess pending changes.
+**Usage:**
+- `git status` - Full status
+- `git status -s` - Short format
+- `git status --porcelain` - Machine-readable format
 
-```xml
+```bash
 <example>
-/mcp__git__git_status  repo_path="./" 
+git status
+</example>
+```
+
+---
+
+### Additional Common Commands
+
+### !`git push` - Push commits to remote repository.
+**Usage:**
+- `git push` - Push current branch
+- `git push -u origin <branch>` - Push and set upstream
+- `git push origin <branch>` - Push specific branch
+
+```bash
+<example>
+git push -u origin feature/ui/buttons
+</example>
+```
+
+---
+
+### !`git pull` - Fetch and merge changes from remote.
+**Usage:**
+- `git pull` - Pull current branch
+- `git pull --rebase` - Pull with rebase instead of merge
+
+```bash
+<example>
+git pull --rebase
+</example>
+```
+
+---
+
+### !`git merge` - Merge another branch into current branch.
+**Usage:**
+- `git merge <branch>` - Merge branch
+- `git merge --no-ff <branch>` - Force merge commit
+
+```bash
+<example>
+git merge --no-ff feature/auth/device-flow
+</example>
+```
+
+---
+
+### !`git stash` - Temporarily store changes.
+**Usage:**
+- `git stash` - Stash changes
+- `git stash pop` - Apply and remove latest stash
+- `git stash list` - Show all stashes
+
+```bash
+<example>
+git stash save "work in progress on auth"
 </example>
 ```
 
