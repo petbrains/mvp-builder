@@ -1,74 +1,24 @@
-<git>
-  <branch>
-    <prefix>feature|fix|refactor|docs|chore|hotfix|release</prefix>
-    <format><![CDATA[<prefix>/<scope>/<desc>|<hotfix|release>/<desc>]]></format>
-    <regex>^(feature|fix|refactor|docs|chore)/[a-z0-9._-]+/[a-z0-9._-]+|(hotfix|release)/[a-z0-9._-]+$</regex>
-    <source>
-      <rule from="main">feature|fix|refactor|docs|chore</rule>
-      <rule from="release/x.y.z|main">hotfix</rule>
-      <rule from="main">release</rule>
-    </source>
-  </branch>
-  <commit>
-    <format>[KEY-123] &lt;type&gt;(&lt;scope&gt;): &lt;summary&gt;</format>
-    <types>feature|fix|refactor|docs|chore|test|build|ci</types>
-  </commit>
-  <cmd>
-    <c n="add" d="Stage files">
-      <o>&lt;files&gt; - specific files</o>
-      <o>. - all changes</o>
-      <o>-p - interactive</o>
-    </c>
-    <c n="branch" d="List/manage branches">
-      <o>[-r|-a] - local/remote/all</o>
-      <o>--[no-]contains &lt;sha&gt; - filter by commit</o>
-    </c>
-    <c n="checkout|switch" d="Change branch">
-      <o>&lt;branch&gt;</o>
-    </c>
-    <c n="checkout -b" d="Create &amp; switch branch">
-      <o>&lt;name&gt; [&lt;start&gt;]</o>
-    </c>
-    <c n="commit" d="Record changes">
-      <o>-m "&lt;msg&gt;" - single line</o>
-      <o>-m "&lt;title&gt;" -m "&lt;body&gt;" - multi-line</o>
-      <o>--amend - modify last</o>
-    </c>
-    <c n="diff" d="Compare changes">
-      <o>[&lt;ref&gt;] - unstaged/vs ref</o>
-      <o>--staged - staged changes</o>
-      <o>-U&lt;n&gt; - context lines</o>
-    </c>
-    <c n="init" d="Initialize repo">
-      <o>[&lt;path&gt;]</o>
-    </c>
-    <c n="log" d="Show history">
-      <o>--oneline -n &lt;count&gt;</o>
-      <o>--stat -n &lt;count&gt;</o>
-      <o>--graph --all</o>
-    </c>
-    <c n="reset" d="Unstage files">
-      <o>[&lt;file&gt;] - unstage</o>
-      <o warn="DANGER">--hard - discard all</o>
-    </c>
-    <c n="show" d="Display commit">
-      <o>&lt;ref&gt;</o>
-    </c>
-    <c n="status" d="Working tree status">
-      <o>[-s|--porcelain]</o>
-    </c>
-    <c n="push" d="Upload commits">
-      <o>[-u origin &lt;branch&gt;]</o>
-    </c>
-    <c n="pull" d="Fetch &amp; merge">
-      <o>[--rebase]</o>
-    </c>
-    <c n="merge" d="Combine branches">
-      <o>[--no-ff] &lt;branch&gt;</o>
-    </c>
-    <c n="stash" d="Store changes temporarily">
-      <o>[save "&lt;msg&gt;"]</o>
-      <o>pop|list</o>
-    </c>
-  </cmd>
-</git>
+<g>
+<b p="feature|fix|refactor|docs|chore|hotfix|release" 
+   f="&lt;p&gt;/&lt;scope&gt;/&lt;desc&gt;|&lt;hotfix|release&gt;/&lt;desc&gt;"
+   r="^(feature|fix|refactor|docs|chore)/[a-z0-9._-]+/[a-z0-9._-]+|(hotfix|release)/[a-z0-9._-]+$">
+  <s f="main">feature|fix|refactor|docs|chore|release</s>
+  <s f="release/x.y.z|main">hotfix</s>
+</b>
+<cm f="[KEY-123] &lt;t&gt;(&lt;s&gt;): &lt;msg&gt;" t="feature|fix|refactor|docs|chore|test|build|ci"/>
+<c n="add" d="Stage files" o="&lt;files&gt;|.|-p"/>
+<c n="branch" d="List/manage" o="[-r|-a]|--[no-]contains &lt;sha&gt;"/>
+<c n="checkout|switch" d="Change branch" o="&lt;branch&gt;"/>
+<c n="checkout -b" d="Create &amp; switch" o="&lt;name&gt; [&lt;start&gt;]"/>
+<c n="commit" d="Record" o="-m '&lt;msg&gt;'|-m '&lt;t&gt;' -m '&lt;b&gt;'|--amend"/>
+<c n="diff" d="Compare" o="[&lt;ref&gt;]|--staged|-U&lt;n&gt;"/>
+<c n="init" d="Initialize" o="[&lt;path&gt;]"/>
+<c n="log" d="History" o="--oneline -n &lt;n&gt;|--stat -n &lt;n&gt;|--graph --all"/>
+<c n="reset" d="Unstage" o="[&lt;file&gt;]|--hard" w="hard=DANGER"/>
+<c n="show" d="Display" o="&lt;ref&gt;"/>
+<c n="status" d="Status" o="[-s|--porcelain]"/>
+<c n="push" d="Upload" o="[-u origin &lt;branch&gt;]"/>
+<c n="pull" d="Fetch+merge" o="[--rebase]"/>
+<c n="merge" d="Combine" o="[--no-ff] &lt;branch&gt;"/>
+<c n="stash" d="Store temp" o="[save '&lt;msg&gt;']|pop|list"/>
+</g>
