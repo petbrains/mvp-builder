@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash
+allowed-tools: Bash(git:*)
 argument-hint: [prompt]
 description: Implements a git workflow using Bash commands
 ---
