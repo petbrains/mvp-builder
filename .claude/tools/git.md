@@ -1,4 +1,4 @@
-# Git сommands:
+# Git commands:
 
 ## Branch Naming
 Prefixes: `feature|fix|refactor|docs|chore|hotfix|release`
