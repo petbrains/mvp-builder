@@ -1,4 +1,4 @@
-# Git MCP Commands
+# Git сommands:
 
 ## Branch Naming
 Prefixes: `feature|fix|refactor|docs|chore|hotfix|release`
