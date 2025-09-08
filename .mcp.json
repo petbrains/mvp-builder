@@ -13,12 +13,6 @@
                 "-y",
                 "@modelcontextprotocol/server-sequential-thinking"
             ]
-        },
-        "git": {
-            "command": "uvx",
-            "args": [
-                "mcp-server-git"
-            ]
         }
     }
 }
