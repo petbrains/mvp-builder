@@ -29,7 +29,7 @@ fi
 
 # Get repository root
 REPO_ROOT=$(git rev-parse --show-toplevel)
-SPECS_DIR="$REPO_ROOT/specs"
+SPECS_DIR="$REPO_ROOT/mvp_docs/specs"
 
 # Create specs directory if it doesn't exist
 mkdir -p "$SPECS_DIR"
