@@ -12,18 +12,53 @@
 2. Extract key concepts from description
    → Identify: actors, actions, data, constraints
 3. For each unclear aspect:
-   → Mark with [NEEDS CLARIFICATION: specific question]
+   → Ask user specific question
+   → Get response
+   → Analyze with /mcp__sequential-thinking__sequentialthinking for consistency
+   → Show analysis result
+   → Wait for 'ok'
+   → Write clarified info to SPEC_FILE
 4. Fill User Scenarios & Testing section
    → If no clear user flow: ERROR "Cannot determine user scenarios"
 5. Generate Functional Requirements
    → Each requirement must be testable
-   → Mark ambiguous requirements
+   → All ambiguities resolved through dialogue
 6. Identify Key Entities (if data involved)
 7. Run Review Checklist
-   → If any [NEEDS CLARIFICATION]: WARN "Spec has uncertainties"
+   → If any unclarified items: WARN "Spec has uncertainties"
    → If implementation details found: ERROR "Remove tech details"
 8. Return: SUCCESS (spec ready for planning)
 ```
+
+---
+
+## Clarification Dialogue Protocol
+When unclear aspect detected, instead of marking [NEEDS CLARIFICATION]:
+
+1. **Ask specific question:**
+   ```dialogue
+   "I need to clarify [aspect].
+   [Specific question with options if applicable]"
+   ```
+
+2. **Analyze response:**
+   ```
+   Use /mcp__sequential-thinking__sequentialthinking:
+   - Check consistency with existing requirements
+   - Verify specificity and testability
+   - Detect any contradictions
+   ```
+
+3. **Confirm with user:**
+   ```dialogue
+   "Analysis: [result]
+   Type 'ok' to confirm or provide adjustments."
+   ```
+
+4. **Save after 'ok':**
+   - Read current SPEC_FILE
+   - Update relevant section
+   - Write back to SPEC_FILE
 
 ---
 
@@ -39,9 +74,9 @@
 
 ### For AI Generation
 When creating this spec from a user prompt:
-1. **Mark all ambiguities**: Use [NEEDS CLARIFICATION: specific question] for any assumption you'd need to make
-2. **Don't guess**: If the prompt doesn't specify something (e.g., "login system" without auth method), mark it
-3. **Think like a tester**: Every vague requirement should fail the "testable and unambiguous" checklist item
+1. **Clarify all ambiguities**: Use dialogue protocol for any assumption you'd need to make
+2. **Don't guess**: If the prompt doesn't specify something (e.g., "login system" without auth method), ask user
+3. **Think like a tester**: Every vague requirement should be clarified through dialogue
 4. **Common underspecified areas**:
    - User types and permissions
    - Data retention/deletion policies  
@@ -74,9 +109,9 @@ When creating this spec from a user prompt:
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
 
-*Example of marking unclear requirements:*
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+*During dialogue, clarify ambiguous requirements like:*
+- **FR-006**: System MUST authenticate users via [ask user for method]
+- **FR-007**: System MUST retain user data for [ask user for period]
 
 ### Key Entities *(include if feature involves data)*
 - **[Entity 1]**: [What it represents, key attributes without implementation]
@@ -94,7 +129,7 @@ When creating this spec from a user prompt:
 - [ ] All mandatory sections completed
 
 ### Requirement Completeness
-- [ ] No [NEEDS CLARIFICATION] markers remain
+- [ ] No unresolved clarifications remain
 - [ ] Requirements are testable and unambiguous  
 - [ ] Success criteria are measurable
 - [ ] Scope is clearly bounded
@@ -107,7 +142,7 @@ When creating this spec from a user prompt:
 
 - [ ] User description parsed
 - [ ] Key concepts extracted
-- [ ] Ambiguities marked
+- [ ] Ambiguities clarified through dialogue
 - [ ] User scenarios defined
 - [ ] Requirements generated
 - [ ] Entities identified
