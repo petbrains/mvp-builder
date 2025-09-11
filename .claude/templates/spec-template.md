@@ -33,7 +33,7 @@
 ---
 
 ## Clarification Dialogue Protocol
-When unclear aspect detected, instead of marking [NEEDS CLARIFICATION]:
+When unclear aspect detected:
 
 1. **Ask specific question:**
    ```dialogue
