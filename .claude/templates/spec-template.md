@@ -12,17 +12,17 @@
 2. Extract key concepts from description
    → Identify: actors, actions, data, constraints
 3. For each unclear aspect:
-   → Ask user specific question
-   → Get response
+   → MUST ask user specific question (no assumptions allowed)
+   → Wait for actual user response
    → Analyze with /mcp__sequential-thinking__sequentialthinking for consistency
    → Show analysis result
-   → Wait for 'ok'
-   → Write clarified info to SPEC_FILE
+   → Wait for 'ok' confirmation
+   → Write clarified info to SPEC_FILE incrementally
 4. Fill User Scenarios & Testing section
    → If no clear user flow: ERROR "Cannot determine user scenarios"
 5. Generate Functional Requirements
    → Each requirement must be testable
-   → All ambiguities resolved through dialogue
+   → All ambiguities must be resolved through dialogue
 6. Identify Key Entities (if data involved)
 7. Run Review Checklist
    → If any unclarified items: WARN "Spec has uncertainties"
@@ -33,32 +33,42 @@
 ---
 
 ## Clarification Dialogue Protocol
-When unclear aspect detected:
 
-1. **Ask specific question:**
+**CRITICAL RULE**: If information is not explicitly provided in user description:
+- DO NOT assume or guess
+- DO NOT use "reasonable defaults"
+- MUST ask user for clarification
+- WAIT for actual response before proceeding
+
+### When unclear aspect detected:
+
+1. **Stop and Ask:**
    ```dialogue
    "I need to clarify [aspect].
-   [Specific question with options if applicable]"
+   [Specific question with context]
+   [Provide options if applicable]"
    ```
 
-2. **Analyze response:**
+2. **Analyze Response:**
    ```
    Use /mcp__sequential-thinking__sequentialthinking:
    - Check consistency with existing requirements
    - Verify specificity and testability
    - Detect any contradictions
+   - Minimum score: 5 to proceed
    ```
 
-3. **Confirm with user:**
+3. **Confirm with User:**
    ```dialogue
-   "Analysis: [result]
+   "Analysis: [result from sequential-thinking]
    Type 'ok' to confirm or provide adjustments."
    ```
 
-4. **Save after 'ok':**
+4. **Save After Confirmation:**
    - Read current SPEC_FILE
-   - Update relevant section
+   - Update relevant section with clarified information
    - Write back to SPEC_FILE
+   - Confirm: "✅ Updated [section] in spec.md"
 
 ---
 
@@ -74,23 +84,26 @@ When unclear aspect detected:
 
 ### For AI Generation
 When creating this spec from a user prompt:
-1. **Clarify all ambiguities**: Use dialogue protocol for any assumption you'd need to make
-2. **Don't guess**: If the prompt doesn't specify something (e.g., "login system" without auth method), ask user
-3. **Think like a tester**: Every vague requirement should be clarified through dialogue
-4. **Common underspecified areas**:
+1. **Clarify all ambiguities through dialogue**: Never make assumptions
+2. **Don't guess**: If the prompt doesn't specify something, you MUST ask
+3. **Think like a tester**: Every vague requirement needs explicit clarification
+4. **Common areas requiring clarification**:
    - User types and permissions
    - Data retention/deletion policies  
    - Performance targets and scale
    - Error handling behaviors
    - Integration requirements
    - Security/compliance needs
+   - Visual representation preferences
+   - Duplicate handling rules
+   - System limits and boundaries
 
 ---
 
 ## User Scenarios & Testing *(mandatory)*
 
 ### Primary User Story
-[Describe the main user journey in plain language]
+[Describe the main user journey in plain language - resolved through dialogue]
 
 ### Acceptance Scenarios
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
@@ -103,15 +116,11 @@ When creating this spec from a user prompt:
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
-
-*During dialogue, clarify ambiguous requirements like:*
-- **FR-006**: System MUST authenticate users via [ask user for method]
-- **FR-007**: System MUST retain user data for [ask user for period]
+- **FR-001**: System MUST [specific capability - clarified through dialogue]
+- **FR-002**: System MUST [specific capability - no assumptions made]
+- **FR-003**: Users MUST be able to [key interaction - explicitly confirmed]
+- **FR-004**: System MUST [data requirement - user specified]
+- **FR-005**: System MUST [behavior - verified with user]
 
 ### Key Entities *(include if feature involves data)*
 - **[Entity 1]**: [What it represents, key attributes without implementation]
@@ -129,11 +138,12 @@ When creating this spec from a user prompt:
 - [ ] All mandatory sections completed
 
 ### Requirement Completeness
-- [ ] No unresolved clarifications remain
+- [ ] All ambiguities resolved through dialogue (no assumptions)
 - [ ] Requirements are testable and unambiguous  
 - [ ] Success criteria are measurable
 - [ ] Scope is clearly bounded
 - [ ] Dependencies and assumptions identified
+- [ ] User confirmed all clarifications with 'ok'
 
 ---
 
@@ -142,10 +152,11 @@ When creating this spec from a user prompt:
 
 - [ ] User description parsed
 - [ ] Key concepts extracted
-- [ ] Ambiguities clarified through dialogue
+- [ ] Ambiguities clarified through dialogue (not assumptions)
 - [ ] User scenarios defined
 - [ ] Requirements generated
 - [ ] Entities identified
+- [ ] All user confirmations received
 - [ ] Review checklist passed
 
 ---
