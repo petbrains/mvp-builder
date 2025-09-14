@@ -41,7 +41,7 @@ if [ -d "$SPECS_DIR" ]; then
         if [ -d "$dir" ]; then
             dirname=$(basename "$dir")
             number=$(echo "$dirname" | grep -o '^[0-9]\+' || echo "0")
-            number=$((10#$number))
+            number=$((number + 0))
             if [ "$number" -gt "$HIGHEST" ]; then
                 HIGHEST=$number
             fi
