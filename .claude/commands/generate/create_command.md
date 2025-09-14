@@ -1,46 +1,54 @@
 ---
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking
-argument-hint: [prompt]
+name: generate_command
 description: Creates custom commands with specific structures and workflows
+allowed-tools: Read, Write, mcp__sequential-thinking
+argument-hints: [prompt]
 ---
 
-## Your task
+# Instructions
 
 Transform natural-language descriptions into properly structured Claude Code commands. Based on [prompt], create a new command file with complete documentation, validation rules, and implementation logic following the established command structure template.
 
 The command will analyze the requirements, determine necessary MCP tools, and generate a complete command markdown file with all required sections including metadata, task description, interactive mode behavior, validation rules, and usage examples.
 
----
+**Tools Usage:**
+- See @.claude/tools/sequential-thinking.md for iterative analysis with hypothesis generation and verification
 
-## No Prompt / Help Mode
+## Usage
 
-If you run `/command` with **no prompt** (i.e., just `/command` or only whitespace), display this help message:
+```
+/generate:create_command [description of what the command should do]
+```
+
+If `[prompt]` provided - creates command based on description.
+No prompt - displays help and usage examples.
+
+## Execution
+
+### 1. No Prompt / Help Mode
+
+If run with **no prompt** (i.e., just `/generate:create_command` or only whitespace), display:
 
 **Purpose:** Create custom Claude Code commands from natural language descriptions
 
-**Usage:** `/command [description of what the command should do]`
-
 **Quick examples:**
-- `/command create deploy command for kubernetes`
-- `/command build test runner with coverage reports`
-- `/command setup database migration tool`
-- `/command make API endpoint generator`
-- `/command create git workflow automation`
+- `/generate:create_command create deploy command for kubernetes`
+- `/generate:create_command build test runner with coverage reports`
+- `/generate:create_command setup database migration tool`
+- `/generate:create_command make API endpoint generator`
+- `/generate:create_command create git workflow automation`
 
 **What gets created:**
 - A complete `.md` file with the command specification
 - Proper metadata and tool declarations
-- Interactive mode for ambiguous inputs
-- Validation and safety rules
-- Usage examples and documentation
+- Execution workflow and documentation
+- Usage examples and validation rules
 
----
+### 2. Interactive Mode
 
-## Interactive Mode
+The command creation process follows these essential steps:
 
-The command creation process follows these three essential steps:
-
-### Step 1: Pre-check
+#### Pre-check
 - **Validate prompt clarity:** If the prompt is ambiguous, ask for clarification:
   ```
   "I need more details to create the command properly:
@@ -51,47 +59,35 @@ The command creation process follows these three essential steps:
   
   Please provide details or I can guide you through each step."
   ```
-- **Check for existing commands:** Verify the command name doesn't conflict with existing ones
-- **Determine required tools:** 
-  - If user specifies tools, validate they exist
-  - If not specified, analyze requirements and suggest appropriate MCP tools
-  - Confirm tool selection with user if uncertain
-- **Requirements Analysis:**
-  - Identify the target use case and user needs
-  - Analyze input requirements and argument structure
-  - Determine output format and success criteria
-  - Plan error handling and edge cases
-  - Consider performance and scalability
+- **Check for existing commands:** Verify the command name doesn't conflict
+- **Determine required tools:** Analyze requirements and suggest appropriate MCP tools
 
-### Step 2: Command Generation
-- **Create command structure:** Generate the complete markdown file with all required sections
-- **Define metadata:** Set allowed-tools, argument-hint, and description
-- **Implement core logic:** Write the task description and workflow steps
-- **Add validation rules:** Include input validation and safety checks
-- **Generate examples:** Create 2-3 practical usage examples
-- **Set naming convention:** Follow pattern: `command_name.md` (use underscores in filenames)
-- **Apply Command Design Patterns:**
-  - For task-oriented commands: Focus on automation steps and validation
-  - For analysis commands: Include comprehensive analysis areas and reporting
-  - For generation commands: Define templates and best practices
-  - For workflow commands: Map out complete process flows
+#### Command Generation
+Use `/mcp__sequential-thinking__sequentialthinking` to analyze:
 
-### Step 3: Post-check
-- **Verify completeness:** Ensure all required sections are present:
-  - Metadata header with tools and description
-  - Your task section with detailed instructions
-  - No Prompt / Help Mode section
-  - Interactive Mode (if applicable)
-  - Examples section
-  - Validation process and error handling
-  - Best practices section (when applicable)
-- **Create the file:** Save as `command_name.md` in appropriate directory (`cli-tool/components/commands/`)
-- **Test command structure:**
-  - Verify all examples work as documented
-  - Test argument descriptions and options
-  - Validate process steps and outcomes
-  - Check for clarity and completeness
-- **Output success message with usage:**
+```
+1. Parse requirements:
+   - Core functionality needed
+   - Required MCP tools
+   - Input parameters
+   - Output format
+
+2. Design command structure:
+   - Command name (action-oriented)
+   - Metadata configuration
+   - Execution workflow
+   - Validation requirements
+
+3. Generate command file:
+   - Complete markdown structure
+   - All required sections
+   - Usage examples
+```
+
+#### Post-check
+- **Verify completeness:** Ensure all required sections are present
+- **Create the file:** Save as `command_name.md` in appropriate directory
+- **Output success message:**
   ```
   ✅ Command successfully created: command_name.md
   
@@ -105,351 +101,232 @@ The command creation process follows these three essential steps:
   Run '/command_name' without arguments to see help.
   ```
 
----
+## Command Structure Template
 
-## Rules
-
-### Command Structure Requirements
-Every generated command must include:
+Every generated command must follow this structure:
 
 ```markdown
 ---
-allowed-tools: [mcp_server_names]
-argument-hint: [expected_arguments]
-description: Brief description of command purpose
+name: [command_name]
+description: [Brief description of command purpose]
+allowed-tools: [Tool1, Tool2, mcp__server_name]
+argument-hints: [expected_arguments]
 ---
 
-## Your task
-[Main task description based on prompt]
-I'll [action description] for $ARGUMENTS following [relevant standards/practices].
+# Instructions
 
-## Process
-I'll follow these steps:
-1. [Step 1 description - validation/analysis]
-2. [Step 2 description - core execution]
-3. [Step 3 description - optimization/enhancement]
-4. [Final step - output/reporting]
+[Main purpose and overview of what the command does]
 
-## No Prompt / Help Mode
-[Help text when no arguments provided]
+**Tools Usage:**
+- [Describe how each tool is used]
 
-## Interactive Mode
-[Behavior for ambiguous inputs - include if command needs clarification]
+## Usage
 
-## [Command-Specific Sections]
-### [Category 1]
-- [Feature/capability 1]
-- [Feature/capability 2]
-- [Feature/capability 3]
+\`\`\`
+/[command_name] [arguments]
+\`\`\`
 
-### [Category 2]
-- [Implementation detail 1]
-- [Implementation detail 2]
-- [Implementation detail 3]
+If \`[argument]\` provided - [what happens with argument].
+No argument - [what happens without argument].
 
-## Validation Process (when applicable)
-1. **Input Validation**
-   - Verify file/directory existence
-   - Check parameter combinations
-   - Validate configuration syntax
+## Execution
 
-2. **Environment Validation**
-   - Check system requirements
-   - Validate tool availability
-   - Ensure required dependencies exist
+### 1. [First Major Step]
 
-## Error Handling (when applicable)
-### Recovery Strategies
-- Graceful degradation for non-critical failures
-- Automatic retry for transient errors
-- Clear error messages with resolution steps
-- Rollback mechanisms for destructive operations
+[Description of step and implementation details]
 
-## Best Practices (when applicable)
-### [Practice Category]
-- [Best practice 1]
-- [Best practice 2]
-- [Best practice 3]
+Use \`/mcp__tool__function\` to analyze:
 
-## Security & Compliance (optional)
-[Safety guards and restrictions]
+\`\`\`
+1. [Sub-step 1]:
+   - [Detail]
+   - [Detail]
 
-## Examples
-[2-3 practical usage examples]
+2. [Sub-step 2]:
+   - [Detail]
+   - [Detail]
+\`\`\`
+
+### 2. [Second Major Step]
+
+[Description and details]
+
+### 3. [Output Format] (if applicable)
+
+**Section Header:**
+- Field: [description]
+- Field: [description]
+
+## [Additional Sections as Needed]
+
+[Could include Rules, Security, Validation, etc.]
 ```
 
-### Command Types Templates
-
-#### Code Generation Commands
-Include sections for:
-- Generation types (components, APIs, tests, configs)
-- Framework-specific patterns
-- Code quality standards
-- Integration approaches
-- Template examples in YAML/JSON format when applicable
-
-#### Code Analysis Commands
-Include sections for:
-- Analysis areas and methods
-- Issue classification (Critical/Warning/Info)
-- Reporting format and recommendations
-- Performance metrics
-- Visual output formats (tables, charts references)
-
-#### Build and Deploy Commands
-Include sections for:
-- Build optimization strategies
-- Deployment steps and rollback procedures
-- Environment configurations
-- CI/CD integration
-- Configuration examples in YAML format
-
-#### Development Workflow Commands
-Include sections for:
-- Workflow automation steps
-- Git operations and branching
-- Database operations
-- Documentation generation
-- Pipeline definitions
-
-#### Agent/Assistant Creation Commands
-Include sections for:
-- Core architecture and identity
-- Expertise domains with specific knowledge areas
-- Personality configuration (tone, verbosity, proactivity)
-- Tool permissions (allowed, restricted, usage guidelines)
-- Behavioral patterns and constraints
-- Communication style examples
+## Rules
 
 ### Naming Conventions
-- **Command names:** Use clear, imperative verbs (e.g., "Generate Component", "Optimize Bundle")
-- **File names:** Use underscores in files (e.g., `deploy_k8s.md`, `test_runner.md`)
+- **Command names:** Use clear action verbs or domain-specific terms
+- **File names:** Use underscores (e.g., `deploy_k8s.md`, `test_runner.md`)
 - **Forbidden names:** help, exit, quit, clear, system reserved words
-- **Format:** Lowercase, action-oriented, descriptive but concise
-- **Include target type:** `analyze-security.md`, `generate-component.md`
+- **Format:** Lowercase, no spaces, underscores preferred
 
-### Argument and Parameter Handling
+### Required Sections
+Every command must include:
+1. **Metadata header** with name, description, allowed-tools, argument-hints
+2. **Instructions** section with overview and tools usage
+3. **Usage** section with command syntax
+4. **Execution** section with detailed workflow steps
+5. **Examples** or relevant output format
 
-#### File/Directory Arguments
-- Validate input paths and file existence
-- Apply glob patterns for multi-file operations
-- Check file permissions and access rights
-- Process files with proper error handling
-- Generate comprehensive output and logs
-
-#### Configuration Arguments
-Standard parameters to consider:
-- **--config**: Custom configuration file path
-- **--output**: Output directory or format
-- **--verbose**: Enable detailed logging
-- **--dry-run**: Preview changes without execution
-- **--force**: Override safety checks
-- **--format**: Specify output format
-- **--parallel**: Enable concurrent processing
-
----
+### Tool Declaration
+- Only use explicitly declared MCP tools
+- Include mcp__sequential-thinking for complex analysis
+- List all required tools in allowed-tools metadata
 
 ## Security & Compliance
 
 ### Prohibited Actions
-- **Never create commands that:**
-  - Access system-level operations without explicit permission
-  - Bypass authentication or authorization
-  - Modify critical system files
-  - Execute arbitrary code without validation
-  - Store or transmit sensitive data insecurely
-  - Reproduce copyrighted material
+**Never create commands that:**
+- Access system-level operations without explicit permission
+- Bypass authentication or authorization
+- Modify critical system files
+- Execute arbitrary code without validation
+- Store or transmit sensitive data insecurely
 
 ### Required Safety Measures
 - **Input validation:** All commands must validate and sanitize inputs
-- **File System Validation:**
-  - Verify file/directory existence
-  - Check read/write permissions
-  - Validate file formats and extensions
 - **Tool restrictions:** Only use explicitly declared MCP tools
 - **Error handling:** Include proper error messages and recovery
 - **Audit logging:** Commands modifying data should log actions
 - **Permission checks:** Verify user has required access rights
-- **Rollback mechanisms:** For destructive operations
-
-### Compliance Standards
-- Follow organizational security policies
-- Respect data classification requirements
-- Implement principle of least privilege
-- Maintain command versioning for auditing
-- Document all external dependencies
-- Include comprehensive type definitions where applicable
-- Add accessibility features when relevant
-
----
-
-## Command Creation Workflow
-
-When creating new CLI commands:
-
-### 1. Create the Command File
-- **Location**: Always create new commands in `cli-tool/components/commands/`
-- **Naming**: Use kebab-case for display, underscores for files
-- **Format**: Markdown with specific structure and $ARGUMENTS placeholder
-
-### 2. Installation Command Support
-After creating the command, ensure it can be installed with:
-```bash
-npx claude-code-templates@latest --command="[command-name]" --yes
-```
-
-This will:
-- Read from `cli-tool/components/commands/[command_name].md`
-- Copy the command to the user's `.claude/commands/` directory
-- Enable the command for Claude Code usage
-
-### 3. Usage in Claude Code
-Users can then run the command:
-```
-/[command-name] [arguments]
-```
-
-### 4. Testing Workflow
-1. Create the command file in correct location
-2. Test the installation command
-3. Verify the command works with various arguments
-4. Test error handling and edge cases
-5. Ensure output is clear and actionable
-6. Validate performance with large inputs
-7. Test cross-platform compatibility
-
----
 
 ## Examples
 
-```xml
-<example id="create-deploy-command" kind="creation">
-  <title>Create Kubernetes deployment command</title>
-  <command>/command create kubernetes deployment automation with rollback support</command>
-  <creates>
-    <file>deploy_k8s.md</file>
-    <structure>
-      - Metadata with mcp__kubernetes tools
-      - Deployment workflow steps with validation
-      - Rollback procedures and recovery strategies
-      - Health check validations
-      - Security constraints and compliance
-      - Best practices for container orchestration
-      - Environment-specific configurations
-    </structure>
-  </creates>
-  <output>
-    ✅ Command successfully created: deploy_k8s.md
-    
-    To use: /deploy-k8s [environment] [version]
-    Example: /deploy-k8s production v1.2.3
-    
-    Installation: npx claude-code-templates@latest --command="deploy-k8s" --yes
-  </output>
-</example>
-```
+### Example 1: Kubernetes Deployment Command
 
-```xml
-<example id="create-test-command" kind="creation">
-  <title>Create test runner with coverage</title>
-  <command>/command setup automated test runner with coverage reports and parallel execution</command>
-  <creates>
-    <file>test_runner.md</file>
-    <structure>
-      - Metadata with mcp__testing tools
-      - Test discovery patterns and file validation
-      - Coverage thresholds and quality gates
-      - Report generation in multiple formats
-      - CI/CD integration with artifacts
-      - Error handling and retry mechanisms
-      - Performance optimization for large suites
-    </structure>
-  </creates>
-  <output>
-    ✅ Command successfully created: test_runner.md
-    
-    To use: /test-runner [test-suite] [options]
-    Example: /test-runner unit --coverage --report --parallel
-    
-    Installation: npx claude-code-templates@latest --command="test-runner" --yes
-  </output>
-</example>
-```
+**Input:** `/generate:create_command create kubernetes deployment automation with rollback support`
 
-```xml
-<example id="create-api-command" kind="creation">
-  <title>Create API endpoint generator</title>
-  <command>/command build REST API generator with OpenAPI validation and TypeScript support</command>
-  <creates>
-    <file>api_generator.md</file>
-    <structure>
-      - Metadata with mcp__api tools
-      - OpenAPI schema validation and parsing
-      - CRUD operation templates with types
-      - Authentication methods (JWT, OAuth, API Key)
-      - Rate limiting rules and throttling
-      - Input validation and sanitization
-      - Error response standardization
-      - Documentation generation
-      - Test file generation for endpoints
-    </structure>
-  </creates>
-  <output>
-    ✅ Command successfully created: api_generator.md
-    
-    To use: /api-generator [resource] [operations]
-    Example: /api-generator users CRUD --auth=jwt --docs
-    
-    Installation: npx claude-code-templates@latest --command="api-generator" --yes
-  </output>
-</example>
-```
+**Creates:** `deploy_k8s.md`
 
-```xml
-<example id="create-image-optimizer" kind="creation">
-  <title>Create image optimization command</title>
-  <command>/command create image optimizer for web performance with responsive variants</command>
-  <creates>
-    <file>optimize_images.md</file>
-    <structure>
-      - Metadata with mcp__image-processing tools
-      - Image format detection and validation
-      - Compression algorithms for different formats
-      - Responsive image variant generation
-      - WebP and AVIF conversion options
-      - Batch processing with progress tracking
-      - Performance metrics and size reduction reports
-      - Alt text suggestion generation
-      - Directory structure optimization
-    </structure>
-  </creates>
-  <output>
-    ✅ Command successfully created: optimize_images.md
-    
-    To use: /optimize-images [directory] [options]
-    Example: /optimize-images src/assets/images --webp --responsive
-    
-    Installation: npx claude-code-templates@latest --command="optimize-images" --yes
-  </output>
-</example>
-```
-
+```markdown
+---
+name: deploy_k8s
+description: Automated Kubernetes deployment with rollback capabilities
+allowed-tools: Read, Write, Bash, mcp__kubernetes
+argument-hints: [environment, version]
 ---
 
-## Command Quality Checklist
+# Instructions
 
-When creating a command, ensure:
-- ✅ Clear, action-oriented naming
-- ✅ Comprehensive task description with $ARGUMENTS
-- ✅ Step-by-step process documentation
-- ✅ Input validation and error handling
-- ✅ Security measures and compliance checks
-- ✅ At least 2-3 practical examples
-- ✅ Help mode for no-argument usage
-- ✅ Interactive mode for ambiguous inputs
-- ✅ Best practices section when applicable
-- ✅ Recovery strategies for failures
-- ✅ Performance considerations addressed
-- ✅ Cross-platform compatibility noted
-- ✅ Installation command documented
-- ✅ Testing workflow included
+Automates Kubernetes deployments with health checks and rollback support.
+
+**Tools Usage:**
+- mcp__kubernetes for cluster operations
+- Bash for kubectl commands
+- Read/Write for configuration files
+
+## Usage
+
+\`\`\`
+/deploy_k8s [environment] [version]
+\`\`\`
+
+## Execution
+
+### 1. Pre-deployment Checks
+[Implementation details...]
+
+### 2. Deployment Process
+[Implementation details...]
+
+### 3. Health Verification
+[Implementation details...]
+
+### 4. Rollback Procedures
+[Implementation details...]
+```
+
+### Example 2: Test Runner Command
+
+**Input:** `/generate:create_command setup automated test runner with coverage reports`
+
+**Creates:** `test_runner.md`
+
+```markdown
+---
+name: test_runner
+description: Automated test execution with coverage reporting
+allowed-tools: Read, Bash, mcp__testing
+argument-hints: [test-suite, options]
+---
+
+# Instructions
+
+Runs automated tests with coverage analysis and report generation.
+
+**Tools Usage:**
+- mcp__testing for test execution
+- Bash for test commands
+- Read for test file discovery
+
+## Usage
+
+\`\`\`
+/test_runner [test-suite] [--coverage] [--report]
+\`\`\`
+
+## Execution
+
+### 1. Test Discovery
+[Implementation details...]
+
+### 2. Test Execution
+[Implementation details...]
+
+### 3. Coverage Analysis
+[Implementation details...]
+
+### 4. Report Generation
+[Implementation details...]
+```
+
+### Example 3: API Generator Command
+
+**Input:** `/generate:create_command build REST API generator with OpenAPI validation`
+
+**Creates:** `api_generator.md`
+
+```markdown
+---
+name: api_generator
+description: REST API endpoint generator with OpenAPI schema validation
+allowed-tools: Read, Write, mcp__api, mcp__sequential-thinking
+argument-hints: [resource, operations]
+---
+
+# Instructions
+
+Generates REST API endpoints with automatic OpenAPI validation and documentation.
+
+**Tools Usage:**
+- mcp__api for endpoint creation
+- mcp__sequential-thinking for schema analysis
+- Read/Write for file operations
+
+## Usage
+
+\`\`\`
+/api_generator [resource] [operations]
+\`\`\`
+
+## Execution
+
+### 1. Schema Validation
+[Implementation details...]
+
+### 2. Endpoint Generation
+[Implementation details...]
+
+### 3. Documentation Creation
+[Implementation details...]
+```

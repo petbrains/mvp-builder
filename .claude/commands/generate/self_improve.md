@@ -107,3 +107,39 @@ Estimated total savings: [X hours/week]
 **Agent candidates:** Multi-step workflows  
 **Template candidates:** Repetitive structures
 **Automation targets:** Manual validations, batch operations
+
+## Implementation Prompts
+
+### When User Selects an Optimization
+
+After presenting the analysis, when the user chooses which optimization to implement:
+
+**For Command Creation:**
+```
+Ready to create your command! Use this prompt with /generate_command:
+
+/generate_command [detailed description of the command functionality, including:
+- What the command should do
+- What parameters it needs
+- What tools/MCP servers it should use
+- Expected output format
+- Any validation rules needed]
+```
+
+**For Agent Creation:**
+```
+Agent Specification Prompt:
+[Detailed agent workflow description including triggers, decision points, and automation logic]
+```
+
+**For Template Creation:**
+```
+Template Structure Prompt:
+[Template requirements, variables, and reusable components]
+```
+
+**For Other Automations:**
+```
+Automation Implementation Prompt:
+[Specific automation requirements and integration points]
+```
