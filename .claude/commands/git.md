@@ -1,14 +1,14 @@
 ---
-allowed-tools: mcp__git
+allowed-tools: Bash(git:*)
 argument-hint: [prompt]
-description: Implements a git workflow
+description: Implements a git workflow using Bash commands
 ---
 
 ## Your task
 
-Based on the commands described in the context and rules described below, perform work with git mcp based on [prompt].
+Based on the git workflow rules and instructions in @.claude/tools/git.md, perform the requested git operations using Bash commands based on [prompt].
 
-**For detailed workflow rules:** See @.claude/tools/git.md for branch naming conventions, commit message format, and source branch requirements.
+**Important:** Follow the detailed instructions and examples for all git operations, branch naming conventions, commit message formats, and safety checks.
 
 ---
 
