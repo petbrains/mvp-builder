@@ -1,18 +1,18 @@
 ---
 name: generate_command
 description: Creates custom commands with specific structures and workflows
-allowed-tools: Read, Write, mcp__sequential-thinking
-argument-hints: [prompt]
+allowed-tools: Read, Write, prompt_guide
+argument-hints: [user_input]
 ---
 
 # Instructions
 
-Transform natural-language descriptions into properly structured Claude Code commands. Based on [prompt], create a new command file with complete documentation, validation rules, and implementation logic following the established command structure template.
+Transform natural-language descriptions into properly structured Claude Code commands. Based on [user_input], create a new command file with complete documentation, validation rules, and implementation logic following the established command structure template.
 
 The command will analyze the requirements, determine necessary MCP tools, and generate a complete command markdown file with all required sections including metadata, task description, interactive mode behavior, validation rules, and usage examples.
 
 **Tools Usage:**
-- See @.claude/tools/sequential-thinking.md for iterative analysis with hypothesis generation and verification
+- See @.claude/tools/prompt.md for building optimized prompts
 
 ## Usage
 
@@ -20,8 +20,8 @@ The command will analyze the requirements, determine necessary MCP tools, and ge
 /generate:create_command [description of what the command should do]
 ```
 
-If `[prompt]` provided - creates command based on description.
-No prompt - displays help and usage examples.
+If `[user_input]` provided - convert it to a [prompt] using prompt_guide.
+If no `[user_input]` - displays help and usage examples.
 
 ## Execution
 
@@ -49,7 +49,7 @@ If run with **no prompt** (i.e., just `/generate:create_command` or only whitesp
 The command creation process follows these essential steps:
 
 #### Pre-check
-- **Validate prompt clarity:** If the prompt is ambiguous, ask for clarification:
+- **Validate prompt clarity:** If the [prompt] is ambiguous, ask for clarification:
   ```
   "I need more details to create the command properly:
   1. What should this command do specifically?
@@ -62,8 +62,11 @@ The command creation process follows these essential steps:
 - **Check for existing commands:** Verify the command name doesn't conflict
 - **Determine required tools:** Analyze requirements and suggest appropriate MCP tools
 
+#### Confirmation
+Display the final prompt for the command created using prompt_guide to the user and ask for their confirmation. If there are no edits from the user, proceed to the next step.
+
 #### Command Generation
-Use `/mcp__sequential-thinking__sequentialthinking` to analyze:
+Analyze:
 
 ```
 1. Parse requirements:
@@ -180,7 +183,6 @@ Every command must include:
 
 ### Tool Declaration
 - Only use explicitly declared MCP tools
-- Include mcp__sequential-thinking for complex analysis
 - List all required tools in allowed-tools metadata
 
 ## Security & Compliance
@@ -300,7 +302,7 @@ Runs automated tests with coverage analysis and report generation.
 ---
 name: api_generator
 description: REST API endpoint generator with OpenAPI schema validation
-allowed-tools: Read, Write, mcp__api, mcp__sequential-thinking
+allowed-tools: Read, Write, mcp__api
 argument-hints: [resource, operations]
 ---
 
@@ -310,7 +312,6 @@ Generates REST API endpoints with automatic OpenAPI validation and documentation
 
 **Tools Usage:**
 - mcp__api for endpoint creation
-- mcp__sequential-thinking for schema analysis
 - Read/Write for file operations
 
 ## Usage
