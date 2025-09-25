@@ -91,10 +91,10 @@ Continue until user confirms with 'ok'.
 
 ```bash
 # Create folder if none
-mkdir -p ./mvp_docs
+mkdir -p ./ai_docs
 ```
 
-Action: Write to ./mvp_docs/PRD.md
+Action: Write to ./ai_docs/PRD.md
 
 ```markdown
 # [Product Name] - PRD
@@ -107,7 +107,7 @@ Action: Write to ./mvp_docs/PRD.md
 
 Confirmation message:
 ```dialogue
-"✅ Saved core proposition to mvp_docs/PRD.md"
+"✅ Saved core proposition to ai_docs/PRD.md"
 ```
 
 #### Stage 2: Solution Design
@@ -138,8 +138,8 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 2:** (only after 'ok')
 
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with Solution Design section added:
+Action: Read ./ai_docs/PRD.md
+Action: Write updated ./ai_docs/PRD.md with Solution Design section added:
 
 ```markdown
 ## 2. Solution Design
@@ -150,7 +150,7 @@ Action: Write updated ./mvp_docs/PRD.md with Solution Design section added:
 
 Confirmation message:
 ```dialogue
-"✅ Saved solution design to mvp_docs/PRD.md"
+"✅ Saved solution design to ai_docs/PRD.md"
 ```
 
 #### Stage 3: Technical Requirements
@@ -192,8 +192,8 @@ Confirm or suggest changes?"
 
 **Save after Stage 3:** (only after 'ok')
 
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with Technical Requirements section added:
+Action: Read ./ai_docs/PRD.md
+Action: Write updated ./ai_docs/PRD.md with Technical Requirements section added:
 
 ```markdown
 ## 3. Technical Requirements
@@ -203,7 +203,7 @@ Action: Write updated ./mvp_docs/PRD.md with Technical Requirements section adde
 
 Confirmation message:
 ```dialogue
-"✅ Saved technical requirements to mvp_docs/PRD.md"
+"✅ Saved technical requirements to ai_docs/PRD.md"
 ```
 
 #### Stage 4: UX Details
@@ -230,8 +230,8 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 4:** (only after 'ok')
 
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with UX Details section added:
+Action: Read ./ai_docs/PRD.md
+Action: Write updated ./ai_docs/PRD.md with UX Details section added:
 
 ```markdown
 ## 4. UX Details
@@ -240,13 +240,13 @@ Action: Write updated ./mvp_docs/PRD.md with UX Details section added:
 
 Confirmation message:
 ```dialogue
-"✅ Saved UX details to mvp_docs/PRD.md"
+"✅ Saved UX details to ai_docs/PRD.md"
 "✅ PRD complete! All sections saved."
 ```
 
 ### Phase 3: Finalization & Validation
 
-Action: Read ./mvp_docs/PRD.md
+Action: Read ./ai_docs/PRD.md
 
 Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with document coherence, explore requirement completeness,
@@ -264,11 +264,11 @@ If any issues found:
 Would you like to address these? (specify / 'ok' to proceed)"
 ```
 
-Action: Fix issues and Write updated mvp_docs/PRD.md (only after 'ok')
+Action: Fix issues and Write updated ai_docs/PRD.md (only after 'ok')
 
 ### Phase 4: Review & Iteration
 
-Action: Read ./mvp_docs/PRD.md
+Action: Read ./ai_docs/PRD.md
 
 Present summary:
 ```dialogue
@@ -281,7 +281,7 @@ Summary of key decisions:
 - Tech Stack: {stack}
 - UX Requirements: - {interface}
 
-Full PRD saved at ./mvp_docs/PRD.md
+Full PRD saved at ./ai_docs/PRD.md
 
 Review the document. Would you like to:
 1. Modify any section
@@ -293,9 +293,9 @@ Your choice:"
 
 If modifications requested:
 
-Action: Read ./mvp_docs/PRD.md
+Action: Read ./ai_docs/PRD.md
 - Update specific section
-- Write updated ./mvp_docs/PRD.md
+- Write updated ./ai_docs/PRD.md
 - Show what was changed
 - Loop until 'done'
 
