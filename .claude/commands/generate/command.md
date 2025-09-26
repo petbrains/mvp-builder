@@ -1,187 +1,307 @@
 ---
 name: create-command
-description: Generate a new command through interactive dialogue following the standard template
-allowed-tools: Read, Write
-argument-hints: [user-input]
+description: Interactive command generator with sequential thinking analysis for creating optimized commands
+allowed-tools: Read, Write, mcp__sequential-thinking
+argument-hints: [initial-description]
 ---
 
 # Instructions
 
-Interactive command generator that guides you through creating a new command file by collecting all required information through dialogue. Ensures all commands follow the standard template structure and best practices.
+Interactive command generator that uses sequential thinking to analyze requirements and guides through creating new command files via structured dialogue. Ensures all commands follow the standard template and best practices.
+
+**Tools Usage:**
+- `mcp__sequential-thinking` - Analyzes initial input and optimizes question flow. See instructions here - @.claude/tools/sequential-thinking.md
+- `Read` - Reads command template and existing commands for reference
+- `Write` - Creates the final command file
 
 ## Usage
 
 ```
-/create-command [user-input]
+/create-command [initial-description]
 ```
 
-- `[user-input]` - Optional initial description of the command you want to create
-- No arguments - Starts from scratch with full dialogue
+- `[initial-description]` - Optional initial description of desired command functionality
+- No arguments - Starts with analysis of what command is needed
 
 ## Execution
 
-### Phase 1: Initial Context
+### Phase 1: Initial Analysis with Sequential Thinking
 
-#### Step 1: Parse Initial Input
+#### Step 1: Analyze Context
 
-If user provides initial input:
-- Extract potential command name, purpose, or functionality hints
-- Use this as context for more targeted questions
+Use `/mcp__sequential-thinking__sequentialthinking` to process initial input:
 
-If no input provided:
-- Start with blank slate
-- Ask for basic command concept first
+```
+1. Parse initial description:
+   - Extract potential command purpose
+   - Identify implied functionality
+   - Detect tool requirements hints
+   - Find workflow patterns
 
-#### Step 2: Start Dialogue
+2. Generate hypotheses:
+   - What type of command is needed
+   - Likely execution phases
+   - Required tools and permissions
+   - Potential safety considerations
 
-```dialogue
-"🎯 Let's create a new command together.
-I'll guide you through each required section."
+3. Optimize dialogue strategy:
+   - Determine question priority
+   - Identify what can be inferred
+   - Plan minimal question set
+   - Prepare contextual follow-ups
 ```
 
-### Phase 2: Information Gathering
-
-#### Stage 1: Basic Information
-
-Questions to ask in sequence:
+#### Step 2: Initialize Dialogue
 
 ```dialogue
-"What should this command be called? 
-(lowercase, hyphens for spaces, e.g., 'analyze-code' or 'format-docs')"
+"🎯 Let's create a new command together. I'll use sequential thinking to optimize our dialogue.
+
+[If initial description provided]:
+Based on your input about '[summarized purpose]', I've analyzed potential requirements.
+
+[If no description]:
+First, let me understand what you want to automate or improve.
+
+What's the main problem or task this command should solve?"
 ```
 
-Wait for response, validate format (lowercase, hyphens only).
+Wait for response, then analyze with sequential thinking.
+
+### Phase 2: Intelligent Information Gathering
+
+#### Stage 1: Core Definition
+
+Use sequential thinking after each response to optimize next questions:
 
 ```dialogue
-"Provide a brief one-line description of what this command does:"
+"Based on your description, I'm thinking this command should be called:
+`[suggested-name]` 
+
+Does this name work, or would you prefer something else?
+(Format: lowercase with hyphens, e.g., 'analyze-code')"
 ```
 
-Wait for response.
+Analyze response with `/mcp__sequential-thinking__sequentialthinking`:
+- Validate naming convention
+- Check for conflicts with existing commands
+- Optimize for clarity and discoverability
 
 ```dialogue
-"What is the main purpose and approach of this command?
-(This will become the detailed instructions section)"
+"For the description, I suggest:
+'[generated one-line description based on analysis]'
+
+Would you like to modify this or keep it as is?"
 ```
 
-Wait for response.
+#### Stage 2: Smart Tool Detection
 
-#### Stage 2: Technical Requirements
+Based on sequential thinking analysis:
 
 ```dialogue
-"Which tools will this command need? Choose from:
-[List of availible tools]
+"From what you've described, this command will likely need these tools:
+- [Tool 1]: for [reason]
+- [Tool 2]: for [reason]
+[List detected tools]
 
-List the tools separated by commas:"
+Are there other tools you need, or should I remove any?
+Available tools: Read, Write, Bash (*), mcp__sequential-thinking, [others]"
 ```
 
-Wait for response, validate tool names.
+#### Stage 3: Adaptive Argument Pattern
+
+Use sequential thinking to suggest argument pattern:
 
 ```dialogue
-"What arguments will this command accept?
-- [optional-arg] for optional arguments
-- <required-arg> for required arguments
-- No arguments
-- Multiple patterns
+"Based on the functionality, I recommend this argument pattern:
+[suggested pattern with explanation]
 
-Describe the argument pattern:"
+For example: /[command-name] [suggested-args]
+
+Does this match your vision? You can also specify:
+- [optional-arg] for optional parameters
+- <required-arg> for required parameters
+- No arguments for simple commands"
 ```
 
-Wait for response.
+#### Stage 4: Intelligent Phase Structuring
 
-#### Stage 3: Execution Flow
+Analyze with sequential thinking to propose phases:
 
 ```dialogue
-"Let's define the execution phases. How many main phases will your command have?
-(Most commands have 2-4 phases like Initialize, Process, Output)"
+"I've analyzed the workflow. Here's my suggested phase structure:
+
+Phase 1: [Suggested name] - [Purpose]
+Phase 2: [Suggested name] - [Purpose]
+[Additional phases if needed]
+
+This structure would [explain benefits].
+
+Should we proceed with this structure, or would you like to modify it?"
 ```
 
-Wait for response with number.
-
-For each phase, ask:
+For each confirmed phase:
 
 ```dialogue
-"Phase [N]: What should this phase be called and what does it do?"
+"For Phase '[Name]', what specific steps should happen?
+Based on the command's purpose, I'm expecting:
+- [Predicted step 1]
+- [Predicted step 2]
+
+Please confirm or provide the actual steps:"
 ```
 
-Then for each phase:
+#### Stage 5: Smart Feature Detection
+
+Use sequential thinking to determine needed features:
 
 ```dialogue
-"For Phase [Name], describe the key steps that should happen:
-(You can list multiple steps, I'll structure them properly)"
+"Based on the command's nature, I've identified these potential features:
+
+[✓/✗] Interactive mode - [Reason why needed/not needed]
+[✓/✗] Safety guards - [Detected sensitive operations or none]
+[✓/✗] Error handling - [Common error scenarios]
+[✓/✗] Progress reporting - [Long-running operations detected]
+
+Should I include any of these features? Any others needed?"
 ```
 
-Wait for responses.
-
-#### Stage 4: Output and Features
+#### Stage 6: Example Generation with Analysis
 
 ```dialogue
-"Will this command produce formatted output that users will see?
-(yes/no - if yes, describe the output format)"
+"I'll generate examples based on our discussion. Here are my suggestions:
+
+1. Basic usage: /[command] [common-args]
+   - [What this accomplishes]
+
+2. Advanced usage: /[command] [complex-args]
+   - [Advanced scenario]
+
+3. Edge case: /[command] [edge-args]
+   - [Special handling]
+
+Do these cover your use cases, or should I adjust them?"
 ```
 
-If yes, collect output format details.
+### Phase 3: Sequential Validation & Generation
+
+#### Step 1: Final Analysis
+
+Use `/mcp__sequential-thinking__sequentialthinking` for final validation:
+
+```
+1. Verify completeness:
+   - All required fields present
+   - Logical flow consistency
+   - Tool permissions match operations
+   
+2. Optimize structure:
+   - Simplify redundant phases
+   - Enhance error handling
+   - Improve user experience
+
+3. Predict issues:
+   - Potential conflicts
+   - Missing safety checks
+   - Performance considerations
+```
+
+#### Step 2: Confirmation Dialogue
 
 ```dialogue
-"Does this command need interactive mode for clarifying ambiguous inputs?
-(yes/no - if yes, describe when it would ask for clarification)"
+"📋 Command Analysis Complete:
+
+**Summary:**
+- Name: [final-name]
+- Purpose: [final-description]
+- Complexity: [Simple/Moderate/Complex]
+- Estimated implementation time: [X minutes]
+
+**Key Features:**
+- Tools: [final-tools]
+- Arguments: [final-pattern]
+- Phases: [count] phases with [total-steps] steps
+- Special features: [list if any]
+
+**Optimization Notes:**
+[Any improvements made through analysis]
+
+Ready to generate the command file? (yes/no/modify)"
 ```
 
-If yes, collect interactive mode scenarios.
+#### Step 3: Generate Optimized Command
+
+If confirmed, write to `./.claude/commands/[command-name].md`:
+- Use template from @.claude/templates/command-template.md
+- Include all collected and optimized information
+- Add sequential thinking patterns where applicable
 
 ```dialogue
-"Does this command perform any sensitive operations that need safety guards?
-(yes/no - if yes, list the safety checks needed)"
+"✅ Command successfully created at ./.claude/commands/[command-name].md
+
+The command is ready to use with: /[command-name]
+
+Would you like to:
+1. Test the command now
+2. Create another command
+3. View the generated file
+4. Done"
 ```
 
-If yes, collect safety guard requirements.
+## Interactive Mode
 
-#### Stage 5: Examples and Documentation
+The command maintains context throughout the dialogue:
 
 ```dialogue
-"Provide 2-3 example use cases for this command:
-1. Most common usage
-2. Advanced usage (if applicable)
-3. Edge case or special scenario"
+"[Contextual question based on previous answers]"
+
+Previous context:
+- Already specified: [list]
+- Still needed: [list]
+- Optional enhancements: [list]
 ```
 
-Wait for examples.
+## Safety Guards
 
-```dialogue
-"What are common errors users might encounter? 
-(List any error conditions and how to resolve them, or 'none' if not applicable)"
+- Validates command name uniqueness before creation
+- Checks tool permission compatibility
+- Prevents overwriting existing commands without confirmation
+- Validates argument patterns for conflicts
+- Ensures all required template sections are filled
+
+## Error Handling
+
+**During Dialogue:**
+- Invalid input format → Provide format example and retry
+- Conflicting requirements → Use sequential thinking to resolve
+- Missing information → Smart default suggestions
+
+**During Generation:**
+- File write permission → Check and request access
+- Template not found → Use embedded template
+- Existing command → Ask for overwrite confirmation
+
+## Examples
+
+### Example 1: With Initial Description
 ```
-
-Wait for response.
-
-```dialogue
-"Are there related commands that work with this one?
-(List related commands or 'none' if standalone)"
+/create-command automated test generator for Python modules
 ```
+Sequential thinking analyzes: test patterns, Python conventions, likely tools needed
 
-Wait for response.
-
-### Phase 3: Command Generation
-
-#### Step 1: Review Collected Information
-
-Display summary for confirmation:
-
-```dialogue
-"📋 Command Summary:
-- Name: [collected-name]
-- Description: [collected-description]
-- Tools: [collected-tools]
-- Arguments: [collected-arguments]
-- Phases: [list of phases]
-- Special features: [interactive mode, safety guards, etc.]
-
-Is this correct? (yes to proceed, or specify what to change)"
+### Example 2: No Arguments
 ```
+/create-command
+```
+Starts with exploratory questions to understand needs
 
-If changes requested, go back to relevant stage.
+### Example 3: Complex Workflow
+```
+/create-command multi-stage deployment pipeline with rollback
+```
+Detects complexity, suggests agent instead of simple command
 
-#### Step 2: Generate Command File
+## Related Commands
 
-Action: Write to `./.claude/commands/[command-name].md`
-
-Build the command file following the template structure - @.claude/templates/command-template.md
+- `/self-improve` - Analyzes patterns to suggest new commands
+- `/list-commands` - Shows existing commands to avoid duplicates
+- `/create-agent` - For complex multi-step workflows
