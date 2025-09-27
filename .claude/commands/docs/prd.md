@@ -23,24 +23,23 @@ The final PRD will contain 4 sections:
 3. **Technical Requirements** - Tech stack, constraints
 4. **UX Details** - UX preferences and interface requirements
 
+## Writing Principles
+
+When creating PRD content:
+- **Use bullet points**: Structure information with clear hierarchical bullets for readability
+- **Keep it concise**: Each bullet point should be 1-2 sentences maximum
+- **Expand key concepts**: Use sub-bullets to break down complex ideas
+- **Include rationale**: Add "why" as a sub-bullet when needed
+- **Integrate insights naturally**: Weave analysis results into the bullet structure
+- **Professional documentation**: No UI elements (✅, ⚠️) inside the PRD document
+- **Self-contained sections**: Each bullet point should be clear without external context
+- **Rich but structured**: Balance comprehensive information with scannable format
+
 ## Execution Flow
 
 ### Phase 1: Pre-Flight Check
 
-#### 1. Check existing PRD:
-
-Action: Read ./PRD.md
-
-If PRD.md found:
-- Note previous product details for context
-
-```dialogue
-"📋 Found existing PRD
-
-Starting fresh PRD generation..."
-```
-
-#### 2. Quick project scan:
+#### 1. Quick project scan:
 
 ```bash
 # Simple project overview
@@ -52,7 +51,7 @@ ls ./README.md ./docs/ 2>/dev/null
 
 Note any relevant context without making assumptions
 
-#### 3. Start dialogue:
+#### 2. Start dialogue:
 
 ```dialogue
 "📁 Project scan complete.
@@ -91,23 +90,28 @@ Continue until user confirms with 'ok'.
 
 ```bash
 # Create folder if none
-mkdir -p ./mvp_docs
+mkdir -p ./ai_docs
 ```
 
-Action: Write to ./mvp_docs/PRD.md
+Action: Write to ./ai_docs/PRD.md
 
 ```markdown
 # [Product Name] - PRD
 
 ## 1. Core Proposition
-- **Target User:** [collected user description]
-- **Problem:** [collected problem statement]
-- **Core Solution Proposition:** [collected solution proposition]
+**Target User:** 
+[Detailed user profile including needs, pain points, and why they're ideal for this solution. Include user-problem fit insights.]
+
+**Problem:** 
+[Comprehensive problem description. Integrate problem validation insights.]
+
+**Core Solution Proposition:**
+[Solution approach with direct problem mapping.]
 ```
 
 Confirmation message:
 ```dialogue
-"✅ Saved core proposition to mvp_docs/PRD.md"
+"✅ Saved core proposition to ai_docs/PRD.md"
 ```
 
 #### Stage 2: Solution Design
@@ -138,19 +142,24 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 2:** (only after 'ok')
 
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with Solution Design section added:
+Action: Read ./ai_docs/PRD.md
+Action: Write updated ./ai_docs/PRD.md with Solution Design section added:
 
 ```markdown
 ## 2. Solution Design
-- **Core User Flow:** [collected flow]
-- **Core MVP Feature:** [collected feature and behavior]
-- **Supporting Features:** [collected list]
+**Core User Flow:** 
+[Step-by-step journey with purpose of each step, friction points addressed, and optimization rationale. Include flow effectiveness insights.]
+
+**Core MVP Feature:** 
+[Detailed feature description with direct problem solving, and why it's the minimum viable solution.]
+
+**Supporting Features:** 
+[Each feature with its role, dependency relationship, and contribution to core value.]
 ```
 
 Confirmation message:
 ```dialogue
-"✅ Saved solution design to mvp_docs/PRD.md"
+"✅ Saved solution design to ai_docs/PRD.md"
 ```
 
 #### Stage 3: Technical Requirements
@@ -192,18 +201,21 @@ Confirm or suggest changes?"
 
 **Save after Stage 3:** (only after 'ok')
 
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with Technical Requirements section added:
+Action: Read ./ai_docs/PRD.md
+Action: Write updated ./ai_docs/PRD.md with Technical Requirements section added:
 
 ```markdown
 ## 3. Technical Requirements
-- **Tech Stack:** [confirmed stack with rationale]
-- **Technical Constraints:** [collected constraints]
+**Tech Stack:** 
+[Complete stack with component rationale, optimization focus (speed/stability/simplicity), integration approach, and deployment strategy.]
+
+**Technical Constraints:** 
+[Each constraint with impact analysis, mitigation approach, and architecture influence.]
 ```
 
 Confirmation message:
 ```dialogue
-"✅ Saved technical requirements to mvp_docs/PRD.md"
+"✅ Saved technical requirements to ai_docs/PRD.md"
 ```
 
 #### Stage 4: UX Details
@@ -230,23 +242,27 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 4:** (only after 'ok')
 
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with UX Details section added:
+Action: Read ./ai_docs/PRD.md
+Action: Write updated ./ai_docs/PRD.md with UX Details section added:
 
 ```markdown
 ## 4. UX Details
-- **UX Preferences:** [collected preferences]
+**Platform Strategy:** 
+[Primary platform rationale with responsive approach, progressive enhancement plan, and platform-specific optimizations.]
+
+**Interface Requirements:** 
+[Component patterns, interaction models, feedback mechanisms, and accessibility standards with implementation notes.]
 ```
 
 Confirmation message:
 ```dialogue
-"✅ Saved UX details to mvp_docs/PRD.md"
+"✅ Saved UX details to ai_docs/PRD.md"
 "✅ PRD complete! All sections saved."
 ```
 
 ### Phase 3: Finalization & Validation
 
-Action: Read ./mvp_docs/PRD.md
+Action: Read ./ai_docs/PRD.md
 
 Use mcp__sequential-thinking__sequentialthinking tool to analyze:
 Start with document coherence, explore requirement completeness,
@@ -264,11 +280,11 @@ If any issues found:
 Would you like to address these? (specify / 'ok' to proceed)"
 ```
 
-Action: Fix issues and Write updated mvp_docs/PRD.md (only after 'ok')
+Action: Fix issues and Write updated ai_docs/PRD.md (only after 'ok')
 
 ### Phase 4: Review & Iteration
 
-Action: Read ./mvp_docs/PRD.md
+Action: Read ./ai_docs/PRD.md
 
 Present summary:
 ```dialogue
@@ -281,7 +297,7 @@ Summary of key decisions:
 - Tech Stack: {stack}
 - UX Requirements: - {interface}
 
-Full PRD saved at ./mvp_docs/PRD.md
+Full PRD saved at ./ai_docs/PRD.md
 
 Review the document. Would you like to:
 1. Modify any section
@@ -293,9 +309,9 @@ Your choice:"
 
 If modifications requested:
 
-Action: Read ./mvp_docs/PRD.md
+Action: Read ./ai_docs/PRD.md
 - Update specific section
-- Write updated ./mvp_docs/PRD.md
+- Write updated ./ai_docs/PRD.md
 - Show what was changed
 - Loop until 'done'
 
