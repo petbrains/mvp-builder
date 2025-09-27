@@ -23,24 +23,23 @@ The final PRD will contain 4 sections:
 3. **Technical Requirements** - Tech stack, constraints
 4. **UX Details** - UX preferences and interface requirements
 
+## Writing Principles
+
+When creating PRD content:
+- **Use bullet points**: Structure information with clear hierarchical bullets for readability
+- **Keep it concise**: Each bullet point should be 1-2 sentences maximum
+- **Expand key concepts**: Use sub-bullets to break down complex ideas
+- **Include rationale**: Add "why" as a sub-bullet when needed
+- **Integrate insights naturally**: Weave analysis results into the bullet structure
+- **Professional documentation**: No UI elements (✅, ⚠️) inside the PRD document
+- **Self-contained sections**: Each bullet point should be clear without external context
+- **Rich but structured**: Balance comprehensive information with scannable format
+
 ## Execution Flow
 
 ### Phase 1: Pre-Flight Check
 
-#### 1. Check existing PRD:
-
-Action: Read ./PRD.md
-
-If PRD.md found:
-- Note previous product details for context
-
-```dialogue
-"📋 Found existing PRD
-
-Starting fresh PRD generation..."
-```
-
-#### 2. Quick project scan:
+#### 1. Quick project scan:
 
 ```bash
 # Simple project overview
@@ -52,7 +51,7 @@ ls ./README.md ./docs/ 2>/dev/null
 
 Note any relevant context without making assumptions
 
-#### 3. Start dialogue:
+#### 2. Start dialogue:
 
 ```dialogue
 "📁 Project scan complete.
@@ -100,9 +99,14 @@ Action: Write to ./ai_docs/PRD.md
 # [Product Name] - PRD
 
 ## 1. Core Proposition
-- **Target User:** [collected user description]
-- **Problem:** [collected problem statement]
-- **Core Solution Proposition:** [collected solution proposition]
+**Target User:** 
+[Detailed user profile including needs, pain points, and why they're ideal for this solution. Include user-problem fit insights.]
+
+**Problem:** 
+[Comprehensive problem description. Integrate problem validation insights.]
+
+**Core Solution Proposition:**
+[Solution approach with direct problem mapping.]
 ```
 
 Confirmation message:
@@ -143,9 +147,14 @@ Action: Write updated ./ai_docs/PRD.md with Solution Design section added:
 
 ```markdown
 ## 2. Solution Design
-- **Core User Flow:** [collected flow]
-- **Core MVP Feature:** [collected feature and behavior]
-- **Supporting Features:** [collected list]
+**Core User Flow:** 
+[Step-by-step journey with purpose of each step, friction points addressed, and optimization rationale. Include flow effectiveness insights.]
+
+**Core MVP Feature:** 
+[Detailed feature description with direct problem solving, and why it's the minimum viable solution.]
+
+**Supporting Features:** 
+[Each feature with its role, dependency relationship, and contribution to core value.]
 ```
 
 Confirmation message:
@@ -197,8 +206,11 @@ Action: Write updated ./ai_docs/PRD.md with Technical Requirements section added
 
 ```markdown
 ## 3. Technical Requirements
-- **Tech Stack:** [confirmed stack with rationale]
-- **Technical Constraints:** [collected constraints]
+**Tech Stack:** 
+[Complete stack with component rationale, optimization focus (speed/stability/simplicity), integration approach, and deployment strategy.]
+
+**Technical Constraints:** 
+[Each constraint with impact analysis, mitigation approach, and architecture influence.]
 ```
 
 Confirmation message:
@@ -235,7 +247,11 @@ Action: Write updated ./ai_docs/PRD.md with UX Details section added:
 
 ```markdown
 ## 4. UX Details
-- **UX Preferences:** [collected preferences]
+**Platform Strategy:** 
+[Primary platform rationale with responsive approach, progressive enhancement plan, and platform-specific optimizations.]
+
+**Interface Requirements:** 
+[Component patterns, interaction models, feedback mechanisms, and accessibility standards with implementation notes.]
 ```
 
 Confirmation message:
