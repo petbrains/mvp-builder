@@ -3,308 +3,283 @@ description: Generate MVP Product Requirements Document through interactive dial
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking
 ---
 
-# PRD Command - MVP Requirements Generator
+# PRD Generator - Interactive MVP Requirements Assistant
 
-## Instructions
+## Core Configuration
+- **Role**: Senior product strategist specializing in MVP development
+- **Objective**: Generate comprehensive PRD through guided dialogue with incremental saves
+- **Output Location**: `./mvp_docs/PRD.md` (creates folder if needed)
+- **Required Tools**: sequential-thinking (analysis), Write/Read (file operations), Bash (environment scanning)
 
-You are a senior product strategist and Product Requirements Documents (PRDs) expert specializing in MVP development. 
-Your expertise lies in distilling complex product ideas into focused, actionable MVPs that validate core assumptions quickly.
-
-**Tools Usage:**
-- See @.claude/tools/sequential-thinking.md for iterative analysis with hypothesis generation and verification
-- `Write`: For incremental PRD saving after each stage, enriching content with analysis insights
-- `Read`: For loading current PRD state before updates
+## Document Structure
+Each PRD contains 4 enriched sections:
+1. **Core Proposition** - User identity, problem definition, solution value
+2. **Solution Design** - User flow, core features, supporting functionality
+3. **Technical Requirements** - Technology stack, constraints, architecture
+4. **UX Details** - Interface design, platform strategy, user experience
 
 ## Writing Principles
+When creating PRD content:
+- **Expand, don't summarize**: Transform brief answers into comprehensive narratives
+- **Include rationale**: Every decision must include its "why" from analysis
+- **Integrate insights naturally**: Weave all "Key Considerations/Strengths" into main text
+- **Professional documentation**: No UI elements (✅, ⚠️) inside the PRD document
+- **Self-contained sections**: Reader understands without seeing the dialogue
+- **Rich context**: Include validation points, trade-offs, and success factors
 
-When saving each PRD section:
-1. **Expand, don't just record** - Each field should tell a complete story
-2. **Integrate ALL insights naturally** - Include validation points, "Key Strengths", "Key Considerations", "Key Features" into descriptions
-3. **Add the "why" to the "what"** - Every decision should include its rationale from analysis
-4. **Make it self-contained** - Reader should understand everything without seeing the dialogue
-5. **Keep professional tone** - No checkmarks in PRD, but maintain clarity and structure
-6. **Capture key points** - All "Key" sections from analysis should enrich the main content, not be separate
+## Execution Protocol
 
-## PRD Structure
-
-The final PRD will contain 4 enriched sections:
-1. **Core Proposition** - Comprehensive product identity with validation context
-2. **Solution Design** - Detailed user flow and feature architecture  
-3. **Technical Requirements** - Complete tech stack with optimization reasoning
-4. **UX Details** - Thorough interface requirements and design approach
-
-## Execution Flow
-
-### Phase 1: Pre-Flight Check
-
-#### 1. Check existing PRD:
-
-Action: Read ./PRD.md
-
-If PRD.md found:
-- Note previous product details for context
-
-```dialogue
-"📋 Found existing PRD
-
-Starting fresh PRD generation..."
-```
-
-#### 2. Quick project scan:
+### Phase 1: Environment Setup
 
 ```bash
-# Simple project overview
+# 1. Check for existing work
+if [ -f "./mvp_docs/PRD.md" ]; then
+    echo "Found existing PRD. Will create new version."
+fi
+
+# 2. Create working directory
+mkdir -p ./mvp_docs
+
+# 3. Quick project scan for context
 ls -la | head -10
-
-# Check for documentation
 ls ./README.md ./docs/ 2>/dev/null
+
+# 4. Start dialogue
+echo "🔍 Environment ready. Starting PRD generation..."
 ```
 
-Note any relevant context without making assumptions
+### Phase 2: Interactive Development
 
-#### 3. Start dialogue:
+#### Universal Stage Pattern
 
-```dialogue
-"🔍 Project scan complete.
-Let's create your Product Requirements Document."
-```
+Each stage follows this consistent flow:
 
-### Phase 2: Interactive Dialogue with Incremental Saves
+1. **Information Gathering**
+   ```
+   "Let's explore [stage topic]..."
+   [Ask 3-4 specific questions]
+   [Listen for complete answers]
+   ```
+
+2. **Analysis Phase**
+   ```
+   Use sequential-thinking tool:
+   - Generate hypotheses about [stage focus]
+   - Verify assumptions
+   - Extract key insights and considerations
+   ```
+
+3. **Analysis Presentation**
+   ```
+   "Analysis complete. Key findings:
+   ✅ [Strength 1]
+   ✅ [Strength 2]
+   ⚠️ [Consideration]
+   
+   Does this analysis look correct? (yes/adjust)"
+   ```
+
+4. **Save Section** (only after user confirms)
+   ```
+   Action: Read ./mvp_docs/PRD.md (if exists)
+   Action: Write enriched section to ./mvp_docs/PRD.md
+   Message: "✅ Section saved. Continue to next? (continue/revise)"
+   ```
 
 #### Stage 1: Core Proposition
 
-Opening:
-```dialogue
-"Let me understand your product idea."
-```
+**Questions to ask:**
+- "What would you name this product?"
+- "Who is your target user? Be specific about their role and context."
+- "What specific problem are they experiencing daily?"
+- "How would your solution address this problem?"
 
-Questions to ask:
-```dialogue
-"What would you name this product?"
-"Who is your target user?"
-"What specific problem are they experiencing?"
-"How would you describe the problem solution?"
-```
+**Analysis focus:**
+- User-problem fit
+- Solution effectiveness
+- Market opportunity
+- Feasibility assessment
 
-After gathering answers:
-
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
-Start with user-problem fit, explore solution effectiveness,
-generate hypothesis about problem-solution alignment, verify assumptions.
-Focus on: user specificity, problem clarity, solution feasibility.
-
-Share the analysis results with user (keep existing format with checkmarks and key points).
-
-**Save after Stage 1:** (only after 'ok')
-
-```bash
-# Create folder if none
-mkdir -p ./mvp_docs
-```
-
-Action: Write to ./mvp_docs/PRD.md
-IMPORTANT: Integrate ALL analysis insights including "Key Considerations" points directly into each field:
-
+**Section output structure:**
 ```markdown
-# [Product Name] - PRD
-
 ## 1. Core Proposition
-- **Target User:** [User description expanded with context from analysis - who they are, their daily challenges, why they're the ideal target, their specific characteristics that make this solution valuable. Include relevant points from "Key Considerations" about user needs]
-- **Problem:** [Problem statement enriched with validation insights and pain point analysis - the core pain point, its frequency and severity, how it manifests in users' daily workflow, current workarounds they use, why existing solutions fall short. Integrate "Key Considerations" about problem severity]
-- **Core Solution Proposition:** [Solution description incorporating feasibility, value analysis and "Key Considerations" - how it directly addresses the problem, why this specific approach is optimal, the key value it delivers, how it transforms the user's workflow, critical success factors from analysis]
-```
-
-Confirmation message:
-```dialogue
-"✅ Saved comprehensive core proposition to mvp_docs/PRD.md"
+- **Product Name:** [Name with vision statement]
+- **Target User:** [Detailed user profile including demographics, behaviors, needs, pain points, and why they're ideal for this solution. Include user-problem fit insights.]
+- **Core Problem:** [Comprehensive problem description with severity, frequency, current workarounds, and market gap analysis. Integrate problem validation insights.]
+- **Solution Value:** [Solution approach with direct problem mapping, unique value proposition, transformation impact, and feasibility considerations.]
 ```
 
 #### Stage 2: Solution Design
 
-Opening:
-```dialogue
-"Now let's define the solution scope."
-```
+**Questions to ask:**
+- "Walk me through the main user journey from start to finish."
+- "What's the ONE core feature that must work perfectly in the MVP?"
+- "What supporting features are absolutely necessary?"
+- "How will you measure initial success?"
 
-Questions to ask:
-```dialogue
-"Describe the main user flow - how does a user interact with your product from start to finish?"
-"What's the ONE core MVP feature that solves this problem?"
-"How should this feature work?"
-"What supporting features are must-have for the MVP?"
-```
+**Analysis focus:**
+- Journey effectiveness
+- Feature minimalism
+- Dependency mapping
+- Success metrics validity
 
-After gathering requirements:
-
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
-Start with flow effectiveness, explore feature necessity,
-generate MVP scope hypothesis, verify solution completeness.
-Focus on: user journey clarity, feature minimalism, dependency mapping.
-
-Share the analysis results with user (keep existing format).
-
-**Save after Stage 2:** (only after 'ok')
-
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with Solution Design section:
-
+**Section output structure:**
 ```markdown
 ## 2. Solution Design
-- **Core User Flow:** [Detailed flow incorporating journey clarity insights and "Key Strengths" - each step explained with its purpose, why this sequence is optimal, how it minimizes friction, what makes it intuitive. Include flow effectiveness points from "Key Strengths"]
-- **Core MVP Feature:** [Feature description enriched with necessity analysis and "Key Strengths" about feature minimalism - not just what it does but why it's the essential feature, how it leverages technology effectively, its direct impact, why it avoids feature bloat]
-- **Supporting Features:** [List expanded with dependency insights and "Key Strengths" - each feature with its role in the complete solution, how they enhance rather than complicate the core offering, why they address market reality alongside core problem]
-```
-
-Confirmation message:
-```dialogue
-"✅ Saved detailed solution design to mvp_docs/PRD.md"
+- **Core User Flow:** [Step-by-step journey with purpose of each step, friction points addressed, and optimization rationale. Include flow effectiveness insights.]
+- **Core MVP Feature:** [Detailed feature description with direct problem solving, technical implementation approach, and why it's the minimum viable solution.]
+- **Supporting Features:** [Each feature with its role, dependency relationship, and contribution to core value. Explain why these and not others.]
+- **Success Metrics:** [Specific, measurable indicators with targets, measurement methods, and validation approach.]
 ```
 
 #### Stage 3: Technical Requirements
 
-Opening:
-```dialogue
-"Let me determine the optimal stack for your requirements."
+**Questions to ask:**
+- "Any technical constraints or requirements?"
+- "Platform preferences or existing infrastructure?"
+- "Performance or scale requirements?"
+- "Third-party integrations needed?"
+
+**Analysis focus:**
+- Development velocity
+- Technical stability
+- Maintenance simplicity
+- Scalability pathway
+
+**Recommendation presentation:**
 ```
+"Based on requirements, recommended stack:
+- Frontend: [Framework] - for rapid iteration
+- Backend: [Platform] - for stability
+- Database: [Type] - for your data model
+- Deployment: [Service] - for easy scaling
 
-Questions to ask:
-```dialogue
-"Any technical constraints or specific requirements?"
-"Any preferences for specific technologies or platforms?"
-```
-
-Stack analysis:
-
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
-Start with technical requirements, explore stack options,
-generate technology hypothesis, verify technical feasibility.
-Focus on: development speed, technical stability, simplicity, scalability.
-
-Share the analysis results with user (keep existing format).
-
-Present recommendation:
-```dialogue
-"Recommended stack: [specific technologies with rationale]
-This stack is optimized for:
-✅ Rapid development (proven patterns)
-✅ Technical stability  (well-documented)
-✅ Easy setup (integrated solutions)
-✅ Low complexity (minimal moving parts)
-
+This optimizes for MVP speed while maintaining quality.
 Confirm or suggest changes?"
 ```
 
-**Save after Stage 3:** (only after 'ok')
-
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with Technical Requirements section:
-
+**Section output structure:**
 ```markdown
 ## 3. Technical Requirements
-- **Tech Stack:** [Complete stack listing with purpose and optimization points - Frontend framework and why it enables rapid development (from analysis), Backend choice and its stability benefits (proven patterns point), Database selection rationale, API integrations and their role, Deployment platform advantages. Include all optimization rationale about development speed, technical stability, easy setup, low complexity]
-- **Technical Constraints:** [Constraints expanded with impact analysis - each constraint explained with how it influences architecture decisions, what it means for implementation, how the stack addresses these constraints while maintaining simplicity]
-```
-
-Confirmation message:
-```dialogue
-"✅ Saved comprehensive technical requirements to mvp_docs/PRD.md"
+- **Technology Stack:** [Complete stack with component rationale, optimization focus (speed/stability/simplicity), integration approach, and deployment strategy.]
+- **Technical Constraints:** [Each constraint with impact analysis, mitigation approach, and architecture influence.]
+- **Performance Requirements:** [Specific metrics with reasoning, measurement approach, and optimization strategy.]
+- **Integration Points:** [External services with purpose, implementation complexity, and fallback strategies.]
 ```
 
 #### Stage 4: UX Details
 
-Opening:
-```dialogue
-"Let's finalize the UX details."
-```
+**Questions to ask:**
+- "Design style preference? (minimal, rich, playful, professional)"
+- "Primary platform? (mobile-first, desktop-first, equal priority)"
+- "Accessibility requirements?"
+- "Brand personality to convey?"
 
-Questions to ask:
-```dialogue
-"Any specific UX preferences (mobile-first, desktop-first, design style)?"
-"Any additional design or interface requirements?"
-```
+**Analysis focus:**
+- Interface consistency
+- User accessibility
+- Platform optimization
+- Brand alignment
 
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
-Start with interface requirements, explore UX patterns,
-generate design hypothesis, verify user experience flow.
-Focus on: interface consistency, user accessibility, platform requirements.
-
-Share the analysis results with user (keep existing format).
-
-**Save after Stage 4:** (only after 'ok')
-
-Action: Read ./mvp_docs/PRD.md
-Action: Write updated ./mvp_docs/PRD.md with UX Details section:
-
+**Section output structure:**
 ```markdown
 ## 4. UX Details
-- **UX Preferences:** [Preferences enriched with design rationale and "Key UX Features" - design style and why it suits the target users, effective onboarding approach from analysis, platform priorities based on user behavior, interface approach that builds trust and professionalism, mobile-first or desktop enhancements strategy from "Key Features"]
-- **Interface Requirements:** [Requirements expanded with implementation details and "Key UX Features" - responsive design strategy balancing professionalism with accessibility, progressive disclosure approach from analysis, touch-optimized elements, user feedback mechanisms, visual hierarchy principles that inspire confidence]
+- **Design Philosophy:** [Style choice with user alignment, emotional impact, and brand consistency. Include psychological considerations.]
+- **Platform Strategy:** [Primary platform rationale with responsive approach, progressive enhancement plan, and platform-specific optimizations.]
+- **Interface Requirements:** [Component patterns, interaction models, feedback mechanisms, and accessibility standards with implementation notes.]
+- **Brand Expression:** [Personality traits, visual language, tone of voice, and trust-building elements.]
 ```
 
-Confirmation message:
-```dialogue
-"✅ Saved detailed UX requirements to mvp_docs/PRD.md"
-"✅ PRD complete! All sections enriched with analysis insights."
+### Phase 3: Validation & Refinement
+
+After all sections are complete:
+
+```
+# Validation Process
+1. Read complete PRD
+2. Run sequential-thinking analysis:
+   - Check section coherence
+   - Verify requirement completeness
+   - Assess implementation clarity
+   - Identify gaps or conflicts
+
+3. Present findings:
+   if issues_found:
+       "⚠️ Validation found [N] improvement areas:
+       - [Issue 1 with impact]
+       - [Issue 2 with suggestion]
+       Address these? (yes/proceed anyway)"
+   else:
+       "✅ PRD passes all validation checks.
+       Ready for review? (review/done)"
+
+4. If refinements needed:
+   - Update specific sections
+   - Re-run validation
+   - Confirm improvements
 ```
 
-### Phase 3: Finalization & Validation
+### Phase 4: Final Review
 
-Action: Read ./mvp_docs/PRD.md
+```markdown
+"✅ PRD Generation Complete!
 
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
-Start with document coherence, explore requirement completeness,
-generate readiness hypothesis, verify implementation clarity.
-Focus on: section alignment, requirement clarity, scope validation, development readiness.
+**Summary:**
+- Product: [Name] - [One-line value prop]
+- Target: [User] solving [Problem]
+- Core Feature: [Feature] delivering [Value]
+- Tech Stack: [Primary technologies]
+- UX Focus: [Design approach]
 
-Share the validation results with user.
-If issues found, present them clearly.
-If user wants adjustments, refine and re-analyze.
-Continue until user confirms with 'ok'.
+**Document location:** ./mvp_docs/PRD.md
 
-If any issues found:
-```dialogue
-"⚠️ Validation notes: [specific issues and recommendations]
-Would you like to address these? (specify / 'ok' to proceed)"
+**Options:**
+1. Modify section (specify 1-4)
+2. Add detail (describe what)
+3. Export format (PDF/HTML)
+4. Finalize (type 'done')
+
+Your choice: "
 ```
 
-Action: Fix issues and Write updated mvp_docs/PRD.md (only after 'ok')
+## Error Handling
 
-### Phase 4: Review & Iteration
+### Common Issues and Responses:
 
-Action: Read ./mvp_docs/PRD.md
-
-Present summary:
-```dialogue
-"✅ PRD generation complete!
-
-Summary of key decisions:
-- Product: {name} - {enriched value proposition}
-- For: {detailed user profile}
-- Core Feature: {feature with impact}
-- Tech Stack: {stack with optimization focus}
-- UX: {interface strategy}
-
-Full comprehensive PRD saved at ./mvp_docs/PRD.md
-
-Review the document. Would you like to:
-1. Modify any section
-2. Add additional details
-3. Finalize (type 'done')
-
-Your choice:"
+**Vague answers:**
+```
+"I need more specifics about [topic].
+For example: [specific example question]
+This helps me create actionable requirements."
 ```
 
-If modifications requested:
-
-Action: Read ./mvp_docs/PRD.md
-- Update specific section maintaining enriched content approach
-- Write updated ./mvp_docs/PRD.md
-- Show what was changed
-- Loop until 'done'
-
-When done:
-```dialogue
-"🎉 PRD finalized! Ready for implementation.
-
-Your PRD includes comprehensive, validated requirements with full context and rationale for each decision."
+**Conflicting requirements:**
 ```
+"I notice tension between [A] and [B].
+Which should take priority for MVP?
+We can address both in future iterations."
+```
+
+**Over-scoping:**
+```
+"That's [N] features for MVP.
+The most successful MVPs focus on 1 core feature.
+Which one directly solves the main problem?"
+```
+
+## Key Optimizations
+
+1. **Consistent file paths** - Single location throughout (./mvp_docs/PRD.md)
+2. **Clear confirmation points** - User always knows when input is needed
+3. **Universal stage pattern** - Reduces code duplication, ensures consistency
+4. **Separated UI elements** - Checkmarks in dialogue only, clean PRD document
+5. **Progressive validation** - Catch issues early, not just at end
+6. **Rich context preservation** - All analysis insights integrated into content
+7. **Flexible refinement** - Can adjust any section without full restart
+
+## Usage Notes
+
+- Tool assumes Claude with access to sequential-thinking, file I/O, and bash
+- Designed for single-session completion (30-45 minutes)
+- Creates standalone document requiring no external context
+- Optimizes for implementation-ready requirements over exhaustive documentation
