@@ -9,6 +9,8 @@ argument-hints: [initial-description]
 
 Interactive agent generator that uses sequential thinking to analyze requirements and creates sophisticated autonomous agents. Ensures agents follow best practices with decision trees, error recovery, and intelligent tool selection.
 
+**Template:** @.claude/templates/agent-template.md
+
 **Tools Usage:**
 - `mcp__sequential-thinking` - Analyzes requirements and optimizes dialogue flow. See @.claude/tools/sequential-thinking.md for details
 - `Read` - Reads agent templates and existing agents/commands for reference
@@ -77,7 +79,7 @@ ls .claude/agents/ 2>/dev/null || echo "No agents directory"
 ls .claude/commands/**/*.md 2>/dev/null
 ```
 
-Use sequential thinking to analyze existing solutions:
+Use `/mcp__sequential-thinking__sequentialthinking` to analyze existing solutions:
 - Compare descriptions and functionality
 - Identify potential overlaps
 - Determine if new agent is truly needed
@@ -122,10 +124,29 @@ Let's proceed with the agent creation."
 The agent's objective would be:
 '[generated objective based on description]'
 
-Does this capture your intent? (yes/modify/different)"
+**Core Responsibilities** (per template):
+- Main focus: [what the agent primarily does]
+- Problem types: [specific problems it solves]
+- Boundaries: [what it should NOT do]
+
+Does this capture your intent? Any boundaries or limitations to add?"
 ```
 
-#### Stage 2: Autonomous Decision Criteria
+#### Stage 2: Model Selection
+
+```dialogue
+"Which Claude model should this agent use?
+
+- **sonnet** (default) - Balanced performance for most tasks
+- **opus** - Complex reasoning and analysis tasks
+- **haiku** - Fast, simple operations
+- **inherit** - Use the same model as main conversation
+
+Based on complexity, I recommend: [suggested-model]
+Choice (sonnet/opus/haiku/inherit):"
+```
+
+#### Stage 3: Autonomous Decision Criteria & Specific Instructions
 
 ```dialogue
 "What conditions should trigger autonomous decisions?
@@ -134,10 +155,25 @@ Based on your description, I'm inferring:
 - [Condition 1]: [Action]
 - [Condition 2]: [Action]
 
-Additional decision points to add?"
+Additional decision points to add?
+
+For the agent's methodology (per template structure):
+**Analysis Phase:**
+- [How agent examines problems]
+- [Key patterns to identify]
+
+**Implementation Phase:**
+- [Best practices to follow]
+- [Common pitfalls to avoid]
+
+**Output Guidelines:**
+- [How to structure responses]
+- [Level of detail required]
+
+Any specific instructions to add?"
 ```
 
-#### Stage 3: Smart Tool Detection
+#### Stage 4: Smart Tool Detection
 
 ```dialogue
 "From the workflow, this agent needs these tools:
@@ -153,7 +189,21 @@ Special tools needed:
 Confirm or modify tool list:"
 ```
 
-#### Stage 4: Workflow Architecture
+#### Stage 5: Domain Knowledge Requirements
+
+```dialogue
+"Does this agent need specialized domain knowledge?
+
+[If yes detected]:
+I'll include (per template):
+- Technical specifications: [relevant to task]
+- Industry standards: [best practices]
+- Common patterns and anti-patterns: [domain-specific]
+
+Additional domain knowledge to include?"
+```
+
+#### Stage 6: Workflow Architecture
 
 ```dialogue
 "I've designed this workflow structure:
@@ -169,30 +219,50 @@ Confirm or modify tool list:"
 This provides [benefits]. Approve this architecture?"
 ```
 
-#### Stage 5: Error Recovery & Success Criteria
+#### Stage 7: Safety, Constraints & Recovery
 
 ```dialogue
 "For robust operation, I'll add:
 
+**Constraints & Safety (per template):**
+- Never modify: [protected patterns]
+- Always validate: [critical conditions]
+- Require confirmation for: [sensitive ops]
+- Respect: [project conventions]
+
 **Success Criteria:**
-- [Inferred success condition 1]
-- [Inferred success condition 2]
+- [Measurable condition 1]
+- [Measurable condition 2]
 
 **Error Recovery:**
 - On [error type]: [recovery action]
 - On [failure type]: [fallback strategy]
 
 **Context Persistence:**
-- [What state to maintain between phases]
+- Maintains: [state between phases]
+- Resets: [cleared between runs]
 
-Any modifications needed?"
+Any modifications or additional safety guards needed?"
+```
+
+#### Stage 8: Examples (Optional)
+
+```dialogue
+"Would you like to provide example scenarios for the agent?
+
+Example format:
+- Trigger: [what initiates]
+- Expected behavior: [what happens]
+- Result: [outcome]
+
+Add examples? (yes/no/skip):"
 ```
 
 ### Phase 4: Architecture Design
 
 #### Step 1: Build Decision Trees
 
-Use sequential thinking to optimize the agent's decision logic:
+Use `/mcp__sequential-thinking__sequentialthinking` to optimize the agent's decision logic:
 ```
 1. Map all decision points
 2. Create branching logic
@@ -217,14 +287,16 @@ Validate the complete agent architecture:
 
 **Agent Summary:**
 - Name: [final-name]
+- Model: [selected-model]
 - Objective: [final-objective]
-- Complexity: [Simple/Moderate/Complex]
+- Boundaries: [what it won't do]
 - Autonomy Level: [Low/Medium/High]
 
 **Architecture:**
 - Phases: [count] with [total] decision points
 - Tools: [final-tool-list]
 - Error Recovery: [Comprehensive/Basic]
+- Safety Guards: [count] constraints
 - Sub-agents: [Yes/No]
 
 **Key Features:**
@@ -243,22 +315,28 @@ Write to `./.claude/agents/[agent-name].md`:
 ---
 name: [agent-name]
 description: [agent-description]
-allowed-tools: [comma-separated-tools]
-agent-type: autonomous
-complexity: [level]
+tools: [comma-separated-tools]
+model: [selected-model]
 ---
 
-# Agent: [Agent Name]
+# Agent System Prompt
 
-## Objective
-[Clear statement of what this agent accomplishes autonomously]
+You are a specialized [role] expert focused on [specific domain].
 
-## Autonomous Decision Criteria
-[When and how the agent makes decisions without user input]
+## Core Responsibilities
 
-## Execution Workflow
+[Clear statement per template structure]
+- Main objective and focus area
+- Types of problems this agent solves
+- Boundaries of what this agent should/shouldn't do
 
-### Phase 1: [Phase Name]
+## Approach & Methodology
+
+When invoked, follow this structured approach:
+
+### Execution Workflow
+
+#### Phase 1: [Phase Name]
 **Objective:** [What this phase accomplishes]
 
 **Steps:**
@@ -269,7 +347,53 @@ complexity: [level]
 
 [Continue with all phases]
 
+## Specific Instructions
+
+### Analysis Phase
+- [How to examine the problem]
+- [What to look for first]
+- [Key patterns to identify]
+
+### Implementation Phase
+- [Best practices to follow]
+- [Common pitfalls to avoid]
+- [Quality standards to maintain]
+
+### Output Guidelines
+- [How to structure responses]
+- [Level of detail required]
+- [Format for presenting results]
+
+## Autonomous Decision Criteria
+[When and how the agent makes decisions without user input]
+- [Decision point 1]: [Criteria and action]
+- [Decision point 2]: [Criteria and action]
+
+## Domain-Specific Knowledge
+
+[Include per template if applicable]
+- Technical specifications: [if relevant]
+- Industry standards: [if relevant]
+- Best practice guidelines: [if relevant]
+- Common patterns and anti-patterns: [if relevant]
+
+## Constraints & Safety
+
+- Never modify [protected files/patterns]
+- Always validate [specific conditions]
+- Require confirmation for [sensitive operations]
+- Respect existing [project conventions]
+- [Additional safety guards from Stage 7]
+
+## Error Handling
+
+How to handle common issues:
+- If [condition], then [action]
+- When encountering [error], [response]
+- For missing [requirement], [fallback]
+
 ## Success Criteria
+Define what constitutes successful completion:
 - [Measurable success condition 1]
 - [Measurable success condition 2]
 
@@ -284,16 +408,14 @@ complexity: [level]
 ## Sub-Agent Spawning
 [If applicable, when and how sub-agents are created]
 
-## Safety Guards
-- [Protection 1]
-- [Protection 2]
-
 ## Examples
 
 ### Example 1: [Scenario]
 Trigger: [What initiates the agent]
 Expected Behavior: [What happens]
 Result: [Outcome]
+
+[Additional examples if provided in Stage 8]
 ```
 
 #### Step 3: Post-Generation
@@ -319,8 +441,11 @@ The generator maintains context throughout the dialogue:
 
 Context so far:
 - Purpose: [defined]
+- Core Responsibilities: [defined]
 - Tools: [selected]
+- Model: [chosen]
 - Workflow: [structure]
+- Constraints: [defined]
 - Still needed: [remaining items]
 ```
 
@@ -331,6 +456,7 @@ Context so far:
 - Ensures decision trees have no infinite loops
 - Validates all error paths have handlers
 - Confirms tool permissions match operations
+- Enforces constraints and safety boundaries per template
 - Prevents overwriting existing agents without confirmation
 
 ## Error Handling
@@ -364,9 +490,3 @@ Generates agent with decision trees for deployment validation
 /generate:agent
 ```
 Starts with exploratory questions to understand requirements
-
-## Related Commands
-
-- `/generate:command` - For simpler, linear automation tasks
-- `/self-improve` - Analyzes patterns to suggest new agents
-- `/list-agents` - Shows existing agents to avoid duplicates

@@ -9,8 +9,10 @@ argument-hints: [prompt]
 
 Analyzes workflow patterns to identify automation opportunities through commands, agents, and optimizations.
 
+**Template:** @.claude/templates/prompt-template.md
+
 **Tools Usage:**
-- See @.claude/tools/sequential-thinking.md for iterative analysis with hypothesis generation and verification
+- `mcp__sequential-thinking` - for iterative analysis with hypothesis generation and verification. See instructions here - @.claude/tools/sequential-thinking.md
 
 ## Usage
 
@@ -46,7 +48,19 @@ Use `/mcp__sequential-thinking__sequentialthinking` to analyze:
    - Templates for repetitive structures
 ```
 
-### 2. Categorize by Priority
+### 2. Prompt Quality Check
+
+When analyzing prompts in workflows, check against template:
+
+- **Context field**: Is project tech stack and constraints specified?
+- **Task field**: Is the objective clear and specific?
+- **Instructions field**: Are steps numbered and sequential?
+- **Requirements field**: Are constraints non-negotiable and clear?
+- **Examples field**: Are good/bad patterns provided for clarity?
+- **Success criteria field**: Are outcomes measurable?
+- **Thinking field**: Is complex reasoning prompted where needed?
+
+### 3. Categorize by Priority
 
 **High Priority:**
 - Daily repetitive tasks
