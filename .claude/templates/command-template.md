@@ -9,8 +9,6 @@ name: command-name                     # Optional: Uses filename if not specifie
 description: Brief one-line description # Optional: Uses first line if not specified
 allowed-tools: Read, Write, Edit, Bash(git:*), Grep, Glob  # Optional: Inherits from conversation
 argument-hint: [prompt]                 # Optional: Shows expected arguments in autocomplete
-model: claude-3-5-sonnet-20241022     # Optional: Specific model (inherits from conversation)
-disable-model-invocation: false        # Optional: Prevents SlashCommand tool from calling this
 ---
 
 # Command Title
@@ -74,8 +72,6 @@ Common issues and solutions:
 | `description`              | No       | Brief description shown in `/help` (uses first line if not specified) |
 | `allowed-tools`            | No       | Comma-separated list of allowed tools (inherits from conversation)    |
 | `argument-hint`            | No       | Expected arguments shown in autocomplete                              |
-| `model`                    | No       | Specific model to use (inherits from conversation)                    |
-| `disable-model-invocation` | No       | Prevents SlashCommand tool from calling this command                  |
 
 ## Available Tools
 
@@ -139,5 +135,4 @@ Common issues and solutions:
 | **Arguments**   | Supports `$ARGUMENTS`, `$1`, `$2`     |
 | **Context**     | Runs in main conversation             |
 | **Complexity**  | Simple, focused tasks                 |
-| **Model**       | Can specify, usually inherits         |
 | **Invocation**  | `/command-name args`                  |

@@ -42,7 +42,7 @@ Use `/mcp__sequential-thinking__sequentialthinking` to process initial input:
 
 2. Generate hypotheses:
    - What type of command is needed
-   - Likely execution phases
+   - Likely task steps required
    - Required tools and permissions
    - Potential safety considerations
 
@@ -106,7 +106,7 @@ Based on `/mcp__sequential-thinking__sequentialthinking` analysis:
 [List detected tools]
 
 Are there other tools you need, or should I remove any?
-Available tools: Read, Write, Bash (*), [others]"
+Available tools: Read, Write, Edit, Bash(*), Grep, Glob, MCP tools, [others]"
 ```
 
 #### Stage 3: Adaptive Argument Pattern
@@ -122,32 +122,39 @@ For example: /[command-name] [suggested-args]
 Does this match your vision? You can also specify:
 - [optional-arg] for optional parameters
 - <required-arg> for required parameters
+- $ARGUMENTS for capturing all arguments
+- $1, $2, $3 for positional arguments
 - No arguments for simple commands"
 ```
 
-#### Stage 4: Intelligent Phase Structuring
+#### Stage 4: Task Instructions Structuring
 
-Analyze with `/mcp__sequential-thinking__sequentialthinking` to propose phases:
+Analyze with `/mcp__sequential-thinking__sequentialthinking` to propose task structure:
 
 ```dialogue
-"I've analyzed the workflow. Here's my suggested phase structure:
+"I've analyzed the workflow. Here's my suggested Task structure:
 
-Phase 1: [Suggested name] - [Purpose]
-Phase 2: [Suggested name] - [Purpose]
-[Additional phases if needed]
+## Task
+
+Clear instructions for what Claude should do:
+
+1. **[Action verb]** - [Description of what to do]
+2. **[Action verb]** - [Description of what to do]
+3. **[Action verb]** - [Description of what to do]
+[Additional steps if needed]
 
 This structure would [explain benefits].
 
 Should we proceed with this structure, or would you like to modify it?"
 ```
 
-For each confirmed phase:
+For each confirmed task step:
 
 ```dialogue
-"For Phase '[Name]', what specific steps should happen?
+"For step '[Number]', what specific actions should happen?
 Based on the command's purpose, I'm expecting:
-- [Predicted step 1]
-- [Predicted step 2]
+- [Predicted action 1]
+- [Predicted action 2]
 
 Please confirm or provide the actual steps:"
 ```
@@ -159,9 +166,9 @@ Use `/mcp__sequential-thinking__sequentialthinking` to determine needed features
 ```dialogue
 "Based on the command's nature, I've identified these potential features:
 
-[✓/✗] Interactive mode - [Reason why needed/not needed]
+[✓/✗] Error handling - [Common error scenarios detected]
 [✓/✗] Safety guards - [Detected sensitive operations or none]
-[✓/✗] Error handling - [Common error scenarios]
+[✓/✗] Interactive mode - [Reason why needed/not needed]
 [✓/✗] Progress reporting - [Long-running operations detected]
 
 Should I include any of these features? Any others needed?"
@@ -172,14 +179,17 @@ Should I include any of these features? Any others needed?"
 ```dialogue
 "I'll generate examples based on our discussion. Here are my suggestions:
 
-1. Basic usage: /[command] [common-args]
-   - [What this accomplishes]
+### Basic Usage
+/[command] [basic-args]
+- [What this accomplishes]
 
-2. Advanced usage: /[command] [complex-args]
-   - [Advanced scenario]
+### With Arguments  
+/[command] [complex-args]
+- [Advanced scenario]
 
-3. Edge case: /[command] [edge-args]
-   - [Special handling]
+### Multiple Arguments (if applicable)
+/[command] $1 $2
+- [How positional arguments work]
 
 Do these cover your use cases, or should I adjust them?"
 ```
@@ -192,12 +202,12 @@ Use `/mcp__sequential-thinking__sequentialthinking` for final validation:
 
 ```
 1. Verify completeness:
-   - All required fields present
+   - All required template sections present
    - Logical flow consistency
    - Tool permissions match operations
    
 2. Optimize structure:
-   - Simplify redundant phases
+   - Simplify redundant task steps
    - Enhance error handling
    - Improve user experience
 
@@ -221,7 +231,7 @@ Use `/mcp__sequential-thinking__sequentialthinking` for final validation:
 **Key Features:**
 - Tools: [final-tools]
 - Arguments: [final-pattern]
-- Phases: [count] phases with [total-steps] steps
+- Task: [count] steps with clear instructions
 - Special features: [list if any]
 
 **Optimization Notes:**
@@ -233,9 +243,10 @@ Ready to generate the command file? (yes/no/modify)"
 #### Step 3: Generate Optimized Command
 
 If confirmed, write to `./.claude/commands/[command-name].md`:
-- Use template from @.claude/templates/command-template.md
+- Use template structure from @.claude/templates/command-template.md
+- Ensure proper structure with ## Task section (not phases)
 - Include all collected and optimized information
-- Add sequential thinking patterns where applicable
+- Follow exact template format for all sections
 
 ```dialogue
 "✅ Command successfully created at ./.claude/commands/[command-name].md
@@ -269,6 +280,7 @@ Previous context:
 - Prevents overwriting existing commands without confirmation
 - Validates argument patterns for conflicts
 - Ensures all required template sections are filled
+- Verifies ## Task section is properly structured
 
 ## Error Handling
 
@@ -281,6 +293,7 @@ Previous context:
 - File write permission → Check and request access
 - Template not found → Use embedded template
 - Existing command → Ask for overwrite confirmation
+- Template mismatch → Ensure ## Task section, not phases
 
 ## Examples
 
@@ -300,4 +313,4 @@ Starts with exploratory questions to understand needs
 ```
 /generate:command multi-stage deployment pipeline with rollback
 ```
-Detects complexity, suggests agent instead of simple command
+Detects complexity, suggests multiple task steps or recommends agent pattern
