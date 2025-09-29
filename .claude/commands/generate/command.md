@@ -1,13 +1,15 @@
 ---
-name: create-command
+name: generate:command
 description: Interactive command generator with sequential thinking analysis for creating optimized commands
 allowed-tools: Read, Write, mcp__sequential-thinking
-argument-hints: [initial-description]
+argument-hint: [initial-description]
 ---
 
 # Instructions
 
 Interactive command generator that uses sequential thinking to analyze requirements and guides through creating new command files via structured dialogue. Ensures all commands follow the standard template and best practices.
+
+**Template:** @.claude/templates/command-template.md
 
 **Tools Usage:**
 - `mcp__sequential-thinking` - Analyzes initial input and optimizes question flow. See instructions here - @.claude/tools/sequential-thinking.md
@@ -17,7 +19,7 @@ Interactive command generator that uses sequential thinking to analyze requireme
 ## Usage
 
 ```
-/create-command [initial-description]
+/generate:command [initial-description]
 ```
 
 - `[initial-description]` - Optional initial description of desired command functionality
@@ -65,13 +67,13 @@ First, let me understand what you want to automate or improve.
 What's the main problem or task this command should solve?"
 ```
 
-Wait for response, then analyze with sequential thinking.
+Wait for response, then analyze with `/mcp__sequential-thinking__sequentialthinking`.
 
 ### Phase 2: Intelligent Information Gathering
 
 #### Stage 1: Core Definition
 
-Use sequential thinking after each response to optimize next questions:
+Use `/mcp__sequential-thinking__sequentialthinking` after each response to optimize next questions:
 
 ```dialogue
 "Based on your description, I'm thinking this command should be called:
@@ -95,7 +97,7 @@ Would you like to modify this or keep it as is?"
 
 #### Stage 2: Smart Tool Detection
 
-Based on sequential thinking analysis:
+Based on `/mcp__sequential-thinking__sequentialthinking` analysis:
 
 ```dialogue
 "From what you've described, this command will likely need these tools:
@@ -104,12 +106,12 @@ Based on sequential thinking analysis:
 [List detected tools]
 
 Are there other tools you need, or should I remove any?
-Available tools: Read, Write, Bash (*), mcp__sequential-thinking, [others]"
+Available tools: Read, Write, Bash (*), [others]"
 ```
 
 #### Stage 3: Adaptive Argument Pattern
 
-Use sequential thinking to suggest argument pattern:
+Use `/mcp__sequential-thinking__sequentialthinking` to suggest argument pattern:
 
 ```dialogue
 "Based on the functionality, I recommend this argument pattern:
@@ -125,7 +127,7 @@ Does this match your vision? You can also specify:
 
 #### Stage 4: Intelligent Phase Structuring
 
-Analyze with sequential thinking to propose phases:
+Analyze with `/mcp__sequential-thinking__sequentialthinking` to propose phases:
 
 ```dialogue
 "I've analyzed the workflow. Here's my suggested phase structure:
@@ -152,7 +154,7 @@ Please confirm or provide the actual steps:"
 
 #### Stage 5: Smart Feature Detection
 
-Use sequential thinking to determine needed features:
+Use `/mcp__sequential-thinking__sequentialthinking` to determine needed features:
 
 ```dialogue
 "Based on the command's nature, I've identified these potential features:
@@ -284,24 +286,18 @@ Previous context:
 
 ### Example 1: With Initial Description
 ```
-/create-command automated test generator for Python modules
+/generate:command automated test generator for Python modules
 ```
 Sequential thinking analyzes: test patterns, Python conventions, likely tools needed
 
 ### Example 2: No Arguments
 ```
-/create-command
+/generate:command
 ```
 Starts with exploratory questions to understand needs
 
 ### Example 3: Complex Workflow
 ```
-/create-command multi-stage deployment pipeline with rollback
+/generate:command multi-stage deployment pipeline with rollback
 ```
 Detects complexity, suggests agent instead of simple command
-
-## Related Commands
-
-- `/self-improve` - Analyzes patterns to suggest new commands
-- `/list-commands` - Shows existing commands to avoid duplicates
-- `/create-agent` - For complex multi-step workflows

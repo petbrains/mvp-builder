@@ -1,173 +1,143 @@
-# Command Template for Claude Code
+# Claude Code Command Template
 
-## File Header (Required)
-
-```yaml
----
-name: command-name                    # Required: Command identifier (lowercase, hyphens)
-description: Brief one-line description of what this command does  # Required
-allowed-tools: Tool1, Tool2, Tool3    # Required: Comma-separated list of allowed tools
-argument-hints: [prompt]               # Optional: Expected argument types/formats
----
-```
-
-## Available Tools Reference
-
-Common tools you can specify in `allowed-tools`:
-- `Read` - Read files from the filesystem
-- `Write` - Write/modify files
-- `Bash (*)` - Execute any bash commands
-- `Bash(git:*)` - Execute git-specific bash commands
-- `mcp__sequential-thinking` - Sequential thinking analysis tool
-- Other MCP tools as needed
-
-## Command Structure
-
-### 1. Instructions Section (Required)
+## Template
 
 ```markdown
-# Instructions
+---
+# Optional YAML frontmatter for configuration
+name: command-name                     # Optional: Uses filename if not specified
+description: Brief one-line description # Optional: Uses first line if not specified
+allowed-tools: Read, Write, Edit, Bash(git:*), Grep, Glob  # Optional: Inherits from conversation
+argument-hint: [prompt]                 # Optional: Shows expected arguments in autocomplete
+model: claude-3-5-sonnet-20241022     # Optional: Specific model (inherits from conversation)
+disable-model-invocation: false        # Optional: Prevents SlashCommand tool from calling this
+---
 
-High-level description of the command's purpose and approach.
+# Command Title
 
-**Tools Usage:** (if using special tools)
-- Describe how each tool will be used
-- Reference documentation: `See @.claude/tools/[tool].md for details`
-```
+Brief description of what this command does (becomes description if not in frontmatter).
 
-### 2. Usage Section (Required)
-
-```markdown
 ## Usage
-
-```
 /command-name [arguments]
-```
 
-Describe argument patterns:
-- `[prompt]` - Optional prompt/description
-- `<required>` - Required parameter
-- No arguments - What happens when run without arguments
-```
+**Argument patterns:**
+- `[optional]` - Optional arguments in brackets
+- `$ARGUMENTS` - Captures all arguments as single string
+- `$1`, `$2`, `$3` - Individual positional arguments
 
-### 3. Execution Flow (Required)
+## Task
 
-```markdown
-## Execution
+Clear instructions for what Claude should do:
 
-### Phase 1: [Phase Name]
+1. **Analyze** - Examine the provided context
+2. **Execute** - Perform specific actions
+3. **Report** - Summarize results
 
-#### Step 1: [Step Description]
+Be specific about expected behavior and constraints.
 
-Actions to perform:
-```bash
-# Example bash commands if needed
-command --flag
-```
-
-Expected outcomes:
-- What should happen
-- What to check for
-
-#### Step 2: [Next Step]
-
-Continue with detailed steps...
-
-### Phase 2: [Next Phase Name]
-
-Structure subsequent phases similarly...
-```
-
-### 4. Output Format (Recommended)
-
-```markdown
-## Output Format
-
-### Section Header with Emoji 📊
-- **Key metric:** Value
-- **Status:** Description
-
-### Detailed Results
-
-Format of the output the user will see:
-1. **Item Name**
-   - **Property:** Description
-   - **Impact:** Measurement
-   - **Details:** Additional information
-
-### Summary Section
-Total impact or final status message
-```
-
-### 5. Interactive Mode (Optional - if command supports dialogue)
-
-```markdown
-## Interactive Mode
-
-When the command needs clarification, it enters interactive mode:
-
-```dialogue
-"Question or prompt for the user"
-Options:
-1. First option
-2. Second option
-3. Provide more details
-```
-
-User responses trigger different workflows...
-```
-
-### 6. Safety Guards (Optional - if handling sensitive operations)
-
-```markdown
-## Safety Guards
-
-- List of checks performed before operations
-- Protected resources or patterns
-- Automatic rejections or warnings
-- Rollback conditions
-```
-
-### 7. Examples Section (Highly Recommended)
-
-```markdown
 ## Examples
 
-### Example 1: [Use Case Name]
-```
-/command-name specific arguments
-```
-Expected behavior and output description
-
-### Example 2: [Another Use Case]
-```
-/command-name different arguments
-```
-What this variation accomplishes
-
-### No Arguments Example
-```
+### Basic Usage
 /command-name
+
+Runs with default behavior, processing current context.
+
+### With Arguments
+/command-name feature-branch
+
+Processes specific branch or feature.
+
+### Multiple Arguments
+/command-name fix $1 --priority $2
+
+Uses positional arguments for structured input.
+
+## Error Handling (Optional)
+
+Common issues and solutions:
+- **Missing files:** Check paths and permissions
+- **Invalid arguments:** Verify format and requirements
+- **Tool permissions:** Ensure allowed-tools includes necessary permissions
+
+## Safety Guards (Optional)
+
+- Protected patterns: `*.env`, `secrets/*`, `credentials.json`
+- Confirmation required for: Production changes, deletions
+- Automatic backups: Before major modifications
 ```
-Default behavior or help display
-```
 
-### 8. Error Handling (Optional but recommended)
+## Configuration Fields
 
-```markdown
-## Error Handling
+| Field                      | Required | Description                                                            |
+|----------------------------|----------|------------------------------------------------------------------------|
+| `name`                     | No       | Command identifier (uses filename if not specified)                    |
+| `description`              | No       | Brief description shown in `/help` (uses first line if not specified) |
+| `allowed-tools`            | No       | Comma-separated list of allowed tools (inherits from conversation)    |
+| `argument-hint`            | No       | Expected arguments shown in autocomplete                              |
+| `model`                    | No       | Specific model to use (inherits from conversation)                    |
+| `disable-model-invocation` | No       | Prevents SlashCommand tool from calling this command                  |
 
-Common errors and solutions:
-- **Error condition:** How to resolve
-- **Missing requirements:** What to check
-- **Validation failures:** Correction steps
-```
+## Available Tools
 
-### 9. Related Commands (Optional)
+### File Operations
+- `Read` - Read file contents
+- `Write` - Create/overwrite files
+- `Edit` - Modify specific file sections
+- `MultiEdit` - Edit multiple files
+- `Glob` - Find files by pattern
+- `Grep` - Search file contents
+- `LS` - List directories
 
-```markdown
-## Related Commands
+### Bash Commands
+- `Bash` - Execute any command (requires permissions)
+- `Bash(git:*)` - Git commands only
+- `Bash(npm:*)` - NPM commands only
+- `Bash(npm run:*)` - NPM scripts only
+- `Bash(docker:*)` - Docker commands only
 
-- `/related-command` - How it connects to this command
-- `/another-command` - When to use instead or in combination
-```
+### MCP Tools
+- Format: `mcp__server_name__tool_name`
+- Access any configured MCP server tools
+- Tool availability depends on MCP server configuration
+
+## Argument Variables
+
+| Variable      | Description                              | Example Usage                     |
+|---------------|------------------------------------------|-----------------------------------|
+| `$ARGUMENTS`  | All arguments as single string          | `Fix issue: $ARGUMENTS`          |
+| `$1`          | First positional argument               | `Review PR #$1`                  |
+| `$2`          | Second positional argument              | `Priority: $2`                    |
+| `$3`          | Third positional argument               | `Assign to: $3`                  |
+| `${1:-default}` | Argument with default value           | `Branch: ${1:-main}`             |
+
+## Special Syntax
+
+| Syntax        | Description                              | Example                           |
+|---------------|------------------------------------------|-----------------------------------|
+| `!`command``  | Execute bash command and include output | `!`git status``                  |
+| `@path`       | Include file or directory content       | `@src/utils.js`                  |
+| `/command`    | Invoke another slash command            | Referenced in instructions        |
+
+## Best Practices
+
+1. **Single Purpose** - Each command should do one thing well
+2. **Clear Naming** - Command name should indicate its function
+3. **Minimal Tools** - Only request necessary permissions
+4. **Dynamic Context** - Use `!` and `@` for current state
+5. **Argument Documentation** - Explain expected formats
+6. **Error Handling** - Anticipate common failures
+7. **Test First** - Verify in safe environment
+8. **Use Frontmatter** - Explicit configuration is better
+9. **Provide Examples** - Show usage patterns
+
+## Key Aspect
+
+| Aspect          | Commands                              |
+|-----------------|---------------------------------------|
+| **Purpose**     | Single-turn prompt templates          |
+| **Location**    | `.claude/commands/`                   |
+| **Arguments**   | Supports `$ARGUMENTS`, `$1`, `$2`     |
+| **Context**     | Runs in main conversation             |
+| **Complexity**  | Simple, focused tasks                 |
+| **Model**       | Can specify, usually inherits         |
+| **Invocation**  | `/command-name args`                  |
