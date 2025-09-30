@@ -244,7 +244,7 @@ Ready to generate the command file? (yes/no/modify)"
 
 If confirmed, write to `./.claude/commands/[command-name].md`:
 - Use template structure from @.claude/templates/command-template.md
-- Ensure proper structure with ## Task section (not phases)
+- Ensure proper structure with a single ## Task section containing step-by-step instructions (do not split into multiple "phases"; phases can make the workflow less clear and do not conform to the standard template)
 - Include all collected and optimized information
 - Follow exact template format for all sections
 
