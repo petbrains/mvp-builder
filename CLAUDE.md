@@ -56,18 +56,32 @@ ai-docs/
 
 ## Code Writing Rules
 
-### File Size & Structure
+### File & Function Size
 - **Maximum 300-500 lines per file**
+- **Maximum 80 lines per function**
 - Split larger implementations into logical modules
 - Exception: Generated files, configs, data files
 
-### Implementation Approach
+### Code Quality Standards
+- Line length: 100-120 characters max
+- No monolithic "god classes" - split by concern
+- All code must lint/type-check before marking done
 - Small, testable increments - save after logical units
 - Test components before integration
 - Document non-obvious "why" decisions inline
 - Cite sources: `[Source: path/to/file.md#section]`
+
+### Error Handling & Security
 - Comprehensive error handling with actionable messages
 - Never fail silently
+- **Never expose secrets/tokens/keys in output**
+- Use `.env.example` with placeholders, never real values
+- Default to least-privilege permissions
+
+### Performance Constraints
+- Avoid O(n²)+ complexity unless justified
+- Files >100MB: use streaming, never load into memory
+- Guard concurrency - document thread/async assumptions
 
 ## File Operations
 
