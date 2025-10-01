@@ -19,7 +19,7 @@ Interactive command that refines existing feature specifications through targete
 Refine the existing spec.md by:
 1. Reading and analyzing current spec.md content
 2. Identifying ambiguities within existing sections
-3. Conducting targeted clarification dialogue
+3. Conducting targeted clarification dialogue by template sections
 4. Updating ONLY existing template sections with clarifications
 5. Preserving all existing content while adding precision
 
@@ -36,28 +36,28 @@ Refine the existing spec.md by:
 
 ## Dialogue Protocol
 
-### 1. When ambiguity detected in existing content:
-- Identify which template section contains the ambiguity
-- Ask specific clarification question
-- Reference the existing text being clarified
+### 1. Process by template section:
+- Work through each template section that has content
+- Identify ALL ambiguities within the section
+- Ask all clarification questions for the section at once
 - Each question must be answerable with EITHER:
   * A short multiple-choice selection, OR
   * A one-word / short-phrase answer
 
-### 2. After user response:
+### 2. After collecting all answers for the section:
 - Analyze with `/mcp__sequential-thinking__sequentialthinking`
-- Validate clarification fits within existing section
+- Validate all clarifications work together within the section
 
 ### 3. Confirm analysis:
-- Show current text vs. clarified version
+- Show current section vs. clarified version
 - Wait for 'ok' confirmation
 
 ### 4. Save incrementally:
 - Read current SPEC_FILE
-- Update the specific part within existing section
+- Update the entire section with all clarifications
 - Preserve all other content
 - Write back to SPEC_FILE
-- Log: "✅ Clarified [aspect] in [section name]"
+- Log: "✅ Clarified [section name]"
 
 ## Ambiguity Detection by Template Section
 
@@ -104,52 +104,40 @@ Refine the existing spec.md by:
    - Parse all template sections
    - Preserve formatting and structure
 
-2. **Analyze existing content for ambiguities**
+2. **For each template section with content:**
    
-   For each template section with content:
-   - Scan for vague terms and placeholders
+   → **Scan section for all ambiguities**
+   - Find all vague terms and placeholders
    - Identify non-testable statements
-   - Find missing specificity
    - Mark unclear relationships
-
-3. **Generate prioritized clarification queue:**
-   - Focus on high-impact ambiguities that affect:
-     * Test design and validation
-     * Implementation decisions
-     * User experience flows
-   - Skip minor wording issues
-   - Limit to MAX 5 questions
-
-4. **For each identified ambiguity:**
    
-   → **Extract context**
-   - Show existing text
-   - Identify specific unclear part
-   
-   → **Ask targeted question**
+   → **Ask all questions for the section**
+   - Present numbered list of clarifications needed
    - Format: "In [Section Name], you wrote: '[existing text]'"
    - Question: "What specifically does '[vague part]' mean?"
-   - Provide options if applicable
+   - Collect all answers at once
    
-   → **Update with clarification**
-   - Replace vague text with specific answer
-   - Keep surrounding content intact
-   - Maintain section structure
+   → **Analyze section coherence**
+   - Use `/mcp__sequential-thinking__sequentialthinking`
+   - Verify all clarifications are consistent
+   - Check section completeness
+   
+   → **Update entire section**
+   - Apply all clarifications to section
+   - Keep section structure intact
+   - Maintain formatting
 
-5. **Validate after each update:**
-   - Check requirement testability improved
-   - Verify no new ambiguities introduced
-   - Ensure consistency with other sections
+3. **Continue to next section**
 
-6. **Final validation:**
+4. **Final validation:**
    - All clarified text is specific and testable
    - No contradictions between sections
    - Template structure preserved
    - Original intent maintained
 
-7. **Report completion:**
-   - List clarifications made by section
-   - Show before/after for each change
+5. **Report completion:**
+   - List sections clarified
+   - Show before/after for each section
    - Confirm: SUCCESS (spec refined and ready)
 
 # Examples of Clarifications
@@ -174,7 +162,7 @@ Refine the existing spec.md by:
 # Guidelines
 
 - Work ONLY within existing template sections
-- Maximum 5 clarification questions total
+- Maximum 5 clarification questions per section
 - Preserve all existing valid content
 - Make minimal changes for maximum clarity
 - Keep original structure and formatting
@@ -184,6 +172,6 @@ Refine the existing spec.md by:
 # Error Conditions
 
 - ERROR if attempting to add new sections
-- ERROR if more than 5 clarifications needed
+- ERROR if more than 5 clarifications needed per section
 - WARN if removing existing content without replacement
 - ERROR if breaking template structure
