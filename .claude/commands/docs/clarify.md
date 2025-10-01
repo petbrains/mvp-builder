@@ -101,7 +101,9 @@ Analyzing [Section Name]...
 Found ambiguities:
 
 1. In "Users can manage content", what type of users?
-   a) Admins b) Editors c) Viewers
+   a) Admins 
+   b) Editors 
+   c) Viewers
 
 2. In "System MUST be fast", specify response time:
    Format: number+unit (e.g., "500ms")
