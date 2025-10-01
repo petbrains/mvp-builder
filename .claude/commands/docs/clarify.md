@@ -8,9 +8,10 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking
 Interactive command that refines existing feature specifications through targeted clarification dialogue.
 
 **Tools Usage:**
-- See @.claude/tools/sequential-thinking.md for iterative analysis with hypothesis generation and verification
-- `Write`: For incremental spec updates after clarifications
 - `Read`: For loading current spec state
+- `Write`: For incremental spec updates after clarifications  
+- `/mcp__sequential-thinking__sequentialthinking`: For analyzing section coherence after collecting clarifications
+  - See @.claude/tools/sequential-thinking.md for details
 
 **Template:** @.claude/templates/spec-template.md
 
@@ -18,160 +19,146 @@ Interactive command that refines existing feature specifications through targete
 
 Refine the existing spec.md by:
 1. Reading and analyzing current spec.md content
-2. Identifying ambiguities within existing sections
-3. Conducting targeted clarification dialogue by template sections
-4. Updating ONLY existing template sections with clarifications
-5. Preserving all existing content while adding precision
+2. Processing each template section sequentially
+3. Identifying and resolving ambiguities within sections
+4. Updating ONLY existing content with clarifications
+5. Preserving structure and formatting
 
 # Rules
 
 ## Critical Rule
-
-**NEVER make assumptions.** If information is ambiguous:
+**NEVER make assumptions.** When encountering ambiguity:
 - DO NOT guess or use defaults
 - MUST ask user for clarification
 - WAIT for actual response before proceeding
 - ONLY update existing template sections
-- PRESERVE all existing content
+- PRESERVE all existing content and structure
 
-## Dialogue Protocol
-
-### 1. Process by template section:
-- Work through each template section that has content
-- Identify ALL ambiguities within the section
-- Ask all clarification questions for the section at once
-- Each question must be answerable with EITHER:
-  * A short multiple-choice selection, OR
-  * A one-word / short-phrase answer
-
-### 2. After collecting all answers for the section:
-- Analyze with `/mcp__sequential-thinking__sequentialthinking`
-- Validate all clarifications work together within the section
-
-### 3. Confirm analysis:
-- Show current section vs. clarified version
-- Wait for 'ok' confirmation
-
-### 4. Save incrementally:
-- Read current SPEC_FILE
-- Update the entire section with all clarifications
-- Preserve all other content
-- Write back to SPEC_FILE
-- Log: "✅ Clarified [section name]"
-
-## Ambiguity Detection by Template Section
-
-### In "Primary User Story":
-- Vague user roles ("users", "people", "someone")
-- Unclear goals ("manage stuff", "handle things")
-- Missing context (when/why they use feature)
-
-### In "Acceptance Scenarios":
-- Non-specific initial states ("system is ready")
-- Ambiguous actions ("user does something")
-- Vague outcomes ("it works correctly")
-- Missing edge conditions
-
-### In "Edge Cases":
-- Generic descriptions ("error handling")
-- Unspecified behaviors ("handle appropriately")
-- Missing recovery actions
-
-### In "Functional Requirements":
-- Non-testable requirements ("should be fast")
-- Ambiguous MUST/SHOULD/MAY usage
-- Missing success criteria
-- Vague data specifications
-
-### In "UX Requirements":
-- Generic interactions ("user-friendly")
-- Unspecified feedback ("show message")
-- Missing error states
-
-### In "Key Entities":
-- Undefined relationships ("related to")
-- Missing cardinality (one-to-many?)
-- Vague attributes ("some data")
-
-### In "Technical Context":
-- Unclear constraints ("performance limits")
-- Vague dependencies ("needs other system")
+## Processing Constraints
+- Work within existing template sections only
+- Maximum 5 clarification questions per section
+- Make minimal changes for maximum clarity
+- Never add new sections or categories
+- Never remove content without replacement
 
 # Execution Flow
 
-1. **Load and parse existing spec.md**
-   - Read current spec content
-   - Parse all template sections
-   - Preserve formatting and structure
+## 1. Initialize
+- Read current spec.md content
+- Parse template sections
+- Identify sections with content
 
-2. **For each template section with content:**
-   
-   → **Scan section for all ambiguities**
-   - Find all vague terms and placeholders
-   - Identify non-testable statements
-   - Mark unclear relationships
-   
-   → **Ask all questions for the section**
-   - Present numbered list of clarifications needed
-   - Format: "In [Section Name], you wrote: '[existing text]'"
-   - Question: "What specifically does '[vague part]' mean?"
-   - Collect all answers at once
-   
-   → **Analyze section coherence**
-   - Use `/mcp__sequential-thinking__sequentialthinking`
-   - Verify all clarifications are consistent
-   - Check section completeness
-   
-   → **Update entire section**
-   - Apply all clarifications to section
-   - Keep section structure intact
-   - Maintain formatting
+## 2. Process Each Section
 
-3. **Continue to next section**
-
-4. **Final validation:**
-   - All clarified text is specific and testable
-   - No contradictions between sections
-   - Template structure preserved
-   - Original intent maintained
-
-5. **Report completion:**
-   - List sections clarified
-   - Show before/after for each section
-   - Confirm: SUCCESS (spec refined and ready)
-
-# Examples of Clarifications
-
-## Before/After Examples:
+### 2.1 Scan for Ambiguities
+Check section content against these patterns:
 
 **Primary User Story:**
-- Before: "Users can manage their content"
-- Ask: "What type of users - admins, editors, or viewers?"
-- After: "Content editors can manage their published articles"
+- Vague roles: "users", "people", "someone"
+- Unclear goals: "manage stuff", "handle things"  
+- Missing context: when/why feature is used
 
-**Functional Requirement:**
-- Before: "FR-001: System MUST be fast"
-- Ask: "What specific response time - under 2s, 500ms, 100ms?"
-- After: "FR-001: System MUST respond within 500ms"
+**Acceptance Scenarios:**
+- Non-specific states: "system is ready"
+- Ambiguous actions: "user does something"
+- Vague outcomes: "it works correctly"
 
-**Key Entity:**
-- Before: "User: represents someone in system"
-- Ask: "What defines a unique user - email, username, or ID?"
-- After: "User: represents account holder, unique by email"
+**Edge Cases:**
+- Generic descriptions: "error handling"
+- Unspecified behaviors: "handle appropriately"
+- Missing recovery actions
 
-# Guidelines
+**Functional Requirements:**
+- Non-testable metrics: "should be fast"
+- Missing bounds: "handle many"
+- Unclear priorities: MUST vs SHOULD
 
-- Work ONLY within existing template sections
-- Maximum 5 clarification questions per section
-- Preserve all existing valid content
-- Make minimal changes for maximum clarity
-- Keep original structure and formatting
-- Focus on testability and specificity
-- Never add new sections or categories
+**UX Requirements:**
+- Generic interactions: "user-friendly"
+- Unspecified feedback: "show message"
+- Missing error states
+
+**Key Entities:**
+- Undefined relationships: "related to"
+- Missing cardinalities
+- Vague attributes: "some data"
+
+**Technical Context:**
+- Unclear constraints: "performance limits"
+- Vague dependencies: "needs other system"
+
+### 2.2 Collect Clarifications
+If ambiguities found:
+- Generate numbered list of questions (max 5)
+- Each question must be answerable with:
+  * Multiple-choice selection, OR
+  * Short phrase/value
+- Present all questions for section at once
+
+Example format:
+```
+Analyzing [Section Name]...
+Found ambiguities:
+
+1. In "Users can manage content", what type of users?
+   a) Admins b) Editors c) Viewers
+
+2. In "System MUST be fast", specify response time:
+   Format: number+unit (e.g., "500ms")
+
+Please answer all: (e.g., "1:b, 2:500ms")
+```
+
+### 2.3 Analyze Section Coherence
+After receiving ALL answers for section:
+- Apply `/mcp__sequential-thinking__sequentialthinking`
+- Verify clarifications are mutually consistent
+- Check section completeness
+- Validate testability improvement
+
+### 2.4 Update Section
+- Show before/after comparison
+- Wait for user confirmation ("ok")
+- Read current SPEC_FILE
+- Apply all clarifications to section atomically
+- Preserve formatting and structure
+- Write back to SPEC_FILE
+- Log: "✅ Clarified [section name]"
+
+## 3. Complete Processing
+After all sections processed:
+- Validate cross-section consistency
+- Ensure no contradictions introduced
+- Verify all requirements testable
+
+## 4. Final Report
+- List sections clarified
+- Total ambiguities resolved
+- Status: SUCCESS (spec refined and ready)
+
+# Examples
+
+## Simple Clarification
+**Before:** "FR-001: System MUST be fast"  
+**Question:** "What specific response time - under 2s, 500ms, 100ms?"  
+**Answer:** "500ms"  
+**After:** "FR-001: System MUST respond within 500ms"
+
+## Entity Clarification  
+**Before:** "User: represents someone in system"  
+**Question:** "What defines a unique user - email, username, or ID?"  
+**Answer:** "email"  
+**After:** "User: represents account holder, unique by email"
+
+## Role Clarification
+**Before:** "Users can manage their content"  
+**Question:** "What type of users - admins, editors, or viewers?"  
+**Answer:** "editors"  
+**After:** "Content editors can manage their published articles"
 
 # Error Conditions
 
-- ERROR if attempting to add new sections
-- ERROR if more than 5 clarifications needed per section
-- WARN if removing existing content without replacement
-- ERROR if breaking template structure
+- ERROR: Attempting to add new sections
+- ERROR: More than 5 clarifications needed per section  
+- ERROR: Breaking template structure
+- WARN: Removing content without replacement
