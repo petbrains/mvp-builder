@@ -5,169 +5,185 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking
 
 # Instructions
 
-Interactive command generator that updates feature specifications through user dialogue and analysis.
+Interactive command that refines existing feature specifications through targeted clarification dialogue.
 
 **Tools Usage:**
 - See @.claude/tools/sequential-thinking.md for iterative analysis with hypothesis generation and verification
-- `Write`: For incremental spec saving after each stage
-- `Read`: For loading current spec state before updates
+- `Write`: For incremental spec updates after clarifications
+- `Read`: For loading current spec state
 
 **Template:** @.claude/templates/spec-template.md
 
 # Task
 
-Update the spec.md file by:
-1. Reading the existing spec.md from user input
-2. Conducting clarification dialogue with the user
-3. Analyzing responses using sequential-thinking
-4. Incrementally updating the specification
-5. Validating completeness before completion
+Refine the existing spec.md by:
+1. Reading and analyzing current spec.md content
+2. Identifying ambiguities within existing sections
+3. Conducting targeted clarification dialogue
+4. Updating ONLY existing template sections with clarifications
+5. Preserving all existing content while adding precision
 
 # Rules
 
 ## Critical Rule
 
-**NEVER make assumptions.** If information is not explicitly provided:
+**NEVER make assumptions.** If information is ambiguous:
 - DO NOT guess or use defaults
 - MUST ask user for clarification
 - WAIT for actual response before proceeding
+- ONLY update existing template sections
+- PRESERVE all existing content
 
 ## Dialogue Protocol
 
-### 1. When unclear aspect detected:
-- Stop and ask specific question with context
-- Provide options if applicable
+### 1. When ambiguity detected in existing content:
+- Identify which template section contains the ambiguity
+- Ask specific clarification question
+- Reference the existing text being clarified
 - Each question must be answerable with EITHER:
   * A short multiple-choice selection, OR
   * A one-word / short-phrase answer
 
 ### 2. After user response:
 - Analyze with `/mcp__sequential-thinking__sequentialthinking`
-- Check consistency, specificity, testability
+- Validate clarification fits within existing section
 
 ### 3. Confirm analysis:
-- Show analysis result to user
+- Show current text vs. clarified version
 - Wait for 'ok' confirmation
 
 ### 4. Save incrementally:
 - Read current SPEC_FILE
-- Update relevant section
+- Update the specific part within existing section
+- Preserve all other content
 - Write back to SPEC_FILE
-- Append clarification record: `- Q: <question> → A: <final answer>`
-- Confirm: "✅ Updated [section] in spec.md"
+- Log: "✅ Clarified [aspect] in [section name]"
 
-## Common Clarification Areas
+## Ambiguity Detection by Template Section
 
-### Structured Ambiguity Taxonomy:
+### In "Primary User Story":
+- Vague user roles ("users", "people", "someone")
+- Unclear goals ("manage stuff", "handle things")
+- Missing context (when/why they use feature)
 
-**Functional Scope & Behavior:**
-- Core user goals & success criteria
-- Explicit out-of-scope declarations
-- User roles / personas differentiation
+### In "Acceptance Scenarios":
+- Non-specific initial states ("system is ready")
+- Ambiguous actions ("user does something")
+- Vague outcomes ("it works correctly")
+- Missing edge conditions
 
-**Domain & Data Model:**
-- Entities, attributes, relationships
-- Identity & uniqueness rules
-- Lifecycle/state transitions
-- Data volume / scale assumptions
+### In "Edge Cases":
+- Generic descriptions ("error handling")
+- Unspecified behaviors ("handle appropriately")
+- Missing recovery actions
 
-**Interaction & UX Flow:**
-- Critical user journeys / sequences
-- Error/empty/loading states
-- Accessibility or localization notes
+### In "Functional Requirements":
+- Non-testable requirements ("should be fast")
+- Ambiguous MUST/SHOULD/MAY usage
+- Missing success criteria
+- Vague data specifications
 
-**Non-Functional Quality Attributes:**
-- Performance (latency, throughput targets)
-- Scalability (horizontal/vertical, limits)
-- Reliability & availability (uptime, recovery expectations)
-- Observability (logging, metrics, tracing signals)
-- Security & privacy (authN/Z, data protection, threat assumptions)
-- Compliance / regulatory constraints (if any)
+### In "UX Requirements":
+- Generic interactions ("user-friendly")
+- Unspecified feedback ("show message")
+- Missing error states
 
-**Integration & External Dependencies:**
-- External services/APIs and failure modes
-- Data import/export formats
-- Protocol/versioning assumptions
+### In "Key Entities":
+- Undefined relationships ("related to")
+- Missing cardinality (one-to-many?)
+- Vague attributes ("some data")
 
-**Edge Cases & Failure Handling:**
-- Negative scenarios
-- Rate limiting / throttling
-- Conflict resolution (e.g., concurrent edits)
-- Duplicate handling rules
-
-**Constraints & Tradeoffs:**
-- Technical constraints (language, storage, hosting)
-- Explicit tradeoffs or rejected alternatives
-
-**Terminology & Consistency:**
-- Canonical glossary terms
-- Avoided synonyms / deprecated terms
-
-**Completion Signals:**
-- Acceptance criteria testability
-- Measurable Definition of Done style indicators
+### In "Technical Context":
+- Unclear constraints ("performance limits")
+- Vague dependencies ("needs other system")
 
 # Execution Flow
 
-1. **Parse user description from input**
-   - If empty: ERROR "No feature description provided"
+1. **Load and parse existing spec.md**
+   - Read current spec content
+   - Parse all template sections
+   - Preserve formatting and structure
 
-2. **Extract key concepts**
-   - Identify: actors, actions, data, constraints
-   - Perform structured ambiguity scan using taxonomy
-   - Mark each category: Clear / Partial / Missing
+2. **Analyze existing content for ambiguities**
+   
+   For each template section with content:
+   - Scan for vague terms and placeholders
+   - Identify non-testable statements
+   - Find missing specificity
+   - Mark unclear relationships
 
-3. **Generate prioritized question queue:**
-   - Prioritize by (Impact * Uncertainty) heuristic
-   - Skip low-impact or plan-level details
-   - Only include questions that materially impact:
-     * Architecture or data modeling
-     * Task decomposition or test design
-     * UX behavior or operational readiness
-     * Compliance validation
+3. **Generate prioritized clarification queue:**
+   - Focus on high-impact ambiguities that affect:
+     * Test design and validation
+     * Implementation decisions
+     * User experience flows
+   - Skip minor wording issues
+   - Limit to MAX 5 questions
 
-4. **For each unclear aspect:**
-   - Execute dialogue_protocol
-   - Update spec incrementally after each answer
-   - Validate consistency after each write
+4. **For each identified ambiguity:**
+   
+   → **Extract context**
+   - Show existing text
+   - Identify specific unclear part
+   
+   → **Ask targeted question**
+   - Format: "In [Section Name], you wrote: '[existing text]'"
+   - Question: "What specifically does '[vague part]' mean?"
+   - Provide options if applicable
+   
+   → **Update with clarification**
+   - Replace vague text with specific answer
+   - Keep surrounding content intact
+   - Maintain section structure
 
-5. **Fill User Scenarios & Testing section**
-   - If no clear user flow: ERROR "Cannot determine user scenarios"
+5. **Validate after each update:**
+   - Check requirement testability improved
+   - Verify no new ambiguities introduced
+   - Ensure consistency with other sections
 
-6. **Generate Functional Requirements**
-   - Each requirement must be testable
-   - All ambiguities resolved through dialogue
+6. **Final validation:**
+   - All clarified text is specific and testable
+   - No contradictions between sections
+   - Template structure preserved
+   - Original intent maintained
 
-7. **Identify Key Entities**
-   - Extract entities, attributes, relationships from spec
-   - Define identity & uniqueness rules for each entity
-   - Map lifecycle/state transitions
-   - Document data volume / scale assumptions
-   - Validate entity relationships consistency
-   - Ensure all entities referenced in functional requirements are defined
+7. **Report completion:**
+   - List clarifications made by section
+   - Show before/after for each change
+   - Confirm: SUCCESS (spec refined and ready)
 
-8. **Run Review Checklist & Validation:**
-   - Total asked questions ≤ 5
-   - No contradictory statements remain
-   - Terminology consistency across sections
-   - Each inserted clarification minimal and testable
-   - No lingering vague placeholders
-   - If unclarified items: WARN "Spec has uncertainties"
-   - If implementation details: ERROR "Remove tech details"
+# Examples of Clarifications
 
-9. **Report completion:**
-   - Path to updated spec
-   - Display Review & Acceptance Checklist with validation results
-   - Display Coverage Summary Table:
-     * Category | Status (Resolved/Deferred/Clear/Outstanding)
-   - List sections touched
-   - Confirm: SUCCESS (spec ready for planning)
+## Before/After Examples:
+
+**Primary User Story:**
+- Before: "Users can manage their content"
+- Ask: "What type of users - admins, editors, or viewers?"
+- After: "Content editors can manage their published articles"
+
+**Functional Requirement:**
+- Before: "FR-001: System MUST be fast"
+- Ask: "What specific response time - under 2s, 500ms, 100ms?"
+- After: "FR-001: System MUST respond within 500ms"
+
+**Key Entity:**
+- Before: "User: represents someone in system"
+- Ask: "What defines a unique user - email, username, or ID?"
+- After: "User: represents account holder, unique by email"
 
 # Guidelines
 
-- Focus on WHAT users need and WHY (not HOW)
-- Think like a tester: every vague requirement needs clarification
-- Favor clarifications that reduce downstream rework risk
-- Preserve formatting: do not reorder unrelated sections; keep heading hierarchy intact
-- Avoid speculative tech stack questions unless the absence blocks functional clarity
-- If no meaningful ambiguities found, respond: "No critical ambiguities detected worth formal clarification" and suggest proceeding
+- Work ONLY within existing template sections
+- Maximum 5 clarification questions total
+- Preserve all existing valid content
+- Make minimal changes for maximum clarity
+- Keep original structure and formatting
+- Focus on testability and specificity
+- Never add new sections or categories
+
+# Error Conditions
+
+- ERROR if attempting to add new sections
+- ERROR if more than 5 clarifications needed
+- WARN if removing existing content without replacement
+- ERROR if breaking template structure
