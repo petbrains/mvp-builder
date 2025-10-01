@@ -1,5 +1,5 @@
 ---
-description: "Claification command for feature specifications."
+description: "Clarification command for feature specifications."
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking
 ---
 
@@ -25,7 +25,7 @@ Update the spec.md file by:
 
 # Rules
 
-## ⚠️ Critical Rule
+## Critical Rule
 
 **NEVER make assumptions.** If information is not explicitly provided:
 - DO NOT guess or use defaults
@@ -37,6 +37,9 @@ Update the spec.md file by:
 ### 1. When unclear aspect detected:
 - Stop and ask specific question with context
 - Provide options if applicable
+- Each question must be answerable with EITHER:
+  * A short multiple-choice selection, OR
+  * A one-word / short-phrase answer
 
 ### 2. After user response:
 - Analyze with `/mcp__sequential-thinking__sequentialthinking`
@@ -50,19 +53,59 @@ Update the spec.md file by:
 - Read current SPEC_FILE
 - Update relevant section
 - Write back to SPEC_FILE
+- Append clarification record: `- Q: <question> → A: <final answer>`
 - Confirm: "✅ Updated [section] in spec.md"
 
 ## Common Clarification Areas
 
-- User types and permissions
-- Data retention/deletion policies
-- Performance targets and scale
-- Error handling behaviors
-- Integration requirements
-- Security/compliance needs
-- Visual representation preferences
+### Structured Ambiguity Taxonomy:
+
+**Functional Scope & Behavior:**
+- Core user goals & success criteria
+- Explicit out-of-scope declarations
+- User roles / personas differentiation
+
+**Domain & Data Model:**
+- Entities, attributes, relationships
+- Identity & uniqueness rules
+- Lifecycle/state transitions
+- Data volume / scale assumptions
+
+**Interaction & UX Flow:**
+- Critical user journeys / sequences
+- Error/empty/loading states
+- Accessibility or localization notes
+
+**Non-Functional Quality Attributes:**
+- Performance (latency, throughput targets)
+- Scalability (horizontal/vertical, limits)
+- Reliability & availability (uptime, recovery expectations)
+- Observability (logging, metrics, tracing signals)
+- Security & privacy (authN/Z, data protection, threat assumptions)
+- Compliance / regulatory constraints (if any)
+
+**Integration & External Dependencies:**
+- External services/APIs and failure modes
+- Data import/export formats
+- Protocol/versioning assumptions
+
+**Edge Cases & Failure Handling:**
+- Negative scenarios
+- Rate limiting / throttling
+- Conflict resolution (e.g., concurrent edits)
 - Duplicate handling rules
-- System limits and boundaries
+
+**Constraints & Tradeoffs:**
+- Technical constraints (language, storage, hosting)
+- Explicit tradeoffs or rejected alternatives
+
+**Terminology & Consistency:**
+- Canonical glossary terms
+- Avoided synonyms / deprecated terms
+
+**Completion Signals:**
+- Acceptance criteria testability
+- Measurable Definition of Done style indicators
 
 # Execution Flow
 
@@ -71,30 +114,61 @@ Update the spec.md file by:
 
 2. **Extract key concepts**
    - Identify: actors, actions, data, constraints
+   - Perform structured ambiguity scan using taxonomy
+   - Mark each category: Clear / Partial / Missing
 
-3. **For each unclear aspect:**
+3. **Generate prioritized question queue:**
+   - Maximum 5 questions total
+   - Prioritize by (Impact * Uncertainty) heuristic
+   - Skip low-impact or plan-level details
+   - Only include questions that materially impact:
+     * Architecture or data modeling
+     * Task decomposition or test design
+     * UX behavior or operational readiness
+     * Compliance validation
+
+4. **For each unclear aspect:**
    - Execute dialogue_protocol
-   - Update spec incrementally
+   - Update spec incrementally after each answer
+   - Validate consistency after each write
 
-4. **Fill User Scenarios & Testing section**
+5. **Fill User Scenarios & Testing section**
    - If no clear user flow: ERROR "Cannot determine user scenarios"
 
-5. **Generate Functional Requirements**
+6. **Generate Functional Requirements**
    - Each requirement must be testable
    - All ambiguities resolved through dialogue
 
-6. **Identify Key Entities** (if data involved)
+7. **Identify Key Entities**
+   - Extract entities, attributes, relationships from spec
+   - Define identity & uniqueness rules for each entity
+   - Map lifecycle/state transitions
+   - Document data volume / scale assumptions
+   - Validate entity relationships consistency
+   - Ensure all entities referenced in functional requirements are defined
 
-7. **Run Review Checklist**
+8. **Run Review Checklist & Validation:**
+   - Total asked questions ≤ 5
+   - No contradictory statements remain
+   - Terminology consistency across sections
+   - Each inserted clarification minimal and testable
+   - No lingering vague placeholders
    - If unclarified items: WARN "Spec has uncertainties"
    - If implementation details: ERROR "Remove tech details"
 
-8. **Report completion:**
+9. **Report completion:**
+   - Path to updated spec
    - Display Review & Acceptance Checklist with validation results
-   - Display Execution Status with dialogue completion proof
+   - Display Coverage Summary Table:
+     * Category | Status (Resolved/Deferred/Clear/Outstanding)
+   - List sections touched
    - Confirm: SUCCESS (spec ready for planning)
 
 # Guidelines
 
 - Focus on WHAT users need and WHY (not HOW)
 - Think like a tester: every vague requirement needs clarification
+- Favor clarifications that reduce downstream rework risk
+- Preserve formatting: do not reorder unrelated sections; keep heading hierarchy intact
+- Avoid speculative tech stack questions unless the absence blocks functional clarity
+- If no meaningful ambiguities found, respond: "No critical ambiguities detected worth formal clarification" and suggest proceeding
