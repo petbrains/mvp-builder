@@ -118,7 +118,6 @@ Update the spec.md file by:
    - Mark each category: Clear / Partial / Missing
 
 3. **Generate prioritized question queue:**
-   - Maximum 5 questions total
    - Prioritize by (Impact * Uncertainty) heuristic
    - Skip low-impact or plan-level details
    - Only include questions that materially impact:
