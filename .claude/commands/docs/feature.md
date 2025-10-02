@@ -16,7 +16,7 @@ Each feature is saved as a separate folder with spec.md file, ready to be proces
 - `Write`: For saving individual spec files
 - `Bash`: For directory creation
 
-Each feature will be saved as: `./ai-docs/features/[feature-name]/spec.md`
+Each feature specification will be saved as: `./ai-docs/features/[feature-name]/spec.md`
 
 ## Input Modes
 
@@ -212,55 +212,11 @@ PRD Business Rules → Additional Scenarios
 - Technical foundations required → Map to specific feature folders
 - Sequential workflow steps → Identify prerequisite features
 
-**2.6 Spec File Template with Dynamic Content**
+**2.6 Spec File Template**
 
-Write to: `./ai-docs/features/[feature-folder-name]/spec.md`
+**Template:** @.claude/templates/spec-template.md
 
-```markdown
-# Feature Specification: [Generated Title]
-
-**Epic**: [Current Epic Name or "User-Defined Feature" for user input mode]
-**Created**: [Current Date]
-**Status**: Draft
-**Priority**: [High for Core, Medium for Supporting, etc.]
-**Input**: [Generated from PRD - [Specific PRD Section Name] OR "User Input"]
-
-## User Scenarios & Testing
-
-### Primary User Feature
-As a [extracted from PRD/user input], I want [specific functionality from PRD/user input] so that [business value from PRD/user input]
-
-### Acceptance Scenarios
-[Generated from PRD/user input flow steps - minimum 2, maximum 5]
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-2. **Given** [error condition], **When** [action], **Then** [error handling]
-
-### Edge Cases  
-[Generated from PRD/user input constraints and error conditions]
-- What happens when [boundary condition from PRD/user input]?
-- How does system handle [error scenario from PRD/user input]?
-
-## Requirements
-
-### Functional Requirements
-[Generated from PRD/user input "must" and "should" statements]
-- **FR-001**: System MUST [capability from PRD/user input]
-- **FR-002**: System MUST [validation from PRD/user input]
-
-### UX Requirements
-[Generated from PRD UX Details section/user input - interface preferences, design constraints, user experience specifications]
-- **UX-001**: Interface MUST [design requirement from PRD/user input]
-- **UX-002**: User experience SHOULD [UX constraint from PRD/user input]
-
-### Key Entities
-[Generated from PRD/user input nouns and data references]
-- **[Entity Name]**: [Description from PRD/user input, relationships]
-
-## Technical Context
-- **Tech Stack**: [Extracted from PRD Technical Requirements or inferred from user input]
-- **Dependencies**: [List specific feature folders that must be completed first, e.g., `user-authentication`, `database-setup`]
-- **Constraints**: [Extracted from PRD constraints section or user input]
-```
+Write spec file to: `./ai-docs/features/[feature-folder-name]/spec.md` using the template above with all placeholders filled from PRD content or user input.
 
 **2.7 Feature Validation Checklist**
 

@@ -6,7 +6,7 @@
 ## User Scenarios & Testing
 
 ### Primary User Story
-[Describe the main user journey in plain language - resolved through dialogue]
+[Describe the main user journey in plain language - resolved through dialogue or PRD]
 
 ### Acceptance Scenarios
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
@@ -35,7 +35,7 @@
 
 ### Technical Context
 - **Tech Stack**: [only if critical for understanding limitations]
-- **Dependencies**: [other features/modules]
+- **Dependencies**: [List specific feature folders that must be completed first, e.g., `user-authentication`, `database-setup`]
 - **Constraints**: [known limitations]
 
 ---
