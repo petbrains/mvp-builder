@@ -306,10 +306,61 @@ Total Features: [total]
 - Verify all feature folders and spec files exist and are valid markdown
 - For PRD Mode: Validate all PRD sections were processed
 - Count total features vs. expected from PRD analysis (or 1 for user input)
+- Confirm all required sections present in each spec
+- Verify at least 2 acceptance scenarios exist per feature
+- Check no [NEEDS CLARIFICATION] placeholders remain
 
-#### Stage 2: Completion Summary
+#### Stage 2: Cross-Feature Validation
 
-```dialogue
+Use @.claude/tools/sequential-thinking.md:
+Load all features → Analyze relationships → Detect issues → Generate report
+
+**Redundancy Detection:**
+- Check for title similarity (>70% match between features)
+- Identify functional overlap (same user action, different wording)
+- Find duplicate acceptance criteria (>50% identical scenarios)
+- Detect entity CRUD conflicts (multiple features claiming primary ownership)
+
+**Conflict Detection:**
+- Dependency conflicts: circular dependencies, missing targets, orphaned features
+- Entity conflicts: contradictory business rules, inconsistent definitions across features
+- Requirement conflicts: contradictory functional or UX requirements
+- Technical conflicts: incompatible approaches, contradictory API/database specs
+
+**Source Consistency:**
+- For mixed PRD + User Input: check for contradictions between sources
+- For PRD Mode: verify alignment with core proposition and constraints
+- For User Input Mode: validate internal consistency within single feature
+
+**Implementation Sequence Validation:**
+- Verify dependency chain has no circular references
+- Check foundation features come before dependent features
+- Validate FEATURES.md sequence reflects true dependencies
+
+**Validation Report:**
+Write validation log to `./ai-docs/features/validation-log.md` with findings.
+
+**Auto-Fix Capabilities:**
+- Dependency sequence reordering (if no circular dependencies)
+- Duplicate feature consolidation suggestions
+- Missing dependency target recommendations
+
+Present results:
+
+"🔍 Validation: [Complete/Warnings/Critical]
+- Redundancies: [count] | Conflicts: [count]
+📋 Report: ./ai-docs/features/validation-log.md"
+If warnings found (non-critical):
+⚠️ Warnings: [count issues]
+Top issues: [list top 3]
+Continue anyway? (yes/review/abort)"
+
+If critical issues found, present options:
+🚨 Critical Issues: [count blocking issues]
+Actions: 1) Resolve manually 2) Auto-fix 3) Regenerate 4) Abort"
+
+#### Stage 3: Completion Summary
+
 "✅ Feature Generation Complete!
 
 📊 Summary:
@@ -323,7 +374,7 @@ Total Features: [total]
 📋 View complete index: ./ai-docs/features/FEATURES.md
 
 Each feature folder contains spec.md ready for further processing."
-```
+
 
 ## Error Handling
 
