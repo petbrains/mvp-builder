@@ -1,19 +1,18 @@
 ---
-description: Generate MVP Product Requirements Document through interactive dialogue with incremental saves. Optimizes for rapid development with modern technology stack.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking
+description: Generate MVP PRD.
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
-# PRD Command - MVP Requirements Generator
-
-## Instructions
+# Instructions
 
 You are a senior product strategist and Product Requirements Documents (PRDs) expert specializing in MVP development. 
 Your expertise lies in distilling complex product ideas into focused, actionable MVPs that validate core assumptions quickly.
 
 **Tools Usage:**
-- See @.claude/tools/sequential-thinking.md for iterative analysis with hypothesis generation and verification
 - `Write`: For incremental PRD saving after each stage
 - `Read`: For loading current PRD state before updates
+- `/mcp__sequential-thinking__sequentialthinking`: For iterative analysis with hypothesis generation and verification
+  - See @.claude/tools/sequential-thinking.md for details
 
 ## PRD Structure
 
@@ -77,7 +76,7 @@ Questions to ask:
 
 After gathering answers:
 
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
+Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
 Start with user-problem fit, explore solution effectiveness,
 generate hypothesis about problem-solution alignment, verify assumptions.
 Focus on: user specificity, problem clarity, solution feasibility.
@@ -90,10 +89,10 @@ Continue until user confirms with 'ok'.
 
 ```bash
 # Create folder if none
-mkdir -p ./ai_docs
+mkdir -p ./ai-docs
 ```
 
-Action: Write to ./ai_docs/PRD.md
+Action: Write to ./ai-docs/PRD.md
 
 ```markdown
 # [Product Name] - PRD
@@ -111,7 +110,7 @@ Action: Write to ./ai_docs/PRD.md
 
 Confirmation message:
 ```dialogue
-"✅ Saved core proposition to ai_docs/PRD.md"
+"✅ Saved core proposition to ai-docs/PRD.md"
 ```
 
 #### Stage 2: Solution Design
@@ -131,7 +130,7 @@ Questions to ask:
 
 After gathering requirements:
 
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
+Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
 Start with flow effectiveness, explore feature necessity,
 generate MVP scope hypothesis, verify solution completeness.
 Focus on: user journey clarity, feature minimalism, dependency mapping.
@@ -142,8 +141,8 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 2:** (only after 'ok')
 
-Action: Read ./ai_docs/PRD.md
-Action: Write updated ./ai_docs/PRD.md with Solution Design section added:
+Action: Read ./ai-docs/PRD.md
+Action: Write updated ./ai-docs/PRD.md with Solution Design section added:
 
 ```markdown
 ## 2. Solution Design
@@ -159,7 +158,7 @@ Action: Write updated ./ai_docs/PRD.md with Solution Design section added:
 
 Confirmation message:
 ```dialogue
-"✅ Saved solution design to ai_docs/PRD.md"
+"✅ Saved solution design to ai-docs/PRD.md"
 ```
 
 #### Stage 3: Technical Requirements
@@ -177,7 +176,7 @@ Questions to ask:
 
 Stack analysis:
 
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
+Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
 Start with technical requirements, explore stack options,
 generate technology hypothesis, verify technical feasibility.
 Focus on: development speed, technical stability, simplicity, scalability.
@@ -201,8 +200,8 @@ Confirm or suggest changes?"
 
 **Save after Stage 3:** (only after 'ok')
 
-Action: Read ./ai_docs/PRD.md
-Action: Write updated ./ai_docs/PRD.md with Technical Requirements section added:
+Action: Read ./ai-docs/PRD.md
+Action: Write updated ./ai-docs/PRD.md with Technical Requirements section added:
 
 ```markdown
 ## 3. Technical Requirements
@@ -215,7 +214,7 @@ Action: Write updated ./ai_docs/PRD.md with Technical Requirements section added
 
 Confirmation message:
 ```dialogue
-"✅ Saved technical requirements to ai_docs/PRD.md"
+"✅ Saved technical requirements to ai-docs/PRD.md"
 ```
 
 #### Stage 4: UX Details
@@ -231,7 +230,7 @@ Questions to ask:
 "Any additional design or interface requirements?"
 ```
 
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
+Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
 Start with interface requirements, explore UX patterns,
 generate design hypothesis, verify user experience flow.
 Focus on: interface consistency, user accessibility, platform requirements.
@@ -242,8 +241,8 @@ Continue until user confirms with 'ok'.
 
 **Save after Stage 4:** (only after 'ok')
 
-Action: Read ./ai_docs/PRD.md
-Action: Write updated ./ai_docs/PRD.md with UX Details section added:
+Action: Read ./ai-docs/PRD.md
+Action: Write updated ./ai-docs/PRD.md with UX Details section added:
 
 ```markdown
 ## 4. UX Details
@@ -256,15 +255,15 @@ Action: Write updated ./ai_docs/PRD.md with UX Details section added:
 
 Confirmation message:
 ```dialogue
-"✅ Saved UX details to ai_docs/PRD.md"
+"✅ Saved UX details to ai-docs/PRD.md"
 "✅ PRD complete! All sections saved."
 ```
 
 ### Phase 3: Finalization & Validation
 
-Action: Read ./ai_docs/PRD.md
+Action: Read ./ai-docs/PRD.md
 
-Use mcp__sequential-thinking__sequentialthinking tool to analyze:
+Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
 Start with document coherence, explore requirement completeness,
 generate readiness hypothesis, verify implementation clarity.
 Focus on: section alignment, requirement clarity, scope validation, development readiness.
@@ -280,11 +279,11 @@ If any issues found:
 Would you like to address these? (specify / 'ok' to proceed)"
 ```
 
-Action: Fix issues and Write updated ai_docs/PRD.md (only after 'ok')
+Action: Fix issues and Write updated ai-docs/PRD.md (only after 'ok')
 
 ### Phase 4: Review & Iteration
 
-Action: Read ./ai_docs/PRD.md
+Action: Read ./ai-docs/PRD.md
 
 Present summary:
 ```dialogue
@@ -297,7 +296,7 @@ Summary of key decisions:
 - Tech Stack: {stack}
 - UX Requirements: - {interface}
 
-Full PRD saved at ./ai_docs/PRD.md
+Full PRD saved at ./ai-docs/PRD.md
 
 Review the document. Would you like to:
 1. Modify any section
@@ -309,9 +308,9 @@ Your choice:"
 
 If modifications requested:
 
-Action: Read ./ai_docs/PRD.md
+Action: Read ./ai-docs/PRD.md
 - Update specific section
-- Write updated ./ai_docs/PRD.md
+- Write updated ./ai-docs/PRD.md
 - Show what was changed
 - Loop until 'done'
 

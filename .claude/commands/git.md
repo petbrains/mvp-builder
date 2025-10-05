@@ -1,16 +1,17 @@
 ---
+description: Git Workflow
 allowed-tools: Bash(git:*)
 argument-hint: [prompt]
-description: Implements a git workflow using Bash commands
 ---
 
-## Your task
+# Instructions
 
-Based on the git workflow rules and instructions in @.claude/tools/git.md, perform the requested git operations using Bash commands based on [prompt].
+Based on the git workflow rules and instructions perform the requested git operations using Bash commands based on [prompt].
+
+**Template:** @.claude/templates/git-template.md
 
 **Important:** Follow the detailed instructions and examples for all git operations, branch naming conventions, commit message formats, and safety checks.
 
----
 
 ## No Prompt / Help Mode
 
@@ -23,7 +24,6 @@ If you run `/git` with **no prompt** (i.e., just `/git` or only whitespace), Cla
 - `/git create commit`
 - `/git push changes`
 
----
 
 ## Interactive Mode
 
@@ -41,7 +41,6 @@ Which one matches your intent? (or provide more details)"
 
 This prevents incorrect assumptions and ensures the right workflow is chosen.
 
----
 
 ## Protected Branch Policy
 
@@ -49,7 +48,6 @@ The command **refuses to push** directly to any of the following:
 
 - `main`, `master`, `release/*`, `hotfix/*`, `prod/*`
 
----
 
 ## Security & Compliance
 
@@ -65,7 +63,6 @@ Enhanced secret detection patterns:
 - Database connection strings
 - Cloud service credentials
 
----
 
 ## Safety Guards
 
@@ -74,14 +71,12 @@ Enhanced secret detection patterns:
 - Warn or block on **large binary** additions without LFS.
 - Refuse to commit files that look like **secrets**.
 
----
 
 ## Troubleshooting
 
 - **Branch name rejected:** ensure it matches the regex policy above.
 - **Checks failing:** fix lint/tests/build locally and re-run `/git`.
 
----
 
 ## Conflict Resolution
 
@@ -95,7 +90,6 @@ When merge conflicts occur, /git provides smart resolution assistance:
 - Preview mode shows merge result before applying
 - Interactive guidance for complex conflicts with context
 
----
 
 ## Examples
 
@@ -132,6 +126,4 @@ When merge conflicts occur, /git provides smart resolution assistance:
     </commits>
   </example>
 ```
-
----
 

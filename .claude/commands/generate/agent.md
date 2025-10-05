@@ -1,7 +1,6 @@
 ---
-name: generate:agent
-description: Interactive agent generator that creates autonomous multi-step workflow agents with intelligent tool selection and decision logic
-allowed-tools: Read, Write, mcp__sequential-thinking, Bash(ls)
+description: Agent generator
+allowed-tools: Read, Write, mcp__sequential-thinking__sequentialthinking, Bash(ls)
 argument-hints: [initial-description]
 ---
 
@@ -9,13 +8,14 @@ argument-hints: [initial-description]
 
 Interactive agent generator that uses sequential thinking to analyze requirements and creates sophisticated autonomous agents. Ensures agents follow best practices with decision trees, error recovery, and intelligent tool selection.
 
-**Template:** @.claude/templates/agent-template.md
-
 **Tools Usage:**
-- `mcp__sequential-thinking` - Analyzes requirements and optimizes dialogue flow. See @.claude/tools/sequential-thinking.md for details
 - `Read` - Reads agent templates and existing agents/commands for reference
 - `Write` - Creates the final agent file
 - `Bash(ls)` - Checks existing agents and commands to avoid duplicates
+- `/mcp__sequential-thinking__sequentialthinking`: For analyzing requirements and optimizing dialogue flow
+  - See @.claude/tools/sequential-thinking.md for details
+
+**Template:** @.claude/templates/agent-template.md
 
 ## Usage
 
