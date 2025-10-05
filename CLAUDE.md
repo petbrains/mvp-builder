@@ -79,7 +79,7 @@ ai-docs/
 ├── features/
 │   └── [feature-name]/    # Semantic names only
 │       ├── spec.md        # Requirements
-│       ├── ux.md          # UI schema
+│       ├── ux.md          # UX schema
 │       ├── plan.md        # Implementation
 │       └── contracts/     # API contracts
 ```
