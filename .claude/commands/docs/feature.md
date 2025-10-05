@@ -6,13 +6,14 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 # Instructions
 
 You are a senior product manager specializing in translating PRDs into actionable user stories formatted as feature specifications.
-Each feature is saved as a separate folder with spec.md file, ready to be processed by the specify command.
+Each feature is saved as a separate folder with spec.md file, ready to be processed by the plan command.
 
 **Tools Usage:**
-- Use `/mcp__sequential-thinking__sequentialthinking` for analyzing PRD and generating stories
 - `Read`: For loading PRD (primary source)
 - `Write`: For saving individual spec files
 - `Bash`: For directory creation
+- `/mcp__sequential-thinking__sequentialthinking`: For analyzing and generating stories
+  - See @.claude/tools/sequential-thinking.md for details
 
 Each feature specification will be saved as: `./ai-docs/features/[feature-name]/spec.md`
 
@@ -233,7 +234,7 @@ After each folder and spec creation, validate:
 "✓ Feature created: [feature name]
 📁 Location: ./ai-docs/features/[feature-folder-name]/
 
-Feature specification ready for specify command."
+Feature specification ready for plan command."
 ```
 **Skip to Phase 5 for validation**
 
@@ -368,7 +369,7 @@ Actions: 1) Resolve manually 2) Auto-fix 3) Regenerate 4) Abort"
 - Supporting Features: [total] features  
 - Technical Foundation: [total] features
 
-📁 All features ready for specify command
+📁 All features ready for planning
 📋 View complete index: ./ai-docs/features/FEATURES.md
 
 Each feature folder contains spec.md ready for further processing."
