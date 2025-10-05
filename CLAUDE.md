@@ -1,114 +1,103 @@
 # CLAUDE.md
 
-Technical execution settings and rules for MVP building.
+## Required Context
 
-## Project Structure
+Load these documents when starting work:
+- @ai-docs/PRD.md - product vision, audience, problem
+- @ai-docs/AGENTS.md - tech stack, architecture, conventions
+- @ai-docs/FEATURES.md - feature map, dependencies, priorities
+- @README.md - current implementation status
 
-### AI-Generated Documents
+## Development Rules
 
-All documentation for ai developvent in folder `ai-docs/`:
+### Focus
+- Single value path: one critical journey only
+- One screen = one primary action
+- Document Non-Goals explicitly in PRD
+
+### Specifications First
+- No spec → no task
+- Lock contracts in @ai-docs/features/[name]/contracts/
+- Use Given/When/Then for acceptance criteria
+- ADR for irreversible architectural decisions
+
+### Code Standards
+- Atomic tasks: one task = one artifact
+- Product stays runnable after each change
+- Feature flags for new functionality
+- Reversibility: prefer undoable choices
+- Max 300 lines/file, 80 lines/function
+- Line length: 100-120 characters
+- No "god classes" - split by concern
+- Must pass lint/type-check before done
+
+### Error Handling
+- Comprehensive errors with actionable messages
+- Never fail silently
+- Never expose secrets/tokens/keys
+- Use `.env.example` with placeholders
+- Default to least-privilege permissions
+
+## File Operations
+
+- Check existence before reading - HALT if missing
+- Never overwrite without confirmation
+- Create parent directories automatically
+- Use relative paths from {root}
+- UTF-8 encoding
+
+## UI/UX Rules
+
+- Sane defaults, minimal fields
+- Cover states: empty, loading, error, success
+- Clear copy over decorative effects
+
+## Validation & Errors
+
+**Block and request clarification when:**
+- Requirements ambiguous
+- Multiple valid approaches exist
+- Architecture decisions needed
+- Validation fails
+
+**If operation fails:**
+1. HALT immediately
+2. Report what succeeded
+3. Provide error context
+4. Ask how to proceed
+
+## AI Documentation Structure
 
 ```
 ai-docs/
 ├── PRD.md                 # Product Requirements
-├── README.md              # Project overview and purpose
-├── AGENTS.md              # Project structure, naming conventions, and architecture decisions
-├── FEATURES.md            # Features development map (epics, priorities)
+├── README.md              # Project overview
+├── AGENTS.md              # Architecture decisions
+├── FEATURES.md            # Development roadmap
 ├── features/
-│   └── [feature-name]/    # Semantic names, no numbering
-│       ├── spec.md        # Feature specification
-│       ├── ux.md          # Ux schema
-│       ├── plan.md        # Implementation plan
-│       ├── tasks.md       # Task breakdown
-│       └── contracts/     # API contracts (conditional)
-```
-
-**Reference when implementing:**
-- `@ai-docs/PRD.md` → `@ai-docs/features/FEATURES.md` → `@ai-docs/features/[name]/spec.md`
-
-## Code Writing Rules
-
-### File & Function Size
-- **Maximum 300-500 lines per file**
-- **Maximum 80 lines per function**
-- Split larger implementations into logical modules
-- Exception: Generated files, configs, data files
-
-### Code Quality Standards
-- Line length: 100-120 characters max
-- No monolithic "god classes" - split by concern
-- All code must lint/type-check before marking done
-- Small, testable increments - save after logical units
-- Test components before integration
-- Document non-obvious "why" decisions inline
-- Cite sources: `[Source: path/to/file.md#section]`
-
-### Error Handling & Security
-- Comprehensive error handling with actionable messages
-- Never fail silently
-- **Never expose secrets/tokens/keys in output**
-- Use `.env.example` with placeholders, never real values
-- Default to least-privilege permissions
-
-### Performance Constraints
-- Avoid O(n²)+ complexity unless justified
-- Files >100MB: use streaming, never load into memory
-- Guard concurrency - document thread/async assumptions
-
-## File Operations
-
-### Reading
-- Verify existence before reading - HALT if missing
-- Use `@path/to/file.md` notation
-- Skip re-reading files already in context (document this)
-
-### Writing
-- Never overwrite without confirmation (unless command specifies)
-- Create parent directories automatically
-- UTF-8 encoding, atomic writes
-
-### Paths
-- Use relative paths from `{root}`
-- Never hardcode absolute paths
-
-## Validation & Error Recovery
-
-**Block and request clarification when:**
-- Requirements ambiguous or files/config missing
-- Multiple valid approaches exist or architecture affected
-- File size would exceed limits or validation fails
-
-**Before creating files:** Validate inputs, check naming, verify paths
-
-**After operations:** Verify success, list all created/modified files
-
-**If operation fails:**
-```
-1. HALT immediately
-2. Report what succeeded before failure
-3. Provide error context and remediation steps
-4. Ask how to proceed
-```
-
-## Integration with Project Workflow
-
-**Reference Chain:**
-```
-CLAUDE.md → README.md → AGENTS.md → ai-docs/PRD.md → ai-docs/features/ → feature specs
-  (how)      (what)      (structure)    (product)        (index)           (implementation)
+│   └── [feature-name]/    # Semantic names only
+│       ├── spec.md        # Requirements
+│       ├── ux.md          # UI schema
+│       ├── plan.md        # Implementation
+│       └── contracts/     # API contracts
 ```
 
 ## Session Continuity
 
-**Between sessions:** Store decisions/context in code comments, preserve implementation notes
+Between sessions: Store decisions in code comments
+Session resume: Verify state → confirm plan → load context
 
-**Session resume:** Review previous notes, verify state, confirm plan, load context
-
-## Output Formatting
+## Output Format
 
 - Lead with status/answer
-- Show reasoning for complex decisions
-- List artifacts with full paths: `@path/to/file`
+- List created/modified files with full paths
 - End with clear next action
 
----
+## Anti-Rules
+
+- "Just in case" features
+- Changes without spec updates  
+- Secrets in code/logs
+- Long-lived branches
+- Big PRs, dump commits
+- Hardcoded absolute paths
