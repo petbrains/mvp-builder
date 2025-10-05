@@ -1,6 +1,5 @@
 ---
-name: self-improve
-description: Workflow optimization command that analyzes Claude Code patterns and suggests automated solutions
+description: Prompt optimization by Workflow
 allowed-tools: Read, Bash (*), mcp__sequential-thinking__sequentialthinking
 argument-hints: [prompt]
 ---
@@ -9,11 +8,11 @@ argument-hints: [prompt]
 
 Analyzes workflow patterns to identify automation opportunities through commands, agents, and optimizations.
 
-**Template:** @.claude/templates/prompt-template.md
-
 **Tools Usage:**
 - `/mcp__sequential-thinking__sequentialthinking`: For iterative analysis with hypothesis generation and verification.
   - See @.claude/tools/sequential-thinking.md for details
+
+**Template:** @.claude/templates/prompt-template.md
 
 ## Usage
 

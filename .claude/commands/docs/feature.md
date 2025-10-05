@@ -1,11 +1,9 @@
 ---
-description: Generate user features as separate folders with spec files compatible with specify command. Each feature becomes an individual folder with specification.
+description: Generate feature specifications.
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
-# Features Command - PRD-Based Story Generator with Folder Separation
-
-## Instructions
+# Instructions
 
 You are a senior product manager specializing in translating PRDs into actionable user stories formatted as feature specifications.
 Each feature is saved as a separate folder with spec.md file, ready to be processed by the specify command.
