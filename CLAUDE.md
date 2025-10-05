@@ -84,8 +84,12 @@ ai-docs/
 
 ## Session Continuity
 
-Between sessions: Store decisions in code comments
-Session resume: Verify state → confirm plan → load context
+Use searchable comment prefixes in code:
+- AICODE-NOTE: critical implementation details for next session
+- AICODE-TODO: pending tasks to complete
+
+Before modifying code: grep for AICODE- prefixes
+After completing work: add AICODE-NOTE for complex logic
 
 ## Output Format
 
