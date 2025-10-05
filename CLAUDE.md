@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+Code execution rules and MVP development standards.
+
 ## Required Context
 
 Load these documents when starting work:
