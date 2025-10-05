@@ -8,7 +8,7 @@ argument-hint: [prompt]
 
 Based on the git workflow rules and instructions perform the requested git operations using Bash commands based on [prompt].
 
-**Template:** @.claude/templates/git-template
+**Template:** @.claude/templates/git-template.md
 
 **Important:** Follow the detailed instructions and examples for all git operations, branch naming conventions, commit message formats, and safety checks.
 
