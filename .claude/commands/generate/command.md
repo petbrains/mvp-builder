@@ -1,7 +1,7 @@
 ---
 name: generate:command
 description: Interactive command generator with sequential thinking analysis for creating optimized commands
-allowed-tools: Read, Write, mcp__sequential-thinking
+allowed-tools: Read, Write, mcp__sequential-thinking__sequentialthinking
 argument-hint: [initial-description]
 ---
 
@@ -12,9 +12,10 @@ Interactive command generator that uses sequential thinking to analyze requireme
 **Template:** @.claude/templates/command-template.md
 
 **Tools Usage:**
-- `mcp__sequential-thinking` - Analyzes initial input and optimizes question flow. See instructions here - @.claude/tools/sequential-thinking.md
 - `Read` - Reads command template and existing commands for reference
 - `Write` - Creates the final command file
+- `/mcp__sequential-thinking__sequentialthinking`: For analyzing requirements and optimizing dialogue flow
+  - See @.claude/tools/sequential-thinking.md for details
 
 ## Usage
 

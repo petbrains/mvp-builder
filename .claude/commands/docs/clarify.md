@@ -1,6 +1,6 @@
 ---
 description: "Clarification command for feature specifications."
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Instructions

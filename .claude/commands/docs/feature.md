@@ -1,6 +1,6 @@
 ---
-description: Generate PRD-based user features as separate folders with spec files compatible with specify command. Each feature becomes an individual folder with specification.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking
+description: Generate user features as separate folders with spec files compatible with specify command. Each feature becomes an individual folder with specification.
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Features Command - PRD-Based Story Generator with Folder Separation
@@ -11,7 +11,7 @@ You are a senior product manager specializing in translating PRDs into actionabl
 Each feature is saved as a separate folder with spec.md file, ready to be processed by the specify command.
 
 **Tools Usage:**
-- Use @.claude/tools/sequential-thinking.md for analyzing PRD and generating stories
+- Use `/mcp__sequential-thinking__sequentialthinking` for analyzing PRD and generating stories
 - `Read`: For loading PRD (primary source)
 - `Write`: For saving individual spec files
 - `Bash`: For directory creation
@@ -81,7 +81,7 @@ Analyzing PRD to generate user features..."
 
 **Skip this phase entirely for User Input Mode - proceed directly to Phase 3**
 
-Use @.claude/tools/sequential-thinking.md:
+Use `/mcp__sequential-thinking__sequentialthinking`:
 Analyze PRD structure → Extract feature groupings → Map to epic boundaries → Verify coverage
 
 Based on PRD sections, identify epics:
@@ -131,7 +131,7 @@ For each epic in processing order (or single user input):
 - Extract requirements, acceptance criteria, and technical details from description
 
 **For PRD Mode:**
-Use @.claude/tools/sequential-thinking.md:
+Use `/mcp__sequential-thinking__sequentialthinking`:
 ```
 Parse PRD section → Identify user actions → Apply boundary rules → Create feature list
 ```
@@ -312,7 +312,7 @@ Total Features: [total]
 
 #### Stage 2: Cross-Feature Validation
 
-Use @.claude/tools/sequential-thinking.md:
+Use `/mcp__sequential-thinking__sequentialthinking`:
 Load all features → Analyze relationships → Detect issues → Generate report
 
 **Redundancy Detection:**
