@@ -1,58 +1,30 @@
 # CLAUDE.md
 
-Technical execution settings and rules for Claude Code when working in this repository.
-
-## Execution Framework
-
-### Core Approach: Few-shot + CoT + Self-Consistency + ReAct
-
-**Chain of Thought (CoT)**
-- Use `@.claude/tools/sequential-thinking.md` for complex decisions
-- Show step-by-step reasoning, document inline
-
-**Self-Consistency**
-- Generate multiple reasoning paths for critical decisions
-- Validate conclusions, question assumptions
-
-**ReAct (Reasoning + Acting)**
-- Gather info from: user knowledge, docs (README.md, AGENTS.md), implementation notes
-- Block until requirements confirmed - never assume, always verify
-
-### Session Initialization
-
-**On `/init` or session start:**
-1. Read `README.md` 
-2. Load `AGENTS.md` (when available)
-3. Review implementation notes/comments
-4. Confirm context with user
-
-**Dependencies:** Track explicitly, document justifications, verify compatibility, update docs
+Technical execution settings and rules for MVP building.
 
 ## Project Structure
 
 ### AI-Generated Documents
 
-All documentation in `ai-docs/`:
+All documentation for ai developvent in folder `ai-docs/`:
 
 ```
 ai-docs/
-├── PRD.md                       # Product Requirements
+├── PRD.md                 # Product Requirements
+├── README.md              # Project overview and purpose
+├── AGENTS.md              # Project structure, naming conventions, and architecture decisions
+├── FEATURES.md            # Features development map (epics, priorities)
 ├── features/
-│   ├── FEATURES.md              # Single source of truth (epics, priorities)
-│   └── [feature-name]/          # Semantic names, no numbering
-│       ├── spec.md              # Feature specification
-│       ├── plan.md              # Implementation plan (command-generated)
-│       ├── tasks.md             # Task breakdown (command-generated)
-│       └── contracts/           # API contracts (conditional)
+│   └── [feature-name]/    # Semantic names, no numbering
+│       ├── spec.md        # Feature specification
+│       ├── ux.md          # Ux schema
+│       ├── plan.md        # Implementation plan
+│       ├── tasks.md       # Task breakdown
+│       └── contracts/     # API contracts (conditional)
 ```
 
 **Reference when implementing:**
 - `@ai-docs/PRD.md` → `@ai-docs/features/FEATURES.md` → `@ai-docs/features/[name]/spec.md`
-
-**Configuration:**
-- `.claude/commands/` - workflow commands
-- `.claude/templates/` - templates
-- `AGENTS.md` - full structure & conventions
 
 ## Code Writing Rules
 
@@ -99,15 +71,6 @@ ai-docs/
 - Use relative paths from `{root}`
 - Never hardcode absolute paths
 
-## Template & Workflow Rules
-
-- **Templates are immutable** - use exactly as defined in `.claude/templates/`
-- Fill all required sections, replace `[BRACKETS]` or `{CURLY_BRACES}`
-- **NEVER skip steps** unless marked conditional
-- Complete each step fully - if fails, HALT immediately
-- Execute pre/post-flight checks when specified
-- For conditional logic: evaluate explicitly, log which path taken
-
 ## Validation & Error Recovery
 
 **Block and request clarification when:**
@@ -135,8 +98,6 @@ CLAUDE.md → README.md → AGENTS.md → ai-docs/PRD.md → ai-docs/features/ �
   (how)      (what)      (structure)    (product)        (index)           (implementation)
 ```
 
-**Commands:** Follow specs in `.claude/commands/` exactly, use templates without modification, save incrementally during dialogue
-
 ## Session Continuity
 
 **Between sessions:** Store decisions/context in code comments, preserve implementation notes
@@ -151,7 +112,3 @@ CLAUDE.md → README.md → AGENTS.md → ai-docs/PRD.md → ai-docs/features/ �
 - End with clear next action
 
 ---
-
-**For project structure, naming conventions, and architecture decisions, see `AGENTS.md`.**
-
-**For project overview and purpose, see `README.md`.**
