@@ -33,6 +33,13 @@ Load these documents when starting work:
 - No "god classes" - split by concern
 - Must pass lint/type-check before done
 
+### Naming Conventions
+- Files: descriptive names matching content (user-auth.ts not auth.ts)
+- Functions: verb-noun pattern (validateUser not validate)
+- Variables: clear intent (userEmail not email, isLoading not loading)
+- No abbreviations unless standard (URL, API)
+- Semantic folder structure matching mental model
+
 ### Error Handling
 - Comprehensive errors with actionable messages
 - Never fail silently
