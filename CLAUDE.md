@@ -47,6 +47,12 @@ Load these documents when starting work:
 - Use `.env.example` with placeholders
 - Default to least-privilege permissions
 
+### Test Failures
+- When test fails: read terminal logs fully
+- Analyze actual error, not symptoms
+- Fix root cause, never add mocks/stubs
+- If unclear: trace execution step-by-step
+
 ## File Operations
 
 - Check existence before reading - HALT if missing
