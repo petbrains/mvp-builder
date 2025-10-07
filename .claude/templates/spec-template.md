@@ -42,6 +42,7 @@
 
 ## Review & Acceptance Checklist
 *GATE: Automated checks run during main() execution*
+** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final spec output.**
 
 ### Content Quality
 - [ ] Focused on user value and business needs
@@ -64,6 +65,7 @@
 
 ## Execution Status
 *Updated by main() during processing*
+** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final spec output.**
 
 - [ ] User description parsed
 - [ ] Key concepts extracted
