@@ -36,7 +36,7 @@ If user provides a feature description in their message:
 - Skip to Stage 2 with user input as content
 
 **1.2 Load and Validate PRD (if no user input)**
-Action: Read ./ai-docs/PRD.md
+Action: Read @./ai-docs/PRD.md
 
 If PRD not found:
 ```dialogue
@@ -267,7 +267,7 @@ As each feature is created in Phase 3, append to index data structure for effici
 
 #### Stage 2: Final FEATURES.md File Generation
 
-After all epics processed (or single feature for user input), write FEATURES.md file to `./ai-docs/features/FEATURES.md`:
+After all epics processed (or single feature for user input), write FEATURES.md file to `./ai-docs/FEATURES.md`:
 
 ```markdown
 # Feature Index
@@ -370,7 +370,7 @@ Actions: 1) Resolve manually 2) Auto-fix 3) Regenerate 4) Abort"
 - Technical Foundation: [total] features
 
 📁 All features ready for planning
-📋 View complete index: ./ai-docs/features/FEATURES.md
+📋 View complete index: ./ai-docs/FEATURES.md
 
 Each feature folder contains spec.md ready for further processing."
 
