@@ -267,33 +267,11 @@ As each feature is created in Phase 3, append to index data structure for effici
 
 #### Stage 2: Final FEATURES.md File Generation
 
-After all epics processed (or single feature for user input), write FEATURES.md file to `./ai-docs/FEATURES.md`:
-
-```markdown
-# Feature Index
-
-Generated from: ./ai-docs/PRD.md or User Input
-Last updated: [timestamp]
-Total Features: [total]
-
-## Feature Summary by Epic
-
-### Epic 1: Core Features ([total] features)
-
-- **[Auto-Generated Title]**
-  - Priority: [Auto-Assigned]
-  - Folder: `[feature-folder-name]`
-  - Dependencies: [List of required feature folders]
-  - Source: PRD Section "[section name]" or User Input
-
-[Continue for all features...]
-
-## Implementation Sequence
-**Recommended Order:** [Auto-generated based on feature dependencies]
-1. [Title] (Foundation)
-2. [Title] (Depends on: [feature-folder-name])
-[...]
-```
+After all epics processed (or single feature for user input):
+Use `/mcp__sequential-thinking__sequentialthinking`:
+Load all features → Analyze relationships → Detect issues → Generate FEATURES.md file based on tamplate.
+**Template**: @.claude/templates/features-template.md
+File Location: `./ai-docs/FEATURES.md`
 
 ### Phase 5: Final Validation and Cleanup
 
@@ -336,27 +314,10 @@ Load all features → Analyze relationships → Detect issues → Generate repor
 - Check foundation features come before dependent features
 - Validate FEATURES.md sequence reflects true dependencies
 
-**Validation Report:**
-Write validation log to `./ai-docs/features/validation-log.md` with findings.
-
 **Auto-Fix Capabilities:**
 - Dependency sequence reordering (if no circular dependencies)
 - Duplicate feature consolidation suggestions
 - Missing dependency target recommendations
-
-Present results:
-
-"🔍 Validation: [Complete/Warnings/Critical]
-- Redundancies: [count] | Conflicts: [count]
-📋 Report: ./ai-docs/features/validation-log.md"
-If warnings found (non-critical):
-⚠️ Warnings: [count issues]
-Top issues: [list top 3]
-Continue anyway? (yes/review/abort)"
-
-If critical issues found, present options:
-🚨 Critical Issues: [count blocking issues]
-Actions: 1) Resolve manually 2) Auto-fix 3) Regenerate 4) Abort"
 
 #### Stage 3: Completion Summary
 
