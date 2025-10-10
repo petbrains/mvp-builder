@@ -85,7 +85,7 @@ Check section content against these patterns:
 
 **Technical Context:**
 - Unclear constraints: "performance limits"
-- Vague dependencies: "needs other system"
+- Vague tech stack: "modern framework"
 
 ### 2.2 Collect Clarifications
 If ambiguities found:
