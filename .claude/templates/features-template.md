@@ -22,9 +22,6 @@ Total Features: [TOTAL_COUNT]
 
 **Recommended Order:** [SEQUENCE_DESCRIPTION]
 
-### Dependency Graph
-[DEPENDENCY_TREE_VISUALIZATION]
-
 ### Phase 1: [PHASE_NAME] ([PHASE_DESCRIPTION])
 1. **[FEATURE_TITLE]** - [JUSTIFICATION]
 2. **[FEATURE_TITLE]** - Depends on: `[DEPENDENCY_FOLDERS]`
