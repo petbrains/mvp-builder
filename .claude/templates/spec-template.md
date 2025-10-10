@@ -41,7 +41,7 @@
 ---
 
 ## Review & Acceptance Checklist
-*GATE: Automated checks run during main() execution*
+*GATE: Automated checks*
 ** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final spec.md output.**
 
 ### Content Quality
@@ -60,19 +60,5 @@
 - [ ] Primary user story clearly described
 - [ ] Minimum 2 acceptance scenarios in Given/When/Then format
 - [ ] Edge cases documented
-
----
-
-## Execution Status
-*Updated by main() during processing*
-** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final spec output.**
-
-- [ ] User description parsed
-- [ ] Key concepts extracted
-- [ ] Ambiguities resolved
-- [ ] User scenarios defined
-- [ ] Requirements generated
-- [ ] Entities identified
-- [ ] Review checklist passed
 
 ---
