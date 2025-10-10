@@ -57,31 +57,22 @@ Total Features: [TOTAL_COUNT]
 - [ ] No duplicate acceptance criteria across features
 - [ ] Entity CRUD ownership clearly defined
 
-### Conflict Detection
+### Dependency Validation
 - [ ] No circular dependencies
 - [ ] All dependency targets exist
 - [ ] No orphaned features
+- [ ] Implementation sequence is achievable
+
+### Consistency Check
 - [ ] Entity definitions consistent across features
 - [ ] No contradictory business rules
 - [ ] Requirements don't contradict between features
 - [ ] Technical approaches are compatible
-
-### Source Consistency
-- [ ] All features align with PRD core proposition
-- [ ] Technical constraints respected
-- [ ] User Input features don't contradict PRD (if mixed)
-
-### Implementation Validation
-- [ ] Dependency chain has no circular references
-- [ ] Foundation features ordered before dependent features
-- [ ] Implementation sequence is achievable
-- [ ] All critical features have clear path to completion
+- [ ] All features align with core proposition
 
 ### Content Completeness
-- [ ] All PRD sections processed into features
 - [ ] Each epic has at least one feature
-- [ ] All features have spec.md files
-- [ ] No missing dependencies
 - [ ] Priority levels assigned to all features
+- [ ] All critical features have clear path to completion
 
 ---
