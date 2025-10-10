@@ -298,7 +298,6 @@ File Location: `./ai-docs/FEATURES.md`
 - Supporting Features: [total] features  
 - Technical Foundation: [total] features
 
-📁 All features ready for planning
 📋 View complete index: ./ai-docs/FEATURES.md
 
 Each feature folder contains spec.md ready for further processing."
