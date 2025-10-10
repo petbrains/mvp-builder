@@ -287,39 +287,7 @@ File Location: `./ai-docs/FEATURES.md`
 - Verify at least 2 acceptance scenarios exist per feature
 - Check no [NEEDS CLARIFICATION] placeholders remain
 
-#### Stage 2: Cross-Feature Validation
-
-Use `/mcp__sequential-thinking__sequentialthinking`:
-Load all features → Analyze relationships → Detect issues → Generate report
-
-**Redundancy Detection:**
-- Check for title similarity (>70% match between features)
-- Identify functional overlap (same user action, different wording)
-- Find duplicate acceptance criteria (>50% identical scenarios)
-- Detect entity CRUD conflicts (multiple features claiming primary ownership)
-
-**Conflict Detection:**
-- Dependency conflicts: circular dependencies, missing targets, orphaned features
-- Entity conflicts: contradictory business rules, inconsistent definitions across features
-- Requirement conflicts: contradictory functional or UX requirements
-- Technical conflicts: incompatible approaches, contradictory API/database specs
-
-**Source Consistency:**
-- For mixed PRD + User Input: check for contradictions between sources
-- For PRD Mode: verify alignment with core proposition and constraints
-- For User Input Mode: validate internal consistency within single feature
-
-**Implementation Sequence Validation:**
-- Verify dependency chain has no circular references
-- Check foundation features come before dependent features
-- Validate FEATURES.md sequence reflects true dependencies
-
-**Auto-Fix Capabilities:**
-- Dependency sequence reordering (if no circular dependencies)
-- Duplicate feature consolidation suggestions
-- Missing dependency target recommendations
-
-#### Stage 3: Completion Summary
+#### Stage 2: Completion Summary
 
 "✅ Feature Generation Complete!
 
