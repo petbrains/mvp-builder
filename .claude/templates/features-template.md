@@ -43,7 +43,11 @@ Total Features: [TOTAL_COUNT]
 
 ## Development Notes
 
-[PROJECT_SPECIFIC_NOTES]
+### Dependency Graph
+[DEPENDENCY_TREE_VISUALIZATION]
+
+### Key Architectural Decisions
+[ARCHITECTURAL_DECISIONS_LIST]
 
 ---
 
