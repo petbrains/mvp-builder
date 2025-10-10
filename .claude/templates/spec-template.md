@@ -35,7 +35,6 @@
 
 ### Technical Context
 - **Tech Stack**: [only if critical for understanding limitations]
-- **Dependencies**: [List specific feature folders that must be completed first, e.g., `user-authentication`, `database-setup`]
 - **Constraints**: [known limitations]
 
 ---
