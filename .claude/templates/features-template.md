@@ -12,7 +12,6 @@ Total Features: [TOTAL_COUNT]
   - Priority: [PRIORITY_LEVEL]
   - Folder: `[FEATURE_FOLDER_NAME]`
   - Dependencies: [DEPENDENCY_LIST OR None]
-  - Source: [SOURCE_REFERENCE]
 
 [REPEAT FOR ALL FEATURES IN EPIC...]
 
@@ -32,9 +31,6 @@ Total Features: [TOTAL_COUNT]
 [...]
 
 [REPEAT FOR ALL PHASES...]
-
-### Key Architectural Decisions
-[ARCHITECTURAL_DECISIONS_LIST]
 
 ---
 
