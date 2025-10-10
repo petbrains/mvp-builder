@@ -44,3 +44,44 @@ Total Features: [TOTAL_COUNT]
 ## Development Notes
 
 [PROJECT_SPECIFIC_NOTES]
+
+---
+
+## Review & Acceptance Checklist
+*GATE: Automated checks*
+** MODEL INSTRUCTION: This section is for internal validation only. Do not include in final FEATURES.md output.**
+
+### Redundancy Check
+- [ ] No duplicate feature titles (>70% similarity)
+- [ ] No functional overlap between features
+- [ ] No duplicate acceptance criteria across features
+- [ ] Entity CRUD ownership clearly defined
+
+### Conflict Detection
+- [ ] No circular dependencies
+- [ ] All dependency targets exist
+- [ ] No orphaned features
+- [ ] Entity definitions consistent across features
+- [ ] No contradictory business rules
+- [ ] Requirements don't contradict between features
+- [ ] Technical approaches are compatible
+
+### Source Consistency
+- [ ] All features align with PRD core proposition
+- [ ] Technical constraints respected
+- [ ] User Input features don't contradict PRD (if mixed)
+
+### Implementation Validation
+- [ ] Dependency chain has no circular references
+- [ ] Foundation features ordered before dependent features
+- [ ] Implementation sequence is achievable
+- [ ] All critical features have clear path to completion
+
+### Content Completeness
+- [ ] All PRD sections processed into features
+- [ ] Each epic has at least one feature
+- [ ] All features have spec.md files
+- [ ] No missing dependencies
+- [ ] Priority levels assigned to all features
+
+---
