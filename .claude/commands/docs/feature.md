@@ -16,11 +16,17 @@ Generate feature specifications from PRD or user description into structured spe
 
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
+
+For PRD Mode:
 - When extracting epics from PRD: "Analyze PRD structure → Extract feature groupings → Map to epic boundaries → Verify coverage"
 - When parsing PRD sections: "Parse section content → Identify user actions → Apply boundary rules → Generate feature list"
-- When building FEATURES.md: "Load all features → Analyze relationships → Detect dependencies → Generate index structure"
-- When validating user input: "Analyze description completeness → Identify missing template elements → Generate clarification questions"
 - When distributing constraints: "Identify constraint type → Determine affected features → Map to requirement format → Verify no conflicts"
+- When building FEATURES.md: "Load all features → Analyze relationships → Detect dependencies → Generate index structure"
+
+For User Input Mode:
+- When validating user input: "Analyze description completeness → Identify missing template elements → Generate clarification questions"
+- When checking conflicts: "Analyze existing features → Compare functionality → Detect overlaps → Generate conflict report"
+- When assigning epic: "Analyze epic features → Compare domains → Calculate similarity → Select best match"
 
 **Templates:**
 - Spec: @.claude/templates/spec-template.md
@@ -77,19 +83,25 @@ To complete the specification, please provide:
 Wait for response before proceeding.
 
 ## Epic Assignment Rules
-- PRD Mode: Extract epics from PRD structure:
-  - "Core MVP Feature" → Core Features epic
-  - "Supporting Features" → Supporting Features epic  
-  - Technical Requirements with standalone features → Technical Foundation epic
-  - Features derived from constraints → Assign to most relevant functional epic
-- User Input Mode: Assign to most relevant existing epic from FEATURES.md
-- Never create "User Input" or "Miscellaneous" epic
+
+**PRD Mode:**
+- Extract epics from PRD structure based on functional groupings
+- Create epics that reflect logical boundaries in the PRD
+- Assign features to epics based on their source section and functionality
+
+**User Input Mode:**
+1. Analyze existing epics in FEATURES.md
+2. Compare new feature's functionality with features in each epic
+3. Assign to epic with highest functional similarity
+4. If no clear match (similarity < 30%):
+   - Create new epic based on feature's domain
+   - Epic name derived from feature's core function
 
 ## Content Extraction Rules
 
 **Title**: Action verb + object ("Create Profile", "View Dashboard")
 
-**Acceptance Scenarios**: PRD flow → Given/When/Then format
+**Acceptance Scenarios**: Flow → Given/When/Then format
 
 **Requirements**:
 - Each "must"/"should" → FR-XXX requirement
@@ -106,11 +118,11 @@ Wait for response before proceeding.
 - Cross-cutting requirements → Add to each affected feature
 - When in doubt about scope → Include as requirement rather than omit
 
-**Technical Context Section Rules:**
-- Tech Stack: Include ONLY if feature requires specific technology not in general stack
-- Constraints: Include ONLY if this feature has unique limitations or if global constraint specifically impacts this feature's implementation
-- Keep empty if no critical technical context needed
-- Do NOT duplicate same tech stack in every spec
+**Technical Context Decision:**
+- Include only if feature has unique technical requirements
+- Check existing specs in same epic for context patterns
+- If similar features exist without Technical Context → likely not needed
+- When uncertain → ask user: "Does this feature require specific technical constraints?"
 
 # Execution Flow
 
@@ -136,34 +148,35 @@ For User Input Mode:
 - Load existing epic structure
 - Parse user description
 
-**1.3 Create Structure**
-```bash
-mkdir -p ./ai-docs/features
-```
-
 ## 2. Extract Features
 
-**2.1 PRD Mode**
+### 2.1 PRD Mode
 
-**2.1.1 Extract and Track Coverage**
+Apply `/mcp__sequential-thinking__sequentialthinking` for epic extraction and feature identification.
+
+**Extract and Track Coverage:**
 When processing PRD sections:
 - Track which PRD elements map to which features
 - Mark Supporting Features as extracted when converted to specs
 - Note any constraints that affect multiple features for distribution
 
-Apply `/mcp__sequential-thinking__sequentialthinking`:
-Analyze PRD structure → Extract feature groupings → Map to epic boundaries
+**Create Structure:**
+```bash
+mkdir -p ./ai-docs/features
+```
 
-Typical epic structure:
-- Core Features (from "Core MVP Feature")
-- User Management (if authentication mentioned)
-- Supporting Features (from "Supporting Features")
-- Technical Foundation (from "Technical Requirements")
+**Generate Epic Structure:**
+Based on PRD content, create logical epic groupings
 
-**2.2 User Input Mode**
+### 2.2 User Input Mode
 
-Apply `/mcp__sequential-thinking__sequentialthinking`:
-Analyze description → Check template completeness → Generate questions if needed
+Apply `/mcp__sequential-thinking__sequentialthinking` for input validation and conflict detection.
+
+**Conflict Detection:**
+- Compare functionality with existing features
+- If overlap > 70% → warn about potential duplicate
+- If entities conflict → warn about data model impact
+- Let model determine conflict based on semantic similarity
 
 If incomplete, ask clarifications and wait for response.
 
@@ -171,50 +184,85 @@ Determine appropriate epic from existing FEATURES.md for new feature.
 
 ## 3. Generate Specifications
 
+### 3.A PRD Mode Process
+
 For each identified feature:
 
-**3.1 Create Feature Folder**
+**3.A.1 Create Feature Folder**
 ```bash
 mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 ```
 
-**3.2 Extract Content**
+**3.A.2 Extract Content from PRD**
 
-Apply `/mcp__sequential-thinking__sequentialthinking`:
-Parse source content → Extract requirements → Map to template sections
+Apply `/mcp__sequential-thinking__sequentialthinking` for content parsing and requirement extraction.
 
 **Map PRD to Template Sections:**
 - User descriptions from PRD → Primary User Story
 - Flow steps from PRD → Acceptance Scenarios (Given/When/Then)
 - "must"/"should" from PRD → FR-XXX requirements
-- Interface/platform mentions → UX-XXX requirements
+- Interface mentions → UX-XXX requirements
 - Error handling from PRD → Edge Cases
 - Data objects from PRD → Key Entities
-- Only critical technical limits → Technical Context > Constraints
+- Critical technical limits → Technical Context > Constraints
 
-**3.3 Fill Template**
+**3.A.3 Fill Template**
 - Load spec-template.md
 - Fill all sections with extracted content
 - Apply template's internal validation checklist
 
 **Validation before saving:**
-- Ensure Technical Context not duplicated unnecessarily
+- Ensure Technical Context not duplicated unnecessarily across features
 - Verify UX requirements are actual requirements, not descriptions
-- Check FR requirements are testable (not "system should be good")
+- Check FR requirements are testable
 - Confirm Edge Cases are questions with implied answers
 
-**3.4 Save Specification**
+**3.A.4 Save Specification**
+Write to: `./ai-docs/features/[feature-name]/spec.md`
+
+### 3.B User Input Mode Process
+
+**3.B.1 Create Feature Folder**
+```bash
+mkdir -p ./ai-docs/features/[kebab-case-feature-name]
+```
+
+**3.B.2 Extract Content from User Description**
+
+Apply `/mcp__sequential-thinking__sequentialthinking` for description analysis and validation.
+
+**Map User Input to Template:**
+- Main description → Primary User Story
+- Implied flows → Acceptance Scenarios
+- Stated requirements → FR-XXX/UX-XXX
+- Error conditions → Edge Cases
+- Data mentioned → Key Entities
+
+**3.B.3 Fill Template**
+- Load spec-template.md
+- Fill sections with available content
+- Mark any sections that need clarification
+
+**Context-Aware Validation:**
+- Check if Technical Context needed based on feature type
+- Verify requirements don't conflict with existing features
+- Ensure compatibility with epic's other features
+
+**3.B.4 Save Specification**
 Write to: `./ai-docs/features/[feature-name]/spec.md`
 
 ## 4. Update Index
 
-**4.1 Load Existing Index**
-- PRD Mode: Create new FEATURES.md structure
+### 4.1 Prepare Index
+
+- PRD Mode: Initialize new FEATURES.md structure
 - User Input Mode: Read existing FEATURES.md and preserve all content
 
-**4.2 Build/Update Index Structure**
+### 4.2 Build/Update Index Structure
 
-**4.2.1 Validate PRD Coverage (PRD Mode only)**
+**PRD Mode:**
+
+**Validate PRD Coverage:**
 Before generating FEATURES.md:
 - List all Core MVP Features from PRD
 - List all Supporting Features from PRD  
@@ -225,51 +273,70 @@ If gaps found:
 - Report: "Warning: PRD element '[element]' not mapped to any feature spec"
 - Continue with generation but note in summary
 
-Apply `/mcp__sequential-thinking__sequentialthinking`:
-Load all features → Analyze relationships → Detect dependencies → Generate structure
+Apply `/mcp__sequential-thinking__sequentialthinking` for relationship analysis and index generation.
 
-**4.3 Generate FEATURES.md**
+**User Input Mode:**
+
+Add new feature to selected/created epic while preserving existing structure.
+
+### 4.3 Generate FEATURES.md
+
 - Follow features-template.md structure
 - PRD Mode: Create complete new structure
 - User Input Mode: Add new feature to appropriate epic, preserve existing
 - Apply template's internal validation checklist
 
-**4.4 Save Index**
+### 4.4 Save Index
+
 Write to: `./ai-docs/FEATURES.md`
 
 ## 5. Validate and Report
 
-**5.1 Run Validations**
+### 5.1 Run Validations
+
+**Context-Aware Validations:**
 
 For PRD Mode:
 - Verify all Core MVP Features have corresponding specs
 - Verify all Supporting Features mapped to specs
 - Check no PRD requirements left unassigned
+- Each major section from PRD mapped to at least one spec
+- No duplicate requirements across unrelated features
 
 For User Input Mode:
 - Verify new feature doesn't duplicate existing features
 - Check epic assignment is logical
 - Validate all template sections filled
+- Confirm no conflicts with existing features
 
 For Both Modes:
 - All spec files created successfully
 - Template checklists satisfied
 
-**Coverage validation:**
-- Each major section from PRD mapped to at least one spec
-- No PRD requirements left unassigned
-- No duplicate requirements across unrelated features
+### 5.2 Generate Summary
 
-**5.2 Generate Summary**
+**PRD Mode:**
 ```
 Feature Generation Complete
 
 Summary:
 - Total Features Created: [count]
+- Epics Created: [list]
 - Location: ./ai-docs/features/
 - Index: ./ai-docs/FEATURES.md
 
-Each feature contains spec.md
+All features extracted from PRD and saved as individual specs.
+```
+
+**User Input Mode:**
+```
+Feature Added Successfully
+
+- Feature: [feature-name]
+- Added to Epic: [epic-name] [or "New Epic Created: [epic-name]"]
+- Location: ./ai-docs/features/[feature-name]/spec.md
+
+FEATURES.md updated with new feature.
 ```
 
 # Error Handling
@@ -280,9 +347,10 @@ Each feature contains spec.md
 - **Unmapped PRD content**: "Warning: PRD element '[element]' not distributed to any feature"
 
 **User Input Mode Errors:**
-- **FEATURES.md missing for User Input**: "No FEATURES.md found. Run feature command without input to generate features from PRD first."
+- **FEATURES.md missing**: "No FEATURES.md found. Run feature command without input to generate features from PRD first."
 - **User input insufficient**: Request specific missing information (max 4 questions)
-- **Duplicate feature**: "Feature similar to '[existing-feature]' already exists"
+- **Duplicate feature detected**: "Feature similar to '[existing-feature]' already exists. Continue anyway? (yes/no)"
+- **Epic assignment unclear**: "Could not determine appropriate epic. Please specify or confirm new epic creation."
 
 **Common Errors:**
 - **Template not found**: Report missing template path and stop execution
