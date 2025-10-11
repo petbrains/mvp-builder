@@ -84,8 +84,8 @@ Check section content against these patterns:
 - Vague attributes: "some data"
 
 **Technical Context:**
-- Unclear constraints: "performance limits"
-- Vague tech stack: "modern framework"
+- Unclear constraints: "performance limits", "scalability requirements"
+- Vague tech stack: "modern framework", "standard tools"
 
 ### 2.2 Collect Clarifications
 If ambiguities found:
