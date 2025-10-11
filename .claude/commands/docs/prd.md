@@ -174,7 +174,14 @@ Would you like to:
 2. Add additional details
 3. Finalize (type 'done')"
 
-Loop modifications until 'done'.
+If modifications requested:
+- Read ./ai-docs/PRD.md
+- Apply requested changes to section
+- Apply sequential thinking to verify consistency
+- Show before/after comparison
+- Wait for user confirmation ("ok")
+- Write updated ./ai-docs/PRD.md
+- Loop until 'done'
 
 "PRD finalized! Ready for implementation."
 
