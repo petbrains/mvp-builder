@@ -1,21 +1,17 @@
 # Feature Index
 
-Generated from: [SOURCE: ./ai-docs/PRD.md OR User Input]
-Last updated: [TIMESTAMP]
 Total Features: [TOTAL_COUNT]
 
-## Feature Summary by Epic
+## Features List
 
-### Epic 1: [EPIC_NAME] ([EPIC_FEATURE_COUNT] features)
+### [EPIC_NAME] ([EPIC_FEATURE_COUNT] features)
 
 - **[FEATURE_TITLE]**
-  - Priority: [PRIORITY_LEVEL]
   - Folder: `[FEATURE_FOLDER_NAME]`
-  - Dependencies: [DEPENDENCY_LIST OR None]
 
 [REPEAT FOR ALL FEATURES IN EPIC...]
 
-### Epic 2: [EPIC_NAME] ([EPIC_FEATURE_COUNT] features)
+### [EPIC_NAME] ([EPIC_FEATURE_COUNT] features)
 [REPEAT STRUCTURE...]
 
 ## Implementation Sequence
@@ -56,7 +52,6 @@ Total Features: [TOTAL_COUNT]
 
 ### Content Completeness
 - [ ] Each epic has at least one feature
-- [ ] Priority levels assigned to all features
-- [ ] All critical features have clear path to completion
+- [ ] All features have clear path to completion
 
 ---
