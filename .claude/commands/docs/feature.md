@@ -1,5 +1,5 @@
 ---
-description: Generate feature specifications from PRD or user input.
+description: Generate feature specifications.
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
@@ -20,6 +20,7 @@ Use `/mcp__sequential-thinking__sequentialthinking`:
 - When parsing PRD sections: "Parse section content → Identify user actions → Apply boundary rules → Generate feature list"
 - When building FEATURES.md: "Load all features → Analyze relationships → Detect dependencies → Generate index structure"
 - When validating user input: "Analyze description completeness → Identify missing template elements → Generate clarification questions"
+- When distributing constraints: "Identify constraint type → Determine affected features → Map to requirement format → Verify no conflicts"
 
 **Templates:**
 - Spec: @.claude/templates/spec-template.md
@@ -76,7 +77,11 @@ To complete the specification, please provide:
 Wait for response before proceeding.
 
 ## Epic Assignment Rules
-- PRD Mode: Extract epics from PRD structure (only when FEATURES.md doesn't exist)
+- PRD Mode: Extract epics from PRD structure:
+  - "Core MVP Feature" → Core Features epic
+  - "Supporting Features" → Supporting Features epic  
+  - Technical Requirements with standalone features → Technical Foundation epic
+  - Features derived from constraints → Assign to most relevant functional epic
 - User Input Mode: Assign to most relevant existing epic from FEATURES.md
 - Never create "User Input" or "Miscellaneous" epic
 
@@ -94,6 +99,18 @@ Wait for response before proceeding.
 **Entities**: Nouns that get stored/retrieved → Entity with relationships
 
 **Dependencies**: Prerequisites mentioned → Map to feature folders
+
+**Constraints & Requirements Distribution**:
+- Each constraint from source → FR-XXX if affects feature behavior
+- Technical limitations → Technical Context > Constraints (only if critical)
+- Cross-cutting requirements → Add to each affected feature
+- When in doubt about scope → Include as requirement rather than omit
+
+**Technical Context Section Rules:**
+- Tech Stack: Include ONLY if feature requires specific technology not in general stack
+- Constraints: Include ONLY if this feature has unique limitations or if global constraint specifically impacts this feature's implementation
+- Keep empty if no critical technical context needed
+- Do NOT duplicate same tech stack in every spec
 
 # Execution Flow
 
@@ -128,6 +145,12 @@ mkdir -p ./ai-docs/features
 
 **2.1 PRD Mode**
 
+**2.1.1 Extract and Track Coverage**
+When processing PRD sections:
+- Track which PRD elements map to which features
+- Mark Supporting Features as extracted when converted to specs
+- Note any constraints that affect multiple features for distribution
+
 Apply `/mcp__sequential-thinking__sequentialthinking`:
 Analyze PRD structure → Extract feature groupings → Map to epic boundaries
 
@@ -160,10 +183,25 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 Apply `/mcp__sequential-thinking__sequentialthinking`:
 Parse source content → Extract requirements → Map to template sections
 
+**Map PRD to Template Sections:**
+- User descriptions from PRD → Primary User Story
+- Flow steps from PRD → Acceptance Scenarios (Given/When/Then)
+- "must"/"should" from PRD → FR-XXX requirements
+- Interface/platform mentions → UX-XXX requirements
+- Error handling from PRD → Edge Cases
+- Data objects from PRD → Key Entities
+- Only critical technical limits → Technical Context > Constraints
+
 **3.3 Fill Template**
 - Load spec-template.md
 - Fill all sections with extracted content
 - Apply template's internal validation checklist
+
+**Validation before saving:**
+- Ensure Technical Context not duplicated unnecessarily
+- Verify UX requirements are actual requirements, not descriptions
+- Check FR requirements are testable (not "system should be good")
+- Confirm Edge Cases are questions with implied answers
 
 **3.4 Save Specification**
 Write to: `./ai-docs/features/[feature-name]/spec.md`
@@ -175,6 +213,17 @@ Write to: `./ai-docs/features/[feature-name]/spec.md`
 - User Input Mode: Read existing FEATURES.md and preserve all content
 
 **4.2 Build/Update Index Structure**
+
+**4.2.1 Validate PRD Coverage (PRD Mode only)**
+Before generating FEATURES.md:
+- List all Core MVP Features from PRD
+- List all Supporting Features from PRD  
+- List all Technical Constraints from PRD
+- Verify each has corresponding spec file or is documented as distributed
+
+If gaps found:
+- Report: "Warning: PRD element '[element]' not mapped to any feature spec"
+- Continue with generation but note in summary
 
 Apply `/mcp__sequential-thinking__sequentialthinking`:
 Load all features → Analyze relationships → Detect dependencies → Generate structure
@@ -191,8 +240,25 @@ Write to: `./ai-docs/FEATURES.md`
 ## 5. Validate and Report
 
 **5.1 Run Validations**
+
+For PRD Mode:
+- Verify all Core MVP Features have corresponding specs
+- Verify all Supporting Features mapped to specs
+- Check no PRD requirements left unassigned
+
+For User Input Mode:
+- Verify new feature doesn't duplicate existing features
+- Check epic assignment is logical
+- Validate all template sections filled
+
+For Both Modes:
 - All spec files created successfully
 - Template checklists satisfied
+
+**Coverage validation:**
+- Each major section from PRD mapped to at least one spec
+- No PRD requirements left unassigned
+- No duplicate requirements across unrelated features
 
 **5.2 Generate Summary**
 ```
@@ -208,9 +274,16 @@ Each feature contains spec.md
 
 # Error Handling
 
+**PRD Mode Errors:**
 - **PRD not found**: "No PRD.md found at ./ai-docs/PRD.md. Run PRD command first."
 - **Features already exist**: "Features already generated from PRD. Use 'clarify' command to refine or provide specific feature description to add new feature."
+- **Unmapped PRD content**: "Warning: PRD element '[element]' not distributed to any feature"
+
+**User Input Mode Errors:**
 - **FEATURES.md missing for User Input**: "No FEATURES.md found. Run feature command without input to generate features from PRD first."
+- **User input insufficient**: Request specific missing information (max 4 questions)
+- **Duplicate feature**: "Feature similar to '[existing-feature]' already exists"
+
+**Common Errors:**
 - **Template not found**: Report missing template path and stop execution
 - **File write error**: Report specific file path that failed to save
-- **User input insufficient**: Request specific missing information (max 4 questions)
