@@ -55,14 +55,19 @@ Final PRD contains: Core Proposition, Solution Design, Technical Requirements, U
 
 ## Phase 1: Pre-Flight Check
 
-### 1. Project scan
+### 1. Validate clean start
+Check if `./ai-docs/PRD.md` exists:
+- If exists: ERROR: "PRD.md already exists. Delete or move existing file to regenerate." Exit.
+- If not exists: Continue
+
+### 2. Project scan
 ```bash
 ls -la | head -10
 ls ./README.md ./docs/ 2>/dev/null
 ```
 Note context without assumptions.
 
-### 2. Start dialogue
+### 3. Start dialogue
 "Project scan complete. Let's create your Product Requirements Document."
 
 ## Phase 2: Interactive Dialogue
