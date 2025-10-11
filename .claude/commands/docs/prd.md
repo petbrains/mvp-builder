@@ -5,316 +5,190 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 # Instructions
 
-You are a senior product strategist and Product Requirements Documents (PRDs) expert specializing in MVP development. 
-Your expertise lies in distilling complex product ideas into focused, actionable MVPs that validate core assumptions quickly.
+Generate MVP Product Requirements Document through interactive dialogue with incremental validation and saving.
 
 **Tools Usage:**
-- `Write`: For incremental PRD saving after each stage
 - `Read`: For loading current PRD state before updates
-- `/mcp__sequential-thinking__sequentialthinking`: For iterative analysis with hypothesis generation and verification
+- `Write`: For incremental PRD saving after each stage
+- `Bash`: For project discovery
+- `/mcp__sequential-thinking__sequentialthinking`: For analysis at decision points
   - See @.claude/tools/sequential-thinking.md for details
 
-## PRD Structure
+**Sequential Thinking Usage:**
+Use `/mcp__sequential-thinking__sequentialthinking` at analysis points:
+- After Stage 1: Analyze user-problem fit → Explore solution effectiveness → Generate hypothesis → Verify assumptions
+- After Stage 2: Analyze flow effectiveness → Explore feature necessity → Generate MVP scope → Verify completeness
+- After Stage 3: Analyze requirements → Explore stack options → Generate technology hypothesis → Verify feasibility
+- After Stage 4: Analyze interface requirements → Explore UX patterns → Generate design hypothesis → Verify flow
+- Final validation: Analyze coherence → Explore completeness → Generate readiness hypothesis → Verify clarity
 
-The final PRD will contain 4 sections:
-1. **Core Proposition** - Product identity, user, problem, solution
-2. **Solution Design** - User flow, core feature, supporting features
-3. **Technical Requirements** - Tech stack, constraints
-4. **UX Details** - UX preferences and interface requirements
+**Output:** `./ai-docs/PRD.md`
 
-## Writing Principles
+# Task
 
-When creating PRD content:
-- **Use bullet points**: Structure information with clear hierarchical bullets for readability
-- **Keep it concise**: Each bullet point should be 1-2 sentences maximum
-- **Expand key concepts**: Use sub-bullets to break down complex ideas
-- **Include rationale**: Add "why" as a sub-bullet when needed
-- **Integrate insights naturally**: Weave analysis results into the bullet structure
-- **Professional documentation**: No UI elements (✅, ⚠️) inside the PRD document
-- **Self-contained sections**: Each bullet point should be clear without external context
-- **Rich but structured**: Balance comprehensive information with scannable format
+Generate focused MVP Product Requirements Document through interactive dialogue.
+Collect requirements progressively, validate at each stage, save incrementally.
+Final PRD contains: Core Proposition, Solution Design, Technical Requirements, UX Details.
 
-## Execution Flow
+# Rules
 
-### Phase 1: Pre-Flight Check
+## Dialogue Rules
+- Ask 3-4 questions per stage maximum
+- Wait for user response before proceeding
+- Share analysis results before saving
+- Save only after user confirms with "ok"
 
-#### 1. Quick project scan:
+## Writing Rules
+- Use hierarchical bullet points for structure
+- Keep each bullet 1-2 sentences maximum
+- Include rationale as sub-bullets
+- No UI elements (✅, ⚠️) in PRD document
+- Each section must be self-contained
 
+## Save Rules
+- Incremental saves after each confirmed stage
+- Always Read before Write when updating
+- Preserve all existing content when updating
+- Location: ./ai-docs/PRD.md
+
+# Execution Flow
+
+## Phase 1: Pre-Flight Check
+
+### 1. Validate clean start
+Check if `./ai-docs/PRD.md` exists:
+- If exists: ERROR: "PRD.md already exists. Delete or move existing file to regenerate." Exit.
+- If not exists: Continue
+
+### 2. Project scan
 ```bash
-# Simple project overview
 ls -la | head -10
-
-# Check for documentation
 ls ./README.md ./docs/ 2>/dev/null
 ```
+Note context without assumptions.
 
-Note any relevant context without making assumptions
+### 3. Start dialogue
+"Project scan complete. Let's create your Product Requirements Document."
 
-#### 2. Start dialogue:
+## Phase 2: Interactive Dialogue
 
-```dialogue
-"📁 Project scan complete.
-Let's create your Product Requirements Document."
-```
+### Stage 1: Core Proposition
 
-### Phase 2: Interactive Dialogue with Incremental Saves
+Opening: "Let me understand your product idea."
 
-#### Stage 1: Core Proposition
+Questions:
+1. What would you name this product?
+2. Who is your target user?
+3. What specific problem are they experiencing?
+4. How would you describe the solution?
 
-Opening:
-```dialogue
-"Let me understand your product idea."
-```
+After answers → Apply sequential thinking → Share analysis → Wait for "ok"
 
-Questions to ask:
-```dialogue
-"What would you name this product?"
-"Who is your target user?"
-"What specific problem are they experiencing?"
-"How would you describe the problem solution?"
-```
-
-After gathering answers:
-
-Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
-Start with user-problem fit, explore solution effectiveness,
-generate hypothesis about problem-solution alignment, verify assumptions.
-Focus on: user specificity, problem clarity, solution feasibility.
-
-Share the analysis results with user.
-If user wants adjustments, refine and re-analyze.
-Continue until user confirms with 'ok'.
-
-**Save after Stage 1:** (only after 'ok')
-
+**Save after confirmation:**
 ```bash
-# Create folder if none
 mkdir -p ./ai-docs
 ```
+Write to ./ai-docs/PRD.md:
+- Section: Core Proposition
+- Include: Target User, Problem, Core Solution Proposition
 
-Action: Write to ./ai-docs/PRD.md
+"Saved core proposition to ai-docs/PRD.md"
 
-```markdown
-# [Product Name] - PRD
+### Stage 2: Solution Design
 
-## 1. Core Proposition
-**Target User:** 
-[Detailed user profile including needs, pain points, and why they're ideal for this solution. Include user-problem fit insights.]
+Opening: "Now let's define the solution scope."
 
-**Problem:** 
-[Comprehensive problem description. Integrate problem validation insights.]
+Questions:
+1. Describe the main user flow - how does a user interact with your product from start to finish?
+2. Describe how the main feature of your product will work
+3. What supporting features are essential for the MVP?
 
-**Core Solution Proposition:**
-[Solution approach with direct problem mapping.]
-```
+After answers → Apply sequential thinking → Share analysis → Wait for "ok"
 
-Confirmation message:
-```dialogue
-"✅ Saved core proposition to ai-docs/PRD.md"
-```
+**Save after confirmation:**
+Read ./ai-docs/PRD.md → Write updated version with:
+- Section: Solution Design
+- Include: Core User Flow, Core MVP Feature, Supporting Features
 
-#### Stage 2: Solution Design
+"Saved solution design to ai-docs/PRD.md"
 
-Opening:
-```dialogue
-"Now let's define the solution scope."
-```
+### Stage 3: Technical Requirements
 
-Questions to ask:
-```dialogue
-"Describe the main user flow - how does a user interact with your product from start to finish?"
-"What's the ONE core MVP feature that solves this problem?"
-"How should this feature work?"
-"What supporting features are must-have for the MVP?"
-```
+Opening: "Let me determine the optimal stack for your requirements."
 
-After gathering requirements:
+Questions:
+1. Any technical constraints or specific requirements?
+2. Any preferences for specific technologies or platforms?
 
-Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
-Start with flow effectiveness, explore feature necessity,
-generate MVP scope hypothesis, verify solution completeness.
-Focus on: user journey clarity, feature minimalism, dependency mapping.
+After answers → Apply sequential thinking → Present recommendation with rationale → Wait for "ok"
 
-Share the analysis results with user.
-If user wants adjustments, refine and re-analyze.
-Continue until user confirms with 'ok'.
+**Save after confirmation:**
+Read ./ai-docs/PRD.md → Write updated version with:
+- Section: Technical Requirements
+- Include: Tech Stack, Technical Constraints
 
-**Save after Stage 2:** (only after 'ok')
+"Saved technical requirements to ai-docs/PRD.md"
 
-Action: Read ./ai-docs/PRD.md
-Action: Write updated ./ai-docs/PRD.md with Solution Design section added:
+### Stage 4: UX Details
 
-```markdown
-## 2. Solution Design
-**Core User Flow:** 
-[Step-by-step journey with purpose of each step, friction points addressed, and optimization rationale. Include flow effectiveness insights.]
+Opening: "Let's finalize the UX details."
 
-**Core MVP Feature:** 
-[Detailed feature description with direct problem solving, and why it's the minimum viable solution.]
+Questions:
+1. Any specific UX preferences (mobile-first, desktop-first, design style)?
+2. Any additional design or interface requirements?
 
-**Supporting Features:** 
-[Each feature with its role, dependency relationship, and contribution to core value.]
-```
+After answers → Apply sequential thinking → Share analysis → Wait for "ok"
 
-Confirmation message:
-```dialogue
-"✅ Saved solution design to ai-docs/PRD.md"
-```
+**Save after confirmation:**
+Read ./ai-docs/PRD.md → Write updated version with:
+- Section: UX Details
+- Include: Platform Strategy, Interface Requirements
 
-#### Stage 3: Technical Requirements
+"Saved UX details to ai-docs/PRD.md"
 
-Opening:
-```dialogue
-"Let me determine the optimal stack for your requirements."
-```
+## Phase 3: Validation
 
-Questions to ask:
-```dialogue
-"Any technical constraints or specific requirements?"
-"Any preferences for specific technologies or platforms?"
-```
+Read ./ai-docs/PRD.md → Apply sequential thinking for final validation
 
-Stack analysis:
+If issues found:
+"Validation notes: [issues]. Would you like to address these? (specify / 'ok' to proceed)"
 
-Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
-Start with technical requirements, explore stack options,
-generate technology hypothesis, verify technical feasibility.
-Focus on: development speed, technical stability, simplicity, scalability.
+Fix issues if requested → Write updated PRD.md
 
-Share the analysis results with user.
-Present recommendation with rationale.
-If user wants adjustments, refine and re-analyze.
-Continue until user confirms with 'ok'.
+## Phase 4: Review & Iteration
 
-Present recommendation:
-```dialogue
-"Recommended stack: [specific technologies with rationale]
-This stack is optimized for:
-✅ Rapid development (proven patterns)
-✅ Technical stability  (well-documented)
-✅ Easy setup (integrated solutions)
-✅ Low complexity (minimal moving parts)
+Read ./ai-docs/PRD.md → Present summary:
 
-Confirm or suggest changes?"
-```
+"PRD generation complete!
 
-**Save after Stage 3:** (only after 'ok')
-
-Action: Read ./ai-docs/PRD.md
-Action: Write updated ./ai-docs/PRD.md with Technical Requirements section added:
-
-```markdown
-## 3. Technical Requirements
-**Tech Stack:** 
-[Complete stack with component rationale, optimization focus (speed/stability/simplicity), integration approach, and deployment strategy.]
-
-**Technical Constraints:** 
-[Each constraint with impact analysis, mitigation approach, and architecture influence.]
-```
-
-Confirmation message:
-```dialogue
-"✅ Saved technical requirements to ai-docs/PRD.md"
-```
-
-#### Stage 4: UX Details
-
-Opening:
-```dialogue
-"Let's finalize the UX details."
-```
-
-Questions to ask:
-```dialogue
-"Any specific UX preferences (mobile-first, desktop-first, design style)?"
-"Any additional design or interface requirements?"
-```
-
-Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
-Start with interface requirements, explore UX patterns,
-generate design hypothesis, verify user experience flow.
-Focus on: interface consistency, user accessibility, platform requirements.
-
-Share the analysis results with user.
-If user wants adjustments, refine and re-analyze.
-Continue until user confirms with 'ok'.
-
-**Save after Stage 4:** (only after 'ok')
-
-Action: Read ./ai-docs/PRD.md
-Action: Write updated ./ai-docs/PRD.md with UX Details section added:
-
-```markdown
-## 4. UX Details
-**Platform Strategy:** 
-[Primary platform rationale with responsive approach, progressive enhancement plan, and platform-specific optimizations.]
-
-**Interface Requirements:** 
-[Component patterns, interaction models, feedback mechanisms, and accessibility standards with implementation notes.]
-```
-
-Confirmation message:
-```dialogue
-"✅ Saved UX details to ai-docs/PRD.md"
-"✅ PRD complete! All sections saved."
-```
-
-### Phase 3: Finalization & Validation
-
-Action: Read ./ai-docs/PRD.md
-
-Use `/mcp__sequential-thinking__sequentialthinking` tool to analyze:
-Start with document coherence, explore requirement completeness,
-generate readiness hypothesis, verify implementation clarity.
-Focus on: section alignment, requirement clarity, scope validation, development readiness.
-
-Share the validation results with user.
-If issues found, present them clearly.
-If user wants adjustments, refine and re-analyze.
-Continue until user confirms with 'ok'.
-
-If any issues found:
-```dialogue
-"⚠️ Validation notes: [specific issues and recommendations]
-Would you like to address these? (specify / 'ok' to proceed)"
-```
-
-Action: Fix issues and Write updated ai-docs/PRD.md (only after 'ok')
-
-### Phase 4: Review & Iteration
-
-Action: Read ./ai-docs/PRD.md
-
-Present summary:
-```dialogue
-"✅ PRD generation complete!
-
-Summary of key decisions:
-- Product: {name}
-- For: {user} solving {problem}
-- Core Feature: {feature}
-- Tech Stack: {stack}
-- UX Requirements: - {interface}
+Summary:
+- Product: [name]
+- For: [user] solving [problem]
+- Core Feature: [feature]
+- Tech Stack: [stack]
 
 Full PRD saved at ./ai-docs/PRD.md
 
-Review the document. Would you like to:
+Would you like to:
 1. Modify any section
 2. Add additional details
-3. Finalize (type 'done')
-
-Your choice:"
-```
+3. Finalize (type 'done')"
 
 If modifications requested:
-
-Action: Read ./ai-docs/PRD.md
-- Update specific section
+- Read ./ai-docs/PRD.md
+- Apply requested changes to section
+- Apply sequential thinking to verify consistency
+- Show before/after comparison
+- Wait for user confirmation ("ok")
 - Write updated ./ai-docs/PRD.md
-- Show what was changed
 - Loop until 'done'
 
-When done:
-```dialogue
-"🎉 PRD finalized! Ready for implementation."
-```
+"PRD finalized! Ready for implementation."
+
+# Error Handling
+
+- **No user response**: "Please provide an answer to continue or 'skip' to use placeholder"
+- **File write failed**: "Failed to save PRD to ./ai-docs/PRD.md: [error]"
+- **PRD already exists**: "PRD.md already exists. Delete or move existing file to regenerate"
+- **Missing required fields**: "Cannot proceed without: [product name, target user, core problem]"
+- **Contradicting requirements**: "Conflict detected: [detail]. Please clarify"
