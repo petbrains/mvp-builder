@@ -1,5 +1,5 @@
 ---
-description: Generate feature specifications.
+description: Generate feature specifications from PRD or user input.
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
@@ -33,14 +33,16 @@ Use `/mcp__sequential-thinking__sequentialthinking`:
 # Task
 
 Transform PRD sections or user descriptions into feature specifications.
+PRD processing happens only once - if FEATURES.md exists, PRD generation is skipped.
+User Input Mode requires existing FEATURES.md to add new features.
 Each feature follows spec-template.md structure exactly.
 All features indexed in FEATURES.md per features-template.md.
 
 # Rules
 
 ## Input Detection
-- If user provides feature description in message → User Input Mode
-- If no description or user says "generate features" → PRD Mode
+- If user provides feature description in message → User Input Mode (requires existing FEATURES.md)
+- If no description or user says "generate features" → PRD Mode (requires no existing FEATURES.md)
 
 ## Feature Boundary Rules
 
@@ -59,10 +61,11 @@ All features indexed in FEATURES.md per features-template.md.
 - New authentication → Separate auth feature
 
 ## User Input Validation
-For user descriptions, check if enough data exists to fill template sections:
-- Primary User Story (who, what, why)
-- At least 2 acceptance scenarios
-- Basic functional requirements
+When adding new feature via user description (FEATURES.md must exist):
+- Check if enough data exists to fill template sections:
+  - Primary User Story (who, what, why)
+  - At least 2 acceptance scenarios
+  - Basic functional requirements
 
 If critical data missing, ask clarifications (max 4 questions total):
 ```
@@ -73,7 +76,7 @@ To complete the specification, please provide:
 Wait for response before proceeding.
 
 ## Epic Assignment Rules
-- PRD Mode: Extract epics from PRD structure
+- PRD Mode: Extract epics from PRD structure (only when FEATURES.md doesn't exist)
 - User Input Mode: Assign to most relevant existing epic from FEATURES.md
 - Never create "User Input" or "Miscellaneous" epic
 
@@ -103,13 +106,18 @@ Wait for response before proceeding.
 **1.2 Validate Source**
 
 For PRD Mode:
-- Read `./ai-docs/PRD.md`
-- If not found: "No PRD.md found. Run PRD command first or provide feature description."
-- Extract: Core Proposition, Solution Design, Technical Requirements
+- Check if `./ai-docs/FEATURES.md` exists
+- If exists: "Features already generated from PRD. Use 'clarify' command to refine or provide specific feature description to add new feature."
+- If not exists:
+  - Read `./ai-docs/PRD.md`
+  - If not found: "No PRD.md found. Run PRD command first."
+  - Extract: Core Proposition, Solution Design, Technical Requirements
 
 For User Input Mode:
+- Read `./ai-docs/FEATURES.md`
+- If not found: "No FEATURES.md found. Run feature command without input to generate features from PRD first."
+- Load existing epic structure
 - Parse user description
-- If existing FEATURES.md: Load to determine available epics
 
 **1.3 Create Structure**
 ```bash
@@ -135,7 +143,8 @@ Apply `/mcp__sequential-thinking__sequentialthinking`:
 Analyze description → Check template completeness → Generate questions if needed
 
 If incomplete, ask clarifications and wait for response.
-If FEATURES.md exists, determine appropriate epic for new feature.
+
+Determine appropriate epic from existing FEATURES.md for new feature.
 
 ## 3. Generate Specifications
 
@@ -162,7 +171,8 @@ Write to: `./ai-docs/features/[feature-name]/spec.md`
 ## 4. Update Index
 
 **4.1 Load Existing Index**
-If FEATURES.md exists, read current content to preserve existing features.
+- PRD Mode: Create new FEATURES.md structure
+- User Input Mode: Read existing FEATURES.md and preserve all content
 
 **4.2 Build/Update Index Structure**
 
@@ -171,8 +181,8 @@ Load all features → Analyze relationships → Detect dependencies → Generate
 
 **4.3 Generate FEATURES.md**
 - Follow features-template.md structure
-- Group features by epic
-- Include implementation sequence
+- PRD Mode: Create complete new structure
+- User Input Mode: Add new feature to appropriate epic, preserve existing
 - Apply template's internal validation checklist
 
 **4.4 Save Index**
@@ -198,7 +208,9 @@ Each feature contains spec.md
 
 # Error Handling
 
-- **PRD not found**: "No PRD.md found at ./ai-docs/PRD.md. Run PRD command first or provide feature description."
+- **PRD not found**: "No PRD.md found at ./ai-docs/PRD.md. Run PRD command first."
+- **Features already exist**: "Features already generated from PRD. Use 'clarify' command to refine or provide specific feature description to add new feature."
+- **FEATURES.md missing for User Input**: "No FEATURES.md found. Run feature command without input to generate features from PRD first."
 - **Template not found**: Report missing template path and stop execution
 - **File write error**: Report specific file path that failed to save
 - **User input insufficient**: Request specific missing information (max 4 questions)
