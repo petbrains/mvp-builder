@@ -13,8 +13,8 @@
 2. **Given** [initial state], **When** [action], **Then** [expected outcome]
 
 ### Edge Cases
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
+- When [boundary condition], system MUST [expected behavior]
+- When [error scenario], system MUST [expected behavior]
 
 ## Requirements
 
