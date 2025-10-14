@@ -1,5 +1,5 @@
 ---
-description: Generate compact UX specifications that complement feature requirements.
+description: Generate UX specifications.
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
