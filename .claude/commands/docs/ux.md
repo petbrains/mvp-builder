@@ -15,6 +15,24 @@ Output compact, structured documents that complement (not duplicate) feature spe
 - `/mcp__sequential-thinking__sequentialthinking`: For complex analysis when needed
   - See @.claude/tools/sequential-thinking.md for details
 
+**Sequential Thinking Usage:**
+Use `/mcp__sequential-thinking__sequentialthinking`:
+
+For Platform Detection:
+- When platform ambiguous: "Analyze keywords in spec → Check PRD context → Calculate platform confidence → Select best match"
+- When multiple platforms possible: "Extract platform indicators → Weight by context → Compare scores → Determine primary platform"
+
+For User Flow Generation:
+- When mapping scenarios: "Extract acceptance scenarios → Identify decision points → Map error paths → Create complete flow"
+- When validating flow completeness: "Check all paths → Verify error handling → Ensure recovery routes → Validate start/end points"
+
+For Interaction Model:
+- When selecting core actions: "List all user actions → Analyze frequency → Determine criticality → Select primary set"
+- When defining states: "Map user journey → Identify state changes → Define transitions → Verify completeness"
+
+For Error Presentation:
+- When categorizing errors: "Analyze edge cases → Map to four types → Define UI responses → Ensure all scenarios covered"
+
 **File Structure:**
 - Input: `./ai-docs/PRD.md` (platform info) + `./ai-docs/features/[feature]/spec.md`
 - Output: `./ai-docs/features/[feature]/ux.md`
@@ -25,7 +43,7 @@ Output compact, structured documents that complement (not duplicate) feature spe
 
 Transform feature specifications into compact UX documents.
 Focus on user interactions, behavior patterns, and platform UX conventions.
-Maximum 400 lines per document.
+Document should be comprehensive yet concise, focusing on UX patterns essential for implementation.
 
 # Rules
 
@@ -36,12 +54,11 @@ Maximum 400 lines per document.
 - **Visual flows** - Mermaid diagrams for user journeys
 - **Measurable metrics** - Concrete success criteria
 
-## Size Constraints
-- Maximum 400 lines total
-- Mermaid diagrams: Flexible (as needed for clarity)
-- JSON blocks: 30 lines max per block
-- Critical scenarios: 5-6 maximum
-- No lengthy prose descriptions
+## Content Guidelines
+- **Concise and focused** - UX behavior, not implementation
+- **Structured over prose** - Use JSON, Mermaid, lists
+- **Complete but compact** - All template sections, no duplication
+- **Quality over quantity** - Clear patterns over exhaustive details
 
 ## Platform Detection Priority
 1. Explicit platform in PRD.md
@@ -73,9 +90,12 @@ Else analyze keywords:
   - Mobile: iOS, Android, app, gesture, notification
   - Web: browser, responsive, URL, cookie, React
   - Desktop: Electron, Windows, macOS, system tray
+  - Browser Extension: extension, popup, content script, chrome API, manifest
 ```
 
 ### 2.2 Confirm Platform
+If platform unclear, apply `/mcp__sequential-thinking__sequentialthinking` for platform detection.
+
 ```
 ✅ Feature loaded: [feature-name]
 🎯 Platform detected: [platform]
@@ -92,6 +112,8 @@ From spec.md extract:
 - Edge cases → Critical scenarios
 
 ### 3.2 Generate User Flow
+Apply `/mcp__sequential-thinking__sequentialthinking` for flow completeness analysis.
+
 Create comprehensive Mermaid diagram showing complete user journey:
 ```mermaid
 flowchart TD
@@ -136,60 +158,53 @@ Include only UX-relevant patterns for the platform:
 - Drag and drop interactions
 - Context menu patterns
 
-### 3.5 Define Critical Scenarios
-Select 5-6 most important scenarios:
+**Browser Extension UX:**
+- Permission request flows
+- Context menu integration
+- Badge notifications
+- Storage quota handling
+
+### 3.5 Define Error Presentation
+Apply `/mcp__sequential-thinking__sequentialthinking` for error categorization.
+
+Define four error types (as required by template):
 ```json
 {
-  "scenario_name": {
-    "detection": "How system identifies",
-    "user_impact": "What user experiences",
-    "solution": "UX response",
-    "recovery": "How to recover"
-  }
+  "network_failure": {
+    "visual_indicator": "How error appears in UI",
+    "message_template": "User-friendly message",
+    "action_options": "What user can do",
+    "auto_recovery": "Automatic UI behavior"
+  },
+  "validation_error": { ... },
+  "timeout": { ... },
+  "permission_denied": { ... }
 }
 ```
 
-### 3.6 UX Enhancements
-Focus on user experience improvements:
+### 3.6 Accessibility Standards
+Define accessibility requirements:
 
-**Performance:**
-- Response time targets
-- Loading feedback strategies
-- Timeout handling
-
-**Accessibility:**
-- Screen reader support
-- Touch target sizes
-- Keyboard navigation
-- High contrast support
-
-**Error Prevention:**
-- Input validation timing
-- Confirmation patterns
-- Disabled state clarity
-
-### 3.7 Success Metrics
-Define measurable UX goals:
-- Task completion rate
-- Time to complete
-- Error rate
-- User satisfaction indicators
+- **Screen Readers**: ARIA requirements, label structure
+- **Navigation**: Keyboard support, focus management
+- **Visual**: Contrast requirements, color independence
+- **Touch Targets**: Minimum sizes for mobile/desktop
 
 ## Phase 4: Assembly
 
 ### 4.1 Structure Document
 Follow template sections:
-1. Header (platform, dependencies, reference)
+1. Header (platform)
 2. User Flow (Mermaid)
-3. Interaction Model (JSON)
-4. Platform-Specific Patterns (UX behaviors only)
-5. UX Enhancements (performance, accessibility, prevention)
-6. Critical Scenarios (JSON, 5-6 max)
-7. Success Metrics (measurable targets)
+3. Interaction Model (Core Actions, States & Transitions)
+4. Platform-Specific Patterns (only non-N/A items)
+5. Accessibility Standards (4 categories)
+6. Error Presentation (4 error types)
 
-### 4.2 Apply Size Limits
-- If >400 lines: Trim details, keep core UX patterns
-- Priority: Flows > Interactions > Scenarios > Enhancements
+### 4.2 Optimize Content
+- Keep descriptions concise but complete
+- Priority: Flows > Interactions > Error Presentation > Accessibility
+- Remove any duplication or N/A sections
 
 ## Phase 5: Validation
 
@@ -199,15 +214,7 @@ Verify:
 - Focus on UX, not technical implementation
 - Platform patterns are UX-relevant
 - JSON structure valid
-- Metrics measurable
-
-### 5.2 Size Check
-```bash
-line_count=$(wc -l < ux.md)
-if [ $line_count -gt 400 ]; then
-  echo "Warning: Document exceeds 400 lines ($line_count)"
-fi
-```
+- All four error types defined
 
 ## Phase 6: Save
 
@@ -231,45 +238,22 @@ Location: ./ai-docs/features/[feature]/ux.md
 - **PRD missing**: "Warning: PRD.md not found, using spec.md for platform detection"
 
 ## Detection Errors
-- **Platform unclear**: "Platform detection ambiguous. Please specify: 1) Web 2) Mobile 3) Desktop"
+- **Platform unclear**: "Platform detection ambiguous. Please specify: 1) Web 2) Mobile 3) Desktop 4) Browser Extension"
 
 ## Generation Errors
 - **Template missing**: "Error: UX template not found at specified path"
-- **Size exceeded**: "Warning: Document exceeds 400 lines, trimming required"
 
 ## Validation Errors
 - **Duplicate content**: "Warning: Content duplicates spec.md requirements"
 
-# Examples
-
-## Mobile Feature
-```
-Output includes:
-✓ Touch gesture patterns
-✓ Permission request UX flow
-✓ Offline mode behavior
-✗ Technical API details
-✗ Database schemas
-```
-
-## Web Feature
-```
-Output includes:
-✓ Responsive behavior at breakpoints
-✓ Keyboard navigation patterns
-✓ Form validation UX
-✗ Backend architecture
-✗ CSS class names
-```
-
 # Quality Checklist
 
 Before finalizing:
-- [ ] Under 400 lines total
+- [ ] Concise and focused on UX patterns
 - [ ] Platform correctly identified
 - [ ] No spec.md duplication
 - [ ] Focus on UX, not implementation
 - [ ] All JSON valid
 - [ ] Mermaid renders correctly
-- [ ] Metrics measurable
-- [ ] Scenarios actionable
+- [ ] Four error types defined
+- [ ] Accessibility standards complete
