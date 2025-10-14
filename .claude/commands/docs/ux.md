@@ -49,21 +49,9 @@ Document should be comprehensive yet concise, focusing on UX patterns essential 
 
 ## Content Rules
 - **Complement, don't duplicate** - Add UX insights, not repeat requirements
-- **UX focus** - Interactions, feedback, user flows, not implementation details
-- **Structured data** - Use JSON for all component definitions
-- **Visual flows** - Mermaid diagrams for user journeys
-- **Measurable metrics** - Concrete success criteria
-
-## Content Guidelines
-- **Concise and focused** - UX behavior, not implementation
-- **Structured over prose** - Use JSON, Mermaid, lists
-- **Complete but compact** - All template sections, no duplication
-- **Quality over quantity** - Clear patterns over exhaustive details
-
-## Platform Detection Priority
-1. Explicit platform in PRD.md
-2. Platform keywords in spec.md
-3. Default to web if unclear
+- **Structured data** - Use JSON for all component definitions, Mermaid for flows
+- **Platform-aware** - Include only UX-relevant patterns for detected platform
+- **Template compliance** - Exclude Review Checklist from final output
 
 # Execution Flow
 
@@ -125,10 +113,13 @@ flowchart TD
 ```
 
 ### 3.3 Build Interaction Model
-Generate JSON for core user actions and system responses:
+Generate JSON for core user actions and system responses.
+
+**Important:** Replace `[PRIMARY_ACTION_NAME]` and `[SECONDARY_ACTION_NAME]` with actual action names (e.g., "submit_form", "upload_file", "refresh_data")
+
 ```json
 {
-  "primary_action": {
+  "[actual_action_name]": {
     "trigger": "How user initiates",
     "feedback": "Immediate response",
     "success": "Success state",
@@ -137,32 +128,24 @@ Generate JSON for core user actions and system responses:
 }
 ```
 
+For States & Transitions, define complete lifecycle states:
+```json
+{
+  "initial": "User enters feature",
+  "processing": "System handling request",
+  "success": "Operation completed",
+  "error": "Error state requiring user action"
+}
+```
+
 ### 3.4 Platform-Specific UX Patterns
-Include only UX-relevant patterns for the platform:
+**Include only non-N/A patterns for the detected platform. Remove entire platform section if all items are N/A.**
 
-**Mobile UX:**
-- Touch gesture patterns (tap, swipe, pinch)
-- Permission request flows
-- Offline behavior strategies
-- Navigation patterns (tab bar, drawer)
-
-**Web UX:**
-- Responsive breakpoints behavior
-- Keyboard navigation support
-- Browser back/forward handling
-- Form validation patterns
-
-**Desktop UX:**
-- Window state management
-- Keyboard shortcuts
-- Drag and drop interactions
-- Context menu patterns
-
-**Browser Extension UX:**
-- Permission request flows
-- Context menu integration
-- Badge notifications
-- Storage quota handling
+Key patterns by platform:
+- **Mobile**: Gestures, Permissions, Offline behavior
+- **Web**: Responsive breakpoints, Keyboard navigation, Browser handling
+- **Desktop**: Window management, System integration, File operations
+- **Browser Extension**: Permissions, Context injection, Storage strategy
 
 ### 3.5 Define Error Presentation
 Apply `/mcp__sequential-thinking__sequentialthinking` for error categorization.
@@ -201,10 +184,12 @@ Follow template sections:
 5. Accessibility Standards (4 categories)
 6. Error Presentation (4 error types)
 
+**Note:** Do NOT include Review & Acceptance Checklist in final output
+
 ### 4.2 Optimize Content
 - Keep descriptions concise but complete
+- Remove any N/A sections entirely
 - Priority: Flows > Interactions > Error Presentation > Accessibility
-- Remove any duplication or N/A sections
 
 ## Phase 5: Validation
 
@@ -228,7 +213,6 @@ Write to: `./ai-docs/features/[feature]/ux.md`
 Platform: [platform]
 Feature: [feature-name]
 Location: ./ai-docs/features/[feature]/ux.md
-
 ```
 
 # Error Handling
@@ -245,3 +229,4 @@ Location: ./ai-docs/features/[feature]/ux.md
 
 ## Validation Errors
 - **Duplicate content**: "Warning: Content duplicates spec.md requirements"
+- **Invalid JSON**: "Error: Generated JSON structure invalid. Regenerating..."
