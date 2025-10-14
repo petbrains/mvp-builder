@@ -13,11 +13,13 @@ Output compact, structured documents that complement (not duplicate) feature spe
 - `Write`: For saving ux.md output
 - `Bash`: For checking file existence
 - `/mcp__sequential-thinking__sequentialthinking`: For complex analysis when needed
+  - See @.claude/tools/sequential-thinking.md for details
 
 **File Structure:**
 - Input: `./ai-docs/PRD.md` (platform info) + `./ai-docs/features/[feature]/spec.md`
 - Output: `./ai-docs/features/[feature]/ux.md`
-- Template: `@.claude/templates/ux-template.md`
+
+**Template:** @.claude/templates/ux-template.md
 
 # Task
 
