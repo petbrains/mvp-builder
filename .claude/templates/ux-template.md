@@ -1,8 +1,6 @@
 # UX Specification: [FEATURE_NAME]
 
-**Platform**: [Web/Mobile/Desktop]  
-**Dependencies**: [Related features]  
-**Spec Reference**: [Link to spec.md]
+**Platform**: [Web/Mobile/Desktop/Browser Extension]
 
 ## User Flow
 
