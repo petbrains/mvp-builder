@@ -245,15 +245,3 @@ Location: ./ai-docs/features/[feature]/ux.md
 
 ## Validation Errors
 - **Duplicate content**: "Warning: Content duplicates spec.md requirements"
-
-# Quality Checklist
-
-Before finalizing:
-- [ ] Concise and focused on UX patterns
-- [ ] Platform correctly identified
-- [ ] No spec.md duplication
-- [ ] Focus on UX, not implementation
-- [ ] All JSON valid
-- [ ] Mermaid renders correctly
-- [ ] Four error types defined
-- [ ] Accessibility standards complete
