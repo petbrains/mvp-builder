@@ -17,100 +17,134 @@ flowchart TD
     Retry --> Start
     Success --> End([Exit])
 ```
-*Note: Diagram can be expanded as needed for complex flows*
+*Note: Expand diagram for complex flows with multiple decision points*
 
 ## Interaction Model
 
 ### Core Actions
-```json
-{
-  "primary_action": {
-    "trigger": "User tap/click on button",
-    "feedback": "Loading spinner + message",
-    "success": "Navigate to next screen",
-    "error": "Modal with actionable message"
-  },
-  "cancel_action": {
-    "trigger": "Back/Cancel button",
-    "feedback": "Confirmation if data loss",
-    "result": "Return to previous state"
+- **[PRIMARY_ACTION_NAME]**
+  ```json
+  {
+    "trigger": "[USER_TRIGGER]",
+    "feedback": "[IMMEDIATE_FEEDBACK]",
+    "success": "[SUCCESS_OUTCOME]",
+    "error": "[ERROR_HANDLING]"
   }
-}
-```
+  ```
+
+- **[SECONDARY_ACTION_NAME]**
+  ```json
+  {
+    "trigger": "[USER_TRIGGER]",
+    "feedback": "[IMMEDIATE_FEEDBACK]",
+    "success": "[SUCCESS_OUTCOME]",  
+    "error": "[ERROR_HANDLING]"
+  }
+  ```
 
 ### States & Transitions
 ```json
 {
-  "idle": "Ready for input",
-  "loading": "Processing request (spinner + message)",
-  "success": "Action completed (auto-navigate)",
-  "error": "Show error with recovery option"
+  "[STATE_1]": "[STATE_DESCRIPTION]",
+  "[STATE_2]": "[STATE_DESCRIPTION]",
+  "[STATE_3]": "[STATE_DESCRIPTION]",
+  "[STATE_4]": "[STATE_DESCRIPTION]"
 }
 ```
 
 ## Platform-Specific Patterns
+** MODEL INSTRUCTION: Only include platforms where requirements differ from "N/A". Remove entire platform section if all items are "N/A".**
 
-### Mobile (if applicable)
-- **Gestures**: Swipe back, pull to refresh
-- **Permissions**: Camera, storage, location
-- **Offline**: Cache critical data, queue actions
+### Web
+- **Responsive**: [BREAKPOINT_STRATEGY or "N/A"]
+- **Keyboard**: [KEYBOARD_NAVIGATION or "N/A"]
+- **Browser**: [BROWSER_BEHAVIOR or "N/A"]
 
-### Web (if applicable)  
-- **Responsive**: Mobile-first breakpoints (320px, 768px, 1024px)
-- **Keyboard**: Tab navigation, Enter to submit, Esc to cancel
-- **Browser**: Back button handling, form autosave
+### Mobile
+- **Gestures**: [GESTURE_SUPPORT or "N/A"]
+- **Permissions**: [REQUIRED_PERMISSIONS or "N/A"]
+- **Offline**: [OFFLINE_STRATEGY or "N/A"]
 
-## UX Enhancements
+### Desktop
+- **Window Management**: [WINDOW_BEHAVIOR or "N/A"]
+- **System Integration**: [OS_FEATURES or "N/A"]
+- **File System**: [FILE_OPERATIONS or "N/A"]
 
-### Performance
-- Target load time: <3s
-- Feedback within: 100ms
-- Timeout handling: 10s with retry
+### Browser Extension
+- **Permissions**: [EXTENSION_PERMISSIONS or "N/A"]
+- **Context**: [INJECTION_CONTEXT or "N/A"]
+- **Storage**: [STORAGE_STRATEGY or "N/A"]
 
-### Accessibility
-- Screen reader labels
-- Keyboard navigation
-- High contrast support
-- Touch targets: 44pt (iOS) / 48dp (Android)
+## Accessibility Standards
 
-### Error Prevention
-- Input validation on blur
-- Confirmation for destructive actions
-- Clear disabled states with tooltips
+- **Screen Readers**: [ARIA_REQUIREMENTS]
+- **Navigation**: [KEYBOARD_SUPPORT]
+- **Visual**: [CONTRAST_REQUIREMENTS]
+- **Touch Targets**: [SIZE_REQUIREMENTS]
 
-## Critical Scenarios
+## Error Presentation
 
 ```json
 {
   "network_failure": {
-    "detection": "API call fails or timeout",
-    "user_impact": "Cannot complete action",
-    "solution": "Show offline message with retry button",
-    "recovery": "Auto-retry when connection restored"
+    "visual_indicator": "[HOW_TO_SHOW]",
+    "message_template": "[USER_MESSAGE]",
+    "action_options": "[AVAILABLE_ACTIONS]",
+    "auto_recovery": "[UI_BEHAVIOR]"
   },
-  "invalid_input": {
-    "detection": "Validation fails on blur/submit",
-    "user_impact": "Cannot proceed",
-    "solution": "Inline error with specific hints",
-    "recovery": "Clear error on valid input"
+  "validation_error": {
+    "visual_indicator": "[HOW_TO_SHOW]",
+    "message_template": "[USER_MESSAGE]",
+    "action_options": "[AVAILABLE_ACTIONS]",
+    "auto_recovery": "[UI_BEHAVIOR]"
   },
-  "long_operation": {
-    "detection": "Process takes >3 seconds",
-    "user_impact": "Uncertainty about progress",
-    "solution": "Progress bar with cancel option",
-    "recovery": "Allow restart if cancelled"
+  "timeout": {
+    "visual_indicator": "[HOW_TO_SHOW]",
+    "message_template": "[USER_MESSAGE]",
+    "action_options": "[AVAILABLE_ACTIONS]",
+    "auto_recovery": "[UI_BEHAVIOR]"
   },
   "permission_denied": {
-    "detection": "System returns permission error",
-    "user_impact": "Feature unavailable",
-    "solution": "Explain why needed + settings link",
-    "recovery": "Re-check on app resume"
+    "visual_indicator": "[HOW_TO_SHOW]",
+    "message_template": "[USER_MESSAGE]",
+    "action_options": "[AVAILABLE_ACTIONS]",
+    "auto_recovery": "[UI_BEHAVIOR]"
   }
 }
 ```
 
-## Success Metrics
-- Task completion: >95%
-- Time to complete: <30s
-- Error rate: <5%
-- Retry rate: <10%
+---
+
+## Review & Acceptance Checklist
+*GATE: Automated checks*
+** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final ux.md output.**
+
+### Flow Completeness
+- [ ] Entry and exit points clearly defined
+- [ ] All user paths documented
+- [ ] Error states for each action specified
+- [ ] Recovery paths documented
+
+### Interaction Coverage
+- [ ] Core actions have all fields (trigger, feedback, success, error)
+- [ ] States cover full lifecycle
+- [ ] Transitions between states logical
+
+### Platform Consistency
+- [ ] Platform-specific requirements identified
+- [ ] No contradictions between platforms
+- [ ] N/A sections removed from output
+
+### Accessibility Compliance
+- [ ] Screen reader requirements specified
+- [ ] Keyboard navigation documented
+- [ ] Visual standards defined
+- [ ] Touch target sizes specified
+
+### Error Presentation
+- [ ] Visual indicators for all error types
+- [ ] User-friendly message templates
+- [ ] Clear action options provided
+- [ ] Auto-recovery behavior defined
+
+---
