@@ -1,47 +1,45 @@
+---
+description: Execute the implementation planning workflow using the plan template to generate design artifacts.
+---
+
 # Implementation Plan: [FEATURE]
 
-**Input**: Feature specification from `./ai-docs/features/[feature]/spec.md`
+## Purpose
+Defines **how** the feature described in `spec.md` will be implemented — outlining the technical architecture, project structure, data model, contracts, and rollout strategy.  
+Focus: translate *requirements* into an actionable *implementation strategy*.
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Extract the core implementation idea and key architectural direction from `spec.md`.
 
 ## Technical Context
+Describe all technical parameters that define how this feature will be built.
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
+**Language:** Primary programming language(s) used for implementation.
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Framework:** Core frameworks or libraries applied in the feature.
 
-## Constitution Check
+**Storage:** Database or state-management strategy (e.g., PostgreSQL, Redis, local storage).
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+**API Layer:** Internal or external APIs integrated in this feature.
 
-[Gates determined based on constitution file]
+**Testing:** Approach to unit, integration, and end-to-end testing.
+
+**Deployment:** Target environment, packaging, and release approach.
+
+**Constraints:** Known performance, security, or privacy limitations and budgets.
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```
-specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+./ai-docs/features/[feature]/
+├── plan.md              # Finalized implementation plan
+├── research.md          # Phase 0 output (risks, options, decisions)
+├── data-model.md        # Phase 1 output (domain & persistence design)
+├── quickstart.md        # Phase 1 output (environment setup and CI configuration)
+└── contracts/           # Phase 1 output (service/API definitions)
 ```
 
 ### Source Code (repository root)
@@ -86,16 +84,39 @@ api/
 
 ios/ or android/
 └── [platform-specific structure: feature modules, UI flows, platform tests]
+
+# [REMOVE IF UNUSED] Option 4: Browser Extension (when "Browser Extension" detected)
+extension/
+├── manifest.json
+├── src/
+│   ├── background/
+│   ├── content/
+│   ├── ui/
+│   │   ├── popup/
+│   │   └── options/
+│   ├── services/
+│   └── shared/
+├── assets/
+└── tests/
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: [Document the selected structure and reference the real directories captured above]
 
 ## Complexity Tracking
-
-*Fill ONLY if Constitution Check has violations that must be justified*
+*Fill only if Constitution Check has violations that must be justified.*
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+|-----------|------------|--------------------------------------|
+| Example 1 | [Reason] | [Why simpler approach insufficient] |
+| Example 2 | [Reason] | [Why simpler approach insufficient] |
+
+---
+
+<!-- MODEL INSTRUCTION: DO NOT INCLUDE IN OUTPUT -->
+### Review Checklist
+- [ ] All requirements from `spec.md` are addressed.  
+- [ ] Chosen stack aligns with constraints and budgets.  
+- [ ] Project structure and module boundaries defined clearly.  
+- [ ] Performance/security/privacy criteria documented.  
+- [ ] Rollout and monitoring strategy included.  
+- [ ] Dependencies validated and scoped properly within this plan.
