@@ -88,6 +88,9 @@ extension/
 
 **Selected Structure:** [Specify which structure was selected and why]
 
+## Error Handling Strategy
+[General approach to handling errors across the feature - logging, recovery, user feedback]
+
 ## Implementation Notes
 [Any critical implementation decisions, trade-offs, or considerations that don't fit other sections]
 
@@ -103,7 +106,7 @@ extension/
 - [ ] Edge cases have implementation approach
 
 ### Technical Alignment  
-- [ ] Tech stack matches PRD constraints
+- [ ] Tech stack matches project constraints
 - [ ] Selected structure fits platform/architecture
 - [ ] Testing approach covers critical paths
 
