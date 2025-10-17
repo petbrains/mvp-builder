@@ -6,7 +6,7 @@ Code execution rules and MVP development standards.
 
 Load these documents when starting work:
 - @ai-docs/PRD.md - product vision, audience, problem
-- @ai-docs/FEATURES.md - feature map, dependencies, priorities
+- @ai-docs/FEATURES.md - feature map, technologies, dependencies, priorities
 - @ai-docs/README.md - current implementation status
 
 ## Development Rules
@@ -85,8 +85,8 @@ Load these documents when starting work:
 ```
 ai-docs/
 ├── PRD.md                 # Product requirements
-├── README.md              # Project memory bank
-├── FEATURES.md            # Development roadmap
+├── README.md              # Project overview
+├── FEATURES.md            # Development roadmap and technology decisions
 ├── features/
 │   └── [feature-name]/    # Semantic names only
 │       ├── spec.md        # Requirements
@@ -98,6 +98,7 @@ ai-docs/
 ## Session Continuity
 
 Use searchable comment prefixes in code:
+- AICODE-NOTE: critical implementation details for next session
 - AICODE-TODO: pending tasks to complete
 
 Before modifying code: grep for AICODE- prefixes
@@ -108,15 +109,6 @@ After completing work: add AICODE-NOTE for complex logic
 - Lead with status/answer
 - List created/modified files with full paths
 - End with clear next action
-
-## Technology Context
-<!-- AUTO-GENERATED: START -->
-<!-- This section is auto-updated by plan command. Do not edit manually. -->
-
-### Feature-Specific Technologies
-- [Technology] - Feature: [feature-name] - Added: [date]
-- [Technology] - Feature: [feature-name] - Added: [date]
-<!-- AUTO-GENERATED: END -->
 
 ## Anti-Rules
 
