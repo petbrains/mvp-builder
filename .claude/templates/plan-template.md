@@ -1,48 +1,44 @@
 # Implementation Plan: [FEATURE_NAME]
 
 ## Purpose
-Defines **how** the feature described in `spec.md` will be implemented — outlining the technical architecture, project structure, data model, contracts, and rollout strategy.  
-Focus: translate *requirements* into an actionable *implementation strategy*.
+Translates feature requirements into technical implementation strategy.
 
 ## Summary
-
-Extract the core implementation idea and key architectural direction from `spec.md`.
+[Describe the core technical approach and key architectural decisions for implementing this feature]
 
 ## Technical Context
-Describe all technical parameters that define how this feature will be built.
 
-**Language:** Primary programming language(s) used for implementation.
+**Language:** [Primary programming language]
 
-**Framework:** Core frameworks or libraries applied in the feature.
+**Framework:** [Core framework/library]
 
-**Storage:** Database or state-management strategy (e.g., PostgreSQL, Redis, local storage).
+**Storage:** [Data persistence strategy]
 
-**API Layer:** Internal or external APIs integrated in this feature.
+**API Layer:** [API architecture approach]
 
-**Testing:** Approach to unit, integration, and end-to-end testing.
+**Testing:** [Testing strategy and scope]
 
-**Deployment:** Target environment, packaging, and release approach.
+**Deployment:** [Target environment and deployment approach]
 
-**Constraints:** Known performance, security, or privacy limitations and budgets.
+**Constraints:** [Technical limitations and boundaries]
 
 ## Project Structure
 
-### Documentation (this feature)
-
+### Documentation
 ```
 ./ai-docs/features/[FEATURE_FOLDER_NAME]/
-├── plan.md              # Finalized implementation plan
-├── research.md          # Phase 0 output (risks, options, decisions)
-├── data-model.md        # Phase 1 output (domain & persistence design)
-├── quickstart.md        # Phase 1 output (environment setup and CI configuration)
-└── contracts/           # Phase 1 output (service/API definitions)
+├── plan.md              # This implementation plan
+├── research.md          # Technical research and decisions
+├── data-model.md        # Domain and persistence design
+├── quickstart.md        # Environment setup and configuration
+└── contracts/           # Service and API contracts
 ```
 
-### Source Code (repository root)
-** MODEL INSTRUCTION: Select ONE structure option based on detected platform/architecture from spec.md and ux.md. Remove all other options and "Option X:" labels. Expand paths with concrete names.**
+### Source Code
+** MODEL INSTRUCTION: Select ONE structure based on detected platform/architecture. Remove all other structures and labels. Expand paths with concrete names.**
 
 ```
-# Option 1: Single project (DEFAULT)
+# Structure A: Single Project
 src/
 ├── models/
 ├── services/
@@ -54,7 +50,7 @@ tests/
 ├── integration/
 └── unit/
 
-# Option 2: Web application (when "frontend" + "backend" detected)
+# Structure B: Web Application
 backend/
 ├── src/
 │   ├── models/
@@ -69,14 +65,18 @@ frontend/
 │   └── services/
 └── tests/
 
-# Option 3: Mobile + API (when "iOS/Android" detected)
+# Structure C: Mobile + API
 api/
-└── [same as backend above]
+├── src/
+│   ├── models/
+│   ├── services/
+│   └── api/
+└── tests/
 
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+mobile/
+└── [platform-specific structure]
 
-# Option 4: Browser Extension (when "Browser Extension" detected)
+# Structure D: Browser Extension
 extension/
 ├── manifest.json
 ├── src/
@@ -86,15 +86,10 @@ extension/
 └── tests/
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real directories captured above]
+**Selected Structure:** [Specify which structure was selected and why]
 
-## Complexity Tracking
-*Fill only if Constitution Check has violations that must be justified.*
-
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|--------------------------------------|
-| Example 1 | [Reason] | [Why simpler approach insufficient] |
-| Example 2 | [Reason] | [Why simpler approach insufficient] |
+## Implementation Notes
+[Any critical implementation decisions, trade-offs, or considerations that don't fit other sections]
 
 ---
 
@@ -103,25 +98,24 @@ extension/
 ** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final plan.md output.**
 
 ### Requirements Coverage
-- [ ] All requirements from `spec.md` are addressed
-- [ ] UX patterns from `ux.md` are implementable
-- [ ] No requirements left unimplemented
+- [ ] All functional requirements from spec.md addressed
+- [ ] All UX patterns from ux.md implementable
+- [ ] Edge cases have implementation approach
 
-### Technical Alignment
-- [ ] Chosen stack aligns with PRD technical requirements
-- [ ] Constraints and budgets respected
-- [ ] Testing strategy covers all critical paths
+### Technical Alignment  
+- [ ] Tech stack matches PRD constraints
+- [ ] Selected structure fits platform/architecture
+- [ ] Testing approach covers critical paths
 
 ### Structure Clarity
-- [ ] Project structure matches detected platform/architecture
-- [ ] Module boundaries defined clearly
-- [ ] Documentation structure supports all phases
+- [ ] Documentation structure supports all artifacts
+- [ ] Source code structure is complete
+- [ ] Module boundaries clearly defined
 
 ### Implementation Readiness
-- [ ] Performance criteria documented
-- [ ] Security/privacy criteria documented
-- [ ] Rollout strategy included
-- [ ] Monitoring strategy defined
-- [ ] Dependencies validated and scoped
+- [ ] Technical Context fully specified
+- [ ] Performance requirements achievable
+- [ ] Security considerations addressed
+- [ ] Selected Structure documented with rationale
 
 ---
