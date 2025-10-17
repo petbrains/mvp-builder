@@ -1,7 +1,12 @@
+---
+description: Execute the implementation planning workflow.
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+---
+
 ## Inputs
 - **Required:** `./ai-docs/features/[feature]/` — feature folder containing:
   - `spec.md` — validated feature specification
-  - `ux.md` — UX patterns and user flows (if exists)
+  - `ux.md` — UX patterns and user flows
 
 ## Outputs
 - `./ai-docs/features/[feature]/plan.md` — technical implementation plan (based on plan-template.md)
@@ -13,7 +18,7 @@
 
 ## Workflow
 
-1. **Parse feature folder**: Read `spec.md` and `ux.md` (if exists) from input folder
+1. **Parse feature folder**: Read `spec.md` and `ux.md` from input folder
 2. **Load template**: Use @.claude/templates/plan-template.md as base structure
 3. **Fill Technical Context**: Analyze spec.md and ux.md to populate context section
 4. **Evaluate gates**: Check for violations (ERROR if unjustified)
@@ -68,7 +73,7 @@
    - Local environment setup
    - CI configuration
    - Lint/test hooks
-   - UX testing setup (if ux.md exists)
+   - UX testing setup
 
 4. Update agent context:
    - Update appropriate agent-specific context file
@@ -88,7 +93,7 @@
    - Testing pyramid and coverage targets
    - Module boundaries and naming conventions
    - Build/deploy specifics (artifacts, env matrices)
-   - UX implementation patterns (if ux.md exists)
+   - UX implementation patterns from ux.md
 
 3. Map UX patterns to technical components:
    - For each UX pattern → implementation approach
@@ -101,7 +106,7 @@
 **Steps**:
 1. Cross-check coverage:
    - All functional requirements from `spec.md` addressed
-   - All UX patterns from `ux.md` implementable (if exists)
+   - All UX patterns from `ux.md` implementable
    - Edge cases have implementation approach
 
 2. Verify technical alignment:
@@ -118,5 +123,4 @@
 ## Key Rules
 - Use absolute paths
 - ERROR on gate failures or unresolved clarifications
-- Always check for ux.md existence before processing UX-related steps
 - Fill all sections of plan-template.md including structure selection rationale
