@@ -9,9 +9,9 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
   - `ux.md` — UX patterns and user flows
 
 ## Outputs
-- `./ai-docs/features/[feature]/plan.md` — technical implementation plan (based on plan-template.md)
+- `./ai-docs/features/[feature]/plan.md` — technical implementation plan
 - Supporting docs produced by this command:
-  - `./ai-docs/features/[feature]/research.md` — research notes (compatibility, risks, decisions)
+  - `./ai-docs/features/[feature]/research.md` — research notes
   - `./ai-docs/features/[feature]/data-model.md` — domain entities, schemas, and persistence layer
   - `./ai-docs/features/[feature]/quickstart.md` — environment setup and CI guide
   - `./ai-docs/features/[feature]/contracts/` — API schemas or external service definitions
