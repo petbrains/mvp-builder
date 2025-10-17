@@ -75,10 +75,11 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
    - Lint/test hooks
    - UX testing setup
 
-4. Update agent context:
-   - Update appropriate agent-specific context file
-   - Add only new technology from current plan
-   - Preserve manual additions between markers
+4. Update feature index:
+   - Update `./ai-docs/FEATURES.md`
+   - Add technology stack to the feature entry
+   - Format: Add "Tech: [technologies]" under the corresponding feature
+   - Preserve existing structure and content
 
 ### Phase 2 — Implementation Plan
 **Prerequisites**: Phase 1 complete
