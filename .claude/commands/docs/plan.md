@@ -4,17 +4,17 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 ---
 
 ## Inputs
-- **Required:** `./ai-docs/features/[feature]/` — feature folder containing:
-  - `spec.md` — validated feature specification
-  - `ux.md` — UX patterns and user flows
+- **Required:** `./ai-docs/features/[feature]/` – feature folder containing:
+  - `spec.md` – validated feature specification
+  - `ux.md` – UX patterns and user flows
 
 ## Outputs
-- `./ai-docs/features/[feature]/plan.md` — technical implementation plan
+- `./ai-docs/features/[feature]/plan.md` – technical implementation plan
 - Supporting docs produced by this command:
-  - `./ai-docs/features/[feature]/research.md` — research notes
-  - `./ai-docs/features/[feature]/data-model.md` — domain entities, schemas, and persistence layer
-  - `./ai-docs/features/[feature]/quickstart.md` — environment setup and CI guide
-  - `./ai-docs/features/[feature]/contracts/` — API schemas or external service definitions
+  - `./ai-docs/features/[feature]/research.md` – research notes
+  - `./ai-docs/features/[feature]/data-model.md` – domain entities, schemas, and persistence layer
+  - `./ai-docs/features/[feature]/quickstart.md` – environment setup and CI guide
+  - `./ai-docs/features/[feature]/contracts/` – API schemas or external service definitions
 
 ## Workflow
 
@@ -26,7 +26,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 ## Phases
 
-### Phase 0 — Research
+### Phase 0 – Research
 **Output**: `research.md`
 
 **Steps**:
@@ -35,6 +35,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
    - For each external dependency → integration patterns task
    - For each library combination → compatibility verification via context7 mcp
    - For each UX pattern → technical feasibility check
+   - For error types in ux.md → error handling strategy research
 
 2. Generate and dispatch research agents:
    ```
@@ -52,9 +53,9 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
    - Compatibility notes: [verified combinations]
    - Alternatives considered: [what else evaluated]
 
-### Phase 1 — Design
+### Phase 1 – Design
 **Prerequisites**: `research.md` complete  
-**Output**: `data-model.md`, `/contracts/*`, `quickstart.md`, updated agent context
+**Output**: `data-model.md`, `/contracts/*`, `quickstart.md`, updated FEATURES.md
 
 **Steps**:
 1. Extract entities from spec.md → `data-model.md`:
@@ -77,31 +78,40 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 4. Update feature index:
    - Update `./ai-docs/FEATURES.md`
-   - Add technology stack to the feature entry
-   - Format: Add "Tech: [technologies]" under the corresponding feature
+   - Add brief tech stack summary to the feature entry
+   - Format: Add "  - Tech: `[2-5 key technologies]`" under folder line
+   - Example: "  - Tech: `TypeScript, React, PostgreSQL`"
+   - Include only primary technologies, not every library
    - Preserve existing structure and content
 
-### Phase 2 — Implementation Plan
+### Phase 2 – Implementation Plan
 **Prerequisites**: Phase 1 complete
 
 **Steps**:
-1. Select appropriate project structure from template:
+1. Fill all sections of plan-template.md based on research and design artifacts:
+   - Generate Summary from key technical decisions
+   - Complete Technical Context from research.md
+   - Fill Implementation Mapping sections
+   - Map error types from ux.md to Error Handling Approach
+
+2. Select appropriate project structure from template:
    - Analyze spec.md and ux.md to determine platform/architecture
    - Choose from: Single Project, Web Application, Mobile + API, Browser Extension
+   - Remove non-selected structures from document
    - Document selection rationale
 
-2. Define implementation strategy:
-   - Testing pyramid and coverage targets
+3. Define implementation strategy:
+   - Testing approach mapping scenarios to test files
    - Module boundaries and naming conventions
    - Build/deploy specifics (artifacts, env matrices)
-   - UX implementation patterns from ux.md
 
-3. Map UX patterns to technical components:
+4. Map UX patterns to technical components:
    - For each UX pattern → implementation approach
+   - Error types from ux.md → Error Handling Approach section
    - Component structure for UI elements
    - State management for user flows
 
-### Phase 3 — Validation & Sign-off
+### Phase 3 – Validation & Sign-off
 **Prerequisites**: All previous phases complete
 
 **Steps**:
@@ -109,6 +119,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
    - All functional requirements from `spec.md` addressed
    - All UX patterns from `ux.md` implementable
    - Edge cases have implementation approach
+   - Error handling covers all error types from ux.md
 
 2. Verify technical alignment:
    - Tech stack matches project constraints
@@ -119,9 +130,11 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 3. Final validation:
    - Ensure no redundant or cyclic dependencies
    - Confirm alignment with constraints and budgets
+   - Verify all template sections are filled
    - Approve plan for downstream task breakdown
 
 ## Key Rules
 - Use absolute paths
 - ERROR on gate failures or unresolved clarifications
 - Fill all sections of plan-template.md including structure selection rationale
+- Remove non-selected project structures from final document
