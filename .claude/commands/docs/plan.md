@@ -5,8 +5,8 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 # Instructions
 
-Generate comprehensive technical implementation plans from validated feature specifications.
-Creates multiple planning artifacts covering research, data models, contracts, and deployment.
+Generate comprehensive technical implementation plan by filling plan-template.md based on validated specifications.
+Creates supporting artifacts (research, data model, contracts, quickstart) that inform the main plan.
 
 **Tools Usage:**
 - `Read`: For loading spec.md, ux.md, and existing planning documents
@@ -18,22 +18,14 @@ Creates multiple planning artifacts covering research, data models, contracts, a
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
 
-For Architecture Selection:
-- When choosing project structure: "Analyze platform requirements → Evaluate architecture patterns → Compare with constraints → Select optimal structure"
-- When resolving dependency conflicts: "Map dependency tree → Identify conflicts → Evaluate alternatives → Choose resolution strategy"
+For Technology Evaluation:
+- When researching compatibility: "Analyze tech stack → Check dependencies → Verify ecosystem support → Document decisions"
 
-For Research Consolidation:
-- When evaluating technology compatibility: "Extract tech stack → Check version conflicts → Verify ecosystem support → Document decision rationale"
-- When mapping UX to technical: "Parse UX patterns → Identify technical requirements → Map to components → Validate feasibility"
+For Architecture Selection: 
+- When choosing project structure: "Analyze platform → Evaluate requirements → Compare structures → Select optimal"
 
-For Coverage Validation:
-- When verifying requirement coverage: "List all requirements → Map to implementation → Identify gaps → Confirm completeness"
-- When checking error handling: "Extract error types from UX → Map to handling strategies → Verify all paths covered"
-
-**Templates:**
+**Template:**
 - Plan: @.claude/templates/plan-template.md
-- Data Model: (generated from entities)
-- Contracts: (OpenAPI/GraphQL schemas)
 
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/spec.md` and `./ai-docs/features/[feature]/ux.md`
@@ -47,9 +39,9 @@ For Coverage Validation:
 
 # Task
 
-Transform validated feature specifications and UX patterns into actionable technical implementation plans.
-Produce comprehensive planning artifacts that bridge design to development.
-Each plan must be technically sound, cover all requirements, and provide clear implementation guidance.
+Transform validated feature specifications and UX patterns into comprehensive technical implementation plan.
+Fill plan-template.md with concrete technical decisions while generating supporting research and design artifacts.
+Ensure all requirements mapped to implementation approach without duplication.
 
 # Rules
 
@@ -64,17 +56,12 @@ Each plan must be technically sound, cover all requirements, and provide clear i
 - All error types from ux.md must have handling strategies
 - Edge cases must have explicit implementation paths
 
-## Artifact Generation Rules
-- Each output file must be self-contained and actionable
-- No circular dependencies between planning artifacts
-- Tech stack choices must be justified in research.md
-- API contracts must align with UX flows
-
-## Structure Selection Rules
-- Choose ONE project structure based on platform/architecture analysis
-- Remove non-selected structures from final plan.md
-- Document selection rationale in Implementation Strategy section
-- Structure options: Single Project, Web Application, Mobile + API, Browser Extension
+## Template Filling Rules
+- Fill all sections of plan-template.md
+- Select ONE project structure and remove others including labels
+- Expand paths with concrete feature-specific names
+- Do NOT include Review Checklist in final output (internal validation only)
+- Document all technical decisions in appropriate sections
 
 # Execution Flow
 
@@ -179,8 +166,6 @@ For each UX pattern:
 ```
 
 ### 1.3 Generate API Contracts
-Apply `/mcp__sequential-thinking__sequentialthinking` for API design.
-
 **Map User Actions to Endpoints:**
 - For each user action in spec.md → endpoint definition
 - For each UX flow in ux.md → API sequence
@@ -222,69 +207,76 @@ mkdir -p ./ai-docs/features/$FEATURE/contracts
 - Read plan-template.md
 - Load all Phase 0-1 artifacts for reference
 
-### 2.2 Fill Technical Context
-**Map Research to Plan Sections:**
-- Generate Summary from key technical decisions
-- Complete Technical Context from research.md
-- Fill Implementation Mapping sections
-- Map error types from ux.md to Error Handling Approach
+### 2.2 Fill Purpose and Summary
+**Generate opening sections:**
+- Purpose: Concise statement of what this plan translates and why
+- Summary: Core technical approach and key architectural decisions from research.md
 
-### 2.3 Select Project Structure
+### 2.3 Fill Technical Context
+**Map Research to Technical Context:**
+- Language, Framework, Storage from technology decisions
+- API Layer approach from contracts design
+- Testing strategy from requirements analysis
+- Deployment target from constraints
+- Document any technical limitations
+
+### 2.4 Generate Implementation Mapping
+**Create mappings without duplicating requirements:**
+- Component Architecture: How requirements become code modules
+- Error Handling Approach: Map error types from ux.md to handling layer
+
+### 2.5 Select and Configure Project Structure
 Apply `/mcp__sequential-thinking__sequentialthinking` for architecture selection.
 
-**Analyze and Choose Structure:**
-- Evaluate platform from ux.md
-- Consider architecture requirements
-- Select from: Single Project, Web Application, Mobile + API, Browser Extension
-- Remove non-selected structures from document
-- Document selection rationale
+**Choose appropriate structure:**
+- Analyze platform from ux.md and architecture from research
+- Select ONE structure from template options
+- Remove all other structures and their labels
+- Expand paths with concrete feature names (replace placeholders)
+- Document "Selected Structure" with rationale
 
-### 2.4 Define Implementation Strategy
-**Generate Strategy Sections:**
-- Testing approach mapping scenarios to test files
-- Module boundaries and naming conventions
-- Build/deploy specifics (artifacts, env matrices)
+### 2.6 Complete Remaining Sections
+**Fill final template sections:**
+- Testing Approach: Map acceptance scenarios to test structure
+- Implementation Notes: Critical decisions, trade-offs, or special considerations
 
-### 2.5 Map UX to Technical
-**Create Component Mapping:**
-- For each UX pattern → implementation approach
-- Error types from ux.md → Error Handling Approach section
-- Component structure for UI elements
-- State management for user flows
+### 2.7 Save Implementation Plan
+**Write completed plan:**
+- Save to `./ai-docs/features/[feature]/plan.md`
+- Ensure Review Checklist excluded from output
 
 **Status Report:**
 ```
 ✅ Phase 2: Implementation Plan Complete
 - Plan generated: ./ai-docs/features/[feature]/plan.md
 - Project structure selected: [structure type]
-- All requirements mapped to implementation
+- All template sections filled
 - Proceeding to Phase 3: Validation
 ```
 
 ## Phase 3: Validation & Sign-off
 
-### 3.1 Cross-check Coverage
-Apply `/mcp__sequential-thinking__sequentialthinking` for coverage validation.
+### 3.1 Apply Review Checklist
+**Use template's internal checklist for validation:**
+- Apply all checks from plan-template.md Review Checklist
+- Verify Requirements Coverage section
+- Verify Technical Alignment section  
+- Verify Structure Clarity section
+- Verify Implementation Readiness section
 
-**Verify Complete Coverage:**
-- All functional requirements from spec.md addressed ✓
-- All UX patterns from ux.md implementable ✓
-- Edge cases have implementation approach ✓
-- Error handling covers all error types from ux.md ✓
+### 3.2 Resolve Any Issues
+**If checklist failures found:**
+- Address missing coverage
+- Adjust technical decisions
+- Clarify ambiguous sections
+- Ensure all template sections properly filled
 
-### 3.2 Verify Technical Alignment
-**Validate Technical Decisions:**
-- Tech stack matches project constraints
-- Selected structure fits platform/architecture
-- Testing approach covers critical paths
-- Performance requirements achievable
-
-### 3.3 Final Validation
-**Complete Validation Checklist:**
-- No redundant or cyclic dependencies
-- Alignment with constraints and budgets confirmed
-- All template sections filled
-- Plan approved for downstream task breakdown
+### 3.3 Final Sign-off
+**Confirm plan ready for development:**
+- All checklist items validated
+- Plan document complete (without Review Checklist)
+- Supporting artifacts in place
+- No unresolved clarifications
 
 ### 3.4 Generate Final Report
 ```
@@ -328,9 +320,9 @@ Ready for task breakdown and development.
 - **Data model conflict**: "Error: Entity [name] conflicts with existing model. Resolve before proceeding."
 
 ## Validation Errors
-- **Incomplete coverage**: "Error: Requirements [list] not addressed in plan. Update implementation mapping."
-- **Missing error handling**: "Error: Error type [type] from ux.md has no handling strategy. Add to Error Handling Approach."
-- **Circular dependency**: "Error: Circular dependency detected between [module1] and [module2]. Refactor architecture."
+- **Checklist failure**: "Error: Review Checklist validation failed. See specific failures above."
+- **Missing section**: "Error: Template section [section] not filled. Complete all required sections."
+- **Structure not selected**: "Error: No project structure selected. Choose one structure and remove others."
 
 ## Common Warnings
 - **Performance concern**: "Warning: Current architecture may not meet performance requirement: [requirement]"
