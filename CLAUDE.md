@@ -90,9 +90,12 @@ ai-docs/
 ├── features/
 │   └── [feature-name]/    # Semantic names only
 │       ├── spec.md        # Requirements
-│       ├── ux.md          # UX schema
-│       ├── plan.md        # Implementation
-│       └── contracts/     # API contracts
+│       ├── ux.md          # UX schemas
+│       ├── plan.md        # Implementation plan
+│       ├── research.md    # Technical research and decisions
+│       ├── data-model.md  # Domain and persistence design
+│       ├── quickstart.md  # Environment setup and configuration
+│       └── contracts/     # Service and API contracts
 ```
 
 ## Session Continuity
