@@ -39,18 +39,6 @@ Translates feature requirements into technical implementation strategy.
 
 ## Project Structure
 
-### Documentation
-```
-./ai-docs/
-├── features/
-│   └── [feature-name]/    # Semantic names only
-│       ├── plan.md        # This implementation plan
-│       ├── research.md    # Technical research and decisions
-│       ├── data-model.md  # Domain and persistence design
-│       ├── quickstart.md  # Environment setup and configuration
-│       └── contracts/     # Service and API contracts
-```
-
 ### Source Code
 ** MODEL INSTRUCTION: Select ONE structure based on detected platform/architecture. Remove all other structures and labels. Expand paths with concrete names.**
 
