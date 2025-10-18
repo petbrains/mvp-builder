@@ -26,12 +26,14 @@ Translates feature requirements into technical implementation strategy.
 
 ### Documentation
 ```
-./ai-docs/features/[FEATURE_FOLDER_NAME]/
-├── plan.md              # This implementation plan
-├── research.md          # Technical research and decisions
-├── data-model.md        # Domain and persistence design
-├── quickstart.md        # Environment setup and configuration
-└── contracts/           # Service and API contracts
+./ai-docs/
+├── features/
+│   └── [feature-name]/    # Semantic names only
+│       ├── plan.md        # This implementation plan
+│       ├── research.md    # Technical research and decisions
+│       ├── data-model.md  # Domain and persistence design
+│       ├── quickstart.md  # Environment setup and configuration
+│       └── contracts/     # Service and API contracts
 ```
 
 ### Source Code
