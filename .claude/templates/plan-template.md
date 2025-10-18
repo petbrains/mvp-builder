@@ -22,6 +22,21 @@ Translates feature requirements into technical implementation strategy.
 
 **Constraints:** [Technical limitations and boundaries]
 
+## Implementation Mapping
+
+### Component Architecture
+[How requirements map to code components without duplicating the requirements themselves]
+- Core Components: [Main modules/services needed]
+- Data Models: [Entity implementation approach]
+- API Operations: [How actions become endpoints/methods]
+- State Management: [How states/transitions are handled]
+
+### Error Handling Approach
+[Where and how errors from ux.md will be handled in code]
+- Error handlers location: [General approach/layer]
+- Recovery mechanisms: [How system recovers]
+- User feedback: [How errors are presented]
+
 ## Project Structure
 
 ### Documentation
@@ -90,8 +105,10 @@ extension/
 
 **Selected Structure:** [Specify which structure was selected and why]
 
-## Error Handling Strategy
-[General approach to handling errors across the feature - logging, recovery, user feedback]
+## Testing Approach
+[How acceptance scenarios and edge cases map to test files]
+- Test Structure: [Organization approach]
+- Coverage Strategy: [What gets tested where]
 
 ## Implementation Notes
 [Any critical implementation decisions, trade-offs, or considerations that don't fit other sections]
@@ -106,6 +123,7 @@ extension/
 - [ ] All functional requirements from spec.md addressed
 - [ ] All UX patterns from ux.md implementable
 - [ ] Edge cases have implementation approach
+- [ ] Error handling approach defined
 
 ### Technical Alignment  
 - [ ] Tech stack matches project constraints
@@ -116,6 +134,7 @@ extension/
 - [ ] Documentation structure supports all artifacts
 - [ ] Source code structure is complete
 - [ ] Module boundaries clearly defined
+- [ ] Component mapping is clear
 
 ### Implementation Readiness
 - [ ] Technical Context fully specified
