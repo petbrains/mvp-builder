@@ -147,12 +147,10 @@ For each UX pattern:
 - **Mitigation Strategies**: [how to address]
 ```
 
-**Status Report:**
+**Status:**
 ```
-✅ Phase 0: Research Complete
-- Research documented: ./ai-docs/features/[feature]/research.md
-- Technology decisions validated
-- Proceeding to Phase 1: Design
+✅ Phase 0 Complete: Research documented
+→ Next: Phase 1 - Design
 ```
 
 ## Phase 1: Design
@@ -211,14 +209,10 @@ mkdir -p ./ai-docs/features/$FEATURE/contracts
 - Format: `  - Tech: [key technologies]`
 - Preserve all existing content
 
-**Status Report:**
+**Status:**
 ```
-✅ Phase 1: Design Complete
-- Data model created: ./ai-docs/features/[feature]/data-model.md
-- API contracts generated: ./ai-docs/features/[feature]/contracts/
-- Quickstart guide created: ./ai-docs/features/[feature]/quickstart.md
-- Feature index updated: ./ai-docs/FEATURES.md
-- Proceeding to Phase 2: Implementation Plan
+✅ Phase 1 Complete: Design artifacts created
+→ Next: Phase 2 - Implementation Plan
 ```
 
 ## Phase 2: Implementation Plan
@@ -267,13 +261,10 @@ Use `/mcp__context7__` tools for latest architecture patterns if needed.
 - Save to `./ai-docs/features/[feature]/plan.md`
 - Ensure Review Checklist excluded from output
 
-**Status Report:**
+**Status:**
 ```
-✅ Phase 2: Implementation Plan Complete
-- Plan generated: ./ai-docs/features/[feature]/plan.md
-- Project structure selected: [structure type]
-- All template sections filled
-- Proceeding to Phase 3: Validation
+✅ Phase 2 Complete: Plan generated
+→ Next: Phase 3 - Validation
 ```
 
 ## Phase 3: Validation & Sign-off
