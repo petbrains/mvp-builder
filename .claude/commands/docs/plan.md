@@ -1,6 +1,6 @@
 ---
 description: Execute the implementation planning workflow.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7
 ---
 
 # Instructions
@@ -14,6 +14,8 @@ Creates supporting artifacts (research, data model, contracts, quickstart) that 
 - `Bash`: For directory creation and file verification
 - `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions
   - See @.claude/tools/sequential-thinking.md for details
+- `/mcp__context7`: For resolving library names to IDs and fetching up-to-date library documentation
+  - See @.claude/tools/context7.md for details
 
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
@@ -23,6 +25,18 @@ For Technology Evaluation:
 
 For Architecture Selection: 
 - When choosing project structure: "Analyze platform → Evaluate requirements → Compare structures → Select optimal"
+
+**Context7 Usage:**
+Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`:
+
+For Library Research:
+- When verifying library compatibility: Resolve library ID → Fetch docs on integration patterns
+- When evaluating alternatives: Get documentation for comparison across options
+- When checking version requirements: Fetch specific version docs and breaking changes
+
+For Architecture Decisions:
+- When selecting frameworks: Get latest best practices and patterns
+- When validating tech stack: Fetch compatibility matrices and known issues
 
 **Template:**
 - Plan: @.claude/templates/plan-template.md
@@ -97,15 +111,21 @@ fi
 
 ### 0.3 Execute Research
 Apply `/mcp__sequential-thinking__sequentialthinking` for technology evaluation.
+Use `/mcp__context7__` tools for library documentation and compatibility verification.
 
 **Generate Research Tasks:**
 ```
 For each technology in Technical Context:
   Task: "Research {tech} compatibility with {existing stack}"
+  Action: Use context7 to fetch latest docs on integration patterns
+  
 For each library combination:
   Task: "Verify compatibility between {lib1} and {lib2}"
+  Action: Resolve library IDs → Fetch compatibility docs from both
+  
 For each UX pattern:
   Task: "Validate technical feasibility of {pattern} with {tech stack}"
+  Action: Get documentation on pattern implementation in chosen framework
 ```
 
 ### 0.4 Consolidate Findings
@@ -227,9 +247,11 @@ mkdir -p ./ai-docs/features/$FEATURE/contracts
 
 ### 2.5 Select and Configure Project Structure
 Apply `/mcp__sequential-thinking__sequentialthinking` for architecture selection.
+Use `/mcp__context7__` tools for latest architecture patterns if needed.
 
 **Choose appropriate structure:**
 - Analyze platform from ux.md and architecture from research
+- Fetch current best practices for candidate structures if uncertain
 - Select ONE structure from template options
 - Remove all other structures and their labels
 - Expand paths with concrete feature names (replace placeholders)
