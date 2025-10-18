@@ -79,8 +79,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 4. Update feature index:
    - Update `./ai-docs/FEATURES.md`
    - Add brief tech stack summary to the feature entry
-   - Format: Add "  - Tech: `[2-5 key technologies]`" under folder line
-   - Example: "  - Tech: `TypeScript, React, PostgreSQL`"
+   - Format: Add "  - Tech: `[key technologies]`" under folder line
    - Include only primary technologies, not every library
    - Preserve existing structure and content
 
