@@ -37,13 +37,15 @@ Translates feature requirements into technical implementation strategy.
 - Recovery mechanisms: [How system recovers]
 - User feedback: [How errors are presented]
 
-## Project Structure
+## Feature Code Organization
+** This describes how THIS FEATURE's code is structured, not the overall project architecture **
 
-### Source Code
-** MODEL INSTRUCTION: Select ONE structure based on detected platform/architecture. Remove all other structures and labels. Expand paths with concrete names.**
+### Feature Implementation
+** MODEL INSTRUCTION: Select ONE structure based on this feature's complexity and platform from ux.md. Remove all other structures and labels. Expand paths with concrete feature-specific names.**
+** Paths represent feature-specific modules within the established platform architecture **
 
 ```
-# Structure A: Single Project
+# Structure A: Standalone Module (for simple, self-contained features)
 src/
 ├── models/
 ├── services/
@@ -55,7 +57,7 @@ tests/
 ├── integration/
 └── unit/
 
-# Structure B: Web Application
+# Structure B: Split Architecture (for features with UI and backend logic)
 backend/
 ├── src/
 │   ├── models/
@@ -70,7 +72,7 @@ frontend/
 │   └── services/
 └── tests/
 
-# Structure C: Mobile + API
+# Structure C: Service + Client (for features requiring API)
 api/
 ├── src/
 │   ├── models/
@@ -78,10 +80,10 @@ api/
 │   └── api/
 └── tests/
 
-mobile/
+client/
 └── [platform-specific structure]
 
-# Structure D: Browser Extension
+# Structure D: Extension-specific (for browser extension features)
 extension/
 ├── manifest.json
 ├── src/
@@ -91,7 +93,7 @@ extension/
 └── tests/
 ```
 
-**Selected Structure:** [Specify which structure was selected and why]
+**Selected Structure:** [Specify which structure was selected and why it fits THIS FEATURE's needs]
 
 ## Testing Approach
 [How acceptance scenarios and edge cases map to test files]
@@ -115,12 +117,12 @@ extension/
 
 ### Technical Alignment  
 - [ ] Tech stack matches project constraints
-- [ ] Selected structure fits platform/architecture
+- [ ] Selected structure fits feature complexity and platform
 - [ ] Testing approach covers critical paths
 
 ### Structure Clarity
 - [ ] Documentation structure supports all artifacts
-- [ ] Source code structure is complete
+- [ ] Feature implementation structure is complete
 - [ ] Module boundaries clearly defined
 - [ ] Component mapping is clear
 
@@ -128,6 +130,6 @@ extension/
 - [ ] Technical Context fully specified
 - [ ] Performance requirements achievable
 - [ ] Security considerations addressed
-- [ ] Selected Structure documented with rationale
+- [ ] Selected Structure documented with rationale for this feature
 
 ---
