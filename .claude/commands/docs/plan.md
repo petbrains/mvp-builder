@@ -47,9 +47,9 @@ For Architecture Decisions:
 - Supporting outputs:
   - `./ai-docs/features/[feature]/research.md` (research notes)
   - `./ai-docs/features/[feature]/data-model.md` (entities and schemas)
-  - `./ai-docs/features/[feature]/quickstart.md` (environment setup)
-  - `./ai-docs/features/[feature]/contracts/` (API definitions)
-- Index: Updates `./ai-docs/FEATURES.md` with tech stack info
+  - `./ai-docs/features/[feature]/quickstart.md` (feature setup and testing)
+  - `./ai-docs/features/[feature]/contracts/` (API specification)
+- Index: Updates `./ai-docs/FEATURES.md` with architecture info
 
 # Task
 
@@ -58,11 +58,6 @@ Fill plan-template.md with concrete technical decisions while generating support
 Ensure all requirements mapped to implementation approach without duplication.
 
 # Rules
-
-## Gate Evaluation Rules
-- **Must evaluate all gates** before proceeding with implementation planning
-- **ERROR on violations** unless explicitly justified in spec.md
-- **Gates include**: Technical feasibility, Resource constraints, Security requirements
 
 ## Planning Coverage Rules
 - All functional requirements from spec.md must have implementation approach
@@ -76,6 +71,11 @@ Ensure all requirements mapped to implementation approach without duplication.
 - Expand paths with concrete feature-specific names
 - Do NOT include Review Checklist in final output (internal validation only)
 - Document all technical decisions in appropriate sections
+
+## Architecture Documentation Rules
+- Update Architecture section in FEATURES.md when needed
+- Document overall project structure decisions
+- Track technology stack evolution
 
 # Execution Flow
 
@@ -98,37 +98,15 @@ fi
 **Load Sources:**
 - Read spec.md → Extract requirements, entities, constraints
 - Read ux.md → Extract flows, patterns, error types
+- Read FEATURES.md → Check feature dependencies
 
-### 0.2 Extract Research Needs
-**Technology Stack Analysis:**
-- For each technology choice → compatibility research task
-- For each external dependency → integration patterns task
-- For each library combination → compatibility verification
-
-**UX Pattern Feasibility:**
-- For each UX pattern → technical feasibility check
-- For error types in ux.md → error handling strategy research
-
-### 0.3 Execute Research
+### 0.2 Execute Research & Document
 Apply `/mcp__sequential-thinking__sequentialthinking` for technology evaluation.
-Use `/mcp__context7__` tools for library documentation and compatibility verification.
+Use `/mcp__context7__` tools when needed:
+- Library compatibility verification
+- Latest framework documentation
+- Integration patterns
 
-**Generate Research Tasks:**
-```
-For each technology in Technical Context:
-  Task: "Research {tech} compatibility with {existing stack}"
-  Action: Use context7 to fetch latest docs on integration patterns
-  
-For each library combination:
-  Task: "Verify compatibility between {lib1} and {lib2}"
-  Action: Resolve library IDs → Fetch compatibility docs from both
-  
-For each UX pattern:
-  Task: "Validate technical feasibility of {pattern} with {tech stack}"
-  Action: Get documentation on pattern implementation in chosen framework
-```
-
-### 0.4 Consolidate Findings
 **Create research.md:**
 ```markdown
 # Research Notes - [Feature Name]
@@ -187,27 +165,30 @@ For each UX pattern:
 **Map User Actions to Endpoints:**
 - For each user action in spec.md → endpoint definition
 - For each UX flow in ux.md → API sequence
-- Use standard REST/GraphQL patterns
 
-**Create contracts:**
-```bash
-mkdir -p ./ai-docs/features/$FEATURE/contracts
-# Generate OpenAPI/GraphQL schemas in contracts/
-```
+**Output:** `./ai-docs/features/$FEATURE/contracts/`
+- OpenAPI specification for REST features
+- GraphQL schema for GraphQL features
+- Document all endpoints, request/response schemas, error codes
 
 ### 1.4 Create Quickstart Guide
 **Generate quickstart.md:**
-- Local environment setup commands
-- CI configuration templates
-- Lint/test hook setup
-- UX testing configuration
+- Environment setup specific to THIS feature
+- Test data/fixtures needed for feature testing
+- Local testing commands
+- Feature-specific dependencies installation
+- Manual testing steps for acceptance scenarios
 
-### 1.5 Update Feature Index
-**Update FEATURES.md:**
-- Locate feature entry
-- Add tech stack summary line
-- Format: `  - Tech: [key technologies]`
-- Preserve all existing content
+### 1.5 Update Architecture Section
+**Update FEATURES.md Architecture section (create if doesn't exist):**
+```markdown
+## Architecture
+**Project Structure:** [Overall architecture pattern]
+**Platform:** [Web/Mobile/Desktop/Extension]
+**Tech Stack:** [Core technologies]
+```
+- Update only when this feature introduces new architectural decisions
+- No conditional logic, just append/update as needed
 
 **Status:**
 ```
@@ -217,8 +198,9 @@ mkdir -p ./ai-docs/features/$FEATURE/contracts
 
 ## Phase 2: Implementation Plan
 
-### 2.1 Load Planning Template
+### 2.1 Load Planning Context
 - Read plan-template.md
+- Read FEATURES.md to check feature dependencies
 - Load all Phase 0-1 artifacts for reference
 
 ### 2.2 Fill Purpose and Summary
@@ -245,15 +227,11 @@ Use `/mcp__context7__` tools for latest architecture patterns if needed.
 
 **Choose appropriate structure for THIS FEATURE:**
 - Analyze feature complexity and platform from ux.md
-- Fetch current best practices for candidate structures if uncertain
-- Select ONE structure from template options based on feature needs:
-  - Simple, self-contained logic → Structure A (standalone module)
-  - Needs UI and backend separation → Structure B (split architecture)  
-  - Requires API service → Structure C (service + client)
-  - Browser extension feature → Structure D (extension-specific)
+- Consider feature dependencies from FEATURES.md
+- Select ONE structure from template options based on feature needs
 - Remove all other structures and their labels
 - Expand paths with concrete feature names (replace placeholders)
-- Document "Selected Structure" with rationale for this feature
+- Document "Selected Structure" with rationale
 
 ### 2.6 Complete Remaining Sections
 **Fill final template sections:**
@@ -320,11 +298,7 @@ Ready for task breakdown and development.
 - **Spec not found**: "Error: No spec.md found at ./ai-docs/features/[feature]/spec.md. Run 'feature' command first."
 - **UX not found**: "Error: No ux.md found at ./ai-docs/features/[feature]/ux.md. Run 'ux' command first."
 - **Feature folder missing**: "Error: Feature folder not found at ./ai-docs/features/[feature]/. Ensure feature exists."
-
-## Gate Violations
-- **Technical feasibility**: "ERROR: Technical constraint violated: [specific constraint]. Justification required in spec.md."
-- **Resource constraints**: "ERROR: Resource limit exceeded: [specific limit]. Review requirements or provide override."
-- **Security requirements**: "ERROR: Security gate failed: [specific requirement]. Cannot proceed without resolution."
+- **FEATURES.md missing**: "Warning: FEATURES.md not found. Cannot check dependencies or update architecture."
 
 ## Research Errors
 - **Incompatible technologies**: "Error: Technology conflict detected between [tech1] and [tech2]. Research alternative stack."
