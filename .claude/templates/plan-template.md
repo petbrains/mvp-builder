@@ -41,7 +41,7 @@ Translates feature requirements into technical implementation strategy.
 ** This describes how THIS FEATURE's code is structured, not the overall project architecture **
 
 ### Feature Implementation
-** MODEL INSTRUCTION: Select ONE structure based on this feature's complexity and platform from ux.md. Remove all other structures and labels. Expand paths with concrete feature-specific names.**
+** MODEL INSTRUCTION: Select ONE structure based on this feature's complexity and platform. Remove all other structures and labels. Replace placeholder paths with feature-specific names.**
 ** Paths represent feature-specific modules within the established platform architecture **
 
 ```
@@ -93,7 +93,7 @@ extension/
 └── tests/
 ```
 
-**Selected Structure:** [Specify which structure was selected and why it fits THIS FEATURE's needs]
+**Selected Structure:** [Which structure and brief rationale]
 
 ## Testing Approach
 [How acceptance scenarios and edge cases map to test files]
