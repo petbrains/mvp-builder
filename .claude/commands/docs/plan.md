@@ -35,7 +35,7 @@ Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`:
   - `./ai-docs/features/[feature]/plan.md` (main plan)
   - `./ai-docs/features/[feature]/research.md` (key decisions, max 150 lines)
   - `./ai-docs/features/[feature]/data-model.md` (entities only, max 100 lines)
-  - `./ai-docs/features/[feature]/quickstart.md` (setup and feature testing)
+  - `./ai-docs/features/[feature]/quickstart.md` (setup commands, max 50 lines)
   - `./ai-docs/features/[feature]/contracts/` (API specifications)
 - Index: Updates `./ai-docs/FEATURES.md` Architecture section
 
@@ -144,24 +144,25 @@ Create `./ai-docs/features/$FEATURE/contracts/`:
 - NO implementation examples
 
 ### 1.3 Create Quickstart Guide
-**Generate quickstart.md:**
+**Generate quickstart.md (max 50 lines):**
 ```markdown
 # Quickstart - [Feature Name]
 
-## TDD Test Setup
-[Tests needed for Test-Driven Development]
+## Install
+`npm install` or specific dependencies if needed
 
-## Test Fixtures
-[Data fixtures for this feature]
+## Config
+- manifest.json: [key permissions needed]
+- vite.config.ts: [if special config]
 
-## Feature Testing Commands
-[Commands to run feature tests]
+## Run
+`npm run dev` or feature-specific command
 
-## Acceptance Test Implementation
-[How to verify acceptance scenarios]
+## Test
+`npm test [feature]` for TDD cycle
 ```
 
-Focus on TDD approach and feature-specific testing.
+Brief setup instructions only - no manual testing, no lengthy configs.
 
 ### 1.4 Update Architecture (if needed)
 **Update FEATURES.md Architecture section (only if new architectural decisions):**
@@ -233,7 +234,7 @@ Generated:
 - plan.md (implementation strategy)
 - research.md (key decisions)
 - data-model.md (entities)
-- quickstart.md (TDD setup)
+- quickstart.md (setup commands)
 - contracts/ (if API needed)
 
 Ready for development.
@@ -263,7 +264,8 @@ Ready for development.
 
 **Remember:**
 - research.md: Max 150 lines, decisions only
-- data-model.md: Max 100 lines, schemas only  
+- data-model.md: Max 100 lines, schemas only
+- quickstart.md: Max 50 lines, setup commands only
 - NO code examples in any documentation
 - NO alternatives or rejected approaches
 - If it's in spec/ux/FEATURES.md, reference don't repeat
