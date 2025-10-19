@@ -32,10 +32,10 @@ Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`:
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/` (expects spec.md and ux.md)
 - Output: 
-  - `./ai-docs/features/[feature]/plan.md` (main plan)
-  - `./ai-docs/features/[feature]/research.md` (key decisions, max 150 lines)
-  - `./ai-docs/features/[feature]/data-model.md` (entities only, max 100 lines)
-  - `./ai-docs/features/[feature]/quickstart.md` (setup commands, max 50 lines)
+  - `./ai-docs/features/[feature]/plan.md` (implementation strategy)
+  - `./ai-docs/features/[feature]/research.md` (key decisions)
+  - `./ai-docs/features/[feature]/data-model.md` (entities only)
+  - `./ai-docs/features/[feature]/setup.md` (setup commands)
   - `./ai-docs/features/[feature]/contracts/` (API specifications)
 - Index: Updates `./ai-docs/FEATURES.md` Architecture section
 
@@ -48,7 +48,7 @@ Avoid ALL duplication - if information exists in spec/ux/FEATURES.md, reference 
 # Rules
 
 ## Content Minimalism Rules
-- **Maximum file sizes**: research.md (150 lines), data-model.md (100 lines), others as needed
+- **Maximum file sizes**: 300 lines
 - **No code examples** in documentation - only schemas and contracts
 - **No alternatives** in research - only chosen solutions with brief rationale
 - **No duplication** - if it's in spec.md, ux.md, or FEATURES.md, don't repeat
@@ -120,16 +120,13 @@ NO alternatives, NO lengthy explanations, NO rejected approaches.
 # Data Model - [Feature Name]
 
 ## Entities
-### [Entity Name]
-| Field | Type | Required | Validation |
-|-------|------|----------|------------|
-| id    | UUID | Yes      | Auto       |
+[Entity definitions with attributes and types]
 
 ## Relationships
-[Entity1] → [Entity2]: [relationship type]
+[How entities relate to each other]
 
-## State Diagram (if applicable)
-[Mermaid diagram if states exist]
+## States
+[State diagrams if applicable]
 ```
 
 NO code examples, NO SQL schemas, NO repository patterns.
@@ -143,23 +140,22 @@ Create `./ai-docs/features/$FEATURE/contracts/`:
 - Endpoint definitions and schemas only
 - NO implementation examples
 
-### 1.3 Create Quickstart Guide
-**Generate quickstart.md (max 50 lines):**
+### 1.3 Create setup Guide
+**Generate setup.md (max 50 lines):**
 ```markdown
-# Quickstart - [Feature Name]
+# setup - [Feature Name]
 
 ## Install
-`npm install` or specific dependencies if needed
+[Installation commands for dependencies]
 
 ## Config
-- manifest.json: [key permissions needed]
-- vite.config.ts: [if special config]
+[Key configuration needed for this feature]
 
 ## Run
-`npm run dev` or feature-specific command
+[Commands to start development]
 
 ## Test
-`npm test [feature]` for TDD cycle
+[Commands to run tests]
 ```
 
 Brief setup instructions only - no manual testing, no lengthy configs.
@@ -227,17 +223,15 @@ Use template's Review Checklist for validation (don't output it).
 
 ### 3.2 Final Report
 ```
-🎯 Implementation Planning Complete!
+Implementation Planning Complete!
 
 Feature: [feature-name]
 Generated:
 - plan.md (implementation strategy)
 - research.md (key decisions)
 - data-model.md (entities)
-- quickstart.md (setup commands)
+- setup.md (setup commands)
 - contracts/ (if API needed)
-
-Ready for development.
 ```
 
 # Error Handling
@@ -261,11 +255,3 @@ Ready for development.
 2. **Unique** - No duplication of existing content
 3. **Actionable** - Every line helps development
 4. **Meaningful** - No filler, no obvious explanations
-
-**Remember:**
-- research.md: Max 150 lines, decisions only
-- data-model.md: Max 100 lines, schemas only
-- quickstart.md: Max 50 lines, setup commands only
-- NO code examples in any documentation
-- NO alternatives or rejected approaches
-- If it's in spec/ux/FEATURES.md, reference don't repeat
