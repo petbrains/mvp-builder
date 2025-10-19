@@ -42,7 +42,7 @@ For Architecture Decisions:
 - Plan: @.claude/templates/plan-template.md
 
 **File Structure:**
-- Input: `./ai-docs/features/[feature]/spec.md` and `./ai-docs/features/[feature]/ux.md`
+- Input: `./ai-docs/features/[feature]/` (expects spec.md and ux.md)
 - Output: `./ai-docs/features/[feature]/plan.md` (main plan)
 - Supporting outputs:
   - `./ai-docs/features/[feature]/research.md` (research notes)
