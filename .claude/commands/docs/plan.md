@@ -23,8 +23,8 @@ Use `/mcp__sequential-thinking__sequentialthinking`:
 For Technology Evaluation:
 - When researching compatibility: "Analyze tech stack → Check dependencies → Verify ecosystem support → Document decisions"
 
-For Architecture Selection: 
-- When choosing project structure: "Analyze platform → Evaluate requirements → Compare structures → Select optimal"
+For Feature Code Organization: 
+- When choosing structure: "Analyze feature complexity → Evaluate platform requirements → Compare structures → Select optimal for this feature"
 
 **Context7 Usage:**
 Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`:
@@ -72,7 +72,7 @@ Ensure all requirements mapped to implementation approach without duplication.
 
 ## Template Filling Rules
 - Fill all sections of plan-template.md
-- Select ONE project structure and remove others including labels
+- Select ONE feature code organization structure and remove others including labels
 - Expand paths with concrete feature-specific names
 - Do NOT include Review Checklist in final output (internal validation only)
 - Document all technical decisions in appropriate sections
@@ -239,17 +239,21 @@ mkdir -p ./ai-docs/features/$FEATURE/contracts
 - Component Architecture: How requirements become code modules
 - Error Handling Approach: Map error types from ux.md to handling layer
 
-### 2.5 Select and Configure Project Structure
-Apply `/mcp__sequential-thinking__sequentialthinking` for architecture selection.
+### 2.5 Select and Configure Feature Code Organization
+Apply `/mcp__sequential-thinking__sequentialthinking` for structure selection.
 Use `/mcp__context7__` tools for latest architecture patterns if needed.
 
-**Choose appropriate structure:**
-- Analyze platform from ux.md and architecture from research
+**Choose appropriate structure for THIS FEATURE:**
+- Analyze feature complexity and platform from ux.md
 - Fetch current best practices for candidate structures if uncertain
-- Select ONE structure from template options
+- Select ONE structure from template options based on feature needs:
+  - Simple, self-contained logic → Structure A (standalone module)
+  - Needs UI and backend separation → Structure B (split architecture)  
+  - Requires API service → Structure C (service + client)
+  - Browser extension feature → Structure D (extension-specific)
 - Remove all other structures and their labels
 - Expand paths with concrete feature names (replace placeholders)
-- Document "Selected Structure" with rationale
+- Document "Selected Structure" with rationale for this feature
 
 ### 2.6 Complete Remaining Sections
 **Fill final template sections:**
@@ -304,7 +308,7 @@ Artifacts Generated:
 - Quickstart Guide: ./ai-docs/features/[feature]/quickstart.md
 
 Tech Stack: [summary of chosen technologies]
-Project Structure: [selected structure type]
+Feature Code Organization: [selected structure type]
 
 All requirements covered and validated.
 Ready for task breakdown and development.
@@ -335,7 +339,7 @@ Ready for task breakdown and development.
 ## Validation Errors
 - **Checklist failure**: "Error: Review Checklist validation failed. See specific failures above."
 - **Missing section**: "Error: Template section [section] not filled. Complete all required sections."
-- **Structure not selected**: "Error: No project structure selected. Choose one structure and remove others."
+- **Structure not selected**: "Error: No feature code organization selected. Choose one structure and remove others."
 
 ## Common Warnings
 - **Performance concern**: "Warning: Current architecture may not meet performance requirement: [requirement]"
