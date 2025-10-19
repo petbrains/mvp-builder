@@ -22,7 +22,7 @@ Use `/mcp__sequential-thinking__sequentialthinking`:
 - When choosing structure: "Analyze feature complexity → Evaluate platform requirements → Compare structures → Select optimal"
 
 **Context7 Usage:**
-Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`
+Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`:
 - When verifying library compatibility: Resolve library ID → Fetch integration docs
 - When selecting frameworks: Get latest best practices
 
@@ -35,8 +35,8 @@ Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`
   - `./ai-docs/features/[feature]/plan.md` (main plan)
   - `./ai-docs/features/[feature]/research.md` (key decisions, max 150 lines)
   - `./ai-docs/features/[feature]/data-model.md` (entities only, max 100 lines)
-  - `./ai-docs/features/[feature]/dev-setup.md` (feature-specific setup)
-  - `./ai-docs/features/[feature]/contracts/` (API specifications if needed)
+  - `./ai-docs/features/[feature]/quickstart.md` (setup and feature testing)
+  - `./ai-docs/features/[feature]/contracts/` (API specifications)
 - Index: Updates `./ai-docs/FEATURES.md` Architecture section
 
 # Task
@@ -88,7 +88,7 @@ Avoid ALL duplication - if information exists in spec/ux/FEATURES.md, reference 
 
 ### 0.2 Execute Research & Document
 Apply `/mcp__sequential-thinking__sequentialthinking` for key decisions.
-Use `/mcp__context7` tools when needed for library verification.
+Use `/mcp__context7__` tools when needed for library verification.
 
 **Create concise research.md (max 150 lines):**
 ```markdown
@@ -138,26 +138,30 @@ NO code examples, NO SQL schemas, NO repository patterns.
 **Only if feature requires API endpoints:**
 
 Create `./ai-docs/features/$FEATURE/contracts/`:
-- Either `openapi.yaml` OR `contracts.md`
+- `openapi.yaml` - Required for REST API features
+- `contracts.md` - Optional for additional contracts (GraphQL, message contracts, etc.)
 - Endpoint definitions and schemas only
 - NO implementation examples
 
-### 1.3 Create Development Setup
-**Generate dev-setup.md:**
+### 1.3 Create Quickstart Guide
+**Generate quickstart.md:**
 ```markdown
-# Development Setup - [Feature Name]
+# Quickstart - [Feature Name]
 
-## Environment
-[Feature-specific dependencies]
+## TDD Test Setup
+[Tests needed for Test-Driven Development]
 
-## Test Data
-[Fixtures for this feature]
+## Test Fixtures
+[Data fixtures for this feature]
 
-## Local Testing
-[Commands specific to this feature]
+## Feature Testing Commands
+[Commands to run feature tests]
+
+## Acceptance Test Implementation
+[How to verify acceptance scenarios]
 ```
 
-Focus ONLY on this feature's needs, not generic setup.
+Focus on TDD approach and feature-specific testing.
 
 ### 1.4 Update Architecture (if needed)
 **Update FEATURES.md Architecture section (only if new architectural decisions):**
@@ -229,7 +233,7 @@ Generated:
 - plan.md (implementation strategy)
 - research.md (key decisions)
 - data-model.md (entities)
-- dev-setup.md (feature setup)
+- quickstart.md (TDD setup)
 - contracts/ (if API needed)
 
 Ready for development.
