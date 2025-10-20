@@ -61,7 +61,6 @@ For Code Organization:
   - `./ai-docs/features/[feature]/data-model.md` (entities)
   - `./ai-docs/features/[feature]/setup.md` (environment setup and configuration)
   - `./ai-docs/features/[feature]/contracts/` (API сontracts)
-- Index: Updates `./ai-docs/FEATURES.md` Architecture section
 
 # Task
 
@@ -88,11 +87,6 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - Do NOT include Review Checklist in final output
 - Keep descriptions brief and actionable
 
-## Architecture Documentation Rules
-- Update Architecture section in FEATURES.md only with high-level decisions
-- Keep to 2-3 lines max for tech stack
-- Document project-wide decisions, not feature-specific details
-
 ## API Specification Rules
 - Use OpenAPI 3.1.0+ for REST API specifications
 - Follow latest specification standards for all contract types
@@ -112,7 +106,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 **Load Sources:**
 - Read spec.md → Extract requirements, entities
 - Read ux.md → Extract flows, patterns
-- Read FEATURES.md → Check dependencies and architecture
+- Read FEATURES.md → Check dependencies
 
 ### 0.2 Execute Research & Document
 **Extract dependencies from spec.md and ux.md:**
@@ -136,7 +130,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - **[Risk]**: [Impact] → [Mitigation]
 
 ## Stack Compatibility
-- [Verified combination]: ✔
+- [Verified combination]: ✓
 ```
 
 NO alternatives, NO lengthy explanations, NO rejected approaches.
@@ -208,16 +202,6 @@ Feature may require BOTH files if it uses multiple interface types
 
 Brief setup instructions only - TDD test commands, no lengthy configs.
 
-### 1.4 Update Architecture (if needed)
-**Update FEATURES.md Architecture section (only if new architectural decisions):**
-```markdown
-## Architecture
-**Platform:** [High-level platform]
-**Stack:** [Core technologies only, 1 line]
-```
-
-Keep high-level, no feature-specific details.
-
 **Status:**
 ```
 ✅ Design complete → Phase 2
@@ -238,7 +222,7 @@ Keep high-level, no feature-specific details.
 
 **Technical Context:**
 - Brief bullets only
-- Reference Architecture in FEATURES.md
+- Reference specific technology decisions from research.md
 
 **Implementation Mapping:**
 - How requirements → components (don't repeat requirements)
