@@ -152,26 +152,26 @@ ONLY decisions and their brief rationale.
 ## Phase 1: Design (Minimal Artifacts)
 
 ### 1.1 Generate Data Model
-**Create data-model.md:**
+**Create data-model.md with technical specs:**
 ```markdown
 # Data Model - [Feature Name]
 
 ## Entities
-[Extend entities from spec.md with:
-- Technical attributes not in spec (timestamps, IDs, nullable flags)
-- Validation rules details (word count algorithms, regex patterns)  
-- Storage-specific fields (userId for backend, caching fields)]
+[For each entity from spec.md add:
+- Field types and constraints (required/optional, length limits)
+- System fields (unique identifier, timestamps)
+- Validation rules (word counts, format patterns)
+- Default values and computed fields]
 
 ## Relationships
-[Define relationships between entities]
+[How entities connect: cardinality, ownership, lifecycle dependencies]
 
 ## States
-[State machines for entity lifecycle]
+[State transitions: triggers, conditions, timeouts]
 ```
 
-NO code examples, NO SQL schemas, NO repository patterns.
-DO NOT duplicate basic entity descriptions from spec.md - only add technical implementation details.
-This is the SINGLE source for entity implementation details - contracts will use simplified transport representations.
+NO code, NO SQL, NO platform-specific types.
+Abstract technical specifications that apply to any implementation.
 
 ### 1.2 Generate API Contracts (if needed)
 **Create contracts based on feature interfaces:**
