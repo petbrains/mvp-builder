@@ -14,7 +14,7 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 - `Bash`: For directory creation and file verification
 - `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions
   - See @.claude/tools/sequential-thinking.md for details
-- `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`: For library verification and documentation
+- `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`: For library documentation and compatibility verification
   - See @.claude/tools/context7.md for details
 
 **Template:**
@@ -77,8 +77,10 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - Read FEATURES.md → Check dependencies and architecture
 
 ### 0.2 Execute Research & Document
-Apply `/mcp__sequential-thinking__sequentialthinking` for key decisions when needed.
-Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs` when needed for library verification.
+**Tool execution order:**
+1. Use `/mcp__context7__resolve-library-id` to get library IDs
+2. Use `/mcp__context7__get-library-docs` to fetch documentation for those IDs
+3. Apply `/mcp__sequential-thinking__sequentialthinking` to analyze gathered information
 
 **Create concise research.md (max 150 lines):**
 ```markdown
