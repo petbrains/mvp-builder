@@ -31,11 +31,6 @@ Topics to fetch:
 - For databases: "schema migrations [relevant operations]"
 - For APIs: "authentication endpoints [specific endpoints needed]"
 
-Token strategy:
-- Quick reference (3000-5000): Single library method/component
-- Feature implementation (10000-15000): Complete feature docs
-- Multiple libraries (5000-8000 each): Distributed across dependencies
-
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
 
@@ -73,8 +68,18 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - **Maximum file sizes**: 300 lines
 - **No code examples** in documentation - only schemas and contracts
 - **No alternatives** in research - only chosen solutions with brief rationale
-- **No duplication** - if it's in spec.md, ux.md, or FEATURES.md, don't repeat
+- **No duplication** - if it's in spec.md, ux.md, FEATURES.md, or ANY other generated file, don't repeat
 - **Every word must carry meaning** - remove filler, obvious explanations, verbose justifications
+
+## Cross-File Duplication Prevention
+Each file owns specific information:
+- research.md: WHY decisions were made
+- data-model.md: WHAT data structures exist  
+- contracts/: HOW components communicate
+- setup.md: HOW TO install and run
+- plan.md: HOW TO organize and implement
+
+Never duplicate information owned by another file.
 
 ## Planning Coverage Rules
 - All functional requirements from spec.md must have implementation approach
@@ -134,6 +139,9 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 ```
 
 NO alternatives, NO lengthy explanations, NO rejected approaches.
+NO configuration details (those go in setup.md).
+NO implementation details (those go in plan.md).
+ONLY decisions and their brief rationale.
 
 **Status:**
 ```
@@ -158,15 +166,7 @@ NO alternatives, NO lengthy explanations, NO rejected approaches.
 ```
 
 NO code examples, NO SQL schemas, NO repository patterns.
-
-### 1.2 Generate API Contracts (if needed)
-**Only if feature requires API endpoints:**
-
-Create `./ai-docs/features/$FEATURE/contracts/`:
-- `openapi.yaml` - Required for REST API features
-- `contracts.md` - Optional for additional contracts (GraphQL, message contracts, etc.)
-- Endpoint definitions and schemas only
-- NO implementation examples
+This is the SINGLE source for entity structure - contracts will reference these, not redefine.
 
 ### 1.2 Generate API Contracts (if needed)
 **Create contracts based on feature interfaces:**
@@ -179,6 +179,7 @@ Feature may require BOTH files if it uses multiple interface types
 
 **Content guidelines:**
 - Endpoint/message definitions and schemas only
+- For entities already in data-model.md: use simplified transport representations
 - NO implementation examples
 - Focus on contract, not code
 
@@ -201,6 +202,9 @@ Feature may require BOTH files if it uses multiple interface types
 ```
 
 Brief setup instructions only - TDD test commands, no lengthy configs.
+NO architecture explanations (those are in plan.md).
+NO justifications for dependencies (those are in research.md).
+ONLY commands and minimal configs to run the feature.
 
 **Status:**
 ```
@@ -222,6 +226,7 @@ Brief setup instructions only - TDD test commands, no lengthy configs.
 
 **Technical Context:**
 - Brief bullets only
+- State what is used, not why (why is in research.md)
 - Reference specific technology decisions from research.md
 
 **Implementation Mapping:**
