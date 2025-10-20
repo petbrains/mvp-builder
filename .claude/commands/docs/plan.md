@@ -188,10 +188,10 @@ Feature may require BOTH files if it uses multiple interface types
 - NO implementation examples
 - Focus on contract, not code
 
-### 1.3 Create SetUp Guide
+### 1.3 Create Setup Guide
 **Generate setup.md:**
 ```markdown
-# SetUp - [Feature Name]
+# Setup - [Feature Name]
 
 ## Install
 [Installation commands for dependencies]
@@ -203,10 +203,10 @@ Feature may require BOTH files if it uses multiple interface types
 [Commands to start development]
 
 ## Test
-[Commands to run tests]
+[Commands to run automated tests for TDD workflow]
 ```
 
-Brief setup instructions only - no manual testing, no lengthy configs.
+Brief setup instructions only - TDD test commands, no lengthy configs.
 
 ### 1.4 Update Architecture (if needed)
 **Update FEATURES.md Architecture section (only if new architectural decisions):**
@@ -244,6 +244,12 @@ Keep high-level, no feature-specific details.
 - How requirements → components (don't repeat requirements)
 - How errors → handling (don't repeat error types)
 
+**Testing Approach section must focus on:**
+- Test-first development workflow
+- Unit test structure matching code organization
+- Integration test scenarios from acceptance criteria
+- NO manual test checklists or manual testing steps
+
 ### 2.3 Select Feature Code Organization
 **When feature is complex (5+ entities, multiple integrations, conflicting requirements):**
 Apply `/mcp__sequential-thinking__sequentialthinking` for code organization selection.
@@ -253,7 +259,7 @@ Apply `/mcp__sequential-thinking__sequentialthinking` for code organization sele
 - Document brief rationale
 
 ### 2.4 Complete Remaining Sections
-- Testing Approach: Reference acceptance scenarios
+- Testing Approach: TDD strategy - test files for each component, coverage targets
 - Implementation Notes: Critical decisions only (2-3 points max)
 
 ### 2.5 Save Implementation Plan
