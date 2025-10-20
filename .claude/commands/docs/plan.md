@@ -93,6 +93,11 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - Keep to 2-3 lines max for tech stack
 - Document project-wide decisions, not feature-specific details
 
+## API Specification Rules
+- Use OpenAPI 3.1.0+ for REST API specifications
+- Follow latest specification standards for all contract types
+- Keep contracts focused on interfaces, not implementation
+
 # Execution Flow
 
 ## Phase 0: Research (Concise)
@@ -119,7 +124,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 2. Apply `/mcp__context7__get-library-docs` for resolved IDs with relevant topics
 3. Apply `/mcp__sequential-thinking__sequentialthinking` for research analysis
 
-**Create concise research.md (max 150 lines):**
+**Create concise research.md:**
 ```markdown
 # Research Notes - [Feature Name]
 
@@ -144,7 +149,7 @@ NO alternatives, NO lengthy explanations, NO rejected approaches.
 ## Phase 1: Design (Minimal Artifacts)
 
 ### 1.1 Generate Data Model
-**Create data-model.md (max 100 lines):**
+**Create data-model.md:**
 ```markdown
 # Data Model - [Feature Name]
 
@@ -169,8 +174,22 @@ Create `./ai-docs/features/$FEATURE/contracts/`:
 - Endpoint definitions and schemas only
 - NO implementation examples
 
+### 1.2 Generate API Contracts (if needed)
+**Create contracts based on feature interfaces:**
+
+Create `./ai-docs/features/$FEATURE/contracts/`:
+- Write to `openapi.yaml` - For REST API endpoints
+- Write to `contracts.md` - For messaging, events, WebSocket, storage schemas
+
+Feature may require BOTH files if it uses multiple interface types
+
+**Content guidelines:**
+- Endpoint/message definitions and schemas only
+- NO implementation examples
+- Focus on contract, not code
+
 ### 1.3 Create SetUp Guide
-**Generate setup.md (max 50 lines):**
+**Generate setup.md:**
 ```markdown
 # SetUp - [Feature Name]
 
