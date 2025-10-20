@@ -1,6 +1,6 @@
 ---
 description: Execute the implementation planning workflow.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 ---
 
 # Instructions
@@ -12,19 +12,15 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 - `Read`: For loading spec.md, ux.md, and existing planning documents
 - `Write`: For saving plan artifacts and research notes
 - `Bash`: For directory creation and file verification
-- `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions
-  - See @.claude/tools/sequential-thinking.md for details
-- `/mcp__context7`: For resolving library names to IDs and fetching up-to-date library documentation
-  - See @.claude/tools/context7.md for details
+- `/mcp__sequential-thinking__sequentialthinking`: For choosing structure: "Analyze feature complexity → Evaluate platform requirements → Compare structures → Select optimal"
+- `/mcp__context7__resolve-library-id`: For verifying library compatibility: Resolve library ID → Fetch integration docs
+- `/mcp__context7__get-library-docs`: For selecting frameworks: Get latest best practices
 
 **Sequential Thinking Usage:**
-Use `/mcp__sequential-thinking__sequentialthinking`:
-- When choosing structure: "Analyze feature complexity → Evaluate platform requirements → Compare structures → Select optimal"
+See @.claude/tools/sequential-thinking.md for details
 
 **Context7 Usage:**
-Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`:
-- When verifying library compatibility: Resolve library ID → Fetch integration docs
-- When selecting frameworks: Get latest best practices
+See @.claude/tools/context7.md for details
 
 **Template:**
 - Plan: @.claude/templates/plan-template.md
