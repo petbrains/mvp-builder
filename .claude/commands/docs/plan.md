@@ -34,7 +34,6 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 
 Transform validated feature specifications into focused technical implementation plan.
 Fill plan-template.md with concrete technical decisions while generating MINIMAL supporting artifacts.
-Avoid ALL duplication - if information exists in spec/ux/FEATURES.md, reference it, don't repeat it.
 
 # Rules
 
