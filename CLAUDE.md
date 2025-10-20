@@ -94,7 +94,7 @@ ai-docs/
 │       ├── plan.md        # Implementation plan
 │       ├── research.md    # Technical research and decisions
 │       ├── data-model.md  # Domain and persistence design
-│       ├── quickstart.md  # Environment setup and configuration
+│       ├── setup.md       # Environment setup and configuration
 │       └── contracts/     # Service and API contracts
 ```
 
