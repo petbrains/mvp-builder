@@ -71,6 +71,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - **No duplication** - if it's in spec.md, ux.md, FEATURES.md, or ANY other generated file, don't repeat
 - **Every word must carry meaning** - remove filler, obvious explanations, verbose justifications
 - **NO future scope** - remove all "for future use", "optional", unused fields
+- **Contracts reference, not redefine**: Use entity type names, not field lists
 
 ## Cross-File Duplication Prevention
 Each file owns specific information:
@@ -185,16 +186,12 @@ Create `./ai-docs/features/$FEATURE/contracts/`:
 Feature may require BOTH files if it uses multiple interface types
 
 **Content guidelines:**
-- Endpoint/message definitions and schemas only
-- Transport schemas ONLY (not storage schemas)
-- State enums in messages reference data-model.md states
-- NO entity field definitions (only IDs and transport representations)
-- NO business validation rules (only transport validation like required fields)
-- For entities from spec.md: create transport-optimized schemas (no business validation in API)
-- Validation rules stay in data-model.md, API schemas only define types
-- Example: text as string type, NOT minLength validation
-- NO implementation examples
-- Focus on contract, not code
+- Message/event contracts: type names and message structure only
+- Storage contracts: reference to entity type, not field expansion
+- API contracts: field names and primitive types only, no constraints
+- Configuration structures: actual config data needed at runtime
+- NO validation rules or constraints (those belong in data-model.md)
+- NO entity field definitions (those belong in data-model.md)
 
 ### 1.3 Create Setup Guide
 **Generate setup.md:**
