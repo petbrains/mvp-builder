@@ -12,15 +12,10 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 - `Read`: For loading spec.md, ux.md, and existing planning documents
 - `Write`: For saving plan artifacts and research notes
 - `Bash`: For directory creation and file verification
-- `/mcp__sequential-thinking__sequentialthinking`: For choosing structure: "Analyze feature complexity → Evaluate platform requirements → Compare structures → Select optimal"
-- `/mcp__context7__resolve-library-id`: For verifying library compatibility: Resolve library ID → Fetch integration docs
-- `/mcp__context7__get-library-docs`: For selecting frameworks: Get latest best practices
-
-**Sequential Thinking Usage:**
-See @.claude/tools/sequential-thinking.md for details
-
-**Context7 Usage:**
-See @.claude/tools/context7.md for details
+- `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions
+  - See @.claude/tools/sequential-thinking.md for details
+- `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`: For library verification and documentation
+  - See @.claude/tools/context7.md for details
 
 **Template:**
 - Plan: @.claude/templates/plan-template.md
@@ -83,8 +78,8 @@ Avoid ALL duplication - if information exists in spec/ux/FEATURES.md, reference 
 - Read FEATURES.md → Check dependencies and architecture
 
 ### 0.2 Execute Research & Document
-Apply `/mcp__sequential-thinking__sequentialthinking` for key decisions.
-Use `/mcp__context7__` tools when needed for library verification.
+Apply `/mcp__sequential-thinking__sequentialthinking` for key decisions when needed.
+Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs` when needed for library verification.
 
 **Create concise research.md (max 150 lines):**
 ```markdown
@@ -136,10 +131,10 @@ Create `./ai-docs/features/$FEATURE/contracts/`:
 - Endpoint definitions and schemas only
 - NO implementation examples
 
-### 1.3 Create setup Guide
+### 1.3 Create SetUp Guide
 **Generate setup.md (max 50 lines):**
 ```markdown
-# setup - [Feature Name]
+# SetUp - [Feature Name]
 
 ## Install
 [Installation commands for dependencies]
