@@ -74,12 +74,13 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 ## Cross-File Duplication Prevention
 Each file owns specific information:
 - research.md: WHY decisions were made
-- data-model.md: WHAT data structures exist  
-- contracts/: HOW components communicate
+- data-model.md: HOW entities are implemented technically (extends spec.md entities)
+- contracts/: HOW components communicate (transport schemas)
 - setup.md: HOW TO install and run
 - plan.md: HOW TO organize and implement
 
 Never duplicate information owned by another file.
+When spec.md contains entities, data-model.md extends them with technical details only.
 
 ## Planning Coverage Rules
 - All functional requirements from spec.md must have implementation approach
@@ -109,7 +110,7 @@ Never duplicate information owned by another file.
 ```
 
 **Load Sources:**
-- Read spec.md → Extract requirements, entities
+- Read spec.md → Extract requirements, entities (note existing Key Entities section)
 - Read ux.md → Extract flows, patterns
 - Read FEATURES.md → Check dependencies
 
@@ -156,17 +157,21 @@ ONLY decisions and their brief rationale.
 # Data Model - [Feature Name]
 
 ## Entities
-[Entity definitions with attributes and types]
+[Extend entities from spec.md with:
+- Technical attributes not in spec (timestamps, IDs, nullable flags)
+- Validation rules details (word count algorithms, regex patterns)  
+- Storage-specific fields (userId for backend, caching fields)]
 
 ## Relationships
-[How entities relate to each other]
+[Define relationships between entities]
 
 ## States
-[State diagrams if applicable]
+[State machines for entity lifecycle]
 ```
 
 NO code examples, NO SQL schemas, NO repository patterns.
-This is the SINGLE source for entity structure - contracts will reference these, not redefine.
+DO NOT duplicate basic entity descriptions from spec.md - only add technical implementation details.
+This is the SINGLE source for entity implementation details - contracts will use simplified transport representations.
 
 ### 1.2 Generate API Contracts (if needed)
 **Create contracts based on feature interfaces:**
@@ -179,7 +184,9 @@ Feature may require BOTH files if it uses multiple interface types
 
 **Content guidelines:**
 - Endpoint/message definitions and schemas only
-- For entities already in data-model.md: use simplified transport representations
+- For entities from spec.md: create transport-optimized schemas (no business validation in API)
+- Validation rules stay in data-model.md, API schemas only define types
+- Example: text as string type, NOT minLength validation
 - NO implementation examples
 - Focus on contract, not code
 
