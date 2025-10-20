@@ -57,10 +57,10 @@ For Code Organization:
 - Input: `./ai-docs/features/[feature]/` (expects spec.md and ux.md)
 - Output: 
   - `./ai-docs/features/[feature]/plan.md` (implementation strategy)
-  - `./ai-docs/features/[feature]/research.md` (key decisions)
-  - `./ai-docs/features/[feature]/data-model.md` (entities only)
-  - `./ai-docs/features/[feature]/setup.md` (setup commands)
-  - `./ai-docs/features/[feature]/contracts/` (API specifications)
+  - `./ai-docs/features/[feature]/research.md` (technical research and decisions)
+  - `./ai-docs/features/[feature]/data-model.md` (entities)
+  - `./ai-docs/features/[feature]/setup.md` (environment setup and configuration)
+  - `./ai-docs/features/[feature]/contracts/` (API сontracts)
 - Index: Updates `./ai-docs/FEATURES.md` Architecture section
 
 # Task
