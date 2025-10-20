@@ -12,10 +12,43 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 - `Read`: For loading spec.md, ux.md, and existing planning documents
 - `Write`: For saving plan artifacts and research notes
 - `Bash`: For directory creation and file verification
-- `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions
-  - See @.claude/tools/sequential-thinking.md for details
 - `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`: For library documentation and compatibility verification
   - See @.claude/tools/context7.md for details
+- `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions
+  - See @.claude/tools/sequential-thinking.md for details
+
+**Context7 Usage:**
+Use `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`:
+
+For Library Research:
+- When spec/ux mentions external libraries: "Extract library names → Resolve each to ID → Fetch relevant docs"
+- When evaluating tech stack: "Identify candidate libraries → Resolve IDs → Compare documentation coverage"
+- When checking compatibility: "List all dependencies → Resolve versions → Verify compatibility matrix"
+
+Topics to fetch:
+- For UI libraries: "components [specific components mentioned in ux]"
+- For frameworks: "[feature-specific patterns] routing state-management"
+- For databases: "schema migrations [relevant operations]"
+- For APIs: "authentication endpoints [specific endpoints needed]"
+
+Token strategy:
+- Quick reference (3000-5000): Single library method/component
+- Feature implementation (10000-15000): Complete feature docs
+- Multiple libraries (5000-8000 each): Distributed across dependencies
+
+**Sequential Thinking Usage:**
+Use `/mcp__sequential-thinking__sequentialthinking`:
+
+For Research Phase:
+- When analyzing feature complexity: "Extract requirements → Map to technical patterns → Identify risks → Select optimal approach"
+- When evaluating library docs: "Compare capabilities → Check feature coverage → Assess integration effort → Make selection"
+- When identifying risks: "Analyze dependencies → Find failure points → Calculate impact → Define mitigations"
+
+For Code Organization:
+- When feature has 5+ entities or complex state
+- When multiple integration points (3+ external services)
+- When conflicting requirements need resolution
+- Input: "Select code organization for [feature]: Options: [structures] → Constraints: [from spec] → Dependencies: [from FEATURES.md] → Choose ONE"
 
 **Template:**
 - Plan: @.claude/templates/plan-template.md
@@ -77,10 +110,14 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - Read FEATURES.md → Check dependencies and architecture
 
 ### 0.2 Execute Research & Document
-**Tool execution order:**
-1. Use `/mcp__context7__resolve-library-id` to get library IDs
-2. Use `/mcp__context7__get-library-docs` to fetch documentation for those IDs
-3. Apply `/mcp__sequential-thinking__sequentialthinking` to analyze gathered information
+**Extract dependencies from spec.md and ux.md:**
+- Identify mentioned libraries, frameworks, packages
+- Note technology stack references
+
+**If external dependencies found:**
+1. Apply `/mcp__context7__resolve-library-id` for each library
+2. Apply `/mcp__context7__get-library-docs` for resolved IDs with relevant topics
+3. Apply `/mcp__sequential-thinking__sequentialthinking` for research analysis
 
 **Create concise research.md (max 150 lines):**
 ```markdown
@@ -94,7 +131,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - **[Risk]**: [Impact] → [Mitigation]
 
 ## Stack Compatibility
-- [Verified combination]: ✓
+- [Verified combination]: ✔
 ```
 
 NO alternatives, NO lengthy explanations, NO rejected approaches.
@@ -189,7 +226,8 @@ Keep high-level, no feature-specific details.
 - How errors → handling (don't repeat error types)
 
 ### 2.3 Select Feature Code Organization
-Apply `/mcp__sequential-thinking__sequentialthinking` if complex.
+**When feature is complex (5+ entities, multiple integrations, conflicting requirements):**
+Apply `/mcp__sequential-thinking__sequentialthinking` for code organization selection.
 
 - Choose ONE structure from template
 - Remove all others and labels
