@@ -70,17 +70,19 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - **No alternatives** in research - only chosen solutions with brief rationale
 - **No duplication** - if it's in spec.md, ux.md, FEATURES.md, or ANY other generated file, don't repeat
 - **Every word must carry meaning** - remove filler, obvious explanations, verbose justifications
+- **NO future scope** - remove all "for future use", "optional", unused fields
 
 ## Cross-File Duplication Prevention
 Each file owns specific information:
 - research.md: WHY decisions were made
-- data-model.md: HOW entities are implemented technically (extends spec.md entities)
-- contracts/: HOW components communicate (transport schemas)
+- data-model.md: ALL entities, states, validation rules
+- contracts/: HOW components communicate (transport schemas ONLY)
 - setup.md: HOW TO install and run
 - plan.md: HOW TO organize and implement
 
 Never duplicate information owned by another file.
 When spec.md contains entities, data-model.md extends them with technical details only.
+States are defined ONCE in data-model.md, even if ux.md has different state names.
 
 ## Planning Coverage Rules
 - All functional requirements from spec.md must have implementation approach
@@ -136,7 +138,7 @@ When spec.md contains entities, data-model.md extends them with technical detail
 - **[Risk]**: [Impact] → [Mitigation]
 
 ## Stack Compatibility
-- [Verified combination]: ✓
+- [Verified combination]: ✔
 ```
 
 NO alternatives, NO lengthy explanations, NO rejected approaches.
@@ -184,6 +186,10 @@ Feature may require BOTH files if it uses multiple interface types
 
 **Content guidelines:**
 - Endpoint/message definitions and schemas only
+- Transport schemas ONLY (not storage schemas)
+- State enums in messages reference data-model.md states
+- NO entity field definitions (only IDs and transport representations)
+- NO business validation rules (only transport validation like required fields)
 - For entities from spec.md: create transport-optimized schemas (no business validation in API)
 - Validation rules stay in data-model.md, API schemas only define types
 - Example: text as string type, NOT minLength validation
@@ -271,6 +277,13 @@ Exclude Review Checklist from output.
 
 ### 3.1 Apply Internal Checklist
 Use template's Review Checklist for validation (don't output it).
+
+**Content Isolation Check:**
+- [ ] Each file contains only its defined content types
+- [ ] No entity definitions outside data-model.md
+- [ ] No state definitions outside data-model.md
+- [ ] No manual test procedures in any file
+- [ ] No future scope markers in any file
 
 ### 3.2 Final Report
 ```
