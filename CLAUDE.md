@@ -6,7 +6,7 @@ Code execution rules and MVP development standards.
 
 Load these documents when starting work:
 - @ai-docs/PRD.md - product vision, audience, problem
-- @ai-docs/FEATURES.md - feature map, technologies, dependencies, priorities
+- @ai-docs/FEATURES.md - feature map, dependencies, priorities
 - @ai-docs/README.md - current implementation status
 
 ## Development Rules
