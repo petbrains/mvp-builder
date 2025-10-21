@@ -25,12 +25,6 @@ For Library Research:
 - When evaluating tech stack: "Identify candidate libraries → Resolve IDs → Compare documentation coverage"
 - When checking compatibility: "List all dependencies → Resolve versions → Verify compatibility matrix"
 
-Topics to fetch:
-- For UI libraries: "components [specific components mentioned in ux]"
-- For frameworks: "[feature-specific patterns] routing state-management"
-- For databases: "schema migrations [relevant operations]"
-- For APIs: "authentication endpoints [specific endpoints needed]"
-
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
 
@@ -130,12 +124,12 @@ States are defined ONCE in data-model.md, even if ux.md has different state name
 ### 0.2 Execute Research & Document
 **Extract dependencies from spec.md and ux.md:**
 - Identify mentioned libraries, frameworks, packages
-- Note technology stack references
+- Note technology stack references from PRD
 
-**If external dependencies found:**
+**When external dependencies are identified:**
 1. Apply `/mcp__context7__resolve-library-id` for each library
-2. Apply `/mcp__context7__get-library-docs` for resolved IDs with relevant topics
-3. Apply `/mcp__sequential-thinking__sequentialthinking` for research analysis
+2. Apply `/mcp__context7__get-library-docs` for resolved IDs with feature-relevant topics
+3. Apply `/mcp__sequential-thinking__sequentialthinking` for research analysis when complexity requires it
 
 **Create concise research.md:**
 ```markdown
