@@ -86,7 +86,7 @@ Load these documents when starting work:
 ai-docs/
 ├── PRD.md                 # Product requirements
 ├── README.md              # Project overview
-├── FEATURES.md            # Development roadmap and technology decisions
+├── FEATURES.md            # Development roadmap
 ├── features/
 │   └── [feature-name]/    # Semantic names only
 │       ├── spec.md        # Requirements
