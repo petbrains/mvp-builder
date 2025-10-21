@@ -9,7 +9,7 @@ Generate concise technical implementation plan by filling plan-template.md based
 Creates minimal supporting artifacts that complement (not duplicate) existing documentation.
 
 **Tools Usage:**
-- `Read`: For loading spec.md, ux.md, and existing planning documents
+- `Read`: For loading PRD.md, spec.md, ux.md, and existing planning documents
 - `Write`: For saving plan artifacts and research notes
 - `Bash`: For directory creation and file verification
 - `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`: For library documentation and compatibility verification
@@ -55,7 +55,7 @@ For Code Organization:
   - `./ai-docs/features/[feature]/research.md` (technical research and decisions)
   - `./ai-docs/features/[feature]/data-model.md` (entities)
   - `./ai-docs/features/[feature]/setup.md` (environment setup and configuration)
-  - `./ai-docs/features/[feature]/contracts/` (API сontracts)
+  - `./ai-docs/features/[feature]/contracts/` (API contracts)
 
 # Task
 
@@ -75,13 +75,15 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 
 ## Cross-File Duplication Prevention
 Each file owns specific information:
-- research.md: WHY decisions were made
-- data-model.md: ALL entities, states, validation rules
+- research.md: WHY decisions were made (including any necessary deviations from PRD approach)
+- data-model.md: ALL entities, states, validation rules, constants (timeouts, limits, enums)
 - contracts/: HOW components communicate (transport schemas ONLY)
 - setup.md: HOW TO install and run
 - plan.md: HOW TO organize and implement
 
 Never duplicate information owned by another file.
+Constants (timeouts, limits, enums) belong in data-model.md ONLY.
+When referencing constants in other files, use descriptive text: "uses timeout from data-model.md" not specific values.
 When spec.md contains entities, data-model.md extends them with technical details only.
 States are defined ONCE in data-model.md, even if ux.md has different state names.
 
@@ -95,6 +97,13 @@ States are defined ONCE in data-model.md, even if ux.md has different state name
 - Select ONE feature code organization structure and remove others
 - Do NOT include Review Checklist in final output
 - Keep descriptions brief and actionable
+- When feature deviates from PRD architecture, document in Technical Context > PRD Deviations
+- When referencing entities/states from data-model.md, use inline comments for clarity
+
+**Technical Context filling:**
+- Must align with PRD Technical Requirements section where applicable
+- If feature requires deviation from PRD stack, briefly note: "[Component]: [Choice] - [One sentence rationale]"
+- Rationale must be feature-specific, not technology-specific
 
 ## API Specification Rules
 - Use OpenAPI 3.1.0+ for REST API specifications
@@ -113,6 +122,7 @@ States are defined ONCE in data-model.md, even if ux.md has different state name
 ```
 
 **Load Sources:**
+- Read PRD.md → Extract original technical architecture and constraints
 - Read spec.md → Extract requirements, entities (note existing Key Entities section)
 - Read ux.md → Extract flows, patterns
 - Read FEATURES.md → Check dependencies
@@ -141,6 +151,11 @@ States are defined ONCE in data-model.md, even if ux.md has different state name
 ## Stack Compatibility
 - [Verified combination]: ✔
 ```
+
+**Research coherence rule:**
+- First decision point must address alignment with PRD Technical Requirements
+- Format: "**Architecture Alignment**: [Follows PRD | Adapted for feature needs] - [Brief rationale]"
+- Rationale focuses on feature requirements, not technology preferences
 
 NO alternatives, NO lengthy explanations, NO rejected approaches.
 NO configuration details (those go in setup.md).
@@ -190,6 +205,8 @@ Feature may require BOTH files if it uses multiple interface types
 - Storage contracts: reference to entity type, not field expansion
 - API contracts: field names and primitive types only, no constraints
 - Configuration structures: actual config data needed at runtime
+- When referencing entity types: add comment "// Entity from data-model.md"
+- When referencing states: add comment "// State from data-model.md"
 - NO validation rules or constraints (those belong in data-model.md)
 - NO entity field definitions (those belong in data-model.md)
 
@@ -242,6 +259,8 @@ ONLY commands and minimal configs to run the feature.
 **Implementation Mapping:**
 - How requirements → components (don't repeat requirements)
 - How errors → handling (don't repeat error types)
+- Must reference PRD architecture where applicable
+- Component names should reflect feature purpose, not technology choice
 
 **Testing Approach section must focus on:**
 - Test-first development workflow
@@ -281,6 +300,9 @@ Use template's Review Checklist for validation (don't output it).
 - [ ] No state definitions outside data-model.md
 - [ ] No manual test procedures in any file
 - [ ] No future scope markers in any file
+- [ ] Technical decisions traceable to either PRD or feature requirements
+- [ ] All numeric constants defined once in data-model.md
+- [ ] Cross-references use comments indicating source file
 
 ### 3.2 Final Report
 ```
@@ -304,6 +326,8 @@ Generated:
 ## Content Errors
 - **Excessive size**: "Error: [file] exceeds maximum size. Reduce to [limit] lines."
 - **Duplication detected**: "Warning: Content duplicates [source]. Reference instead."
+- **Architecture inconsistency**: "Warning: Technical choice differs from PRD without documented rationale"
+- **Constant duplication**: "Error: [value] defined in multiple files. Use data-model.md as single source"
 
 ## Validation Errors
 - **Missing coverage**: "Error: Requirement [FR-XXX] not addressed."
