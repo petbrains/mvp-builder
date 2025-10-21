@@ -92,9 +92,9 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - Verify alignment with PRD architecture choices
 
 **When external dependencies are identified:**
-1. Apply !`/mcp__context7__resolve-library-id` for each library
-2. Apply !`/mcp__context7__get-library-docs` for resolved IDs with feature-relevant topics
-3. Apply !`/mcp__sequential-thinking__sequentialthinking` for research analysis when complexity requires it
+1. Apply `/mcp__context7__resolve-library-id` for each library
+2. Apply `/mcp__context7__get-library-docs` for resolved IDs with feature-relevant topics
+3. Apply `/mcp__sequential-thinking__sequentialthinking` for research analysis when complexity requires it
 
 **Create concise research.md:**
 ```markdown
@@ -121,7 +121,7 @@ NO implementation details (those go in `plan.md`).
 
 ### 1.1 Generate Data Model
 **Analyze loaded entities from spec.md (already in context):**
-- Apply !`/mcp__sequential-thinking__sequentialthinking` if entities > 5 or complex relationships
+- Apply `/mcp__sequential-thinking__sequentialthinking` if entities > 5 or complex relationships
 
 **Create data-model.md with technical specs:**
 ```markdown
@@ -209,7 +209,7 @@ NO justifications for dependencies (those are in research.md).
 - `./ai-docs/features/[feature]/contracts/` (if exists)
 
 **Analyze complete context:**
-Apply !`/mcp__sequential-thinking__sequentialthinking`
+Apply `/mcp__sequential-thinking__sequentialthinking`
 
 ### Fill Template Sections
 
@@ -258,7 +258,7 @@ Internal validation using template's Review Checklist (don't output it):
 
 **Final output:**
 ```
-Implementation Planning Complete!
+Implementation Planning Complete
 
 Feature: [feature-name]
 Generated:
