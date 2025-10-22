@@ -98,13 +98,34 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 ### 0.2 Execute Research & Document
 **Extract dependencies from spec.md and ux.md:**
 - Identify mentioned libraries, frameworks, packages
-- Note technology stack references
+- Note technology stack references  
 - Verify alignment with PRD architecture choices
 
-**When external dependencies are identified:**
-1. Apply `/mcp__context7__resolve-library-id` for each library
-2. Apply `/mcp__context7__get-library-docs` for resolved IDs with feature-relevant topics
-3. Apply `/mcp__sequential-thinking__sequentialthinking` for research analysis when complexity requires it
+**Research Analysis (mandatory):**
+Apply `/mcp__sequential-thinking__sequentialthinking` with query:
+```
+"Analyze feature dependencies: [list extracted libraries] → 
+Evaluate compatibility with PRD stack → 
+Identify integration risks → 
+Select optimal versions → 
+Document critical decisions"
+```
+
+**Library Documentation (execute for each library found):**
+If no external libraries identified, skip to "Create concise research.md"
+
+For each library:
+1. Apply `/mcp__context7__resolve-library-id` with:
+   - `libraryName`: "[exact package name]"
+2. From results, select library with:
+   - Trust score ≥ 7 (prefer 9-10)
+   - Highest snippet count if multiple high-trust options
+3. Apply `/mcp__context7__get-library-docs` with:
+   - `context7CompatibleLibraryID`: "[selected /org/project ID]"
+   - `topic`: "[feature-specific functionality needed]"
+   - `tokens`: 10000
+
+**Create concise research.md:**
 
 **Create concise research.md:**
 ```markdown
@@ -131,7 +152,17 @@ NO implementation details (those go in `plan.md`).
 
 ### 1.1 Generate Data Model
 **Analyze loaded entities from spec.md (already in context):**
-- Apply `/mcp__sequential-thinking__sequentialthinking` if entities > 5 or complex relationships
+
+**Entity Analysis (mandatory):**
+Apply `/mcp__sequential-thinking__sequentialthinking` with query:
+```
+"Analyze entities from spec: [list entities] → 
+Define field types and constraints → 
+Map relationships and cardinality → 
+Identify state transitions → 
+Extract validation rules from requirements → 
+Generate complete data model structure"
+```
 
 **Create data-model.md with technical specs:**
 ```markdown
@@ -157,6 +188,9 @@ NO implementation details (those go in `plan.md`).
 
 NO code, NO SQL, NO platform-specific types.
 Abstract technical specifications that apply to any implementation.
+
+**Write data model artifact:**
+- Write `./ai-docs/features/[feature]/data-model.md`
 
 ### 1.2 Generate API Contracts (if needed)
 **Create contracts based on feature interfaces:**
@@ -205,10 +239,8 @@ Brief setup instructions only - TDD test commands, no lengthy configs.
 NO architecture explanations (those are in plan.md).
 NO justifications for dependencies (those are in research.md).
 
-**Status:**
-```
-✅ Design complete → Phase 2
-```
+**Write setup artifact:**
+- Write `./ai-docs/features/[feature]/setup.md`
 
 ## Phase 2: Implementation Plan
 
@@ -219,7 +251,18 @@ NO justifications for dependencies (those are in research.md).
 - `./ai-docs/features/[feature]/contracts/` (if exists)
 
 **Analyze complete context:**
-Apply `/mcp__sequential-thinking__sequentialthinking`
+Apply `/mcp__sequential-thinking__sequentialthinking` with query:
+```
+"Synthesize planning context: 
+Sources (PRD, spec, ux, FEATURES) → 
+Research decisions from research.md → 
+Entity model from data-model.md → 
+Setup from setup.md → 
+Contracts from contracts/ → 
+Map to plan-template sections → 
+Select optimal code organization → 
+Define component architecture"
+```
 
 ### Fill Template Sections
 
@@ -268,7 +311,7 @@ Internal validation using template's Review Checklist (don't output it):
 
 **Final output:**
 ```
-Implementation Planning Complete
+Implementation Planning Complete!
 
 Feature: [feature-name]
 Generated:
