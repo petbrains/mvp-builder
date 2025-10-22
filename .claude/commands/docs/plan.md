@@ -61,10 +61,20 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - One code organization structure in plan.md
 - When referencing entities/states from data-model.md, use inline comments for clarity
 
+## Planning Coverage Rules
+- All functional requirements from spec.md must have implementation approach
+- All UX patterns from ux.md must map to technical components
+- Reference existing documentation instead of duplicating
+
 **Technical Context filling:**
 - Must align with PRD Technical Requirements section where applicable
 - If feature requires deviation from PRD stack, briefly note: "[Component]: [Choice] - [One sentence rationale]"
 - Rationale must be feature-specific, not technology-specific
+
+## API Specification Rules
+- Use OpenAPI 3.1.0+ for REST API specifications
+- Follow latest specification standards for all contract types
+- Keep contracts focused on interfaces, not implementation
 
 # Execution Flow
 
