@@ -123,7 +123,7 @@ For each library:
 3. Apply `/mcp__context7__get-library-docs` with:
    - `context7CompatibleLibraryID`: "[selected /org/project ID]"
    - `topic`: "[feature-specific functionality needed]"
-   - `tokens`: 10000
+   - `tokens`: 20000
 
 **Create concise research.md:**
 
