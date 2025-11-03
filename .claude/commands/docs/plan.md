@@ -127,8 +127,6 @@ For each library:
    - `tokens`: 20000
 
 **Create concise research.md:**
-
-**Create concise research.md:**
 ```markdown
 # Research Notes - [Feature Name]
 
@@ -260,6 +258,9 @@ Define component architecture"
 
 **Consistency validation before writing:**
 - Cross-check validation rules against spec.md exact phrasing
+- Verify all FR-XXX requirements have implementation approach
+- Ensure all UX-XXX requirements map to components
+- Check entity naming consistency across all artifacts
 - Verify storage approach aligns with spec.md requirements
 - Ensure no constants are hardcoded (reference data-model.md)
 - Check derived values use formula comments
@@ -272,6 +273,8 @@ Define component architecture"
 - Brief bullets only
 - State what is used, not why (why is in research.md)
 - Reference specific technology decisions from research.md
+- **Storage:** Specify primary storage + any secondary storage with clear use case separation
+  - Example: "PostgreSQL for entities, Redis for cache, IndexedDB for offline support"
 
 **Implementation Mapping:**
 - How requirements → components (don't repeat requirements)
@@ -289,6 +292,13 @@ Define component architecture"
 - Remove all other structures and their "Structure X:" prefixes
 - Keep only selected structure with its rationale
 - Document brief rationale for selection
+- **Selected Structure:** [Structure letter] ([Structure name]) - [One sentence rationale specific to this feature's requirements]
+  - Rationale must reference specific requirements, not generic benefits
+
+**Implementation Notes:**
+- Document critical implementation decisions, trade-offs, or considerations
+- **Edge case handling:** Document approach for spec.md edge cases. If not all covered, note which require future iteration with rationale
+- **Scalability notes:** If feature may hit limits (data size, API rate, etc.), document threshold and mitigation strategy
 
 **Write plan.md:**
 - Write `./ai-docs/features/[feature]/plan.md`
@@ -320,5 +330,7 @@ Generated:
 - **Missing files**: "Error: [file] not found. Run [command] first."
 - **Size exceeded**: "Error: [file] exceeds 300 lines."
 - **Duplication detected**: "Warning: Content duplicates [source]. Reference instead."
-- **Validation mismatch**: "Error: Validation differs from spec.md."
+- **Validation mismatch**: "Error: Validation for [field] differs from spec.md requirements."
+- **Missing implementation**: "Error: [requirement] from spec.md not addressed in plan."
+- **UX pattern unmapped**: "Error: [pattern] from ux.md not mapped to components."
 - **Constant duplication**: "Error: [value] defined in multiple files. Use data-model.md as single source."
