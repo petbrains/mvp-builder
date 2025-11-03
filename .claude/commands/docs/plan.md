@@ -50,16 +50,17 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 ## Content Guidelines
 - Maximum 300 lines per file
 - No implementation code, only architecture
-- Reference between files using comments: `// from data-model.md`
+- Reference using comments at first mention only: `// from data-model.md`
 - Remove all future scope markers and unused fields
-- Each word must add value
+- Each word must add value - no boilerplate
 
 ## Consistency Rules
 - Validation phrasing must match spec.md exactly
 - Derived values as formulas: `// base_timeout + increment`
 - Constants only in data-model.md
 - One code organization structure in plan.md
-- When referencing entities/states from data-model.md, use inline comments for clarity
+- When first referencing entity/state types in each contract: add origin comment
+- Subsequent references in same contract don't need comments
 
 ## Planning Coverage Rules
 - All functional requirements from spec.md must have implementation approach
@@ -131,7 +132,7 @@ For each library:
 ```markdown
 # Research Notes - [Feature Name]
 
-## Key Decisions (3-5 points max)
+## Key Decisions (essential points only, typically 3-7)
 - **[Decision]**: [What chosen] - [Brief why, 1 sentence]
 
 ## Critical Risks
@@ -151,18 +152,12 @@ NO implementation details (those go in `plan.md`).
 ## Phase 1: Design Artifacts
 
 ### 1.1 Generate Data Model
-**Analyze loaded entities from spec.md (already in context):**
-
-**Entity Analysis (mandatory):**
-Apply `/mcp__sequential-thinking__sequentialthinking` with query:
-```
-"Analyze entities from spec: [list entities] → 
-Define field types and constraints → 
-Map relationships and cardinality → 
-Identify state transitions → 
-Extract validation rules from requirements → 
-Generate complete data model structure"
-```
+**Analyze entities from spec.md (already in context):**
+- Extract directly from Key Entities section
+- Define field types and constraints based on requirements
+- Map relationships and cardinality
+- Identify state transitions from ux.md flows
+- Extract validation rules from spec.md requirements
 
 **Create data-model.md with technical specs:**
 ```markdown
@@ -205,9 +200,8 @@ Feature may require BOTH files if it uses multiple interface types
 - Message/event contracts: type names and message structure only
 - Storage contracts: reference to entity type, not field expansion
 - API contracts: field names and primitive types only, no constraints
-- When referencing entity types: add comment "// Entity from data-model.md"
-- When referencing states: add comment "// State from data-model.md"
-- When referencing timeouts: add comment "// Timeout value from data-model.md"
+- First reference to entity/state types: add origin comment
+- Subsequent references in same contract: no comment needed
 - NO validation rules or constraints (those belong in data-model.md)
 - NO entity field definitions (those belong in data-model.md)
 
@@ -244,11 +238,9 @@ NO justifications for dependencies (those are in research.md).
 
 ## Phase 2: Implementation Plan
 
-**Read generated artifacts:**
-- `./ai-docs/features/[feature]/research.md`
-- `./ai-docs/features/[feature]/data-model.md`
-- `./ai-docs/features/[feature]/setup.md`
-- `./ai-docs/features/[feature]/contracts/` (if exists)
+**Use already generated artifacts from context:**
+- Continue with research.md, data-model.md, setup.md, contracts/ in memory
+- No re-reading needed as content is already in context
 
 **Analyze complete context:**
 Apply `/mcp__sequential-thinking__sequentialthinking` with query:
@@ -293,9 +285,10 @@ Define component architecture"
 - NO manual test checklists
 
 **Select Feature Code Organization:**
-- Choose ONE structure from template
-- Remove all others and labels
-- Document brief rationale
+- Choose ONE structure (A, B, C, or D) from template
+- Remove all other structures and their "Structure X:" prefixes
+- Keep only selected structure with its rationale
+- Document brief rationale for selection
 
 **Write plan.md:**
 - Write `./ai-docs/features/[feature]/plan.md`
@@ -303,7 +296,7 @@ Define component architecture"
 
 ## Phase 3: Validate & Report
 
-Internal validation using template's Review Checklist (don't output it):
+Internal validation using template's Review Checklist (mental check only):
 - Requirements coverage
 - No duplication
 - Consistency across files
