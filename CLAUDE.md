@@ -6,9 +6,8 @@ Code execution rules and MVP development standards.
 
 Load these documents when starting work:
 - @ai-docs/PRD.md - product vision, audience, problem
-- @ai-docs/AGENTS.md - tech stack, architecture, conventions
 - @ai-docs/FEATURES.md - feature map, dependencies, priorities
-- @README.md - current implementation status
+- @ai-docs/README.md - current implementation status
 
 ## Development Rules
 
@@ -85,15 +84,17 @@ Load these documents when starting work:
 
 ```
 ai-docs/
-├── PRD.md                 # Product Requirements
+├── PRD.md                 # Product requirements
 ├── README.md              # Project overview
-├── AGENTS.md              # Architecture decisions
 ├── FEATURES.md            # Development roadmap
 ├── features/
 │   └── [feature-name]/    # Semantic names only
 │       ├── spec.md        # Requirements
-│       ├── ux.md          # UX schema
-│       ├── plan.md        # Implementation
+│       ├── ux.md          # UX schemas
+│       ├── plan.md        # Implementation strategy
+│       ├── research.md    # Technical research and decisions
+│       ├── data-model.md  # Entities
+│       ├── setup.md       # Environment setup and configuration
 │       └── contracts/     # API contracts
 ```
 
