@@ -27,7 +27,7 @@ Load these documents when starting work:
 - Product stays runnable after each change
 - Feature flags for new functionality
 - Reversibility: prefer undoable choices
-- Max 400 lines/file, 80 lines/function
+- Max 300 lines/file, 80 lines/function
 - Line length: 100-120 characters
 - No "god classes" - split by concern
 - Must pass lint/type-check before done
