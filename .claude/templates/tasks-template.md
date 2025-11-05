@@ -21,7 +21,7 @@ Defines implementation tasks using TDD cycles for each user story.
 - **Web app**: `backend/src/`, `frontend/src/`
 - **Mobile**: `api/src/`, `ios/src/` or `android/src/`
 - **Browser Extension**: `extension/src/`
-- Paths shown below assume single project - adjust based on plan.md structure
+- Paths derived from plan.md structure and setup.md configuration
 
 ## Test Case Mapping
 **Derives test cases from feature artifacts:**
@@ -30,45 +30,56 @@ Defines implementation tasks using TDD cycles for each user story.
 - UX requirements (UX-*) → UI/E2E tests
 - Edge cases from spec.md → Boundary tests
 - Error states from ux.md → Error handling tests
+- Data models from data-model.md → Model validation tests
+- API contracts from contracts/ → Contract tests
+- Research constraints → Performance/Load tests
+- Setup requirements → Environment tests
 
 ## MODEL INSTRUCTION
 **Sample tasks below. Replace with actual tasks in generated tasks.md.**
 
 ### Task Generation Rules
-- Generate tasks from: spec.md user stories, plan.md requirements, ux.md flows
+- Generate tasks from all feature artifacts:
+  - spec.md - user stories and requirements
+  - plan.md - technical approach and structure
+  - ux.md - flows and interaction patterns
+  - data-model.md - entities and relationships
+  - contracts/ - API endpoints and schemas
+  - research.md - technical decisions and constraints
+  - setup.md - environment and dependencies
 - Organize tasks by TDD cycles within each user story
 - Each cycle follows: RED → GREEN → REVIEW → REFACTOR phases
 - Map test cases according to Test Case Mapping section
 
 ## Phase 1: Setup
 
-- [ ] SETUP-001 Create project structure per implementation plan
-- [ ] SETUP-002 Initialize [language] project with [framework] dependencies
+- [ ] SETUP-001 Create project structure per plan.md
+- [ ] SETUP-002 Initialize [language] project per setup.md dependencies
 - [ ] SETUP-003 Configure linting and formatting tools
 
 ## Phase 2: Core Infrastructure
 
 **Required before user stories begin**
 
-- [ ] SETUP-004 Setup database schema and migrations framework
-- [ ] SETUP-005 Implement authentication/authorization framework
-- [ ] SETUP-006 Setup API routing and middleware structure
-- [ ] SETUP-007 Create base models/entities that all stories depend on
-- [ ] SETUP-008 Configure error handling and logging infrastructure
-- [ ] SETUP-009 Setup environment configuration management
+- [ ] SETUP-004 Setup database schema from data-model.md
+- [ ] SETUP-005 Implement authentication per research.md decisions
+- [ ] SETUP-006 Setup API routing per contracts/ specifications
+- [ ] SETUP-007 Create base entities from data-model.md
+- [ ] SETUP-008 Configure error handling and logging
+- [ ] SETUP-009 Setup environment per setup.md requirements
 
 ## Phase 3: User Story 1 - [Title] (P1 - MVP)
 
 ### TDD Cycle 1: [Component Name]
-**Coverage**: [FR-001, UX-001]
+**Coverage**: [FR-001, UX-001, Entity from data-model.md]
 
 #### RED Phase
 - [ ] TEST-001 [US1] Test [requirement/behavior]
-- [ ] TEST-002 [US1] Test [edge case/validation]
+- [ ] TEST-002 [US1] Test [edge case from spec.md]
 - [ ] TEST-003 [US1] Verify tests fail
 
 #### GREEN Phase  
-- [ ] IMPL-001 [US1] Create [component] in src/[location]/[file]
+- [ ] IMPL-001 [US1] Create [entity] per data-model.md in src/[location]/[file]
 - [ ] IMPL-002 [US1] Implement logic to pass tests
 
 #### REVIEW Phase
@@ -77,8 +88,8 @@ Defines implementation tasks using TDD cycles for each user story.
 #### REFACTOR Phase (if needed)
 - [ ] REFACTOR-001 [US1] Apply improvements
 
-### TDD Cycle 2: [Component Name]
-**Coverage**: [FR-002, FR-003]
+### TDD Cycle 2: [API Endpoint]
+**Coverage**: [FR-002, Contract from contracts/[endpoint].yaml]
 
 #### RED Phase
 - [ ] TEST-004 [US1] Test [requirement]
@@ -166,8 +177,11 @@ Within each story: RED → GREEN → REVIEW → REFACTOR cycles
 
 ### Completeness
 - [ ] All user stories have TDD cycles
-- [ ] All FR-* and UX-* requirements covered
-- [ ] Setup and core phases present
+- [ ] All requirements covered (FR-*, UX-*)
+- [ ] Data models from data-model.md implemented
+- [ ] API contracts from contracts/ tested
+- [ ] Setup requirements from setup.md addressed
+- [ ] Research constraints from research.md considered
 - [ ] Each cycle has all 4 phases (RED/GREEN/REVIEW/REFACTOR)
 
 ### Structure
