@@ -32,7 +32,9 @@ Defines implementation tasks using TDD cycles for each user story.
 - Error states from ux.md → Error handling tests
 - Data models from data-model.md → Model validation tests
 - API contracts from contracts/ → Contract tests
-- Research constraints → Performance/Load tests
+- State transitions from data-model.md → State machine tests
+- Validation rules from data-model.md → Validation tests
+- Message contracts from contracts.md → Integration tests
 - Setup requirements → Environment tests
 
 ## MODEL INSTRUCTION
@@ -44,8 +46,8 @@ Defines implementation tasks using TDD cycles for each user story.
   - plan.md - technical approach and structure
   - ux.md - flows and interaction patterns
   - data-model.md - entities and relationships
-  - contracts/ - API endpoints and schemas
-  - research.md - technical decisions and constraints
+  - contracts/, contracts.md, openapi.yaml - API endpoints, message passing, events, storage schemas
+  - research.md - technical decisions for infrastructure tasks
   - setup.md - environment and dependencies
 - Organize tasks by TDD cycles within each user story
 - Each cycle follows: RED → GREEN → REVIEW → REFACTOR phases
@@ -61,17 +63,23 @@ Defines implementation tasks using TDD cycles for each user story.
 
 **Required before user stories begin**
 
-- [ ] SETUP-004 Setup database schema from data-model.md
-- [ ] SETUP-005 Implement authentication per research.md decisions
-- [ ] SETUP-006 Setup API routing per contracts/ specifications
+- [ ] SETUP-004 Setup data layer from data-model.md
+- [ ] SETUP-005 Implement authentication if required
+- [ ] SETUP-006 Setup API layer per contracts/openapi specifications
 - [ ] SETUP-007 Create base entities from data-model.md
-- [ ] SETUP-008 Configure error handling and logging
+- [ ] SETUP-008 Configure error handling
 - [ ] SETUP-009 Setup environment per setup.md requirements
+- [ ] SETUP-010 Implement state management if specified
+- [ ] SETUP-011 Setup validation layer if required
 
 ## Phase 3: User Story 1 - [Title] (P1 - MVP)
 
 ### TDD Cycle 1: [Component Name]
-**Coverage**: [FR-001, UX-001, Entity from data-model.md]
+**Coverage**: 
+- Requirements: [FR-001, UX-001]
+- Data entities: [from data-model.md]
+- Contracts: [from openapi.yaml or contracts.md]
+- States: [if applicable from data-model.md]
 
 #### RED Phase
 - [ ] TEST-001 [US1] Test [requirement/behavior]
@@ -89,7 +97,9 @@ Defines implementation tasks using TDD cycles for each user story.
 - [ ] REFACTOR-001 [US1] Apply improvements
 
 ### TDD Cycle 2: [API Endpoint]
-**Coverage**: [FR-002, Contract from contracts/[endpoint].yaml]
+**Coverage**: 
+- Requirements: [FR-002]
+- Contracts: [from openapi.yaml endpoint]
 
 #### RED Phase
 - [ ] TEST-004 [US1] Test [requirement]
@@ -107,7 +117,8 @@ Defines implementation tasks using TDD cycles for each user story.
 ## Phase 4: User Story 2 - [Title] (P2)
 
 ### TDD Cycle 1: [Component Name]
-**Coverage**: [FR-004, UX-002]
+**Coverage**: 
+- Requirements: [FR-004, UX-002]
 
 #### RED Phase
 - [ ] TEST-006 [US2] Test [requirement]
@@ -125,7 +136,8 @@ Defines implementation tasks using TDD cycles for each user story.
 ## Phase 5: User Story 3 - [Title] (P3)
 
 ### TDD Cycle 1: [Component Name]
-**Coverage**: [FR-005]
+**Coverage**: 
+- Requirements: [FR-005]
 
 #### RED Phase
 - [ ] TEST-008 [US3] Test [requirement]
@@ -166,6 +178,7 @@ Within each story: RED → GREEN → REVIEW → REFACTOR cycles
 - Each story independently testable
 - Tests precede implementation
 - No test stubs or always-passing mocks
+- All state transitions must match data-model.md specifications
 
 ---
 
@@ -179,9 +192,9 @@ Within each story: RED → GREEN → REVIEW → REFACTOR cycles
 - [ ] All user stories have TDD cycles
 - [ ] All requirements covered (FR-*, UX-*)
 - [ ] Data models from data-model.md implemented
-- [ ] API contracts from contracts/ tested
-- [ ] Setup requirements from setup.md addressed
-- [ ] Research constraints from research.md considered
+- [ ] API contracts from contracts/ implemented
+- [ ] Setup requirements from setup.md implemented
+- [ ] Research constraints from research.md applied
 - [ ] Each cycle has all 4 phases (RED/GREEN/REVIEW/REFACTOR)
 
 ### Structure
@@ -189,5 +202,6 @@ Within each story: RED → GREEN → REVIEW → REFACTOR cycles
 - [ ] Story labels consistent ([US1], [US2])
 - [ ] File paths specified
 - [ ] Priority order maintained (P1 → P2 → P3)
+- [ ] Coverage sections properly filled
 
 ---
