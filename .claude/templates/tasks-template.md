@@ -21,24 +21,25 @@ Defines implementation tasks using TDD cycles for each user story.
 - **Web app**: `backend/src/`, `frontend/src/`
 - **Mobile**: `api/src/`, `ios/src/` or `android/src/`
 - **Browser Extension**: `extension/src/`
-- Paths derived from plan.md structure and setup.md configuration
+- Use directory structure from plan.md "Feature Code Organization" section
+- If not specified, use project's standard conventions
 
 ## Test Case Mapping
 **Derives test cases from feature artifacts:**
-- Acceptance scenarios from spec.md → Integration tests
-- Functional requirements (FR-*) → Unit/Contract tests  
-- UX requirements (UX-*) → UI/E2E tests
-- Edge cases from spec.md → Boundary tests
-- Error states from ux.md → Error handling tests
-- Data models from data-model.md → Model validation tests
-- API contracts from contracts/ → Contract tests
-- State transitions from data-model.md → State machine tests
-- Validation rules from data-model.md → Validation tests
-- Message contracts from contracts.md → Integration tests
-- Setup requirements → Environment tests
+- Acceptance scenarios from spec.md → Create integration tests
+- Functional requirements (FR-*) → Create unit/contract tests  
+- UX requirements (UX-*) → Create UI/E2E tests
+- Edge cases from spec.md → Create boundary tests
+- Error states from ux.md → Create error handling tests
+- Data models from data-model.md → Create model validation tests
+- API contracts from contracts/ → Create contract tests
+- State transitions from data-model.md → Create state machine tests
+- Validation rules from data-model.md → Create validation tests
+- Message contracts from contracts.md → Create integration tests
+- Setup requirements → Create environment tests
 
 ## MODEL INSTRUCTION
-**Sample tasks below. Replace with actual tasks in generated tasks.md.**
+**Task examples below are templates. Generate project-specific tasks based on feature artifacts.**
 
 ### Task Generation Rules
 - Generate tasks from all feature artifacts:
@@ -52,6 +53,11 @@ Defines implementation tasks using TDD cycles for each user story.
 - Organize tasks by TDD cycles within each user story
 - Each cycle follows: RED → GREEN → REVIEW → REFACTOR phases
 - Map test cases according to Test Case Mapping section
+- Generate tasks that match project's technology stack and architecture
+- Each task must reference specific file paths derived from plan.md
+- Maintain consistency with project's naming conventions
+- Omit empty phases rather than including placeholder tasks
+- Each user story must have at least RED and GREEN phases
 
 ## Phase 1: Setup
 
@@ -62,6 +68,7 @@ Defines implementation tasks using TDD cycles for each user story.
 ## Phase 2: Core Infrastructure
 
 **Required before user stories begin**
+**Generate only applicable infrastructure tasks based on project architecture**
 
 - [ ] SETUP-004 Setup data layer from data-model.md
 - [ ] SETUP-005 Implement authentication if required
@@ -93,7 +100,8 @@ Defines implementation tasks using TDD cycles for each user story.
 #### REVIEW Phase
 - [ ] REVIEW-001 [US1] Review implementation
 
-#### REFACTOR Phase (if needed)
+#### REFACTOR Phase
+*Include only if review identifies improvements*
 - [ ] REFACTOR-001 [US1] Apply improvements
 
 ### TDD Cycle 2: [API Endpoint]
@@ -111,7 +119,8 @@ Defines implementation tasks using TDD cycles for each user story.
 #### REVIEW Phase
 - [ ] REVIEW-002 [US1] Review code
 
-#### REFACTOR Phase (if needed)
+#### REFACTOR Phase
+*Include only if review identifies improvements*
 - [ ] REFACTOR-002 [US1] Apply feedback
 
 ## Phase 4: User Story 2 - [Title] (P2)
@@ -130,7 +139,8 @@ Defines implementation tasks using TDD cycles for each user story.
 #### REVIEW Phase
 - [ ] REVIEW-003 [US2] Review implementation
 
-#### REFACTOR Phase (if needed)
+#### REFACTOR Phase
+*Include only if review identifies improvements*
 - [ ] REFACTOR-003 [US2] Apply feedback
 
 ## Phase 5: User Story 3 - [Title] (P3)
@@ -149,7 +159,8 @@ Defines implementation tasks using TDD cycles for each user story.
 #### REVIEW Phase
 - [ ] REVIEW-004 [US3] Review implementation
 
-#### REFACTOR Phase (if needed)
+#### REFACTOR Phase
+*Include only if review identifies improvements*
 - [ ] REFACTOR-004 [US3] Apply feedback
 
 [Add more user story phases as needed, following same pattern]
