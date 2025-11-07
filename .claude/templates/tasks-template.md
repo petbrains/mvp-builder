@@ -9,11 +9,8 @@ Defines implementation tasks using TDD cycles for each user story.
 - **Description**: Action with file path
 
 ### Task Prefixes
-- **SETUP-**: Infrastructure [Dev Agent]
-- **TEST-**: Tests [Test Agent]  
-- **IMPL-**: Implementation [Dev Agent]
-- **REVIEW-**: Code review [Review Agent]
-- **REFACTOR-**: Improvements [Dev Agent]
+- **TEST-**: Tests
+- **IMPL-**: Implementation
 
 ## Path Conventions
 
@@ -51,35 +48,31 @@ Defines implementation tasks using TDD cycles for each user story.
   - research.md - technical decisions for infrastructure tasks
   - setup.md - environment and dependencies
 - Organize tasks by TDD cycles within each user story
-- Each cycle follows: RED → GREEN → REVIEW → REFACTOR phases
+- Each cycle follows: RED → GREEN phases
 - Map test cases according to Test Case Mapping section
 - Generate tasks that match project's technology stack and architecture
 - Each task must reference specific file paths derived from plan.md
 - Maintain consistency with project's naming conventions
-- Omit empty phases rather than including placeholder tasks
 - Each user story must have at least RED and GREEN phases
 
-## Phase 1: Setup
-
-- [ ] SETUP-001 Create project structure per plan.md
-- [ ] SETUP-002 Initialize [language] project per setup.md dependencies
-- [ ] SETUP-003 Configure linting and formatting tools
-
-## Phase 2: Core Infrastructure
+## Phase 1: Core Infrastructure
 
 **Required before user stories begin**
 **Generate only applicable infrastructure tasks based on project architecture**
 
-- [ ] SETUP-004 Setup data layer from data-model.md
-- [ ] SETUP-005 Implement authentication if required
-- [ ] SETUP-006 Setup API layer per contracts/openapi specifications
-- [ ] SETUP-007 Create base entities from data-model.md
-- [ ] SETUP-008 Configure error handling
-- [ ] SETUP-009 Setup environment per setup.md requirements
-- [ ] SETUP-010 Implement state management if specified
-- [ ] SETUP-011 Setup validation layer if required
+- [ ] IMPL-001 Create project structure per plan.md
+- [ ] IMPL-002 Initialize [language] project per setup.md dependencies
+- [ ] IMPL-003 Configure linting and formatting tools
+- [ ] IMPL-004 Setup data layer from data-model.md
+- [ ] IMPL-005 Implement authentication if required
+- [ ] IMPL-006 Setup API layer per contracts/openapi specifications
+- [ ] IMPL-007 Create base entities from data-model.md
+- [ ] IMPL-008 Configure error handling
+- [ ] IMPL-009 Setup environment per setup.md requirements
+- [ ] IMPL-010 Implement state management if specified
+- [ ] IMPL-011 Setup validation layer if required
 
-## Phase 3: User Story 1 - [Title] (P1 - MVP)
+## Phase 2: User Story 1 - [Title] (P1 - MVP)
 
 ### TDD Cycle 1: [Component Name]
 **Coverage**: 
@@ -94,15 +87,8 @@ Defines implementation tasks using TDD cycles for each user story.
 - [ ] TEST-003 [US1] Verify tests fail
 
 #### GREEN Phase  
-- [ ] IMPL-001 [US1] Create [entity] per data-model.md in src/[location]/[file]
-- [ ] IMPL-002 [US1] Implement logic to pass tests
-
-#### REVIEW Phase
-- [ ] REVIEW-001 [US1] Review implementation
-
-#### REFACTOR Phase
-*Include only if review identifies improvements*
-- [ ] REFACTOR-001 [US1] Apply improvements
+- [ ] IMPL-012 [US1] Create [entity] per data-model.md in src/[location]/[file]
+- [ ] IMPL-013 [US1] Implement logic to pass tests
 
 ### TDD Cycle 2: [API Endpoint]
 **Coverage**: 
@@ -114,16 +100,9 @@ Defines implementation tasks using TDD cycles for each user story.
 - [ ] TEST-005 [US1] Verify failure
 
 #### GREEN Phase
-- [ ] IMPL-003 [US1] Implement in src/[location]/[file]
+- [ ] IMPL-014 [US1] Implement in src/[location]/[file]
 
-#### REVIEW Phase
-- [ ] REVIEW-002 [US1] Review code
-
-#### REFACTOR Phase
-*Include only if review identifies improvements*
-- [ ] REFACTOR-002 [US1] Apply feedback
-
-## Phase 4: User Story 2 - [Title] (P2)
+## Phase 3: User Story 2 - [Title] (P2)
 
 ### TDD Cycle 1: [Component Name]
 **Coverage**: 
@@ -134,16 +113,9 @@ Defines implementation tasks using TDD cycles for each user story.
 - [ ] TEST-007 [US2] Verify failure
 
 #### GREEN Phase
-- [ ] IMPL-004 [US2] Implement in src/[location]/[file]
+- [ ] IMPL-015 [US2] Implement in src/[location]/[file]
 
-#### REVIEW Phase
-- [ ] REVIEW-003 [US2] Review implementation
-
-#### REFACTOR Phase
-*Include only if review identifies improvements*
-- [ ] REFACTOR-003 [US2] Apply feedback
-
-## Phase 5: User Story 3 - [Title] (P3)
+## Phase 4: User Story 3 - [Title] (P3)
 
 ### TDD Cycle 1: [Component Name]
 **Coverage**: 
@@ -154,37 +126,20 @@ Defines implementation tasks using TDD cycles for each user story.
 - [ ] TEST-009 [US3] Verify failure
 
 #### GREEN Phase
-- [ ] IMPL-005 [US3] Implement in src/[location]/[file]
-
-#### REVIEW Phase
-- [ ] REVIEW-004 [US3] Review implementation
-
-#### REFACTOR Phase
-*Include only if review identifies improvements*
-- [ ] REFACTOR-004 [US3] Apply feedback
+- [ ] IMPL-016 [US3] Implement in src/[location]/[file]
 
 [Add more user story phases as needed, following same pattern]
 
-## Phase N: Polish
-
-- [ ] IMPL-006 Documentation updates
-- [ ] REFACTOR-005 Code cleanup
-- [ ] IMPL-007 Performance optimization
-- [ ] TEST-010 Regression tests
-- [ ] REVIEW-005 Final review
-
 ## Execution Order
 
-1. **Phase 1**: Setup
-2. **Phase 2**: Core Infrastructure (blocks all stories)  
-3. **Phase 3-N**: User Stories in priority order (P1 → P2 → P3)
-4. **Final Phase**: Polish
+1. **Phase 1**: Core Infrastructure (blocks all stories)  
+2. **Phase 2-N**: User Stories in priority order (P1 → P2 → P3)
 
-Within each story: RED → GREEN → REVIEW → REFACTOR cycles
+Within each story: RED → GREEN cycles
 
 ## Notes
 
-- Tasks organized by TDD cycles: RED → GREEN → REVIEW → REFACTOR
+- Tasks organized by TDD cycles: RED → GREEN
 - Stories execute in priority order (P1 → P2 → P3)
 - Each story independently testable
 - Tests precede implementation
@@ -206,10 +161,10 @@ Within each story: RED → GREEN → REVIEW → REFACTOR cycles
 - [ ] API contracts from contracts/ implemented
 - [ ] Setup requirements from setup.md implemented
 - [ ] Research constraints from research.md applied
-- [ ] Each cycle has all 4 phases (RED/GREEN/REVIEW/REFACTOR)
+- [ ] Each cycle has RED and GREEN phases
 
 ### Structure
-- [ ] Task IDs use correct prefixes
+- [ ] Task IDs use correct prefixes (TEST-, IMPL-)
 - [ ] Story labels consistent ([US1], [US2])
 - [ ] File paths specified
 - [ ] Priority order maintained (P1 → P2 → P3)
