@@ -58,6 +58,7 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - Each user story must have at least RED and GREEN phases
 
 ## Phase 1: Core Infrastructure
+
 - [ ] IMPL-001 Create project structure per plan.md
 - [ ] IMPL-002 Initialize [language] project per setup.md dependencies
 - [ ] IMPL-003 Configure linting and formatting tools
@@ -121,8 +122,6 @@ Template for generating implementation tasks using TDD cycles for each user stor
 
 #### GREEN Phase
 - [ ] IMPL-016 [US3] Implement in src/[location]/[file]
-
-[Add more user story phases as needed, following same pattern]
 
 ## Execution Order
 
