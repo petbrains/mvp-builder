@@ -32,9 +32,14 @@ For Task Generation:
 - Features list: @ai-docs/FEATURES.md
 
 **File Structure:**
-- Input: `./ai-docs/features/[feature]/` (expects plan.md, spec.md, ux.md)
-- Prerequisites: plan.md (required), spec.md (required for user stories), ux.md (required for flows)
-- Optional: data-model.md, contracts/, research.md, setup.md
+- Input: `./ai-docs/features/[feature]/` 
+  - plan.md (tech stack, libraries, structure)
+  - spec.md (user stories with priorities) 
+  - ux.md (flows, patterns)
+  - data-model.md (entities)
+  - contracts/ (API endpoints)
+  - research.md (decisions)
+  - setup.md (quick start)
 - Output: `./ai-docs/features/[feature]/tasks.md`
 
 # Task
@@ -139,33 +144,14 @@ Each cycle within a user story must have:
 
 ## Phase 1: Load Design Documents
 
-### 1.1 Validate Prerequisites
-```bash
-# Check required files exist
-[ ! -f "./ai-docs/features/$FEATURE/plan.md" ] && echo "Error: plan.md not found" && exit 1
-[ ! -f "./ai-docs/features/$FEATURE/spec.md" ] && echo "Error: spec.md not found" && exit 1
-[ ! -f "./ai-docs/features/$FEATURE/ux.md" ] && echo "Error: ux.md not found" && exit 1
-```
-
-### 1.2 Load Required Documents
-- Read `./ai-docs/features/[feature]/plan.md` → Extract tech stack, libraries, structure, test scenarios
-- Read `./ai-docs/features/[feature]/spec.md` → Extract user stories with priorities (P1, P2, P3)
+### 1.1 Load All Feature Documents
+- Read `./ai-docs/features/[feature]/plan.md` → Extract tech stack, libraries, structure
+- Read `./ai-docs/features/[feature]/spec.md` → Extract user stories with priorities
 - Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns
-
-### 1.3 Load Optional Documents
-```bash
-# Check and load optional documents if they exist
-[ -f "./ai-docs/features/$FEATURE/data-model.md" ] && echo "Loading data model..."
-[ -f "./ai-docs/features/$FEATURE/research.md" ] && echo "Loading research decisions..."
-[ -d "./ai-docs/features/$FEATURE/contracts" ] && echo "Loading API contracts..."
-[ -f "./ai-docs/features/$FEATURE/setup.md" ] && echo "Loading setup guide..."
-```
-
-If exists:
-- `data-model.md` → Extract entities, map to user stories
-- `contracts/` → Map endpoints to user stories
-- `research.md` → Extract decisions for setup tasks
-- `setup.md` → Quick start commands
+- Read `./ai-docs/features/[feature]/data-model.md` → Extract entities, map to stories
+- Read `./ai-docs/features/[feature]/contracts/` → Map endpoints to stories
+- Read `./ai-docs/features/[feature]/research.md` → Extract decisions for setup
+- Read `./ai-docs/features/[feature]/setup.md` → Quick start commands
 
 ## Phase 2: Execute Task Generation
 
