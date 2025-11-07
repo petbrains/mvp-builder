@@ -26,17 +26,17 @@ Defines implementation tasks using TDD cycles for each user story.
 
 ## Test Case Mapping
 **Derives test cases from feature artifacts:**
-- Acceptance scenarios from spec.md → Create integration tests
-- Functional requirements (FR-*) → Create unit/contract tests  
-- UX requirements (UX-*) → Create UI/E2E tests
-- Edge cases from spec.md → Create boundary tests
-- Error states from ux.md → Create error handling tests
-- Data models from data-model.md → Create model validation tests
-- API contracts from contracts/ → Create contract tests
-- State transitions from data-model.md → Create state machine tests
-- Validation rules from data-model.md → Create validation tests
-- Message contracts from contracts.md → Create integration tests
-- Setup requirements → Create environment tests
+- Acceptance scenarios from spec.md → Integration tests
+- Functional requirements (FR-*) → Unit/Contract tests  
+- UX requirements (UX-*) → UI/E2E tests
+- Edge cases from spec.md → Boundary tests
+- Error states from ux.md → Error handling tests
+- Data models from data-model.md → Model validation tests
+- API contracts from contracts/ → Contract tests
+- State transitions from data-model.md → State machine tests
+- Validation rules from data-model.md → Validation tests
+- Message contracts from contracts.md → Integration tests
+- Setup requirements → Environment tests
 
 ## MODEL INSTRUCTION
 **Task examples below are templates. Generate project-specific tasks based on feature artifacts.**
