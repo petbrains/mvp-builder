@@ -39,77 +39,101 @@ For Task Generation:
 
 # Task
 
-Transform feature design artifacts into executable, priority-ordered task list.
-Each user story becomes an independently implementable phase with clear test criteria.
-Tasks must be specific enough for LLM execution without additional context.
+Transform feature design artifacts into executable, TDD-structured task list.
+Generate tasks organized by user story priority with RED-GREEN cycles for test-driven development.
+Each user story becomes independently implementable phase with clear test criteria and coverage mapping.
 
 # Rules
 
 ## Task Format Rules
 
-**Checklist Format (REQUIRED)**
+**Task ID Format (REQUIRED)**
 
-Every task MUST strictly follow this format:
+Every task MUST use prefix-number format:
 ```text
-- [ ] [TaskID] [P?] [Story?] Description with file path
+- [ ] PREFIX-### [Story?] Description with file path
 ```
+
+**Prefix System:**
+- **TEST-**: Test tasks (RED phase of TDD cycle)
+- **IMPL-**: Implementation tasks (GREEN phase or infrastructure)
 
 **Format Components:**
 1. **Checkbox**: ALWAYS start with `- [ ]` (markdown checkbox)
-2. **Task ID**: Sequential number (T001, T002, T003...) in execution order
-3. **[P] marker**: Include ONLY if task is parallelizable (different files, no dependencies)
-4. **[Story] label**: REQUIRED for user story phase tasks only
-   - Format: [US1], [US2], [US3], etc. (maps to user stories from spec.md)
-   - Setup/Foundational/Polish phases: NO story label
-5. **Description**: Clear action with exact file path
+2. **Prefix-ID**: TEST-001 or IMPL-001 (sequential within prefix)
+3. **[Story] label**: REQUIRED for user story tasks only
+   - Format: [US1], [US2], [US3] (maps to user stories from spec.md)
+   - Core Infrastructure phase: NO story label
+4. **Description**: Clear action with exact file path
 
 **Valid Examples:**
-- ✅ `- [ ] T001 Create project structure per implementation plan`
-- ✅ `- [ ] T005 [P] Implement authentication middleware in src/middleware/auth.py`
-- ✅ `- [ ] T012 [P] [US1] Create User model in src/models/user.py`
+- ✅ `- [ ] IMPL-001 Create project structure per plan.md`
+- ✅ `- [ ] TEST-001 [US1] Test user registration validation in tests/user/registration.test.py`
+- ✅ `- [ ] IMPL-012 [US1] Create User model in src/models/user.py`
 
 **Invalid Examples:**
+- ❌ `- [ ] T001 [US1] Create model` (wrong prefix format)
 - ❌ `- [ ] Create User model` (missing ID and Story label)
-- ❌ `T001 [US1] Create model` (missing checkbox)
-- ❌ `- [ ] [US1] Create User model` (missing Task ID)
+- ❌ `TEST-001 [US1] Test validation` (missing checkbox)
 
 ## Task Organization Rules
 
 **From User Stories (spec.md) - PRIMARY:**
-- Each user story (P1, P2, P3...) gets its own phase
-- Map all related components to their story:
-  - Models needed for that story
-  - Services needed for that story
-  - Endpoints/UI needed for that story
-  - Tests specific to that story (if requested)
-- Mark story dependencies (most should be independent)
+- Each user story (P1, P2, P3...) becomes a phase with TDD cycles
+- Organize story tasks into TDD Cycles:
+  - Group related requirements into logical cycles
+  - Each cycle covers specific component/feature
+  - RED phase (tests) → GREEN phase (implementation)
+
+**TDD Cycle Structure:**
+Each cycle within a user story must have:
+1. **Coverage section**: Lists what this cycle implements
+   - Requirements: [FR-XXX, UX-XXX] from spec.md
+   - Data entities: from data-model.md
+   - Contracts: from openapi.yaml or contracts.md
+   - States: from data-model.md if applicable
+2. **RED Phase**: TEST- prefixed tasks
+3. **GREEN Phase**: IMPL- prefixed tasks
 
 **From Contracts:**
 - Map each contract/endpoint → to the user story it serves
-- If tests requested: Each contract → contract test task [P] before implementation
+- Each contract → contract test task in RED phase before implementation
 
 **From Data Model:**
 - Map each entity to user story(ies) that need it
-- If entity serves multiple stories: Put in earliest story or Setup phase
+- If entity serves multiple stories: Put in earliest story or Core Infrastructure
 - Relationships → service layer tasks in appropriate story phase
 
 **From Setup/Infrastructure:**
-- Shared infrastructure → Setup phase (Phase 1)
-- Foundational/blocking tasks → Foundational phase (Phase 2)
-- Story-specific setup → within that story's phase
+- Shared infrastructure → Core Infrastructure phase (Phase 1)
+- Story-specific setup → within that story's phase as IMPL- tasks
 
 ## Phase Structure Rules
 
 **Phase Organization:**
-- **Phase 1**: Setup (project initialization)
-- **Phase 2**: Foundational (blocking prerequisites - MUST complete before user stories)
-- **Phase 3+**: User Stories in priority order (P1, P2, P3...)
-  - Within each story: Tests (if requested) → Models → Services → Endpoints → Integration
-  - Each phase should be complete, independently testable increment
-- **Final Phase**: Polish & Cross-Cutting Concerns
+- **Phase 1: Core Infrastructure** - Project setup and shared components
+  - All IMPL- tasks, no story labels
+  - Blocks all user stories
+- **Phase 2+: User Stories** - In priority order (P1 → P2 → P3)
+  - Each story organized into TDD cycles
+  - Each cycle: Coverage → RED → GREEN
+  - Each story independently testable
+  
+**Test Generation Strategy:**
+- **TDD Mode (default)**: Generate TEST- tasks (RED) followed by IMPL- tasks (GREEN)
+- **Non-TDD Mode**: Only if explicitly requested - generate only IMPL- tasks
+- Template assumes TDD; adapt based on project requirements
 
-**Test Generation:**
-- Tests are OPTIONAL - only generate if explicitly requested in specification or user requests TDD
+**Task Case Mapping (from template):**
+- Acceptance scenarios → Integration tests
+- Functional requirements (FR-*) → Unit/Contract tests
+- UX requirements (UX-*) → UI/E2E tests
+- Edge cases → Boundary tests
+- Error states → Error handling tests
+- Data models → Model validation tests
+- API contracts → Contract tests
+- State transitions → State machine tests
+- Validation rules → Validation tests
 
 # Execution Flow
 
@@ -161,54 +185,87 @@ For each user story:
 - Map API endpoints from contracts/
 - Extract UI components from ux.md patterns
 - Determine service layer needs
+- Group related requirements for TDD cycles
 
-### 2.3 Generate Task Hierarchy
-Apply `/mcp__sequential-thinking__sequentialthinking` for task organization:
+### 2.3 Organize TDD Cycles
+Apply `/mcp__sequential-thinking__sequentialthinking` for cycle organization:
 ```
-"Create setup tasks from infrastructure needs →
-Identify foundational blocking tasks →
-Group tasks by user story →
-Optimize for parallelization →
-Generate dependency graph"
+"For each user story:
+Group related requirements into logical cycles →
+Define Coverage for each cycle (FR-*, UX-*, entities, contracts) →
+Generate RED phase tests from requirements →
+Generate GREEN phase implementation tasks →
+Validate cycle completeness"
 ```
 
-### 2.4 Validate Task Completeness
+**TDD Cycle Generation:**
+For each user story phase:
+1. Create logical component groupings (e.g., model cycle, API cycle, UI cycle)
+2. For each cycle, generate:
+   - Coverage section listing requirements being addressed
+   - RED phase: TEST- tasks for requirements
+   - GREEN phase: IMPL- tasks to pass tests
+
+### 2.4 Generate Task Hierarchy
+- Core Infrastructure: IMPL-001 to IMPL-011 (no story labels)
+- User Story phases: TDD cycles with TEST- and IMPL- tasks
+- Maintain sequential numbering within each prefix
+
+### 2.5 Validate Task Completeness
 Check:
-- Each user story has all needed tasks
-- Each story is independently testable
-- No orphaned tasks without story assignment
+- Each user story has TDD cycles covering all requirements
+- Each cycle has both RED and GREEN phases
 - All requirements from spec.md covered
+- Test Case Mapping properly applied
 
 ## Phase 3: Generate tasks.md
 
 ### 3.1 Load Template
 - Read `@.claude/templates/tasks-template.md`
 - Extract required sections and structure
+- Note: Review Checklist is for validation only, NOT for output
 
 ### 3.2 Fill Template Sections
-Generate content for each section:
-- Feature name from plan.md
-- Phase 1: Setup tasks
-- Phase 2: Foundational tasks
-- Phase 3+: User story phases (priority order)
-- Final Phase: Polish tasks
-- Dependencies section
-- Parallel execution examples
-- Implementation strategy
+
+**Generate Core Infrastructure (Phase 1):**
+- IMPL-001 to IMPL-011 based on project needs
+- No story labels for infrastructure tasks
+- Adapt to project architecture from plan.md
+
+**Generate User Story Phases (Phase 2+):**
+For each user story (in priority order):
+1. Create phase header with story title and priority
+2. Generate TDD cycles within story:
+   - Each cycle targets specific component/feature
+   - Fill Coverage section (requirements, entities, contracts)
+   - Generate RED phase (TEST- tasks)
+   - Generate GREEN phase (IMPL- tasks)
+3. Maintain sequential numbering across all tasks
+
+**Template Section Mapping:**
+- Feature name → from plan.md
+- Path conventions → from plan.md "Feature Code Organization"
+- Test Case Mapping → apply to generate appropriate test types
+- Core Infrastructure → adapt IMPL-001 to IMPL-011 to project
+- User Stories → generate TDD cycles based on requirements
 
 ### 3.3 Format Validation
 Ensure ALL tasks follow format:
-- Checkbox present
-- Task ID sequential
-- [P] marker where applicable
-- [Story] label for story tasks
+- Checkbox present (- [ ])
+- Prefix-ID format (TEST-001, IMPL-012)
+- [Story] label for story tasks only
 - File paths included
+- Coverage sections complete
 
 ### 3.4 Write Output
 ```bash
-# Save generated tasks.md
+# Save generated tasks.md WITHOUT Review Checklist
 echo "Writing tasks.md to ./ai-docs/features/$FEATURE/tasks.md"
 ```
+
+**Important:** Exclude "Review Checklist" section from final output
+- Review Checklist is for internal validation only
+- Final tasks.md ends with "Notes" section
 
 Write to: `./ai-docs/features/[feature]/tasks.md`
 
@@ -217,12 +274,21 @@ Write to: `./ai-docs/features/[feature]/tasks.md`
 ### 4.1 Final Validation
 Apply `/mcp__sequential-thinking__sequentialthinking` for completeness check:
 ```
-"Verify all user stories covered →
-Check task format compliance →
-Validate dependency ordering →
-Confirm parallel opportunities →
-Assess MVP scope"
+"Verify all user stories have TDD cycles →
+Check RED-GREEN phase completeness →
+Validate Coverage sections filled →
+Confirm task format compliance →
+Verify Review Checklist criteria (without including in output)"
 ```
+
+**Validation using template's Review Checklist (internal only):**
+- All user stories have TDD cycles
+- All requirements covered (FR-*, UX-*)
+- Data models implemented
+- API contracts implemented
+- Each cycle has RED and GREEN phases
+- Task IDs use correct prefixes
+- File paths specified
 
 ### 4.2 Generate Summary Report
 ```
@@ -232,16 +298,25 @@ Feature: [feature-name]
 Location: ./ai-docs/features/[feature]/tasks.md
 
 Summary:
-- Total tasks: [count]
-- User stories: [count]
-- Tasks per story:
-  - [US1]: [count] tasks
-  - [US2]: [count] tasks
-- Parallel opportunities: [count]
-- MVP scope: [US1, US2...]
+- Core Infrastructure: [count] IMPL tasks
+- User Stories: [count] stories
+  
+Per Story Breakdown:
+- [US1 - Title]: 
+  - TDD Cycles: [count]
+  - TEST tasks: [count]
+  - IMPL tasks: [count]
+- [US2 - Title]:
+  - TDD Cycles: [count]
+  - TEST tasks: [count]
+  - IMPL tasks: [count]
 
-Format validation: ✅ All tasks follow checklist format
-Story coverage: ✅ All user stories have complete task sets
+Total Tasks: [total count]
+- TEST tasks: [total]
+- IMPL tasks: [total]
+
+TDD Coverage: ✅ All requirements have test coverage
+Format validation: ✅ All tasks follow PREFIX-### format
 ```
 
 # Error Handling
@@ -250,18 +325,27 @@ Story coverage: ✅ All user stories have complete task sets
 - **Missing required files**: "Error: [file] not found. Run [command] first."
 - **No user stories**: "Error: No user stories found in spec.md"
 - **Invalid priority**: "Warning: User story without priority designation"
+- **Template not found**: "Error: tasks-template.md not found at specified path"
 
-## Generation Errors
-- **Incomplete coverage**: "Warning: Requirement [FR-XXX] not mapped to any task"
-- **Orphaned tasks**: "Error: Task [ID] not assigned to any phase"
-- **Format violations**: "Error: Task [ID] does not follow required format"
+## TDD Generation Errors
+- **Missing coverage**: "Error: TDD Cycle [N] in [US1] missing Coverage section"
+- **No RED phase**: "Error: TDD Cycle [N] missing RED phase (TEST- tasks)"
+- **No GREEN phase**: "Error: TDD Cycle [N] missing GREEN phase (IMPL- tasks)"
+- **Orphaned tests**: "Error: TEST-[ID] not part of any TDD cycle"
 
-## Dependency Errors
-- **Circular dependency**: "Error: Circular dependency detected between [US1] and [US2]"
-- **Missing prerequisite**: "Error: Story [US2] requires [component] from incomplete story"
-- **Invalid parallelization**: "Warning: Task [ID] marked [P] but has dependencies"
+## Task Format Errors
+- **Wrong prefix**: "Error: Task [ID] using invalid prefix. Use TEST- or IMPL-"
+- **Missing story label**: "Error: Task [ID] in user story phase missing [US#] label"
+- **Invalid numbering**: "Error: Task numbering not sequential within prefix"
+- **Missing file paths**: "Error: [count] tasks missing file paths"
+
+## Coverage Errors
+- **Incomplete requirements**: "Warning: Requirement [FR-XXX] not mapped to any TDD cycle"
+- **Unmapped entities**: "Warning: Entity [name] from data-model.md not covered"
+- **Missing contracts**: "Warning: API endpoint [path] not tested"
+- **Story mismatch**: "Error: Story label [US] not found in spec.md"
 
 ## Validation Errors
-- **Untestable story**: "Warning: User story [US] has no test criteria"
-- **Missing file paths**: "Error: [count] tasks missing file paths"
-- **Story mismatch**: "Error: Story label [US] not found in spec.md"
+- **Review Checklist included**: "Error: Review Checklist must not be in final output"
+- **Cycle incomplete**: "Warning: TDD Cycle has tests but no implementation"
+- **Test mapping invalid**: "Error: Test type doesn't match Test Case Mapping rules"
