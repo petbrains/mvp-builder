@@ -145,10 +145,8 @@ Within each story: RED → GREEN cycles
 ---
 
 ## Review Checklist
-*GATE: Structure validation*
-
-### MODEL INSTRUCTION
-**Remove this checklist from generated tasks.md**
+*GATE: Automated checks*
+** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final tasks.md output.**
 
 ### Completeness
 - [ ] All user stories have TDD cycles
