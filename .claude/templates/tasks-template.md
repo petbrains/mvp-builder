@@ -1,7 +1,7 @@
 # Tasks: [FEATURE_NAME]
 
 ## Purpose
-Defines implementation tasks using TDD cycles for each user story.
+Template for generating implementation tasks using TDD cycles for each user story.
 
 ## Task Format
 - **ID**: Prefix-Number format (TEST-001, IMPL-002...)
@@ -22,7 +22,7 @@ Defines implementation tasks using TDD cycles for each user story.
 - If not specified, use project's standard conventions
 
 ## Test Case Mapping
-**Derives test cases from feature artifacts:**
+**Map test cases to feature artifacts:**
 - Acceptance scenarios from spec.md → Integration tests
 - Functional requirements (FR-*) → Unit/Contract tests  
 - UX requirements (UX-*) → UI/E2E tests
@@ -47,6 +47,8 @@ Defines implementation tasks using TDD cycles for each user story.
   - contracts/, contracts.md, openapi.yaml - API endpoints, message passing, events, storage schemas
   - research.md - technical decisions for infrastructure tasks
   - setup.md - environment and dependencies
+- Core infrastructure tasks (Phase 1) must be generated before user story tasks
+- Generate only infrastructure tasks applicable to project architecture
 - Organize tasks by TDD cycles within each user story
 - Each cycle follows: RED → GREEN phases
 - Map test cases according to Test Case Mapping section
@@ -56,10 +58,6 @@ Defines implementation tasks using TDD cycles for each user story.
 - Each user story must have at least RED and GREEN phases
 
 ## Phase 1: Core Infrastructure
-
-**Required before user stories begin**
-**Generate only applicable infrastructure tasks based on project architecture**
-
 - [ ] IMPL-001 Create project structure per plan.md
 - [ ] IMPL-002 Initialize [language] project per setup.md dependencies
 - [ ] IMPL-003 Configure linting and formatting tools
@@ -84,7 +82,6 @@ Defines implementation tasks using TDD cycles for each user story.
 #### RED Phase
 - [ ] TEST-001 [US1] Test [requirement/behavior]
 - [ ] TEST-002 [US1] Test [edge case from spec.md]
-- [ ] TEST-003 [US1] Verify tests fail
 
 #### GREEN Phase  
 - [ ] IMPL-012 [US1] Create [entity] per data-model.md in src/[location]/[file]
@@ -96,8 +93,7 @@ Defines implementation tasks using TDD cycles for each user story.
 - Contracts: [from openapi.yaml endpoint]
 
 #### RED Phase
-- [ ] TEST-004 [US1] Test [requirement]
-- [ ] TEST-005 [US1] Verify failure
+- [ ] TEST-003 [US1] Test [requirement]
 
 #### GREEN Phase
 - [ ] IMPL-014 [US1] Implement in src/[location]/[file]
@@ -109,8 +105,7 @@ Defines implementation tasks using TDD cycles for each user story.
 - Requirements: [FR-004, UX-002]
 
 #### RED Phase
-- [ ] TEST-006 [US2] Test [requirement]
-- [ ] TEST-007 [US2] Verify failure
+- [ ] TEST-004 [US2] Test [requirement]
 
 #### GREEN Phase
 - [ ] IMPL-015 [US2] Implement in src/[location]/[file]
@@ -122,8 +117,7 @@ Defines implementation tasks using TDD cycles for each user story.
 - Requirements: [FR-005]
 
 #### RED Phase
-- [ ] TEST-008 [US3] Test [requirement]
-- [ ] TEST-009 [US3] Verify failure
+- [ ] TEST-005 [US3] Test [requirement]
 
 #### GREEN Phase
 - [ ] IMPL-016 [US3] Implement in src/[location]/[file]
@@ -131,6 +125,8 @@ Defines implementation tasks using TDD cycles for each user story.
 [Add more user story phases as needed, following same pattern]
 
 ## Execution Order
+
+**Order for agents when executing generated tasks:**
 
 1. **Phase 1**: Core Infrastructure (blocks all stories)  
 2. **Phase 2-N**: User Stories in priority order (P1 → P2 → P3)
