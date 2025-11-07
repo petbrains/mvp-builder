@@ -39,14 +39,7 @@ Template for generating implementation tasks using TDD cycles for each user stor
 **Task examples below are templates. Generate project-specific tasks based on feature artifacts.**
 
 ### Task Generation Rules
-- Generate tasks from all feature artifacts:
-  - spec.md - user stories and requirements
-  - plan.md - technical approach and structure
-  - ux.md - flows and interaction patterns
-  - data-model.md - entities and relationships
-  - contracts/, contracts.md, openapi.yaml - API endpoints, message passing, events, storage schemas
-  - research.md - technical decisions for infrastructure tasks
-  - setup.md - environment and dependencies
+- Generate tasks from all feature artifacts
 - Core infrastructure tasks (Phase 1) must be generated before user story tasks
 - Generate only infrastructure tasks applicable to project architecture
 - Organize tasks by TDD cycles within each user story
