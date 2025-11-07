@@ -206,12 +206,7 @@ Check:
 
 ## Phase 3: Generate tasks.md
 
-### 3.1 Load Template
-- Read `@.claude/templates/tasks-template.md`
-- Extract required sections and structure
-- Note: Review Checklist is for validation only, NOT for output
-
-### 3.2 Fill Template Sections
+### 3.1 Fill Template Sections
 
 **Generate Core Infrastructure (Phase 1):**
 - IMPL-001 to IMPL-011 based on project needs
@@ -235,7 +230,7 @@ For each user story (in priority order):
 - Core Infrastructure → adapt IMPL-001 to IMPL-011 to project
 - User Stories → generate TDD cycles based on requirements
 
-### 3.3 Format Validation
+### 3.2 Format Validation
 Ensure ALL tasks follow format:
 - Checkbox present (- [ ])
 - Prefix-ID format (TEST-001, IMPL-012)
@@ -243,15 +238,13 @@ Ensure ALL tasks follow format:
 - File paths included
 - Coverage sections complete
 
-### 3.4 Write Output
+### 3.3 Write Output
 ```bash
 # Save generated tasks.md WITHOUT Review Checklist
 echo "Writing tasks.md to ./ai-docs/features/$FEATURE/tasks.md"
 ```
 
-**Important:** Exclude "Review Checklist" section from final output
-- Review Checklist is for internal validation only
-- Final tasks.md ends with "Notes" section
+**Important:** Review Checklist is for internal validation only - ends at "Notes" section
 
 Write to: `./ai-docs/features/[feature]/tasks.md`
 
