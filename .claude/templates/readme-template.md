@@ -38,7 +38,7 @@ Used by: [List component names]
 
 ## Dependency Graph
 
-[Text-based graph or showing component relationships]
+[Text-based graph showing component relationships]
 
 ```
 [Component A]
@@ -58,26 +58,10 @@ Used by: [List component names]
 - Decision: [What was chosen]
 - Rationale: [Why this choice]
 - Implications: [What this enables/restricts]
-- Date: YYYY-MM-DD
 
 ## Technical Constraints
 
 - [Constraint]: [Impact on implementation]
-
-## Business Context
-
-### Problem
-[Core problem being solved - no marketing language]
-
-### Solution Approach
-[How system solves it - technical perspective]
-
-### Target Users
-[Who uses this, their primary need]
-
-## Documentation Index
-
-- [List key documentation files with descriptions]
 
 ## Quick Start
 
