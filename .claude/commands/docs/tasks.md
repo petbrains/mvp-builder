@@ -28,6 +28,11 @@ For Task Generation:
 **Templates:**
 - Tasks: @.claude/templates/tasks-template.md
 
+**Handling Template Instructions:**
+- MODEL INSTRUCTION blocks are for generator guidance only
+- Do not include MODEL INSTRUCTION blocks in output
+- Review Checklist is for internal validation only (output ends at "Notes" section)
+
 **Feature Context:**
 - Features list: @ai-docs/FEATURES.md
 
@@ -99,6 +104,7 @@ Each cycle within a user story must have:
    - Data entities: from data-model.md
    - Contracts: from openapi.yaml or contracts.md
    - States: from data-model.md if applicable
+   - Include only applicable fields (skip if no relevant content exists)
 2. **RED Phase**: TEST- prefixed tasks
 3. **GREEN Phase**: IMPL- prefixed tasks
 
@@ -114,6 +120,10 @@ Each cycle within a user story must have:
 **From Setup/Infrastructure:**
 - Shared infrastructure → Core Infrastructure phase (Phase 1)
 - Story-specific setup → within that story's phase as IMPL- tasks
+
+**Path Resolution Order:**
+1. First: Check plan.md "Feature Code Organization" section
+2. Fallback: Use template "Path Conventions" examples
 
 ## Phase Structure Rules
 
@@ -180,7 +190,8 @@ Validate cycle completeness"
 **TDD Cycle Generation:**
 For each user story phase:
 1. Identify component boundaries (model, API, UI, validation)
-2. For each component, generate:
+2. Group requirements by component as shown in template examples
+3. For each component, generate:
    - Coverage section listing requirements being addressed
    - RED phase: TEST- tasks testing the requirements
    - GREEN phase: IMPL- tasks implementing functionality
@@ -204,9 +215,11 @@ Check:
 **Generate Core Infrastructure (Phase 1):**
 - Start numbering with IMPL-001
 - Adapt infrastructure task content from template Phase 1 examples
+- Include only tasks applicable to project architecture
+- Skip tasks not relevant to project (e.g., auth if not needed)
+- Continue sequential numbering even if tasks skipped (e.g., IMPL-001, IMPL-002, IMPL-004)
 - No story labels for infrastructure tasks
 - Adjust tasks to project architecture from plan.md
-- Continue sequential numbering (IMPL-001, IMPL-002, etc.)
 
 **Generate User Story Phases (Phase 2+):**
 For each user story (in priority order):
