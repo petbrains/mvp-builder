@@ -54,14 +54,15 @@ Each user story becomes independently implementable phase with clear test criter
 
 **Task ID Format (REQUIRED)**
 
-Every task MUST use prefix-number format:
+Every task MUST use prefix-number format from template "Task Format" section:
 ```text
 - [ ] PREFIX-### [Story?] Description with file path
 ```
 
 **Prefix System:**
-- **TEST-**: Test tasks (RED phase of TDD cycle)
-- **IMPL-**: Implementation tasks (GREEN phase or infrastructure)
+Use prefixes from template "Task Prefixes" section:
+- **TEST-**: For RED phase of TDD cycle
+- **IMPL-**: For GREEN phase or infrastructure tasks
 
 **Format Components:**
 1. **Checkbox**: ALWAYS start with `- [ ]` (markdown checkbox)
@@ -129,16 +130,9 @@ Each cycle within a user story must have:
 - **Non-TDD Mode**: Only if explicitly requested - generate only IMPL- tasks
 - Template assumes TDD; adapt based on project requirements
 
-**Task Case Mapping (from template):**
-- Acceptance scenarios → Integration tests
-- Functional requirements (FR-*) → Unit/Contract tests
-- UX requirements (UX-*) → UI/E2E tests
-- Edge cases → Boundary tests
-- Error states → Error handling tests
-- Data models → Model validation tests
-- API contracts → Contract tests
-- State transitions → State machine tests
-- Validation rules → Validation tests
+**Test Case Mapping:**
+Apply the Test Case Mapping from template when generating TEST- tasks for each TDD cycle.
+The template defines how different requirement types map to test types.
 
 # Execution Flow
 
@@ -193,7 +187,7 @@ For each user story phase:
    - GREEN phase: IMPL- tasks implementing functionality
 
 ### 2.4 Generate Task Hierarchy
-- Core Infrastructure: IMPL-001 to IMPL-011 (no story labels)
+- Core Infrastructure: Adapt infrastructure tasks from template Phase 1 to project needs (sequential numbering)
 - User Story phases: TDD cycles with TEST- and IMPL- tasks
 - Maintain sequential numbering within each prefix across all phases
 
@@ -202,16 +196,17 @@ Check:
 - Each user story has TDD cycles covering all requirements
 - Each cycle has both RED and GREEN phases
 - All requirements from spec.md covered
-- Test Case Mapping properly applied
+- Test Case Mapping from template properly applied
 
 ## Phase 3: Generate tasks.md
 
 ### 3.1 Fill Template Sections
 
 **Generate Core Infrastructure (Phase 1):**
-- IMPL-001 to IMPL-011 based on project needs
+- Adapt infrastructure task examples from template Phase 1
 - No story labels for infrastructure tasks
-- Adapt to project architecture from plan.md
+- Adjust to project architecture from plan.md
+- Use sequential IMPL- numbering
 
 **Generate User Story Phases (Phase 2+):**
 For each user story (in priority order):
@@ -226,9 +221,9 @@ For each user story (in priority order):
 
 **Template Section Mapping:**
 - Feature name → from plan.md
-- Path conventions → from plan.md "Feature Code Organization"
-- Test Case Mapping → apply to generate appropriate test types
-- Core Infrastructure → adapt IMPL-001 to IMPL-011 to project
+- Path conventions → use template "Path Conventions" section
+- Test Case Mapping → apply from template when generating tests
+- Core Infrastructure → adapt template Phase 1 examples to project
 - User Stories → generate TDD cycles based on requirements
 
 ### 3.2 Format Validation
@@ -245,7 +240,7 @@ Ensure ALL tasks follow format:
 echo "Writing tasks.md to ./ai-docs/features/$FEATURE/tasks.md"
 ```
 
-**Important:** Review Checklist is for internal validation only - ends at "Notes" section
+**Important:** Review Checklist from template is for internal validation only - output ends at "Notes" section
 
 Write to: `./ai-docs/features/[feature]/tasks.md`
 
