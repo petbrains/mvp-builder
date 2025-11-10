@@ -177,19 +177,11 @@ For each user story:
 Apply `/mcp__sequential-thinking__sequentialthinking` for cycle organization:
 ```
 "For each user story:
-- Group requirements by their target component:
-  - Same data model → one cycle
-  - Same API endpoint → one cycle  
-  - Same UI component → one cycle
-  - Same validation rule set → one cycle
-- Name each cycle by its primary component (e.g., "User Model", "Registration Endpoint", "Login Form")
-- Define Coverage for each cycle:
-  - Requirements being addressed (FR-*, UX-*)
-  - Data entities if used
-  - Contracts if tested
-  - States only if state machine exists
-- Generate RED phase: TEST- tasks from requirements
-- Generate GREEN phase: IMPL- tasks to pass tests"
+Group related requirements into logical cycles →
+Define Coverage for each cycle (FR-*, UX-*, entities, contracts) →
+Generate RED phase tests from requirements →
+Generate GREEN phase implementation tasks →
+Validate cycle completeness"
 ```
 
 **TDD Cycle Generation:**
