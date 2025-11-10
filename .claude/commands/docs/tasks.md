@@ -86,7 +86,7 @@ Every task MUST use prefix-number format:
 **From User Stories (spec.md) - PRIMARY:**
 - Each user story (P1, P2, P3...) becomes a phase with TDD cycles
 - Organize story tasks into TDD Cycles:
-  - Group related requirements into logical cycles
+  - Group requirements by their target (same model, same endpoint, same UI component)
   - Each cycle covers specific component/feature
   - RED phase (tests) → GREEN phase (implementation)
 
@@ -177,25 +177,33 @@ For each user story:
 Apply `/mcp__sequential-thinking__sequentialthinking` for cycle organization:
 ```
 "For each user story:
-Group related requirements into logical cycles →
-Define Coverage for each cycle (FR-*, UX-*, entities, contracts) →
-Generate RED phase tests from requirements →
-Generate GREEN phase implementation tasks →
-Validate cycle completeness"
+- Group requirements by their target component:
+  - Same data model → one cycle
+  - Same API endpoint → one cycle  
+  - Same UI component → one cycle
+  - Same validation rule set → one cycle
+- Name each cycle by its primary component (e.g., "User Model", "Registration Endpoint", "Login Form")
+- Define Coverage for each cycle:
+  - Requirements being addressed (FR-*, UX-*)
+  - Data entities if used
+  - Contracts if tested
+  - States only if state machine exists
+- Generate RED phase: TEST- tasks from requirements
+- Generate GREEN phase: IMPL- tasks to pass tests"
 ```
 
 **TDD Cycle Generation:**
 For each user story phase:
-1. Create logical component groupings (e.g., model cycle, API cycle, UI cycle)
-2. For each cycle, generate:
+1. Identify component boundaries (model, API, UI, validation)
+2. For each component, generate:
    - Coverage section listing requirements being addressed
-   - RED phase: TEST- tasks for requirements
-   - GREEN phase: IMPL- tasks to pass tests
+   - RED phase: TEST- tasks testing the requirements
+   - GREEN phase: IMPL- tasks implementing functionality
 
 ### 2.4 Generate Task Hierarchy
 - Core Infrastructure: IMPL-001 to IMPL-011 (no story labels)
 - User Story phases: TDD cycles with TEST- and IMPL- tasks
-- Maintain sequential numbering within each prefix
+- Maintain sequential numbering within each prefix across all phases
 
 ### 2.5 Validate Task Completeness
 Check:
@@ -218,6 +226,7 @@ For each user story (in priority order):
 1. Create phase header with story title and priority
 2. Generate TDD cycles within story:
    - Each cycle targets specific component/feature
+   - Name each cycle by its component
    - Fill Coverage section (requirements, entities, contracts)
    - Generate RED phase (TEST- tasks)
    - Generate GREEN phase (IMPL- tasks)
