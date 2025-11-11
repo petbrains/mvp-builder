@@ -190,6 +190,8 @@ For each user story:
 - Map API endpoints from contracts/
 - Identify which API endpoints can be reused vs need new implementation
 - Extract UI components from ux.md patterns
+- Extract all accessibility requirements from ux.md Accessibility Standards section
+- Map each error type from ux.md Error Presentation to specific error handling components
 - Determine service layer needs
 - Note shared components that should be referenced, not duplicated
 - Group related requirements for TDD cycles
@@ -212,6 +214,7 @@ For each user story phase:
 3. For each component, generate:
    - Coverage section listing requirements being addressed
    - RED phase: TEST- tasks testing the requirements
+     - Generate separate test for each error type defined in ux.md Error Presentation section
      - If component exists in dependency: generate integration tests, not unit tests
    - GREEN phase: IMPL- tasks implementing functionality
      - If entity exists in dependency: skip model creation tasks, generate only integration tests for new relationships
@@ -227,6 +230,8 @@ Check:
 - Each cycle has both RED and GREEN phases
 - All requirements from spec.md covered
 - Test Case Mapping from template properly applied
+- All platform-specific patterns from ux.md have corresponding tests
+- All accessibility standards from ux.md have validation tests
 
 ## Phase 3: Generate tasks.md
 
@@ -237,7 +242,8 @@ Check:
 **Generate Core Infrastructure (Phase 1):**
 - Start numbering with IMPL-001
 - Generate project-specific tasks following Phase 1 structure from template
-- Include only tasks applicable to project tech stack and architecture
+- Generate infrastructure tasks using exact dependencies and versions from setup.md
+- Use setup.md commands as test execution references in task descriptions
 - Skip tasks not relevant to project (e.g., auth if not needed)
 - No story labels for infrastructure tasks
 
