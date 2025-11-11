@@ -77,6 +77,11 @@ Use prefixes from template "Task Prefixes" section:
    - Core Infrastructure phase: NO story labels
 4. **Description**: Clear action with exact file path
 
+**File path guidelines:**
+- Include full relative path from project root
+- Follow platform conventions specified in plan.md
+- Use project's established test structure (don't assume tests/ directory)
+
 **Valid Examples:**
 - ✅ `- [ ] IMPL-001 Create project structure per plan.md`
 - ✅ `- [ ] TEST-001 [US1] Test user registration validation in tests/user/registration.test.py`
