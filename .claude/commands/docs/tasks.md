@@ -154,7 +154,7 @@ The template defines how different requirement types map to test types.
 - Read `./ai-docs/features/[feature]/data-model.md` → Extract entities, map to stories
 - Read `./ai-docs/features/[feature]/contracts/` → Map endpoints to stories
 - Read `./ai-docs/features/[feature]/research.md` → Extract decisions for setup
-- Read `./ai-docs/features/[feature]/setup.md` → Quick start commands
+- Read `./ai-docs/features/[feature]/setup.md` → Extract dependencies
 
 ### 1.2 Check Feature Dependencies
 - Read `./ai-docs/FEATURES.md` → Extract current feature's dependencies
@@ -237,7 +237,7 @@ Check:
 
 ### 3.0 Core Generation Principle
 **Extract and use EXACT values from source documents:**
-- Package names and versions from setup.md
+- Package names from setup.md
 - Constant names and values from data-model.md
 - Error type names from ux.md
 - State names from data-model.md
@@ -251,8 +251,7 @@ Never use placeholder values or generic descriptions.
 **Generate Core Infrastructure (Phase 1):**
 - Start numbering with IMPL-001
 - Generate project-specific tasks following Phase 1 structure from template
-- Generate infrastructure tasks using exact dependencies and versions from setup.md
-- Use setup.md commands as test execution references in task descriptions
+- Generate infrastructure tasks using exact dependencies from setup.md
 - Skip tasks not relevant to project (e.g., auth if not needed)
 - No story labels for infrastructure tasks
 
