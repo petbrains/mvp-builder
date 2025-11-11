@@ -16,8 +16,14 @@ Load these documents when starting work:
 - One screen = one primary action
 - Document Non-Goals explicitly in PRD
 
+### TDD Workflow
+- RED → GREEN cycles when tasks.md exists
+- Complete tests before implementation
+- No stub tests or always-passing mocks
+
 ### Specifications First
 - No spec → no task
+- Generate tasks.md from spec/ux/plan before implementation
 - Lock contracts in @ai-docs/features/[name]/contracts/
 - Use Given/When/Then for acceptance criteria
 - ADR for irreversible architectural decisions
@@ -92,6 +98,7 @@ ai-docs/
 │       ├── spec.md        # Requirements
 │       ├── ux.md          # UX schemas
 │       ├── plan.md        # Implementation strategy
+│       ├── tasks.md       # TDD execution tasks
 │       ├── research.md    # Technical research and decisions
 │       ├── data-model.md  # Entities
 │       ├── setup.md       # Environment setup and configuration
@@ -121,3 +128,4 @@ After completing work: add AICODE-NOTE for complex logic
 - Long-lived branches
 - Big PRs, dump commits
 - Hardcoded absolute paths
+- Implementing features without following TDD sequence
