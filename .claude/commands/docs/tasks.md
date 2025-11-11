@@ -69,9 +69,13 @@ Use prefixes from template "Task Prefixes" section:
 - **TEST-**: For RED phase of TDD cycle
 - **IMPL-**: For GREEN phase or infrastructure tasks
 
+**Numbering:**
+- TEST- tasks numbered continuously across all phases (TEST-001, TEST-002...)
+- IMPL- tasks numbered continuously but separately (IMPL-001, IMPL-002...)
+
 **Format Components:**
 1. **Checkbox**: ALWAYS start with `- [ ]` (markdown checkbox)
-2. **Prefix-ID**: Continuous numbering across all phases (e.g., TEST-001...005, then IMPL-001 for infrastructure, IMPL-012... for stories)
+2. **Prefix-ID**: Continuous numbering as described above
 3. **[Story] label**: REQUIRED for user story tasks only
    - Format: [US1], [US2], [US3] (maps to user stories from spec.md)
    - Core Infrastructure phase: NO story label
@@ -93,7 +97,7 @@ Use prefixes from template "Task Prefixes" section:
 **From User Stories (spec.md) - PRIMARY:**
 - Each user story (P1, P2, P3...) becomes a phase with TDD cycles
 - Organize story tasks into TDD Cycles:
-  - Group requirements by their target (same model, same endpoint, same UI component)
+  - Group requirements by their target component (same model, same endpoint, same UI component)
   - Each cycle covers specific component/feature
   - RED phase (tests) → GREEN phase (implementation)
 
@@ -122,7 +126,7 @@ Each cycle within a user story must have:
 - Story-specific setup → within that story's phase as IMPL- tasks
 
 **Path Resolution Order:**
-1. First: Check plan.md "Feature Code Organization" section
+1. First: Check plan.md "Feature Code Organization" section for selected structure (A/B/C/D)
 2. Fallback: Use template "Path Conventions" examples
 
 ## Phase Structure Rules
@@ -156,6 +160,21 @@ The template defines how different requirement types map to test types.
 - Read `./ai-docs/features/[feature]/research.md` → Extract decisions for setup
 - Read `./ai-docs/features/[feature]/setup.md` → Quick start commands
 
+### 1.2 Check Feature Dependencies
+- Read `./ai-docs/FEATURES.md` → Extract current feature's dependencies
+- If "Depends on:" folders listed for current feature:
+  - For each dependency folder that exists in `./ai-docs/features/`:
+    - Read dependency's plan.md → Extract component names, API endpoints
+    - Read dependency's data-model.md → Note shared entities
+    - Generate brief context summary:
+      ```
+      Dependency Context from [dependency-name]:
+      - Existing components: [list key components]
+      - Shared entities: [list if any]
+      - API endpoints: [list if relevant]
+      ```
+  - Keep this context in memory for task generation
+
 ## Phase 2: Execute Task Generation
 
 ### 2.1 Analyze User Stories
@@ -171,16 +190,19 @@ Generate implementation order"
 ### 2.2 Map Components to Stories
 For each user story:
 - Identify required entities from data-model.md
+- Check if required entities already exist in dependency features
 - Map API endpoints from contracts/
+- Identify which API endpoints can be reused vs need new implementation
 - Extract UI components from ux.md patterns
 - Determine service layer needs
+- Note shared components that should be referenced, not duplicated
 - Group related requirements for TDD cycles
 
 ### 2.3 Organize TDD Cycles
 Apply `/mcp__sequential-thinking__sequentialthinking` for cycle organization:
 ```
 "For each user story:
-Group related requirements into logical cycles →
+Group related requirements into logical cycles by target component →
 Define Coverage for each cycle (FR-*, UX-*, entities, contracts) →
 Generate RED phase tests from requirements →
 Generate GREEN phase implementation tasks →
@@ -194,11 +216,13 @@ For each user story phase:
 3. For each component, generate:
    - Coverage section listing requirements being addressed
    - RED phase: TEST- tasks testing the requirements
+     - If component exists in dependency: generate integration tests, not unit tests
    - GREEN phase: IMPL- tasks implementing functionality
+     - If entity exists in dependency: skip model creation, test only new relationships
 
 ### 2.4 Generate Task Hierarchy
-- Core Infrastructure: Start with IMPL-001, adapt task content from template Phase 1 to project needs
-- User Story phases: Continue numbering with TEST- tasks first, then IMPL- tasks (e.g., IMPL-012...)
+- Core Infrastructure: Start with IMPL-001, adapt task content from template Phase 1 to project architecture from plan.md
+- User Story phases: Continue numbering with TEST- tasks first, then IMPL- tasks
 - Maintain continuous numbering across all phases
 
 ### 2.5 Validate Task Completeness
@@ -214,12 +238,11 @@ Check:
 
 **Generate Core Infrastructure (Phase 1):**
 - Start numbering with IMPL-001
-- Adapt infrastructure task content from template Phase 1 examples
-- Include only tasks applicable to project architecture
+- Adapt infrastructure task content from template Phase 1 examples to project architecture from plan.md
+- Include only tasks applicable to project tech stack and architecture
 - Skip tasks not relevant to project (e.g., auth if not needed)
 - Continue sequential numbering even if tasks skipped (e.g., IMPL-001, IMPL-002, IMPL-004)
 - No story labels for infrastructure tasks
-- Adjust tasks to project architecture from plan.md
 
 **Generate User Story Phases (Phase 2+):**
 For each user story (in priority order):
@@ -228,9 +251,10 @@ For each user story (in priority order):
    - Each cycle targets specific component/feature
    - Name each cycle by its component
    - Fill Coverage section (requirements, entities, contracts)
+   - Include only applicable Coverage fields
    - Generate RED phase (TEST- tasks with continuous numbering)
    - Generate GREEN phase (IMPL- tasks continuing from last IMPL number)
-3. Maintain continuous numbering across all tasks (e.g., TEST-001...005, IMPL-001...011, IMPL-012...)
+3. Maintain continuous numbering across all tasks
 
 **Template Section Mapping:**
 - Feature name → from plan.md
@@ -245,7 +269,7 @@ Ensure ALL tasks follow format:
 - Prefix-ID format (TEST-001, IMPL-012)
 - [Story] label for story tasks only
 - File paths included
-- Coverage sections complete
+- Coverage sections complete with only applicable fields
 
 ### 3.3 Write Output
 ```bash
@@ -277,6 +301,7 @@ Verify Review Checklist criteria (without including in output)"
 - Each cycle has RED and GREEN phases
 - Task IDs use correct prefixes
 - File paths specified
+- Dependencies from FEATURES.md accounted for
 
 ### 4.2 Generate Summary Report
 ```
@@ -299,6 +324,9 @@ Per Story Breakdown:
   - TEST tasks: [count]
   - IMPL tasks: [count]
 
+Dependencies Context:
+- [List any dependency features loaded]
+
 Total Tasks: [total count]
 - TEST tasks: [total]
 - IMPL tasks: [total]
@@ -315,6 +343,11 @@ Format validation: ✅ All tasks follow PREFIX-### format
 - **Invalid priority**: "Warning: User story without priority designation"
 - **Template not found**: "Error: tasks-template.md not found at specified path"
 
+## Dependency Errors
+- **Circular dependency**: "Error: Circular dependency detected between [feature1] and [feature2]"
+- **Missing dependency**: "Warning: Dependency [feature-name] not found, proceeding without context"
+- **Incomplete dependency**: "Warning: Dependency [feature-name] missing [artifact], partial context loaded"
+
 ## TDD Generation Errors
 - **Missing coverage**: "Error: TDD Cycle [N] in [US1] missing Coverage section"
 - **No RED phase**: "Error: TDD Cycle [N] missing RED phase (TEST- tasks)"
@@ -324,7 +357,7 @@ Format validation: ✅ All tasks follow PREFIX-### format
 ## Task Format Errors
 - **Wrong prefix**: "Error: Task [ID] using invalid prefix. Use TEST- or IMPL-"
 - **Missing story label**: "Error: Task [ID] in user story phase missing [US#] label"
-- **Invalid numbering**: "Error: Task numbering not continuous (e.g., TEST-001→005, IMPL-001→011, IMPL-012→...)"
+- **Invalid numbering**: "Error: Task numbering not continuous"
 - **Missing file paths**: "Error: [count] tasks missing file paths"
 
 ## Coverage Errors
