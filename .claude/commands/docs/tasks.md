@@ -235,6 +235,15 @@ Check:
 
 ## Phase 3: Generate tasks.md
 
+### 3.0 Core Generation Principle
+**Extract and use EXACT values from source documents:**
+- Package names and versions from setup.md
+- Constant names and values from data-model.md
+- Error type names from ux.md
+- State names from data-model.md
+- Component paths from plan.md
+Never use placeholder values or generic descriptions.
+
 ### 3.1 Fill Template Sections
 
 **Important:** Generate content following template structure but exclude all meta-sections (Task Format, Prefixes, Conventions, Mapping, Checklist).
