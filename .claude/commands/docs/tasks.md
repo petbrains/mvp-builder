@@ -29,9 +29,9 @@ For Task Generation:
 - Tasks: @.claude/templates/tasks-template.md
 
 **Handling Template Instructions:**
-- MODEL INSTRUCTION blocks are for generator guidance only
-- Do not include MODEL INSTRUCTION blocks in output
-- Review Checklist is for internal validation only (output ends at "Notes" section)
+- MODEL INSTRUCTION blocks are for generator guidance only - exclude from output
+- Template meta-sections (Task Format, Task Prefixes, Path Conventions, Test Case Mapping, Review Checklist) - use for guidance, don't copy to output
+- Output only: Title, Purpose, Phase sections with tasks, Execution Order, Notes
 
 **Feature Context:**
 - Features list: @ai-docs/FEATURES.md
@@ -76,11 +76,6 @@ Use prefixes from template "Task Prefixes" section:
    - Format: [US1], [US2], [US3] (maps to user stories from spec.md)
    - Core Infrastructure phase: NO story labels
 4. **Description**: Clear action with exact file path
-
-**File path guidelines:**
-- Include full relative path from project root
-- Follow platform conventions specified in plan.md
-- Use project's established test structure (don't assume tests/ directory)
 
 **Valid Examples:**
 - ✅ `- [ ] IMPL-001 Create project structure per plan.md`
@@ -236,6 +231,8 @@ Check:
 ## Phase 3: Generate tasks.md
 
 ### 3.1 Fill Template Sections
+
+**Important:** Generate content following template structure but exclude all meta-sections (Task Format, Prefixes, Conventions, Mapping, Checklist).
 
 **Generate Core Infrastructure (Phase 1):**
 - Start numbering with IMPL-001
