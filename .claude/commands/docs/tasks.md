@@ -69,16 +69,12 @@ Use prefixes from template "Task Prefixes" section:
 - **TEST-**: For RED phase of TDD cycle
 - **IMPL-**: For GREEN phase or infrastructure tasks
 
-**Numbering:**
-- TEST- tasks numbered continuously across all phases (TEST-001, TEST-002...)
-- IMPL- tasks numbered continuously but separately (IMPL-001, IMPL-002...)
-
 **Format Components:**
 1. **Checkbox**: ALWAYS start with `- [ ]` (markdown checkbox)
-2. **Prefix-ID**: Continuous numbering as described above
+2. **Prefix-ID**: Continuous numbering across all phases (e.g., TEST-001...005, then IMPL-001 for infrastructure, IMPL-012... for stories)
 3. **[Story] label**: REQUIRED for user story tasks only
    - Format: [US1], [US2], [US3] (maps to user stories from spec.md)
-   - Core Infrastructure phase: NO story label
+   - Core Infrastructure phase: NO story labels
 4. **Description**: Clear action with exact file path
 
 **Valid Examples:**
@@ -90,7 +86,7 @@ Use prefixes from template "Task Prefixes" section:
 - ❌ `- [ ] T001 [US1] Create model` (wrong prefix format)
 - ❌ `- [ ] Create User model` (missing ID and Story label)
 - ❌ `TEST-001 [US1] Test validation` (missing checkbox)
-- ❌ `- [ ] IMPL-001 [US1] Create model` (IMPL-001 reserved for infrastructure)
+- ❌ `- [ ] IMPL-001 [US1] Create model` (infrastructure IDs can't have story labels)
 
 ## Task Organization Rules
 
@@ -223,7 +219,7 @@ For each user story phase:
 ### 2.4 Generate Task Hierarchy
 - Core Infrastructure: Start with IMPL-001, adapt task content from template Phase 1 to project architecture from plan.md
 - User Story phases: Continue numbering with TEST- tasks first, then IMPL- tasks
-- Maintain continuous numbering across all phases
+- Maintain continuous numbering as shown in template examples
 
 ### 2.5 Validate Task Completeness
 Check:
@@ -241,7 +237,6 @@ Check:
 - Adapt infrastructure task content from template Phase 1 examples to project architecture from plan.md
 - Include only tasks applicable to project tech stack and architecture
 - Skip tasks not relevant to project (e.g., auth if not needed)
-- Continue sequential numbering even if tasks skipped (e.g., IMPL-001, IMPL-002, IMPL-004)
 - No story labels for infrastructure tasks
 
 **Generate User Story Phases (Phase 2+):**
@@ -254,7 +249,6 @@ For each user story (in priority order):
    - Include only applicable Coverage fields
    - Generate RED phase (TEST- tasks with continuous numbering)
    - Generate GREEN phase (IMPL- tasks continuing from last IMPL number)
-3. Maintain continuous numbering across all tasks
 
 **Template Section Mapping:**
 - Feature name → from plan.md
