@@ -214,11 +214,11 @@ For each user story phase:
    - RED phase: TEST- tasks testing the requirements
      - If component exists in dependency: generate integration tests, not unit tests
    - GREEN phase: IMPL- tasks implementing functionality
-     - If entity exists in dependency: skip model creation, test only new relationships
+     - If entity exists in dependency: skip model creation tasks, generate only integration tests for new relationships
 
 ### 2.4 Generate Task Hierarchy
-- Core Infrastructure: Start with IMPL-001, adapt task content from template Phase 1 to project architecture from plan.md
-- User Story phases: Continue numbering with TEST- tasks first, then IMPL- tasks
+- Core Infrastructure: Start with IMPL-001, generate project-specific tasks following Phase 1 structure from template
+- User Story phases: TEST- tasks continue from TEST-001, IMPL- tasks continue from last IMPL- number of previous phase
 - Maintain continuous numbering as shown in template examples
 
 ### 2.5 Validate Task Completeness
@@ -236,10 +236,15 @@ Check:
 
 **Generate Core Infrastructure (Phase 1):**
 - Start numbering with IMPL-001
-- Adapt infrastructure task content from template Phase 1 examples to project architecture from plan.md
+- Generate project-specific tasks following Phase 1 structure from template
 - Include only tasks applicable to project tech stack and architecture
 - Skip tasks not relevant to project (e.g., auth if not needed)
 - No story labels for infrastructure tasks
+
+**Minimum generation requirements:**
+- Phase 1 must contain at least 5 IMPL- tasks
+- Each user story must contain at least 1 TDD cycle
+- Each TDD cycle must have at least 2 TEST- tasks and 2 IMPL- tasks
 
 **Generate User Story Phases (Phase 2+):**
 For each user story (in priority order):
@@ -256,7 +261,7 @@ For each user story (in priority order):
 - Feature name → from plan.md
 - Path conventions → use template "Path Conventions" section
 - Test Case Mapping → apply from template when generating tests
-- Core Infrastructure → adapt template Phase 1 examples to project
+- Core Infrastructure → generate project-specific tasks following Phase 1 structure from template
 - User Stories → generate TDD cycles based on requirements
 
 ### 3.2 Format Validation
