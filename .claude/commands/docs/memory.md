@@ -10,16 +10,6 @@ README.md serves as central memory bank providing agents with:
 - Component dependency graph
 - Project context
 
-## Update Triggers
-
-Update README.md when:
-- Feature implementation completes
-- Architecture decision made
-- New component added
-- Dependency relationship changes
-- Technical constraint introduced
-- User flow implemented
-
 ## README.md Structure
 
 Follow structure defined in: `.claude/templates/readme-template.md`
@@ -200,5 +190,4 @@ README.md only:
 
 ## File Location
 
-- Always: `./README.md` (project root)
-- Never: `./ai-docs/README.md` or nested locations
+- Always: `./ai-docs/README.md`
