@@ -1,0 +1,336 @@
+---
+description: Execute the implementation planning workflow.
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
+---
+
+# Instructions
+
+Generate technical implementation plan by filling plan-template.md based on validated specifications.
+Creates minimal supporting artifacts that complement (not duplicate) existing documentation.
+
+**Tools Usage:**
+- `Read`: For loading spec.md, ux.md, and existing planning documents
+- `Write`: For saving plan artifacts and research notes
+- `Bash`: For directory creation and file verification
+- `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`: For library documentation and compatibility verification
+  - See @.claude/tools/context7.md for details
+- `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions and analysis
+  - See @.claude/tools/sequential-thinking.md for details
+
+**Template:**
+- Plan: @.claude/templates/plan-template.md
+
+**Project context:**
+- PRD: @ai-docs/PRD.md
+- Features list: @ai-docs/FEATURES.md
+
+**File Structure:**
+- Input: `./ai-docs/features/[feature]/` (expects spec.md and ux.md)
+- Output: 
+  - `./ai-docs/features/[feature]/plan.md` (implementation strategy)
+  - `./ai-docs/features/[feature]/research.md` (technical research and decisions)
+  - `./ai-docs/features/[feature]/data-model.md` (entities)
+  - `./ai-docs/features/[feature]/setup.md` (environment setup and configuration)
+  - `./ai-docs/features/[feature]/contracts/` (API contracts)
+
+# Task
+
+Transform validated feature specifications into focused technical implementation plan.
+Fill plan-template.md with concrete technical decisions while generating MINIMAL supporting artifacts.
+
+# Core Principles
+
+## File Ownership
+- **research.md**: WHY decisions were made (including any necessary deviations from PRD approach)
+- **data-model.md**: ALL entities, states, validation rules, constants (timeouts, limits, enums)
+- **contracts/**: HOW components communicate (transport schemas ONLY)
+- **setup.md**: HOW TO install and run
+- **plan.md**: HOW TO organize and implement
+
+## Content Guidelines
+- Maximum 300 lines per file
+- No implementation code, only architecture
+- Reference using comments at first mention only: `// from data-model.md`
+- Remove all future scope markers and unused fields
+- Each word must add value - no boilerplate
+
+## Consistency Rules
+- Validation phrasing must match spec.md exactly
+- Derived values as formulas: `// base_timeout + increment`
+- Constants only in data-model.md
+- One code organization structure in plan.md
+- When first referencing entity/state types in each contract: add origin comment
+- Subsequent references in same contract don't need comments
+
+## Planning Coverage Rules
+- All functional requirements from spec.md must have implementation approach
+- All UX patterns from ux.md must map to technical components
+- Reference existing documentation instead of duplicating
+
+**Technical Context filling:**
+- Must align with PRD Technical Requirements section where applicable
+- If feature requires deviation from PRD stack, briefly note: "[Component]: [Choice] - [One sentence rationale]"
+- Rationale must be feature-specific, not technology-specific
+
+## API Specification Rules
+- Use OpenAPI 3.1.0+ for REST API specifications
+- Follow latest specification standards for all contract types
+- Keep contracts focused on interfaces, not implementation
+
+# Execution Flow
+
+## Phase 0: Context & Research
+
+### 0.1 Initialize Planning
+```bash
+# Validate required inputs exist
+[ ! -f "./ai-docs/features/$FEATURE/spec.md" ] && echo "Error: spec.md not found" && exit 1
+[ ! -f "./ai-docs/features/$FEATURE/ux.md" ] && echo "Error: ux.md not found" && exit 1
+```
+
+**Load ALL source files once:**
+- Read `./ai-docs/features/[feature]/spec.md` → Extract requirements, entities (note existing Key Entities section)
+- Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns
+- Read `./ai-docs/PRD.md` → Extract technical requirements and architecture
+- Read `./ai-docs/FEATURES.md` → Understand feature context and dependencies
+
+**Keep in context throughout execution**
+
+### 0.2 Execute Research & Document
+**Extract dependencies from spec.md and ux.md:**
+- Identify mentioned libraries, frameworks, packages
+- Note technology stack references  
+- Verify alignment with PRD architecture choices
+
+**Research Analysis (mandatory):**
+Apply `/mcp__sequential-thinking__sequentialthinking` with query:
+```
+"Analyze feature dependencies: [list extracted libraries] → 
+Evaluate compatibility with PRD stack → 
+Identify integration risks → 
+Select optimal versions → 
+Document critical decisions"
+```
+
+**Library Documentation (execute for each library found):**
+If no external libraries identified, skip to "Create concise research.md"
+
+For each library:
+1. Apply `/mcp__context7__resolve-library-id` with:
+   - `libraryName`: "[exact package name]"
+2. From results, select library with:
+   - Trust score ≥ 7 (prefer 9-10)
+   - Highest snippet count if multiple high-trust options
+3. Apply `/mcp__context7__get-library-docs` with:
+   - `context7CompatibleLibraryID`: "[selected /org/project ID]"
+   - `topic`: "[feature-specific functionality needed]"
+   - `tokens`: 20000
+
+**Create concise research.md:**
+```markdown
+# Research Notes - [Feature Name]
+
+## Key Decisions (essential points only, typically 3-7)
+- **[Decision]**: [What chosen] - [Brief why, 1 sentence]
+
+## Critical Risks
+- **[Risk]**: [Impact] → [Mitigation]
+
+## Stack Compatibility
+- [Verified combination]: ✓
+```
+
+NO alternatives, NO lengthy explanations, NO rejected approaches.
+NO configuration details (those go in `setup.md`).
+NO implementation details (those go in `plan.md`).
+
+**Write research artifact:**
+- Write `./ai-docs/features/[feature]/research.md`
+
+## Phase 1: Design Artifacts
+
+### 1.1 Generate Data Model
+**Analyze entities from spec.md (already in context):**
+- Extract directly from Key Entities section
+- Define field types and constraints based on requirements
+- Map relationships and cardinality
+- Identify state transitions from ux.md flows
+- Extract validation rules from spec.md requirements
+
+**Create data-model.md with technical specs:**
+```markdown
+# Data Model - [Feature Name]
+
+## Entities
+[For each entity from spec.md add:
+- Field types and constraints (required/optional, length limits)
+- System fields (unique identifier, timestamps)
+- Validation rules (word counts, format patterns)
+- Default values and computed fields]
+
+## Relationships
+[How entities connect: cardinality, ownership, lifecycle dependencies]
+
+## States
+[State transitions: triggers, conditions, timeouts]
+
+## Constants
+[All numeric values: timeouts, limits, thresholds
+- Use formulas for derived values: // BASE_TIMEOUT + INCREMENT]
+```
+
+NO code, NO SQL, NO platform-specific types.
+Abstract technical specifications that apply to any implementation.
+
+**Write data model artifact:**
+- Write `./ai-docs/features/[feature]/data-model.md`
+
+### 1.2 Generate API Contracts (if needed)
+**Create contracts based on feature interfaces:**
+
+Create `./ai-docs/features/[feature]/contracts/`:
+- Write `./ai-docs/features/[feature]/contracts/openapi.yaml` - For REST API endpoints
+- Write `./ai-docs/features/[feature]/contracts/contracts.md` - For messaging, events, WebSocket, storage schemas
+
+Feature may require BOTH files if it uses multiple interface types
+
+**Content guidelines:**
+- Message/event contracts: type names and message structure only
+- Storage contracts: reference to entity type, not field expansion
+- API contracts: field names and primitive types only, no constraints
+- First reference to entity/state types: add origin comment
+- Subsequent references in same contract: no comment needed
+- NO validation rules or constraints (those belong in data-model.md)
+- NO entity field definitions (those belong in data-model.md)
+
+**Contract type determination:**
+- External communication interfaces → formal specification required
+- Internal messaging between components → message schema documentation
+- Event-based communication → event structure documentation
+- If no external interfaces exist → skip formal specification creation
+
+### 1.3 Create Setup Guide
+**Generate setup.md:**
+```markdown
+# Setup - [Feature Name]
+
+## Install
+[Installation commands for dependencies]
+
+## Config
+[Key configuration needed for this feature]
+
+## Run
+[Commands to start development]
+
+## Test
+[Commands to run automated tests for TDD workflow]
+```
+
+Brief setup instructions only - TDD test commands, no lengthy configs.
+NO architecture explanations (those are in plan.md).
+NO justifications for dependencies (those are in research.md).
+
+**Write setup artifact:**
+- Write `./ai-docs/features/[feature]/setup.md`
+
+## Phase 2: Implementation Plan
+
+**Use already generated artifacts from context:**
+- Continue with research.md, data-model.md, setup.md, contracts/ in memory
+- No re-reading needed as content is already in context
+
+**Analyze complete context:**
+Apply `/mcp__sequential-thinking__sequentialthinking` with query:
+```
+"Synthesize planning context: 
+Sources (PRD, spec, ux, FEATURES) → 
+Research decisions from research.md → 
+Entity model from data-model.md → 
+Setup from setup.md → 
+Contracts from contracts/ → 
+Map to plan-template sections → 
+Select optimal code organization → 
+Define component architecture"
+```
+
+### Fill Template Sections
+
+**Consistency validation before writing:**
+- Cross-check validation rules against spec.md exact phrasing
+- Verify all FR-XXX requirements have implementation approach
+- Ensure all UX-XXX requirements map to components
+- Check entity naming consistency across all artifacts
+- Verify storage approach aligns with spec.md requirements
+- Ensure no constants are hardcoded (reference data-model.md)
+- Check derived values use formula comments
+
+**Purpose & Summary:**
+- 1-2 sentences max each
+- Reference research.md for details
+
+**Technical Context:**
+- Brief bullets only
+- State what is used, not why (why is in research.md)
+- Reference specific technology decisions from research.md
+- **Storage:** Specify primary storage + any secondary storage with clear use case separation
+  - Example: "PostgreSQL for entities, Redis for cache, IndexedDB for offline support"
+
+**Implementation Mapping:**
+- How requirements → components (don't repeat requirements)
+- How errors → handling (don't repeat error types)
+- Component names should reflect feature purpose
+
+**Testing Approach:**
+- Test-first development workflow
+- Unit test structure matching code organization
+- Integration test scenarios from acceptance criteria
+- NO manual test checklists
+
+**Select Feature Code Organization:**
+- Choose ONE structure (A, B, C, or D) from template
+- Remove all other structures and their "Structure X:" prefixes
+- Keep only selected structure with its rationale
+- Document brief rationale for selection
+- **Selected Structure:** [Structure letter] ([Structure name]) - [One sentence rationale specific to this feature's requirements]
+  - Rationale must reference specific requirements, not generic benefits
+
+**Implementation Notes:**
+- Document critical implementation decisions, trade-offs, or considerations
+- **Edge case handling:** Document approach for spec.md edge cases. If not all covered, note which require future iteration with rationale
+- **Scalability notes:** If feature may hit limits (data size, API rate, etc.), document threshold and mitigation strategy
+
+**Write plan.md:**
+- Write `./ai-docs/features/[feature]/plan.md`
+- Exclude Review Checklist from output
+
+## Phase 3: Validate & Report
+
+Internal validation using template's Review Checklist (mental check only):
+- Requirements coverage
+- No duplication
+- Consistency across files
+- Single code organization selected
+
+**Final output:**
+```
+Implementation Planning Complete!
+
+Feature: [feature-name]
+Generated:
+- plan.md (implementation strategy)
+- research.md (key decisions)
+- data-model.md (entities)
+- setup.md (setup commands)
+- contracts/ (if API needed)
+```
+
+# Error Handling
+
+- **Missing files**: "Error: [file] not found. Run [command] first."
+- **Size exceeded**: "Error: [file] exceeds 300 lines."
+- **Duplication detected**: "Warning: Content duplicates [source]. Reference instead."
+- **Validation mismatch**: "Error: Validation for [field] differs from spec.md requirements."
+- **Missing implementation**: "Error: [requirement] from spec.md not addressed in plan."
+- **UX pattern unmapped**: "Error: [pattern] from ux.md not mapped to components."
+- **Constant duplication**: "Error: [value] defined in multiple files. Use data-model.md as single source."

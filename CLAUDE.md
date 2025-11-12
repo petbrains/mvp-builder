@@ -6,9 +6,8 @@ Code execution rules and MVP development standards.
 
 Load these documents when starting work:
 - @ai-docs/PRD.md - product vision, audience, problem
-- @ai-docs/AGENTS.md - tech stack, architecture, conventions
 - @ai-docs/FEATURES.md - feature map, dependencies, priorities
-- @README.md - current implementation status
+- @ai-docs/README.md - current implementation status
 
 ## Development Rules
 
@@ -17,8 +16,14 @@ Load these documents when starting work:
 - One screen = one primary action
 - Document Non-Goals explicitly in PRD
 
+### TDD Workflow
+- RED → GREEN cycles when tasks.md exists
+- Complete tests before implementation
+- No stub tests or always-passing mocks
+
 ### Specifications First
 - No spec → no task
+- Generate tasks.md from spec/ux/plan before implementation
 - Lock contracts in @ai-docs/features/[name]/contracts/
 - Use Given/When/Then for acceptance criteria
 - ADR for irreversible architectural decisions
@@ -85,15 +90,18 @@ Load these documents when starting work:
 
 ```
 ai-docs/
-├── PRD.md                 # Product Requirements
+├── PRD.md                 # Product requirements
 ├── README.md              # Project overview
-├── AGENTS.md              # Architecture decisions
 ├── FEATURES.md            # Development roadmap
 ├── features/
 │   └── [feature-name]/    # Semantic names only
 │       ├── spec.md        # Requirements
-│       ├── ux.md          # UX schema
-│       ├── plan.md        # Implementation
+│       ├── ux.md          # UX schemas
+│       ├── plan.md        # Implementation strategy
+│       ├── tasks.md       # TDD execution tasks
+│       ├── research.md    # Technical research and decisions
+│       ├── data-model.md  # Entities
+│       ├── setup.md       # Environment setup and configuration
 │       └── contracts/     # API contracts
 ```
 
@@ -120,3 +128,4 @@ After completing work: add AICODE-NOTE for complex logic
 - Long-lived branches
 - Big PRs, dump commits
 - Hardcoded absolute paths
+- Implementing features without following TDD sequence
