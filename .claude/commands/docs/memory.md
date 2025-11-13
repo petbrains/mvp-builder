@@ -17,14 +17,12 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 **Required sections:**
 1. Project Name & Description (one sentence)
 2. Status (phase, sprint, last updated)
-3. Implementation Status (Completed, In Progress, Planned)
+3. Implementation Status (Completed, In Progress)
 4. Component Map (Core, Supporting, External Dependencies)
 5. Dependency Graph (component relationships)
 6. Architecture Decisions (ADR format with dates)
 7. Technical Constraints
-8. Business Context (Problem, Solution, Users)
-9. Documentation Index
-10. Quick Start (commands only)
+8. Documentation Index
 
 **Dependency Graph Extraction:**
 - Read `./ai-docs/features/FEATURES.md` for feature dependencies
@@ -43,7 +41,7 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 ### Must Not Have
 - Introduction paragraphs
 - Marketing language
-- Future aspirations (unless in Planned)
+- Future aspirations
 - Vague descriptions ("helps with", "improves")
 - Duplicate information
 - Explanatory prose
@@ -123,19 +121,6 @@ Component A
 - Document what exists now
 - Show real dependencies
 - Provide quick agent context
-
-## Session Continuity
-
-When starting new session:
-1. **Read README.md first** before any work
-2. **Validate status matches codebase** by checking mentioned files
-3. **Update if stale** before proceeding with task
-4. **Reference README.md** for component locations and dependencies
-
-When ending session:
-1. **Update README.md** with work completed
-2. **Commit status changes** to reflect reality
-3. **Note any blockers** in In Progress section
 
 ## Example Updates
 
