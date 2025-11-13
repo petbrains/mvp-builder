@@ -16,13 +16,12 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 
 **Required sections:**
 1. Project Name & Description (one sentence)
-2. Status (phase, sprint, last updated)
-3. Implementation Status (Completed, In Progress)
-4. Component Map (Core, Supporting, External Dependencies)
-5. Dependency Graph (component relationships)
-6. Architecture Decisions (ADR format with dates)
-7. Technical Constraints
-8. Documentation Index
+2. Implementation Status (Completed, In Progress)
+3. Component Map (Core, Supporting, External Dependencies)
+4. Dependency Graph (component relationships)
+5. Architecture Decisions (ADR format with dates)
+6. Technical Constraints
+7. Documentation Index
 
 **Dependency Graph Extraction:**
 - Read `./ai-docs/features/FEATURES.md` for feature dependencies
@@ -85,7 +84,6 @@ Before writing updated README.md:
 - [ ] No placeholder text ([TBD], [TODO])
 - [ ] All file paths valid and exist
 - [ ] Dependency graph has no orphans or circular dependencies
-- [ ] Status matches actual codebase
 - [ ] Architecture decisions dated
 - [ ] No duplicate information
 - [ ] Every sentence adds value
@@ -130,7 +128,6 @@ Component A
 - User Authentication: JWT-based auth with refresh tokens
   - Dependencies: Database, Redis cache
   - Location: `src/auth/`
-  - Status: ✓ Complete
 ```
 
 ### Bad Update
@@ -139,7 +136,6 @@ Component A
 - User Authentication: This feature allows users to securely log into 
   the system using their credentials. It provides a robust and scalable
   authentication solution that will help improve security.
-  - Status: Complete
 ```
 
 ### Good Component Entry
