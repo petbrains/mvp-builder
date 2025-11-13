@@ -3,7 +3,7 @@
 [One-sentence project description - what it is and primary purpose]
 
 ## Status: [Phase]
-- Phase values: `Specification` | `Development` | `Testing` | `Production`
+- Phase values: `Development` | `Testing` | `Production`
 - Current sprint/milestone if applicable
 
 ## Implementation Status
@@ -16,9 +16,6 @@
 
 ### In Progress
 - [Component/Feature]: [Current state, blocker if any]
-
-### Planned
-- [Component/Feature]: [Why needed, depends on]
 
 ## Component Map
 
@@ -50,7 +47,6 @@ Used by: [List component names]
 └── used by: [Component A, Component E]
 ```
 
-
 ## Architecture Decisions
 
 ### [Decision Title]
@@ -63,6 +59,9 @@ Used by: [List component names]
 
 - [Constraint]: [Impact on implementation]
 
-## Quick Start
+## Documentation Index
 
-[Minimal steps to run project - commands only, no explanation]
+[Links to detailed documentation]
+- API Documentation: `docs/api/`
+- Architecture Diagrams: `docs/architecture/`
+- Component Details: `docs/components/`
