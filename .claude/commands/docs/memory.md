@@ -19,7 +19,7 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 2. Codebase Overview (language, framework, entry point, structure)
 3. Implementation Status (Features: Completed, In Progress)
 4. Dependency Graph (code module relationships with file paths)
-5. Architecture Decisions (ADR format with dates)
+5. Architecture Decisions (important technical decisions)
 6. Technical Constraints
 
 **Dependency Graph Extraction:**
@@ -84,6 +84,11 @@ Before creating the first README.md:
    - Locate main entry point (e.g., `src/index.ts`, `main.py`)
    - Determine architecture pattern (Modular/Monolithic/Service-based)
 
+5. **Check recent architectural changes**
+   - Run `git diff main` or check recent commits
+   - Identify significant architectural changes
+   - Document decisions that shaped current implementation
+
 ## Update Procedure
 
 ### After Feature Completion
@@ -93,8 +98,18 @@ Before creating the first README.md:
 3. **Move feature from In Progress → Completed**
 4. **Add entry point and key modules**
 5. **Update Dependency Graph** if new code dependencies introduced
-6. **Document architecture decision** if made
+6. **Document architecture decision** if significant (see criteria below)
 7. **Write updated README.md**
+
+#### When to Document Architecture Decision
+Document only if implementation introduced:
+- Core data flow or algorithm change
+- New technology/library to the stack
+- Modified system boundaries or interfaces
+- Replacement of existing approach
+- Trade-off affecting multiple features
+
+Skip for: bug fixes, refactoring, minor optimizations
 
 ### After Architecture Change
 
@@ -117,7 +132,6 @@ Before writing updated README.md:
 - [ ] Module names match actual implementation
 - [ ] Entry points are correct and accessible
 - [ ] Dependency graph has no orphans or circular dependencies
-- [ ] Architecture decisions dated
 - [ ] No duplicate information
 - [ ] Every sentence adds value
 
