@@ -5,41 +5,25 @@
 ## Implementation Status
 
 ### Completed
-- [Component/Feature]: [One-line what it does]
-  - Dependencies: [Required components]
+- [Feature]: [One-line what it does]
+  - Dependencies: [Required features]
   - Location: [File path or folder]
 
 ### In Progress
-- [Component/Feature]: [Current state, blocker if any]
-
-## Component Map
-
-### Core Components
-**[Component Name]** (`path/to/component`)
-Purpose: [Single-line function]
-Depends on: [List component names]
-Used by: [List component names]
-
-[Repeat for each core component]
-
-### Supporting Components
-[Same structure as core]
-
-### External Dependencies
-- [Library/Service]: [Why needed, what uses it]
+- [Feature]: [Current state, blocker if any]
 
 ## Dependency Graph
 
-[Text-based graph showing component relationships]
+[Text-based graph showing code module relationships - actual implementation dependencies, not planned feature dependencies]
 
 ```
-[Component A]
-├── depends on: [Component B, Component C]
-└── used by: [Component D]
+[Module A]
+├── depends on: [Module B, Module C]
+└── used by: [Module D]
 
-[Component B]
+[Module B]
 ├── depends on: [none]
-└── used by: [Component A, Component E]
+└── used by: [Module A, Module E]
 ```
 
 ## Architecture Decisions
@@ -53,10 +37,3 @@ Used by: [List component names]
 ## Technical Constraints
 
 - [Constraint]: [Impact on implementation]
-
-## Documentation Index
-
-[Links to detailed documentation]
-- API Documentation: `docs/api/`
-- Architecture Diagrams: `docs/architecture/`
-- Component Details: `docs/components/`
