@@ -16,15 +16,17 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 
 **Required sections:**
 1. Project Name & Description (one sentence)
-2. Implementation Status (Features: Completed, In Progress)
-3. Dependency Graph (code module relationships)
-4. Architecture Decisions (ADR format)
-5. Technical Constraints
+2. Codebase Overview (language, framework, entry point, structure)
+3. Implementation Status (Features: Completed, In Progress)
+4. Dependency Graph (code module relationships with file paths)
+5. Architecture Decisions (ADR format with dates)
+6. Technical Constraints
 
 **Dependency Graph Extraction:**
 - Analyze implemented code structure
 - Identify actual module/component dependencies in codebase
 - Build graph showing "depends on" and "used by" relationships between code modules
+- Include file paths for each module (e.g., `src/auth/index.ts`)
 - Note: This is NOT the same as feature dependencies in FEATURES.md - this shows real code dependencies
 
 ## Content Rules
@@ -57,15 +59,42 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 - Maximum 2 sentences per bullet
 - Sub-bullets for details only
 
+## Initial Analysis (First README Creation)
+
+### Quick Codebase Scan
+Before creating the first README.md:
+
+1. **Identify implemented features**
+   - Check `/src` for actual code modules
+   - Map feature folders to working code
+   - Verify what actually runs vs planned
+
+2. **Extract real dependencies**
+   - Analyze import statements
+   - Identify actual module boundaries
+   - Find integration points between modules
+
+3. **Locate implementation**
+   - Map each feature to its code location
+   - Document entry points for each feature
+   - Note main files vs supporting files
+
+4. **Verify codebase structure**
+   - Identify primary language and framework versions
+   - Locate main entry point (e.g., `src/index.ts`, `main.py`)
+   - Determine architecture pattern (Modular/Monolithic/Service-based)
+
 ## Update Procedure
 
 ### After Feature Completion
 
 1. **Read current README.md**
-2. **Move feature from In Progress → Completed**
-3. **Update Dependency Graph** if new code dependencies introduced
-4. **Document architecture decision** if made
-5. **Write updated README.md**
+2. **Verify feature implementation matches spec**
+3. **Move feature from In Progress → Completed**
+4. **Add entry point and key modules**
+5. **Update Dependency Graph** if new code dependencies introduced
+6. **Document architecture decision** if made
+7. **Write updated README.md**
 
 ### After Architecture Change
 
@@ -84,7 +113,9 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 
 Before writing updated README.md:
 - [ ] No placeholder text ([TBD], [TODO])
-- [ ] All file paths valid and exist
+- [ ] All file paths verified to exist in codebase
+- [ ] Module names match actual implementation
+- [ ] Entry points are correct and accessible
 - [ ] Dependency graph has no orphans or circular dependencies
 - [ ] Architecture decisions dated
 - [ ] No duplicate information
@@ -92,11 +123,11 @@ Before writing updated README.md:
 
 ## Dependency Graph Format
 
-Text format (simple graphs):
+Text format (simple graphs) with file paths:
 ```
-Module A
-├── depends on: Module B, Module C
-└── used by: Module D
+Module A (`src/moduleA/index.ts`)
+├── depends on: Module B (`src/moduleB/`), Module C (`src/shared/moduleC.ts`)
+└── used by: Module D (`src/moduleD/service.ts`)
 ```
 
 ## Anti-Patterns
@@ -128,8 +159,9 @@ Module A
 ```markdown
 ### Completed
 - User Authentication: JWT-based auth with refresh tokens
+  - Entry point: `src/auth/index.ts`
   - Dependencies: Database, Redis cache
-  - Location: `src/auth/`
+  - Key modules: `auth/service.ts`, `auth/middleware.ts`
 ```
 
 ### Bad Update
