@@ -36,7 +36,7 @@
 
 ## Architecture Decisions
 
-### [YYYY-MM-DD] [Decision Title]
+### [Decision Title]
 - Context: [Why decision needed]
 - Decision: [What was chosen]
 - Rationale: [Why this choice]
