@@ -25,13 +25,17 @@
 [Text-based graph showing code module relationships - actual implementation dependencies, not planned feature dependencies]
 
 ```
-[Module A] (`src/moduleA/index.ts`)
-├── depends on: [Module B] (`src/moduleB/`), [Module C] (`src/shared/moduleC.ts`)
-└── used by: [Module D] (`src/moduleD/service.ts`)
-
-[Module B] (`src/moduleB/index.ts`)
+[Database] (`src/db/index.ts`) [SHARED]
 ├── depends on: [none]
-└── used by: [Module A], [Module E] (`src/api/routes.ts`)
+└── used by: [AuthModule], [UserModule], [OrderModule], [ReportModule]
+
+[AuthModule] (`src/auth/index.ts`)
+├── depends on: [Database], [TokenManager] (`src/auth/tokens.ts`)
+└── used by: [APIRouter] (`src/api/routes.ts`)
+
+[UserModule] (`src/users/index.ts`)
+├── depends on: [Database], [AuthModule]
+└── used by: [APIRouter], [AdminPanel] (`src/admin/index.ts`)
 ```
 
 ## Architecture Decisions
