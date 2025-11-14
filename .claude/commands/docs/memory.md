@@ -18,7 +18,7 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 1. Project Name & Description (one sentence)
 2. Implementation Status (Features: Completed, In Progress)
 3. Dependency Graph (code module relationships)
-4. Architecture Decisions (ADR format with dates)
+4. Architecture Decisions (ADR format)
 5. Technical Constraints
 
 **Dependency Graph Extraction:**
