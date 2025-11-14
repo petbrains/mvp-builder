@@ -29,6 +29,13 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 - Include file paths for each module (e.g., `src/auth/index.ts`)
 - Note: This is NOT the same as feature dependencies in FEATURES.md - this shows real code dependencies
 
+### Dependency Graph Best Practices
+- Show only direct dependencies (not transitive)
+- Group modules by architectural layers when possible
+- Mark modules used by many others (3+) as "shared" or "core"
+- Include external package dependencies only if architecturally significant
+- Verify no circular dependencies exist (A→B→A)
+
 ## Content Rules
 
 ### Terminology Distinction
@@ -37,11 +44,17 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 - Implementation Status tracks **Features**
 - Dependency Graph shows **Module** relationships
 
+### Dependency Graph Terminology
+- **Module**: Self-contained code unit with clear interface
+- **Depends on**: Module A imports/requires Module B to function
+- **Used by**: Inverse relationship - Module B is imported by Module A
+- **Shared/Core module**: Used by 3+ other modules
+- **Circular dependency**: A→B→C→A (must be avoided)
+
 ### Must Have
 - Every section filled with real data
 - Concrete file paths, not placeholders
 - Actual dependency relationships
-- Specific dates on decisions
 - Real constraint impact
 
 ### Must Not Have
@@ -72,6 +85,7 @@ Before creating the first README.md:
 2. **Extract real dependencies**
    - Analyze import statements
    - Identify actual module boundaries
+   - Check for circular dependencies (A→B→A)
    - Find integration points between modules
 
 3. **Locate implementation**
@@ -139,10 +153,11 @@ Before writing updated README.md:
 
 Text format (simple graphs) with file paths:
 ```
-Module A (`src/moduleA/index.ts`)
+Module A (`src/moduleA/index.ts`) [SHARED]
 ├── depends on: Module B (`src/moduleB/`), Module C (`src/shared/moduleC.ts`)
-└── used by: Module D (`src/moduleD/service.ts`)
+└── used by: Module D, Module E, Module F (`src/moduleF/service.ts`)
 ```
+Note: Add [SHARED] tag for modules used by 3+ other modules
 
 ## Anti-Patterns
 
