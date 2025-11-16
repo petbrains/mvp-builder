@@ -1,6 +1,25 @@
-# MEMORY.md
+---
+description: 
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+---
+
+# Instructions
 
 Memory management rules for maintaining project README.md as implementation status tracker.
+
+**Tools Usage:**
+- `Read`: For loading spec.md, ux.md, plan.md, and other planning documents
+- `Write`: For saving generated tasks.md
+- `Bash`: For directory existence verification
+- `/mcp__sequential-thinking__sequentialthinking`: For complex task dependency analysis and optimization
+  - See @.claude/tools/sequential-thinking.md for details
+
+**Sequential Thinking Usage:**
+Use `/mcp__sequential-thinking__sequentialthinking`:
+
+
+**Templates:**
+- Readme: @.claude/templates/readme-template.md
 
 ## Purpose
 
@@ -8,10 +27,6 @@ README.md serves as central memory bank providing agents with:
 - Current implementation status of features
 - Code module dependency graph
 - Project context for navigation
-
-## README.md Structure
-
-Follow structure defined in: `.claude/templates/readme-template.md`
 
 **Required sections:**
 1. Project Name & Description (one sentence)
