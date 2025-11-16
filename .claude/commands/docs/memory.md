@@ -6,9 +6,8 @@ Memory management rules for maintaining project README.md as implementation stat
 
 README.md serves as central memory bank providing agents with:
 - Current implementation status of features
-- Feature completion tracking
-- Code module dependency graph
-- Project context
+- Code module dependency graph  
+- Project context for navigation
 
 ## README.md Structure
 
@@ -17,10 +16,8 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 **Required sections:**
 1. Project Name & Description (one sentence)
 2. Codebase Overview (language, framework, entry point, structure)
-3. Implementation Status (Features: Completed, In Progress)
+3. Implementation Status (Completed features only)
 4. Dependency Graph (code module relationships with file paths)
-5. Architecture Decisions (important technical decisions)
-6. Technical Constraints
 
 **Dependency Graph Extraction:**
 - Analyze implemented code structure
@@ -55,7 +52,6 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 - Every section filled with real data
 - Concrete file paths, not placeholders
 - Actual dependency relationships
-- Real constraint impact
 
 ### Must Not Have
 - Introduction paragraphs
@@ -79,8 +75,10 @@ Before creating the first README.md:
 
 1. **Identify implemented features**
    - Check `/src` for actual code modules
+   - Check FEATURES.md for feature list
+   - Check each feature folder for implementation status
    - Map feature folders to working code
-   - Verify what actually runs vs planned
+   - Verify what actually runs
 
 2. **Extract real dependencies**
    - Analyze import statements
@@ -90,47 +88,25 @@ Before creating the first README.md:
 
 3. **Locate implementation**
    - Map each feature to its code location
-   - Document entry points for each feature
-   - Note main files vs supporting files
+   - Document main file for each feature
+   - Note key modules that implement the feature
 
 4. **Verify codebase structure**
    - Identify primary language and framework versions
    - Locate main entry point (e.g., `src/index.ts`, `main.py`)
    - Determine architecture pattern (Modular/Monolithic/Service-based)
 
-5. **Check recent architectural changes**
-   - Run `git diff main` or check recent commits
-   - Identify significant architectural changes
-   - Document decisions that shaped current implementation
-
 ## Update Procedure
 
 ### After Feature Completion
 
 1. **Read current README.md**
-2. **Verify feature implementation matches spec**
-3. **Move feature from In Progress → Completed**
-4. **Add entry point and key modules**
-5. **Update Dependency Graph** if new code dependencies introduced
-6. **Document architecture decision** if significant (see criteria below)
+2. **Read FEATURES.md** to get feature list
+3. **Check feature folder** for implementation status marker
+4. **Verify feature implementation** matches spec
+5. **Add to Completed section** with main file and key modules
+6. **Update Dependency Graph** if new code dependencies introduced
 7. **Write updated README.md**
-
-#### When to Document Architecture Decision
-Document only if implementation introduced:
-- Core data flow or algorithm change
-- New technology/library to the stack
-- Modified system boundaries or interfaces
-- Replacement of existing approach
-- Trade-off affecting multiple features
-
-Skip for: bug fixes, refactoring, minor optimizations
-
-### After Architecture Change
-
-1. **Read current README.md**
-2. **Add Architecture Decision entry**
-3. **Update dependency relationships** if affected
-4. **Write updated README.md**
 
 ### After Adding Module
 
@@ -144,7 +120,7 @@ Before writing updated README.md:
 - [ ] No placeholder text ([TBD], [TODO])
 - [ ] All file paths verified to exist in codebase
 - [ ] Module names match actual implementation
-- [ ] Entry points are correct and accessible
+- [ ] Main files are correct and accessible
 - [ ] Dependency graph has no orphans or circular dependencies
 - [ ] No duplicate information
 - [ ] Every sentence adds value
@@ -172,11 +148,11 @@ Note: Add [SHARED] tag for modules used by 3+ other modules
 - Add "Future improvements" section
 - Write installation tutorials
 - Add screenshots or demos
+- Track unfinished features
 
 **Do:**
 - Update incrementally after each change
 - Keep technical and factual
-- Link to detailed docs, not duplicate
 - Track actual implementation state
 - Document what exists now
 - Show real dependencies between code modules
@@ -188,9 +164,8 @@ Note: Add [SHARED] tag for modules used by 3+ other modules
 ```markdown
 ### Completed
 - User Authentication: JWT-based auth with refresh tokens
-  - Entry point: `src/auth/index.ts`
-  - Dependencies: Database, Redis cache
-  - Key modules: `auth/service.ts`, `auth/middleware.ts`
+  - Main file: `src/auth/index.ts`
+  - Key modules: `auth/service.ts`, `auth/middleware.ts`, `auth/tokens.ts`
 ```
 
 ### Bad Update
@@ -214,7 +189,6 @@ README.md only:
 - Summarizes current state
 - Maps implemented code modules
 - Shows dependency relationships between code
-- Links to detailed docs
 
 ## File Location
 
