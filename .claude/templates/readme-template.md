@@ -12,13 +12,8 @@
 
 ### Completed
 - [Feature]: [One-line what it does]
-  - Entry point: `[path/to/main/file.ts]`
-  - Dependencies: [Required features]
-  - Key modules: [Main implementation files]
-
-### In Progress
-- [Feature]: [Current state] | Blocked by: [blocker if any]
-  - Entry point: `[path/to/main/file.ts]`
+  - Main file: `[path/to/main/file.ts]`
+  - Key modules: `[module1.ts]`, `[module2.ts]`, `[module3.ts]`
 
 ## Dependency Graph
 
@@ -37,15 +32,3 @@
 ├── depends on: [Database], [AuthModule]
 └── used by: [APIRouter], [AdminPanel] (`src/admin/index.ts`)
 ```
-
-## Architecture Decisions
-
-### [Decision Title]
-- Context: [Why decision needed]
-- Decision: [What was chosen]
-- Rationale: [Why this choice]
-- Implications: [What this enables/restricts]
-
-## Technical Constraints
-
-- [Constraint]: [Impact on implementation]
