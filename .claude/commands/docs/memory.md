@@ -6,7 +6,7 @@ Memory management rules for maintaining project README.md as implementation stat
 
 README.md serves as central memory bank providing agents with:
 - Current implementation status of features
-- Code module dependency graph  
+- Code module dependency graph
 - Project context for navigation
 
 ## README.md Structure
@@ -23,7 +23,7 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 - Analyze implemented code structure
 - Identify actual module/component dependencies in codebase
 - Build graph showing "depends on" and "used by" relationships between code modules
-- Include file paths for each module (e.g., `src/auth/index.ts`)
+- Include file paths for each module
 - Note: This is NOT the same as feature dependencies in FEATURES.md - this shows real code dependencies
 
 ### Dependency Graph Best Practices
@@ -36,8 +36,8 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 ## Content Rules
 
 ### Terminology Distinction
-- **Feature**: Business functionality from FEATURES.md (e.g., "User Authentication")
-- **Module**: Code implementation unit (e.g., "AuthService", "TokenManager")
+- **Feature**: Business functionality from FEATURES.md
+- **Module**: Code implementation unit
 - Implementation Status tracks **Features**
 - Dependency Graph shows **Module** relationships
 
@@ -60,6 +60,7 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 - Vague descriptions ("helps with", "improves")
 - Duplicate information
 - Explanatory prose
+- Technology-specific assumptions
 
 ### Writing Style
 - Bullet points, not paragraphs
@@ -68,32 +69,58 @@ Follow structure defined in: `.claude/templates/readme-template.md`
 - Maximum 2 sentences per bullet
 - Sub-bullets for details only
 
+## Feature Status Detection
+
+### Reading tasks.md for Implementation Status
+
+For each feature in FEATURES.md:
+1. **Read** `./ai-docs/features/[feature-name]/tasks.md`
+2. **Check completion markers**:
+   - All tasks with `[x]` checkboxes → Feature is completed
+   - Any task with `[ ]` checkbox → Feature is incomplete (skip from README)
+3. **Extract implementation details**:
+   - Main file: First IMPL task that creates primary component
+   - Key modules: All file paths from IMPL tasks in GREEN phases
+   - Module names: Extract from "Create [module]" or "Implement [component]" descriptions
+
+### Example Parsing
+From tasks.md:
+```
+- [x] IMPL-012 [US1] Create user entity in [path/to/entities/user]
+- [x] IMPL-013 [US1] Implement authentication logic in [path/to/auth/handler]
+```
+Extracts:
+- Main file: `[path/to/entities/user]`
+- Key modules: `[path/to/entities/user]`, `[path/to/auth/handler]`
+
 ## Initial Analysis (First README Creation)
 
 ### Quick Codebase Scan
 Before creating the first README.md:
 
-1. **Identify implemented features**
-   - Check `/src` for actual code modules
-   - Check FEATURES.md for feature list
-   - Check each feature folder for implementation status
-   - Map feature folders to working code
-   - Verify what actually runs
+1. **Read FEATURES.md** 
+   - Get complete list of features
+   - Note feature folders
 
-2. **Extract real dependencies**
-   - Analyze import statements
+2. **Check each feature's tasks.md**
+   - Read `./ai-docs/features/[feature-name]/tasks.md`
+   - Determine completion status (all checkboxes marked?)
+   - Extract file paths from IMPL tasks
+
+3. **Map to actual code**
+   - Verify extracted paths exist in codebase
    - Identify actual module boundaries
+   - Check for additional modules not in tasks
+
+4. **Extract real dependencies**
+   - Analyze import statements
+   - Identify module relationships
    - Check for circular dependencies (A→B→A)
    - Find integration points between modules
 
-3. **Locate implementation**
-   - Map each feature to its code location
-   - Document main file for each feature
-   - Note key modules that implement the feature
-
-4. **Verify codebase structure**
-   - Identify primary language and framework versions
-   - Locate main entry point (e.g., `src/index.ts`, `main.py`)
+5. **Verify codebase structure**
+   - Identify primary language and framework
+   - Locate main entry point
    - Determine architecture pattern (Modular/Monolithic/Service-based)
 
 ## Update Procedure
@@ -102,11 +129,12 @@ Before creating the first README.md:
 
 1. **Read current README.md**
 2. **Read FEATURES.md** to get feature list
-3. **Check feature folder** for implementation status marker
-4. **Verify feature implementation** matches spec
-5. **Add to Completed section** with main file and key modules
-6. **Update Dependency Graph** if new code dependencies introduced
-7. **Write updated README.md**
+3. **Read feature's tasks.md** at `./ai-docs/features/[feature-name]/tasks.md`
+4. **Verify all tasks completed** (all checkboxes `[x]`)
+5. **Extract implementation details** from IMPL tasks
+6. **Add to Completed section** with main file and key modules
+7. **Update Dependency Graph** if new code dependencies introduced
+8. **Write updated README.md**
 
 ### After Adding Module
 
@@ -120,7 +148,8 @@ Before writing updated README.md:
 - [ ] No placeholder text ([TBD], [TODO])
 - [ ] All file paths verified to exist in codebase
 - [ ] Module names match actual implementation
-- [ ] Main files are correct and accessible
+- [ ] Main files extracted from tasks.md
+- [ ] All completed features have `[x]` for all tasks
 - [ ] Dependency graph has no orphans or circular dependencies
 - [ ] No duplicate information
 - [ ] Every sentence adds value
@@ -129,9 +158,9 @@ Before writing updated README.md:
 
 Text format (simple graphs) with file paths:
 ```
-Module A (`src/moduleA/index.ts`) [SHARED]
-├── depends on: Module B (`src/moduleB/`), Module C (`src/shared/moduleC.ts`)
-└── used by: Module D, Module E, Module F (`src/moduleF/service.ts`)
+[ModuleA] (`[path/to/moduleA/entry]`) [SHARED]
+├── depends on: [ModuleB] (`[path/to/moduleB]`), [ModuleC] (`[path/to/shared/moduleC]`)
+└── used by: [ModuleD], [ModuleE], [ModuleF] (`[path/to/moduleF/handler]`)
 ```
 Note: Add [SHARED] tag for modules used by 3+ other modules
 
@@ -139,16 +168,17 @@ Note: Add [SHARED] tag for modules used by 3+ other modules
 
 **Do Not:**
 - Write README.md from scratch (always read first)
-- Copy descriptions from PRD verbatim
-- Include motivation/inspiration sections
-- Add "About this project" prose
+- Copy descriptions verbatim
+- Include motivation sections
+- Add project background prose
 - List features as marketing points
 - Add contribution guidelines
-- Include changelog (use git log)
-- Add "Future improvements" section
+- Include changelog
+- Add future improvements
 - Write installation tutorials
 - Add screenshots or demos
 - Track unfinished features
+- Assume technology stack
 
 **Do:**
 - Update incrementally after each change
@@ -157,15 +187,16 @@ Note: Add [SHARED] tag for modules used by 3+ other modules
 - Document what exists now
 - Show real dependencies between code modules
 - Provide quick agent context
+- Extract data from tasks.md
 
 ## Example Updates
 
 ### Good Update
 ```markdown
 ### Completed
-- User Authentication: JWT-based auth with refresh tokens
-  - Main file: `src/auth/index.ts`
-  - Key modules: `auth/service.ts`, `auth/middleware.ts`, `auth/tokens.ts`
+- User Authentication: Secure authentication with token refresh
+  - Main file: `[auth/entry]`
+  - Key modules: `[auth/handler]`, `[auth/validator]`, `[auth/token-manager]`
 ```
 
 ### Bad Update
@@ -182,11 +213,11 @@ Skip README.md updates for:
 - Minor bug fixes (no feature status change)
 - Refactoring (no external interface change)
 - Documentation updates (unless structure change)
-- Code formatting  
+- Code formatting
 - Test additions (unless testing new feature)
 
 README.md only:
-- Summarizes current state
+- Summarizes current state from tasks.md
 - Maps implemented code modules
 - Shows dependency relationships between code
 
