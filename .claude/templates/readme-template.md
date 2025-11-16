@@ -1,34 +1,57 @@
-# [Project Name]
+# [PROJECT_NAME]
 
-[One-sentence project description - what it is and primary purpose]
+[ONE_SENTENCE_PROJECT_DESCRIPTION]
 
 ## Codebase Overview
-- Language: [Primary language and version]
-- Framework: [Main framework and version]
-- Entry point: [Main entry file]
-- Structure: [Modular/Monolithic/Service-based]
+- Language: [PRIMARY_LANGUAGE] v[VERSION]
+- Framework: [MAIN_FRAMEWORK] v[VERSION]
+- Entry point: [MAIN_ENTRY_FILE]
+- Structure: [MODULAR/MONOLITHIC/SERVICE_BASED]
 
 ## Implementation Status
+** MODEL INSTRUCTION: Document only ACTUALLY IMPLEMENTED features with working code. Do not include planned or in-progress features unless explicitly requested.**
 
 ### Completed
-- [Feature]: [One-line what it does]
-  - Main file: `[path/to/main/file]`
-  - Key modules: `[module1]`, `[module2]`, `[module3]`
+- [FEATURE_NAME]: [ONE_LINE_DESCRIPTION]
+  - Main file: `[PATH_TO_MAIN_FILE]`
+  - Key modules: `[MODULE_1]`, `[MODULE_2]`, `[MODULE_3]`
 
 ## Dependency Graph
+** MODEL INSTRUCTION: Show actual code module dependencies based on imports/requires in the codebase. This is NOT a feature dependency diagram.**
 
-[Text-based graph showing code module relationships - actual implementation dependencies, not planned feature dependencies]
+[TEXT_DESCRIPTION_OF_MODULE_RELATIONSHIPS]
 
 ```
-[DataLayer] (`[data/entry]`) [SHARED]
-├── depends on: [none]
-└── used by: [ModuleA], [ModuleB], [ModuleC], [ModuleD]
+[MODULE_NAME] (`[MODULE_ENTRY_PATH]`) [OPTIONAL_TAG]
+├── depends on: [DEPENDENCY_1], [DEPENDENCY_2]
+└── used by: [DEPENDENT_1], [DEPENDENT_2]
 
-[ModuleA] (`[moduleA/entry]`)
-├── depends on: [DataLayer], [UtilityModule] (`[utils/helper]`)
-└── used by: [InterfaceLayer] (`[interface/router]`)
+[MODULE_A] (`[MODULE_A_PATH]`)
+├── depends on: [DATA_LAYER], [UTILITY_MODULE] (`[UTILS_PATH]`)
+└── used by: [INTERFACE_LAYER] (`[INTERFACE_PATH]`)
 
-[ModuleB] (`[moduleB/entry]`)
-├── depends on: [DataLayer], [ModuleA]
-└── used by: [InterfaceLayer], [AdminModule] (`[admin/entry]`)
+[MODULE_B] (`[MODULE_B_PATH]`)
+├── depends on: [DATA_LAYER], [MODULE_A]
+└── used by: [INTERFACE_LAYER], [ADMIN_MODULE] (`[ADMIN_PATH]`)
 ```
+
+---
+
+## Review & Acceptance Checklist
+*GATE: Automated checks*
+** MODEL INSTRUCTION: This section is for internal validation only. Do not include in final README.md output.**
+
+### Content Accuracy
+- [ ] All listed features are actually implemented
+- [ ] File paths exist in codebase
+- [ ] Dependencies reflect real imports
+
+### Dependency Graph
+- [ ] No circular dependencies
+- [ ] All modules shown exist
+- [ ] Graph shows code dependencies, not feature dependencies
+
+### Completeness
+- [ ] All major modules documented
+- [ ] Entry points identified
+- [ ] Structure type specified
