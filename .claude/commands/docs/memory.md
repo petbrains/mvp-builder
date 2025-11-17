@@ -17,6 +17,10 @@ Generate and maintain project README.md as external memory bank for AI agents, t
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
 
+For Dependency Chain Analysis:
+- When analyzing feature dependencies: "Load FEATURES.md → Find target feature → Extract depends on list → Extract required by list → Build dependency tree → Check for circular dependencies"
+- When checking cascade effects: "Identify completed feature → Find dependent features → Check if unblocked → Update dependency status → Propagate changes"
+
 For Dependency Analysis:
 - When building dependency graph: "Extract imports → Identify module boundaries → Map relationships → Detect circular dependencies → Tag shared modules"
 - When verifying dependencies: "Check import statements → Validate module exists → Trace dependency chain → Identify circular patterns"
@@ -90,6 +94,21 @@ Document only realized functionality from completed tasks, excluding plans or sp
 - Sub-bullets for details only
 
 ## Feature Status Detection from tasks.md
+
+### Feature Dependencies from FEATURES.md
+
+FEATURES.md contains:
+- Feature index organized by epics
+- Dependencies between features (not module dependencies)
+- Each feature listing shows: `depends on: [feature-list]`
+
+When processing single feature:
+1. **Extract dependency chain** from FEATURES.md
+2. **Check dependent features** for completion status
+3. **Update with dependency context**:
+   - If dependency incomplete → Note blocking relationship
+   - If all dependencies complete → Feature unblocked
+   - Track cascading effects through dependency chain
 
 ### Reading tasks.md for Implementation Status
 
@@ -193,19 +212,25 @@ Target: [all_features|specific_feature]
 
 ### 1.1 Load sources
 **For Initial Mode:**
-- Read `./ai-docs/FEATURES.md` → Extract complete feature list
-- Identify all feature folders
+- Read `./ai-docs/FEATURES.md` → Extract complete feature list and dependency graph
+- Identify all feature folders from the index
 
 **For Update Mode:**
 - Read existing `./ai-docs/README.md` → Load current state
-- Read `./ai-docs/FEATURES.md` → Get feature list
-- If FEATURE provided → Load only specific `./ai-docs/features/[FEATURE]/tasks.md`
+- Read `./ai-docs/FEATURES.md` → Get feature list and dependency mappings
+- If FEATURE provided:
+  - Find feature in FEATURES.md
+  - Extract its dependencies (both "depends on" and "required by")
+  - Load tasks.md for target feature AND all dependent features
 - If no FEATURE → Scan all features
 
 ### 1.2 Validate inputs
 - Verify FEATURES.md exists
 - Check feature folders accessible
-- If FEATURE provided → Verify tasks.md exists for specified feature
+- If FEATURE provided:
+  - Verify feature exists in FEATURES.md
+  - Verify tasks.md exists for feature and its dependencies
+  - Check dependency chain for circular references
 
 ## Phase 2: Analysis
 
@@ -245,10 +270,18 @@ Apply `/mcp__sequential-thinking__sequentialthinking` for change detection.
 
 **2.B.1 After Feature Completion (Single Feature Mode)**
 1. **Read current README.md**
-2. **Read feature's tasks.md** at `./ai-docs/features/[FEATURE]/tasks.md`
-3. **Verify all tasks completed** (all checkboxes `[x]`)
-4. **Extract implementation details** from IMPL tasks
-5. **Identify dependency changes**
+2. **Read FEATURES.md** to identify feature dependencies
+3. **Extract dependency chain** for the target feature:
+   - Features that target depends on
+   - Features that depend on target
+4. **For target feature and each dependent:**
+   - Read tasks.md at `./ai-docs/features/[FEATURE]/tasks.md`
+   - Verify all tasks completed (all checkboxes `[x]`)
+   - Extract implementation details from IMPL tasks
+5. **Analyze dependency impact:**
+   - If target feature completed → Check if dependent features can now proceed
+   - If dependency incomplete → Note blocking status
+6. **Identify module dependency changes** from all analyzed features
 
 **2.B.2 Full Update Mode**
 1. **Read current README.md**
@@ -359,6 +392,7 @@ README.md Updated Successfully!
 
 Mode: [Update|Single Feature Update]
 Feature Updated: [feature-name] (if single feature mode)
+Dependencies Analyzed: [count] (if single feature mode)
 Changes: [brief summary]
 Location: ./ai-docs/README.md
 
@@ -372,6 +406,8 @@ Implementation status synchronized with completed tasks.
 - **Invalid feature path**: "Error: Feature [name] not found at [path]"
 - **tasks.md missing**: "Warning: No tasks.md for feature [feature-name]. Skipping."
 - **README exists (initial mode)**: "README.md already exists. Using update mode instead."
+- **Feature not in index**: "Error: Feature [name] not found in FEATURES.md index."
+- **Dependency missing**: "Warning: Dependent feature [name] tasks.md not found. Dependency analysis incomplete."
 
 **Analysis Errors:**
 - **Circular dependency detected**: "Error: Circular dependency found: [A]→[B]→[C]→[A]. Review module structure."
