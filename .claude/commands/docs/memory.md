@@ -17,14 +17,14 @@ Generate and maintain project README.md as external memory bank for AI agents, t
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
 
-For Status Extraction:
-- When checking completion: "Read tasks.md → Find [x] checkboxes → Extract IMPL-XXX paths → Map to modules"
+For Dependency Extraction:
+- When finding dependencies: "Read FEATURES.md → Locate target feature → Extract depends on list → Load dependency tasks → Extract module paths"
 
 For Code Dependencies:
-- When building dependency graph: "Scan imports → Build module graph → Detect circular → Mark shared modules"
+- When building graph: "Analyze imports from all modules → Map relationships → Detect circular → Tag shared modules"
 
 For Content Generation:
-- When filling template: "Fill template sections → Validate completeness → Format output"
+- When updating README: "Load existing content → Add new feature entry → Update dependency graph → Validate completeness"
 
 **Templates:**
 - Readme: @.claude/templates/readme-template.md
@@ -33,10 +33,14 @@ For Content Generation:
 - Input: `./ai-docs/FEATURES.md`, `./ai-docs/features/*/tasks.md`
 - Output: `./ai-docs/README.md`
 
+**Input Parameters:**
+- `FEATURE`: Required feature name or folder
+  - Accepts: feature name (`generate-optimized-cv`) or folder name
+  - Used to identify which feature was just completed
+
 # Task
 
-Create and maintain README.md as central memory bank providing agents with current implementation status, code module dependencies, and project navigation context.
-Document only realized functionality from completed tasks, excluding plans or specifications.
+Update README.md with newly completed feature, adding it to implementation status and updating code dependency graph with full context from related features.
 
 # Rules
 
@@ -85,15 +89,21 @@ Document only realized functionality from completed tasks, excluding plans or sp
 
 ## Feature Status Detection from tasks.md
 
-For each feature in FEATURES.md:
-1. **Read** `./ai-docs/features/[feature-name]/tasks.md`
-2. **Check completion markers**:
-   - All tasks with `[x]` checkboxes → Feature is completed
-   - Any task with `[ ]` checkbox → Feature is incomplete (skip from README)
+For the completed feature (from FEATURE parameter):
+1. **Read** `./ai-docs/features/[FEATURE]/tasks.md`
+2. **Verify completion**: All tasks must have `[x]` checkboxes
 3. **Extract implementation details**:
    - Main file: First IMPL-XXX task that creates primary component
    - Key modules: All file paths from IMPL-XXX tasks
    - Module names: Extract from task descriptions
+
+### Dependency Context for Graph Building
+
+From FEATURES.md extract dependencies:
+1. **Find feature** in Implementation Sequence
+2. **Extract "depends on"** list for the feature
+3. **For each dependency**: Load their tasks.md files
+4. **Extract modules** from dependency features for complete graph context
 
 ### Example Parsing
 From tasks.md:
@@ -139,68 +149,77 @@ fi
 ```
 
 ### 1.2 Load sources
-**For Initial Mode:**
-- Read `./ai-docs/FEATURES.md` → Extract feature list
-- Identify all feature folders
+**Parse FEATURE parameter:**
+- Extract feature name from input
+- Validate feature folder exists at `./ai-docs/features/[FEATURE]/`
+
+**Load feature context:**
+- Read `./ai-docs/FEATURES.md` → Find feature and extract dependencies
+- Read `./ai-docs/features/[FEATURE]/tasks.md` → Verify completion (all `[x]`)
 
 **For Update Mode:**
 - Read existing `./ai-docs/README.md` → Load current state
-- Read `./ai-docs/FEATURES.md` → Get feature list
 
-### 1.3 Validate inputs
-- Verify FEATURES.md exists
-- Check feature folders accessible
+### 1.3 Load dependency context
+For each dependency from FEATURES.md:
+- Read `./ai-docs/features/[dependency]/tasks.md`
+- Extract module paths for graph building
+- Note: Dependencies provide context only, not added to status
 
 ## Phase 2: Extract Status
 
-### 2.1 Check each feature's completion
-For each feature folder from FEATURES.md:
-1. **Read** `./ai-docs/features/[feature-name]/tasks.md`
-2. **Check all checkboxes**: All `[x]` → completed, any `[ ]` → incomplete
-3. **Extract from completed features only**:
-   - Main file: First IMPL-XXX task path
-   - Key modules: All paths from IMPL-XXX tasks
+### 2.1 Extract feature implementation details
+From target feature's tasks.md:
+1. **Verify completion**: All tasks must be `[x]`
+2. **Extract main file**: First IMPL-XXX task path
+3. **Extract key modules**: All paths from IMPL-XXX tasks
 
-### 2.2 Map to actual codebase
-- Verify extracted paths exist
-- Identify actual module boundaries
-- Check for additional modules not in tasks
+### 2.2 Extract dependency modules for context
+For each dependency feature:
+1. **Read tasks.md** (already loaded in Phase 1)
+2. **Extract module paths** from IMPL-XXX tasks
+3. **Build module map**: feature → modules relationship
 
-### 2.3 Extract code dependencies
+### 2.3 Analyze code dependencies
 Apply sequential thinking: "Scan imports → Build module graph → Detect circular → Mark shared modules"
 
 ```bash
-# Analyze imports in codebase
-grep -r "import\|require" --include="*.js" --include="*.ts" --include="*.py" ./src
+# Analyze imports for target feature modules and dependencies
+grep -r "import\|require" --include="*.js" --include="*.ts" --include="*.py" [extracted_paths]
 ```
 - Parse import statements
-- Build dependency matrix
+- Build dependency matrix between all modules
 - Identify shared modules (used by 3+)
 - Check for circular dependencies
 
 ## Phase 3: Build Content
 
-### 3.1 Fill template sections
+### 3.1 Update or create sections
 
-**3.1.1 Project Header**
-- Extract project name from FEATURES.md or codebase
-- Generate one-sentence description
+**For Initial Mode:**
+- Create all sections from template
+- Add first feature to Implementation Status
 
-**3.1.2 Codebase Overview**
-- Detect primary language and version
-- Identify main framework
-- Locate entry point file
-- Determine structure type (Modular/Monolithic/Service-based)
+**For Update Mode:**
+- Keep existing Project Header and Codebase Overview
+- **Add new feature** to Implementation Status → Completed
+- **Update Dependency Graph** with new modules and relationships
 
-**3.1.3 Implementation Status**
-- List only completed features (all tasks `[x]`)
-- Extract main file from first IMPL-XXX task
-- List key modules from all IMPL-XXX tasks
+### 3.2 Implementation Status update
+Add new feature entry:
+```markdown
+- [FEATURE_NAME]: [Brief description from tasks.md]
+  - Main file: `[extracted_main_file]`
+  - Key modules: `[module1]`, `[module2]`, `[module3]`
+```
 
-**3.1.4 Dependency Graph**
-- Use tree structure with file paths
+### 3.3 Dependency Graph update
+Build comprehensive graph including:
+- Modules from new feature
+- Modules from its dependencies (for context)
+- Show relationships between all modules
 - Add [SHARED] tags for modules used by 3+
-- Group by architectural layers if clear
+- Preserve existing graph entries, add new connections
 
 ## Phase 4: Validate & Save
 
@@ -226,8 +245,7 @@ Before writing README.md, ensure:
 README.md Created Successfully!
 
 Mode: Initial Creation
-Features Documented: [count]
-Modules Mapped: [count]
+Feature Added: [FEATURE_NAME]
 Location: ./ai-docs/README.md
 ```
 
@@ -236,26 +254,28 @@ Location: ./ai-docs/README.md
 README.md Updated Successfully!
 
 Mode: Update
-Changes: [brief summary]
+Feature Added: [FEATURE_NAME]
+Dependencies Analyzed: [count]
 Location: ./ai-docs/README.md
 ```
 
 # Error Handling
 
 **Input Errors:**
+- **FEATURE not provided**: "Error: FEATURE parameter is required. Specify completed feature name."
+- **Feature not found**: "Error: Feature [FEATURE] not found in ./ai-docs/features/"
 - **FEATURES.md not found**: "Error: No FEATURES.md found at ./ai-docs/FEATURES.md. Run feature command first."
-- **tasks.md missing**: "Warning: No tasks.md for feature [feature-name]. Skipping."
-- **README exists (initial mode)**: "README.md already exists. Using update mode instead."
+- **tasks.md missing**: "Error: No tasks.md for feature [FEATURE]. Cannot proceed."
+- **Feature incomplete**: "Error: Feature [FEATURE] has uncompleted tasks. Only completed features can be added."
 
 **Analysis Errors:**
+- **Dependency not found**: "Warning: Dependency [name] tasks.md not found. Graph context incomplete."
 - **Circular dependency detected**: "Error: Circular dependency found: [A]→[B]→[C]→[A] in code modules."
-- **No completed features**: "Warning: No features fully implemented yet. Creating skeleton README with codebase overview only."
 - **Module not found**: "Warning: Module [name] referenced but not found in codebase at [path]"
 
 **Validation Errors:**
 - **Placeholder detected**: "Error: Placeholder [TBD] found in [section]. Use real data only."
 - **Invalid path**: "Error: Path [path] does not exist in codebase."
-- **Incomplete tasks**: "Info: Feature [name] has incomplete tasks. Excluded from README."
 
 **Common Errors:**
 - **Template not found**: "Error: Template not found at @.claude/templates/readme-template.md"
