@@ -8,42 +8,30 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 Generate and maintain project README.md as external memory bank for AI agents, tracking implementation status and code dependencies.
 
 **Tools Usage:**
-- `Read`: For loading FEATURES.md, tasks.md files, and existing README.md
-- `Write`: For saving generated or updated README.md
-- `Bash`: For codebase verification and dependency extraction
-- `/mcp__sequential-thinking__sequentialthinking`: For dependency analysis and status detection
+- `Read`: For loading FEATURES.md (feature list), tasks.md files (completion status), existing README.md
+- `Write`: For saving README.md
+- `Bash`: For analyzing code imports and module structure
+- `/mcp__sequential-thinking__sequentialthinking`: For dependency analysis and content generation
   - See @.claude/tools/sequential-thinking.md for details
 
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
 
-For Dependency Chain Analysis:
-- When analyzing feature dependencies: "Load FEATURES.md → Find target feature → Extract depends on list → Extract required by list → Build dependency tree → Check for circular dependencies"
-- When checking cascade effects: "Identify completed feature → Find dependent features → Check if unblocked → Update dependency status → Propagate changes"
+For Status Extraction:
+- When checking completion: "Read tasks.md → Find [x] checkboxes → Extract IMPL-XXX paths → Map to modules"
 
-For Dependency Analysis:
-- When building dependency graph: "Extract imports → Identify module boundaries → Map relationships → Detect circular dependencies → Tag shared modules"
-- When verifying dependencies: "Check import statements → Validate module exists → Trace dependency chain → Identify circular patterns"
+For Code Dependencies:
+- When building dependency graph: "Scan imports → Build module graph → Detect circular → Mark shared modules"
 
-For Feature Status Detection:
-- When checking completion: "Load tasks.md → Parse checkboxes → Extract IMPL tasks → Map file paths → Verify implementation exists"
-- When extracting modules: "Parse IMPL descriptions → Extract file paths → Identify component names → Map to codebase structure"
-
-For Update Decision:
-- When determining changes: "Compare old README → Identify new completions → Check dependency changes → Validate consistency → Generate update"
+For Content Generation:
+- When filling template: "Fill template sections → Validate completeness → Format output"
 
 **Templates:**
 - Readme: @.claude/templates/readme-template.md
 
 **File Structure:**
-- Input: `./ai-docs/FEATURES.md`, `./ai-docs/features/*/tasks.md`, existing `./ai-docs/README.md` (if update mode)
+- Input: `./ai-docs/FEATURES.md`, `./ai-docs/features/*/tasks.md`
 - Output: `./ai-docs/README.md`
-
-**Input Parameters:**
-- `FEATURE`: Optional feature name or path to specific tasks.md
-  - If provided: Update only this feature's status in README
-  - If not provided: Scan all features (Initial or Full Update)
-  - Accepts: feature name (`[feature-name]`) or direct path (`./ai-docs/features/[feature-name]/tasks.md`)
 
 # Task
 
@@ -55,7 +43,6 @@ Document only realized functionality from completed tasks, excluding plans or sp
 ## Mode Detection
 - If `./ai-docs/README.md` does not exist → Initial Creation Mode
 - If `./ai-docs/README.md` exists → Update Mode
-- If FEATURE parameter provided → Single Feature Update Mode
 
 ## Content Rules
 
@@ -78,13 +65,16 @@ Document only realized functionality from completed tasks, excluding plans or sp
 - Actual dependency relationships
 
 ### Must Not Have
-- Introduction paragraphs
-- Marketing language
-- Future aspirations
+- Introduction paragraphs or marketing language
+- Future aspirations or planned features
 - Vague descriptions ("helps with", "improves")
-- Duplicate information
-- Explanatory prose
+- Duplicate information from other docs
+- Explanatory prose or tutorials
 - Technology-specific assumptions
+- Installation guides or contribution guidelines
+- Screenshots, demos, or changelog
+- Copy descriptions verbatim from sources
+- Track unfinished features
 
 ### Writing Style
 - Bullet points, not paragraphs
@@ -95,32 +85,15 @@ Document only realized functionality from completed tasks, excluding plans or sp
 
 ## Feature Status Detection from tasks.md
 
-### Feature Dependencies from FEATURES.md
-
-FEATURES.md contains:
-- Feature index organized by epics
-- Dependencies between features (not module dependencies)
-- Each feature listing shows: `depends on: [feature-list]`
-
-When processing single feature:
-1. **Extract dependency chain** from FEATURES.md
-2. **Check dependent features** for completion status
-3. **Update with dependency context**:
-   - If dependency incomplete → Note blocking relationship
-   - If all dependencies complete → Feature unblocked
-   - Track cascading effects through dependency chain
-
-### Reading tasks.md for Implementation Status
-
 For each feature in FEATURES.md:
 1. **Read** `./ai-docs/features/[feature-name]/tasks.md`
 2. **Check completion markers**:
    - All tasks with `[x]` checkboxes → Feature is completed
    - Any task with `[ ]` checkbox → Feature is incomplete (skip from README)
 3. **Extract implementation details**:
-   - Main file: First IMPL task that creates primary component
-   - Key modules: All file paths from IMPL tasks in GREEN phases
-   - Module names: Extract from "Create [module]" or "Implement [component]" descriptions
+   - Main file: First IMPL-XXX task that creates primary component
+   - Key modules: All file paths from IMPL-XXX tasks
+   - Module names: Extract from task descriptions
 
 ### Example Parsing
 From tasks.md:
@@ -150,45 +123,13 @@ Text format (simple graphs) with file paths:
 ```
 Note: Add [SHARED] tag for modules used by 3+ other modules
 
-## Anti-Patterns
-
-**Do Not:**
-- Write README.md from scratch (always read first if exists)
-- Copy descriptions verbatim
-- Include motivation sections
-- Add project background prose
-- List features as marketing points
-- Add contribution guidelines
-- Include changelog
-- Add future improvements
-- Write installation tutorials
-- Add screenshots or demos
-- Track unfinished features
-- Assume technology stack
-
-**Do:**
-- Update incrementally after each change
-- Keep technical and factual
-- Track actual implementation state
-- Document what exists now
-- Show real dependencies between code modules
-- Provide quick agent context
-- Extract data from tasks.md
-
-## When Not to Update
-
-Skip README.md updates for:
-- Minor bug fixes (no feature status change)
-- Refactoring (no external interface change)
-- Documentation updates (unless structure change)
-- Code formatting
-- Test additions (unless testing new feature)
+# Execution Flow
 
 # Execution Flow
 
-## Phase 0: Mode Detection
+## Phase 1: Initialize & Mode Detection
 
-### 0.1 Check README existence
+### 1.1 Check README existence and set mode
 ```bash
 if [ -f "./ai-docs/README.md" ]; then
   MODE="update"
@@ -197,182 +138,88 @@ else
 fi
 ```
 
-### 0.2 Parse input parameters
-- If FEATURE parameter provided → Set `SINGLE_FEATURE_MODE=true`
-- Parse feature name or path
-- Validate feature exists
-
-### 0.3 Set execution mode
-```
-Mode: [initial|update|single_feature_update]
-Target: [all_features|specific_feature]
-```
-
-## Phase 1: Initialize
-
-### 1.1 Load sources
+### 1.2 Load sources
 **For Initial Mode:**
-- Read `./ai-docs/FEATURES.md` → Extract complete feature list and dependency graph
-- Identify all feature folders from the index
+- Read `./ai-docs/FEATURES.md` → Extract feature list
+- Identify all feature folders
 
 **For Update Mode:**
 - Read existing `./ai-docs/README.md` → Load current state
-- Read `./ai-docs/FEATURES.md` → Get feature list and dependency mappings
-- If FEATURE provided:
-  - Find feature in FEATURES.md
-  - Extract its dependencies (both "depends on" and "required by")
-  - Load tasks.md for target feature AND all dependent features
-- If no FEATURE → Scan all features
+- Read `./ai-docs/FEATURES.md` → Get feature list
 
-### 1.2 Validate inputs
+### 1.3 Validate inputs
 - Verify FEATURES.md exists
 - Check feature folders accessible
-- If FEATURE provided:
-  - Verify feature exists in FEATURES.md
-  - Verify tasks.md exists for feature and its dependencies
-  - Check dependency chain for circular references
 
-## Phase 2: Analysis
+## Phase 2: Extract Status
 
-### 2.A Initial Creation Mode
+### 2.1 Check each feature's completion
+For each feature folder from FEATURES.md:
+1. **Read** `./ai-docs/features/[feature-name]/tasks.md`
+2. **Check all checkboxes**: All `[x]` → completed, any `[ ]` → incomplete
+3. **Extract from completed features only**:
+   - Main file: First IMPL-XXX task path
+   - Key modules: All paths from IMPL-XXX tasks
 
-Apply `/mcp__sequential-thinking__sequentialthinking` for initial codebase analysis.
+### 2.2 Map to actual codebase
+- Verify extracted paths exist
+- Identify actual module boundaries
+- Check for additional modules not in tasks
 
-**2.A.1 Quick Codebase Scan**
-1. **Read FEATURES.md** 
-   - Get complete list of features
-   - Note feature folders
+### 2.3 Extract code dependencies
+Apply sequential thinking: "Scan imports → Build module graph → Detect circular → Mark shared modules"
 
-2. **Check each feature's tasks.md**
-   - Read `./ai-docs/features/[feature-name]/tasks.md`
-   - Determine completion status (all checkboxes marked?)
-   - Extract file paths from IMPL tasks
-
-3. **Map to actual code**
-   - Verify extracted paths exist in codebase
-   - Identify actual module boundaries
-   - Check for additional modules not in tasks
-
-4. **Extract real dependencies**
-   - Analyze import statements
-   - Identify module relationships
-   - Check for circular dependencies (A→B→A)
-   - Find integration points between modules
-
-5. **Verify codebase structure**
-   - Identify primary language and framework
-   - Locate main entry point
-   - Determine architecture pattern (Modular/Monolithic/Service-based)
-
-### 2.B Update Mode
-
-Apply `/mcp__sequential-thinking__sequentialthinking` for change detection.
-
-**2.B.1 After Feature Completion (Single Feature Mode)**
-1. **Read current README.md**
-2. **Read FEATURES.md** to identify feature dependencies
-3. **Extract dependency chain** for the target feature:
-   - Features that target depends on
-   - Features that depend on target
-4. **For target feature and each dependent:**
-   - Read tasks.md at `./ai-docs/features/[FEATURE]/tasks.md`
-   - Verify all tasks completed (all checkboxes `[x]`)
-   - Extract implementation details from IMPL tasks
-5. **Analyze dependency impact:**
-   - If target feature completed → Check if dependent features can now proceed
-   - If dependency incomplete → Note blocking status
-6. **Identify module dependency changes** from all analyzed features
-
-**2.B.2 Full Update Mode**
-1. **Read current README.md**
-2. **Read FEATURES.md** to get complete feature list
-3. **For each feature**: Check tasks.md for completion status
-4. **Compare** with current README to identify changes
-5. **Extract** new implementations and dependency updates
+```bash
+# Analyze imports in codebase
+grep -r "import\|require" --include="*.js" --include="*.ts" --include="*.py" ./src
+```
+- Parse import statements
+- Build dependency matrix
+- Identify shared modules (used by 3+)
+- Check for circular dependencies
 
 ## Phase 3: Build Content
 
-### 3.1 Generate sections
-
-Apply `/mcp__sequential-thinking__sequentialthinking` for content generation.
+### 3.1 Fill template sections
 
 **3.1.1 Project Header**
-- Extract project name from codebase or FEATURES.md
+- Extract project name from FEATURES.md or codebase
 - Generate one-sentence description
 
 **3.1.2 Codebase Overview**
 - Detect primary language and version
 - Identify main framework
 - Locate entry point file
-- Determine structure type
+- Determine structure type (Modular/Monolithic/Service-based)
 
 **3.1.3 Implementation Status**
 - List only completed features (all tasks `[x]`)
-- Extract main file from first IMPL task
-- List key modules from all IMPL tasks
+- Extract main file from first IMPL-XXX task
+- List key modules from all IMPL-XXX tasks
 
-### 3.2 Build dependency graph
-
-Apply `/mcp__sequential-thinking__sequentialthinking` for dependency analysis.
-
-**3.2.1 Extract Dependencies**
-```bash
-# Analyze imports in codebase
-grep -r "import\|require" --include="*.js" --include="*.ts" --include="*.py" ./src
-```
-
-**3.2.2 Map Module Relationships**
-- Parse import statements
-- Build dependency matrix
-- Identify shared modules (used by 3+)
-- Detect circular dependencies
-
-**3.2.3 Format Graph**
+**3.1.4 Dependency Graph**
 - Use tree structure with file paths
-- Add [SHARED] tags where applicable
+- Add [SHARED] tags for modules used by 3+
 - Group by architectural layers if clear
 
-## Phase 4: Validate
+## Phase 4: Validate & Save
 
-### 4.1 Content validation
+### 4.1 Apply validation rules
+Before writing README.md, ensure:
+- No placeholder text ([TBD], [TODO])  
+- All file paths exist in codebase
+- Module names match actual implementation
+- All completed features have all tasks `[x]`
+- Dependency graph has no circular dependencies
+- Every sentence adds value
 
-Before writing updated README.md:
-- [ ] No placeholder text ([TBD], [TODO])
-- [ ] All file paths verified to exist in codebase
-- [ ] Module names match actual implementation
-- [ ] Main files extracted from tasks.md
-- [ ] All completed features have `[x]` for all tasks
-- [ ] Dependency graph has no orphans or circular dependencies
-- [ ] No duplicate information
-- [ ] Every sentence adds value
-
-### 4.2 Example validation
-
-**Good Update:**
-```markdown
-### Completed
-- [Feature Name]: [Brief feature description]
-  - Main file: `[main/entry/file]`
-  - Key modules: `[module/handler]`, `[module/validator]`, `[module/manager]`
-```
-
-**Bad Update:**
-```markdown
-### Completed
-- [Feature Name]: This feature allows users to perform specific actions
-  within the system. It provides a robust and scalable
-  solution that will help improve overall functionality.
-```
-
-## Phase 5: Save
-
-### 5.1 Write README.md
+### 4.2 Write README.md
 - Load template from @.claude/templates/readme-template.md
 - Fill all sections with validated content
 - Exclude Review & Acceptance Checklist from output
 - Write to `./ai-docs/README.md`
 
-### 5.2 Report completion
+### 4.3 Report completion
 
 **For Initial Mode:**
 ```
@@ -382,35 +229,26 @@ Mode: Initial Creation
 Features Documented: [count]
 Modules Mapped: [count]
 Location: ./ai-docs/README.md
-
-Project memory bank initialized with current implementation status.
 ```
 
 **For Update Mode:**
 ```
 README.md Updated Successfully!
 
-Mode: [Update|Single Feature Update]
-Feature Updated: [feature-name] (if single feature mode)
-Dependencies Analyzed: [count] (if single feature mode)
+Mode: Update
 Changes: [brief summary]
 Location: ./ai-docs/README.md
-
-Implementation status synchronized with completed tasks.
 ```
 
 # Error Handling
 
 **Input Errors:**
 - **FEATURES.md not found**: "Error: No FEATURES.md found at ./ai-docs/FEATURES.md. Run feature command first."
-- **Invalid feature path**: "Error: Feature [name] not found at [path]"
 - **tasks.md missing**: "Warning: No tasks.md for feature [feature-name]. Skipping."
 - **README exists (initial mode)**: "README.md already exists. Using update mode instead."
-- **Feature not in index**: "Error: Feature [name] not found in FEATURES.md index."
-- **Dependency missing**: "Warning: Dependent feature [name] tasks.md not found. Dependency analysis incomplete."
 
 **Analysis Errors:**
-- **Circular dependency detected**: "Error: Circular dependency found: [A]→[B]→[C]→[A]. Review module structure."
+- **Circular dependency detected**: "Error: Circular dependency found: [A]→[B]→[C]→[A] in code modules."
 - **No completed features**: "Warning: No features fully implemented yet. Creating skeleton README with codebase overview only."
 - **Module not found**: "Warning: Module [name] referenced but not found in codebase at [path]"
 
