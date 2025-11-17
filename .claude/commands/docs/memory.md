@@ -39,7 +39,7 @@ For Update Decision:
 - `FEATURE`: Optional feature name or path to specific tasks.md
   - If provided: Update only this feature's status in README
   - If not provided: Scan all features (Initial or Full Update)
-  - Accepts: feature name (`user-auth`) or direct path (`./ai-docs/features/user-auth/tasks.md`)
+  - Accepts: feature name (`[feature-name]`) or direct path (`./ai-docs/features/[feature-name]/tasks.md`)
 
 # Task
 
@@ -106,12 +106,12 @@ For each feature in FEATURES.md:
 ### Example Parsing
 From tasks.md:
 ```
-- [x] IMPL-012 [US1] Create user entity in [path/to/entities/user]
-- [x] IMPL-013 [US1] Implement authentication logic in [path/to/auth/handler]
+- [x] IMPL-012 [US1] Create [entity-name] entity in [path/to/entities/[entity]]
+- [x] IMPL-013 [US1] Implement [feature] logic in [path/to/[feature]/handler]
 ```
 Extracts:
-- Main file: `[path/to/entities/user]`
-- Key modules: `[path/to/entities/user]`, `[path/to/auth/handler]`
+- Main file: `[path/to/entities/[entity]]`
+- Key modules: `[path/to/entities/[entity]]`, `[path/to/[feature]/handler]`
 
 ## Dependency Graph Rules
 
@@ -318,17 +318,17 @@ Before writing updated README.md:
 **Good Update:**
 ```markdown
 ### Completed
-- User Authentication: Secure authentication with token refresh
-  - Main file: `[auth/entry]`
-  - Key modules: `[auth/handler]`, `[auth/validator]`, `[auth/token-manager]`
+- [Feature Name]: [Brief feature description]
+  - Main file: `[main/entry/file]`
+  - Key modules: `[module/handler]`, `[module/validator]`, `[module/manager]`
 ```
 
 **Bad Update:**
 ```markdown
 ### Completed
-- User Authentication: This feature allows users to securely log into 
-  the system using their credentials. It provides a robust and scalable
-  authentication solution that will help improve security.
+- [Feature Name]: This feature allows users to perform specific actions
+  within the system. It provides a robust and scalable
+  solution that will help improve overall functionality.
 ```
 
 ## Phase 5: Save
