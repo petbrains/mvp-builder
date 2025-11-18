@@ -46,17 +46,12 @@ Add completed feature to README.md and update dependency graph using modules fro
 
 ## Content Rules
 
-### Core Concepts
-- **Feature**: Functionality from FEATURES.md  
-- **Module**: Code implementation unit (file/component)
-- **Shared module**: Used by 3+ other modules
-- **Circular dependency**: A→B→C→A (must be avoided)
-
-### Key Requirements
 - Use real file paths, not placeholders
 - Show actual code dependencies (imports/requires)
 - One bullet per feature in Implementation Status
 - Tree format for Dependency Graph
+- Mark shared modules (used by 3+) with [SHARED] tag
+- Check for circular dependencies (A→B→C→A)
 
 ## Feature Status Detection from tasks.md
 
@@ -84,24 +79,6 @@ From tasks.md:
 Extracts:
 - Main file: `[path/to/entities/[entity]]`
 - Key modules: `[path/to/entities/[entity]]`, `[path/to/[feature]/handler]`
-
-## Dependency Graph Rules
-
-### Extraction Best Practices
-- Show only direct dependencies (not transitive)
-- Group modules by architectural layers when possible
-- Mark modules used by many others (3+) as "shared" or "core"
-- Include external package dependencies only if architecturally significant
-- Verify no circular dependencies exist (A→B→A)
-
-### Dependency Graph Format
-Text format (simple graphs) with file paths:
-```
-[ModuleA] (`[path/to/moduleA/entry]`) [SHARED]
-├── depends on: [ModuleB] (`[path/to/moduleB]`), [ModuleC] (`[path/to/shared/moduleC]`)
-└── used by: [ModuleD], [ModuleE], [ModuleF] (`[path/to/moduleF/handler]`)
-```
-Note: Add [SHARED] tag for modules used by 3+ other modules
 
 # Execution Flow
 
