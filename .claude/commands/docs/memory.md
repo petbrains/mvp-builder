@@ -8,10 +8,10 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 Generate and maintain project README.md as external memory bank for AI agents, tracking implementation status and code dependencies.
 
 **Tools Usage:**
-- `Read`: For loading FEATURES.md (feature list), tasks.md files (completion status), existing README.md
+- `Read`: For loading tasks.md files and existing README.md
 - `Write`: For saving README.md
-- `Bash`: For analyzing code imports and module structure
-- `/mcp__sequential-thinking__sequentialthinking`: For dependency analysis and content generation
+- `Bash`: For analyzing code imports
+- `/mcp__sequential-thinking__sequentialthinking`: For dependency analysis
   - See @.claude/tools/sequential-thinking.md for details
 
 **Sequential Thinking Usage:**
@@ -30,17 +30,13 @@ For Content Generation:
 - Readme: @.claude/templates/readme-template.md
 
 **File Structure:**
-- Input: `./ai-docs/FEATURES.md`, `./ai-docs/features/*/tasks.md`
+- Input: `./ai-docs/features/[feature]/tasks.md` (completed feature tasks file)
+- Context: `./ai-docs/FEATURES.md` (for dependencies lookup)
 - Output: `./ai-docs/README.md`
-
-**Input Parameters:**
-- `FEATURE`: Required feature name or folder
-  - Accepts: feature name (`generate-optimized-cv`) or folder name
-  - Used to identify which feature was just completed
 
 # Task
 
-Update README.md with newly completed feature, adding it to implementation status and updating code dependency graph with full context from related features.
+Add completed feature to README.md and update dependency graph using modules from the feature and its dependencies.
 
 # Rules
 
@@ -50,57 +46,31 @@ Update README.md with newly completed feature, adding it to implementation statu
 
 ## Content Rules
 
-### Terminology Distinction
-- **Feature**: Business functionality from FEATURES.md
-- **Module**: Code implementation unit
-- Implementation Status tracks **Features**
-- Dependency Graph shows **Module** relationships
-
-### Dependency Graph Terminology
-- **Module**: Self-contained code unit with clear interface
-- **Depends on**: Module A imports/requires Module B to function
-- **Used by**: Inverse relationship - Module B is imported by Module A
-- **Shared/Core module**: Used by 3+ other modules
+### Core Concepts
+- **Feature**: Functionality from FEATURES.md  
+- **Module**: Code implementation unit (file/component)
+- **Shared module**: Used by 3+ other modules
 - **Circular dependency**: A→B→C→A (must be avoided)
 
-### Must Have
-- Every section filled with real data
-- Concrete file paths, not placeholders
-- Actual dependency relationships
-
-### Must Not Have
-- Introduction paragraphs or marketing language
-- Future aspirations or planned features
-- Vague descriptions ("helps with", "improves")
-- Duplicate information from other docs
-- Explanatory prose or tutorials
-- Technology-specific assumptions
-- Installation guides or contribution guidelines
-- Screenshots, demos, or changelog
-- Copy descriptions verbatim from sources
-- Track unfinished features
-
-### Writing Style
-- Bullet points, not paragraphs
-- Action verbs (enables, blocks, requires)
-- Technical precision
-- Maximum 2 sentences per bullet
-- Sub-bullets for details only
+### Key Requirements
+- Use real file paths, not placeholders
+- Show actual code dependencies (imports/requires)
+- One bullet per feature in Implementation Status
+- Tree format for Dependency Graph
 
 ## Feature Status Detection from tasks.md
 
-For the completed feature (from FEATURE parameter):
-1. **Read** `./ai-docs/features/[FEATURE]/tasks.md`
+From input tasks.md file:
+1. **Extract feature name** from path: `./ai-docs/features/[FEATURE]/tasks.md`
 2. **Verify completion**: All tasks must have `[x]` checkboxes
 3. **Extract implementation details**:
    - Main file: First IMPL-XXX task that creates primary component
    - Key modules: All file paths from IMPL-XXX tasks
-   - Module names: Extract from task descriptions
 
 ### Dependency Context for Graph Building
 
 From FEATURES.md extract dependencies:
-1. **Find feature** in Implementation Sequence
+1. **Find feature** using extracted name
 2. **Extract "depends on"** list for the feature
 3. **For each dependency**: Load their tasks.md files
 4. **Extract modules** from dependency features for complete graph context
@@ -140,31 +110,18 @@ Note: Add [SHARED] tag for modules used by 3+ other modules
 ## Phase 1: Initialize & Mode Detection
 
 ### 1.1 Check README existence and set mode
-```bash
-if [ -f "./ai-docs/README.md" ]; then
-  MODE="update"
-else
-  MODE="initial"
-fi
-```
+- If `./ai-docs/README.md` exists → Update Mode
+- If not exists → Initial Mode
 
-### 1.2 Load sources
-**Parse FEATURE parameter:**
-- Extract feature name from input
-- Validate feature folder exists at `./ai-docs/features/[FEATURE]/`
-
-**Load feature context:**
-- Read `./ai-docs/FEATURES.md` → Find feature and extract dependencies
-- Read `./ai-docs/features/[FEATURE]/tasks.md` → Verify completion (all `[x]`)
-
-**For Update Mode:**
-- Read existing `./ai-docs/README.md` → Load current state
+### 1.2 Extract feature from input path
+- Parse feature name from tasks.md path: `./ai-docs/features/[feature-name]/tasks.md`
+- Read input tasks.md → Verify all tasks completed `[x]`
+- Read FEATURES.md → Find feature and extract dependencies
 
 ### 1.3 Load dependency context
 For each dependency from FEATURES.md:
 - Read `./ai-docs/features/[dependency]/tasks.md`
 - Extract module paths for graph building
-- Note: Dependencies provide context only, not added to status
 
 ## Phase 2: Extract Status
 
@@ -183,11 +140,8 @@ For each dependency feature:
 ### 2.3 Analyze code dependencies
 Apply sequential thinking: "Scan imports → Build module graph → Detect circular → Mark shared modules"
 
-```bash
-# Analyze imports for target feature modules and dependencies
-grep -r "import\|require" --include="*.js" --include="*.ts" --include="*.py" [extracted_paths]
-```
-- Parse import statements
+- Analyze imports for target feature modules and dependencies
+- Parse import statements from code files
 - Build dependency matrix between all modules
 - Identify shared modules (used by 3+)
 - Check for circular dependencies
@@ -206,12 +160,10 @@ grep -r "import\|require" --include="*.js" --include="*.ts" --include="*.py" [ex
 - **Update Dependency Graph** with new modules and relationships
 
 ### 3.2 Implementation Status update
-Add new feature entry:
-```markdown
-- [FEATURE_NAME]: [Brief description from tasks.md]
-  - Main file: `[extracted_main_file]`
-  - Key modules: `[module1]`, `[module2]`, `[module3]`
-```
+Add new feature entry with:
+- Feature name and brief description
+- Main file path (from first IMPL-XXX task)
+- Key module paths (from all IMPL-XXX tasks)
 
 ### 3.3 Dependency Graph update
 Build comprehensive graph including:
@@ -245,7 +197,7 @@ Before writing README.md, ensure:
 README.md Created Successfully!
 
 Mode: Initial Creation
-Feature Added: [FEATURE_NAME]
+Feature Added: [feature-name]
 Location: ./ai-docs/README.md
 ```
 
@@ -254,7 +206,7 @@ Location: ./ai-docs/README.md
 README.md Updated Successfully!
 
 Mode: Update
-Feature Added: [FEATURE_NAME]
+Feature Added: [feature-name]
 Dependencies Analyzed: [count]
 Location: ./ai-docs/README.md
 ```
@@ -262,20 +214,16 @@ Location: ./ai-docs/README.md
 # Error Handling
 
 **Input Errors:**
-- **FEATURE not provided**: "Error: FEATURE parameter is required. Specify completed feature name."
-- **Feature not found**: "Error: Feature [FEATURE] not found in ./ai-docs/features/"
+- **Invalid path**: "Error: Input must be tasks.md file in ./ai-docs/features/*/tasks.md format"
+- **File not found**: "Error: tasks.md not found at provided path"
 - **FEATURES.md not found**: "Error: No FEATURES.md found at ./ai-docs/FEATURES.md. Run feature command first."
-- **tasks.md missing**: "Error: No tasks.md for feature [FEATURE]. Cannot proceed."
-- **Feature incomplete**: "Error: Feature [FEATURE] has uncompleted tasks. Only completed features can be added."
+- **Feature incomplete**: "Error: Feature has uncompleted tasks `[ ]`. Only completed features can be added."
 
 **Analysis Errors:**
+- **Feature not in index**: "Error: Feature [name] not found in FEATURES.md"
 - **Dependency not found**: "Warning: Dependency [name] tasks.md not found. Graph context incomplete."
-- **Circular dependency detected**: "Error: Circular dependency found: [A]→[B]→[C]→[A] in code modules."
-- **Module not found**: "Warning: Module [name] referenced but not found in codebase at [path]"
-
-**Validation Errors:**
-- **Placeholder detected**: "Error: Placeholder [TBD] found in [section]. Use real data only."
-- **Invalid path**: "Error: Path [path] does not exist in codebase."
+- **Circular dependency**: "Error: Circular dependency found: [A]→[B]→[C]→[A] in code modules."
+- **Module not found**: "Warning: Module [path] referenced but not found in codebase."
 
 **Common Errors:**
 - **Template not found**: "Error: Template not found at @.claude/templates/readme-template.md"
