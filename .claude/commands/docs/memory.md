@@ -74,24 +74,42 @@ Complete bidirectional map:
 
 Call `/mcp__sequential-thinking__sequentialthinking` once:
 
-**Input:** 
-- Initial Mode: "Scan entire project for all module files"
-- Update Mode: "Scan entire project including new modules from [feature]"
-
-**Task:**
+**For Initial Mode - Project analysis:**
 ```
-"Read each module file → Parse all import statements → 
-Build complete bidirectional dependency map → 
+"Analyze project structure → Determine primary language by file extensions → 
+Identify main framework/platform by project patterns → 
+Locate primary entry point → Classify architecture type → 
+Scan all modules → Parse imports → Build bidirectional dependency map → 
 Mark modules with 3+ incoming connections as SHARED → 
-Detect any circular dependency chains → 
-Output structured graph in tree format"
+Detect circular chains → Output metadata and graph"
+```
+
+**For Update Mode - Graph update:**
+```
+"Scan entire project including new feature modules → 
+Parse all imports → Build complete bidirectional map → 
+Mark shared modules → Detect circular → Output updated graph"
 ```
 
 **Expected Output:**
-- Complete module list with paths
-- Bidirectional relationships
-- Circular dependencies if found
-- Shared modules identified
+- Project metadata (Initial Mode only):
+  - Primary language
+  - Main framework/platform
+  - Entry point
+  - Architecture type (modular/monolithic/service-based)
+- Dependency graph:
+  - Complete module list with paths
+  - Bidirectional relationships
+  - Circular dependencies if found
+  - Shared modules identified
+
+**If metadata cannot be determined, use placeholders:**
+```
+Language: [LANGUAGE]
+Framework: [FRAMEWORK]
+Entry point: [ENTRY]
+Structure: [STRUCTURE]
+```
 
 ## Phase 3: Save
 
