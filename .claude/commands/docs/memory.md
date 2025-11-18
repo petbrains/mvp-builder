@@ -1,207 +1,138 @@
 ---
-description: Generate and maintain project README.md as implementation status tracker
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+description: Generate and maintain project README.md as navigation map for AI agents
+allowed-tools: Read, Write, mcp__sequential-thinking__sequentialthinking
 ---
 
 # Instructions
 
-Generate and maintain project README.md as external memory bank for AI agents, tracking implementation status and code dependencies.
+Generate and maintain README.md as external memory bank for AI agents - a navigation map of implemented code.
 
 **Tools Usage:**
-- `Read`: For loading tasks.md files and existing README.md
-- `Write`: For saving README.md
-- `Bash`: For analyzing code imports
-- `/mcp__sequential-thinking__sequentialthinking`: For dependency analysis
-  - See @.claude/tools/sequential-thinking.md for details
-
-**Sequential Thinking Usage:**
-Use `/mcp__sequential-thinking__sequentialthinking`:
-
-For Dependency Extraction:
-- When finding dependencies: "Read FEATURES.md → Locate target feature → Extract depends on list → Load dependency tasks → Extract module paths"
-
-For Code Dependencies:
-- When building graph: "Analyze imports from all modules → Map relationships → Detect circular → Tag shared modules"
-
-For Content Generation:
-- When updating README: "Load existing content → Add new feature entry → Update dependency graph → Validate completeness"
+- `Read`: Load tasks.md, existing README.md, and source files
+- `Write`: Save README.md
+- `/mcp__sequential-thinking__sequentialthinking`: Build dependency graph
 
 **Templates:**
 - Readme: @.claude/templates/readme-template.md
 
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/tasks.md`
-- Context: `./ai-docs/FEATURES.md`
 - Output: `./ai-docs/README.md`
 
 # Task
 
-Add completed feature to README.md and update dependency graph using modules from the feature and its dependencies.
+Add completed feature to README.md and build/update complete code dependency graph.
 
 # Rules
 
 ## Mode Detection
-- If `./ai-docs/README.md` does not exist → Initial Creation Mode
-- If `./ai-docs/README.md` exists → Update Mode
+- No `./ai-docs/README.md` → Initial Mode (scan entire project)
+- Exists `./ai-docs/README.md` → Update Mode (full rescan with new feature)
 
 ## Content Rules
+- Real file paths only
+- Actual code dependencies from imports
+- Bidirectional graph (depends on + used by)
+- Mark modules with 3+ incoming as [SHARED]
+- Circular dependency = ERROR (blocks update)
+- No placeholders, no water, every word matters
 
-- Use real file paths, not placeholders
-- Show actual code dependencies (imports/requires)
-- One bullet per feature in Implementation Status
-- Tree format for Dependency Graph
-- Mark shared modules (used by 3+) with [SHARED] tag
-- Check for circular dependencies (A→B→C→A)
+## Import Filtering
+Include only project modules:
+- Paths starting with `./` or `../`
+- Exclude: node_modules, system libraries, external packages
 
-## Feature Status Detection from tasks.md
-
-From input tasks.md file:
-1. **Extract feature name** from path: `./ai-docs/features/[FEATURE]/tasks.md`
-2. **Verify completion**: All tasks must have `[x]` checkboxes
-3. **Extract implementation details**:
-   - Main file: First IMPL-XXX task that creates primary component
-   - Key modules: All file paths from IMPL-XXX tasks
-
-### Dependency Context for Graph Building
-
-From FEATURES.md extract dependencies:
-1. **Find feature** using extracted name
-2. **Extract "depends on"** list for the feature
-3. **For each dependency**: Load their tasks.md files
-4. **Extract modules** from dependency features for complete graph context
-
-### Example Parsing
-From tasks.md:
+## Implementation Status Format
+Minimal entry per feature:
+```markdown
+- [FEATURE_NAME]: [ONE_LINE_DESCRIPTION]
+  Main: `[ENTRY_FILE_PATH]`
 ```
-- [x] IMPL-012 [US1] Create [entity-name] entity in [path/to/entities/[entity]]
-- [x] IMPL-013 [US1] Implement [feature] logic in [path/to/[feature]/handler]
+
+## Dependency Graph Format
+Complete bidirectional map:
 ```
-Extracts:
-- Main file: `[path/to/entities/[entity]]`
-- Key modules: `[path/to/entities/[entity]]`, `[path/to/[feature]/handler]`
+[MODULE_NAME] (`[PATH]`) [SHARED_IF_APPLICABLE]
+├── depends on: [MODULE_1], [MODULE_2]
+└── used by: [MODULE_A], [MODULE_B]
+```
 
 # Execution Flow
 
-# Execution Flow
+## Phase 1: Load & Extract
 
-## Phase 1: Initialize & Mode Detection
+1. **Extract feature name** from path: `./ai-docs/features/[name]/tasks.md`
+2. **Read tasks.md** → Verify all marked `[x]`
+3. **Extract module paths** from IMPL tasks creating new files:
+   - Look for: "Create", "Implement", "Add"
+   - Skip: "Update", "Modify", "Refactor"
+   - First create task = Main entry file
+4. **Set mode** based on README.md existence
+5. **Load template** from @.claude/templates/readme-template.md
 
-### 1.1 Check README existence and set mode
-- If `./ai-docs/README.md` exists → Update Mode
-- If not exists → Initial Mode
+## Phase 2: Build Navigation Map
 
-### 1.2 Extract feature from input path
-- Parse feature name from tasks.md path: `./ai-docs/features/[feature-name]/tasks.md`
-- Read input tasks.md → Verify all tasks completed `[x]`
-- Read FEATURES.md → Find feature and extract dependencies
+Call `/mcp__sequential-thinking__sequentialthinking` once:
 
-### 1.3 Load dependency context
-For each dependency from FEATURES.md:
-- Read `./ai-docs/features/[dependency]/tasks.md`
-- Extract module paths for graph building
+**Input:** 
+- Initial Mode: "Scan entire project for all module files"
+- Update Mode: "Scan entire project including new modules from [feature]"
 
-## Phase 2: Extract Status
-
-### 2.1 Extract feature implementation details
-From target feature's tasks.md:
-1. **Verify completion**: All tasks must be `[x]`
-2. **Extract main file**: First IMPL-XXX task path
-3. **Extract key modules**: All paths from IMPL-XXX tasks
-
-### 2.2 Extract dependency modules for context
-For each dependency feature:
-1. **Read tasks.md** (already loaded in Phase 1)
-2. **Extract module paths** from IMPL-XXX tasks
-3. **Build module map**: feature → modules relationship
-
-### 2.3 Analyze code dependencies
-Apply sequential thinking: "Scan imports → Build module graph → Detect circular → Mark shared modules"
-
-- Analyze imports for target feature modules and dependencies
-- Parse import statements from code files
-- Build dependency matrix between all modules
-- Identify shared modules (used by 3+)
-- Check for circular dependencies
-
-## Phase 3: Build Content
-
-### 3.1 Update or create sections
-
-**For Initial Mode:**
-- Create all sections from template
-- Add first feature to Implementation Status
-
-**For Update Mode:**
-- Keep existing Project Header and Codebase Overview
-- **Add new feature** to Implementation Status → Completed
-- **Update Dependency Graph** with new modules and relationships
-
-### 3.2 Implementation Status update
-Add new feature entry with:
-- Feature name and brief description
-- Main file path (from first IMPL-XXX task)
-- Key module paths (from all IMPL-XXX tasks)
-
-### 3.3 Dependency Graph update
-Build comprehensive graph including:
-- Modules from new feature
-- Modules from its dependencies (for context)
-- Show relationships between all modules
-- Add [SHARED] tags for modules used by 3+
-- Preserve existing graph entries, add new connections
-
-## Phase 4: Validate & Save
-
-### 4.1 Apply validation rules
-Before writing README.md, ensure:
-- No placeholder text ([TBD], [TODO])  
-- All file paths exist in codebase
-- Module names match actual implementation
-- All completed features have all tasks `[x]`
-- Dependency graph has no circular dependencies
-- Every sentence adds value
-
-### 4.2 Write README.md
-- Load template from @.claude/templates/readme-template.md
-- Fill all sections with validated content
-- Exclude Review & Acceptance Checklist from output
-- Write to `./ai-docs/README.md`
-
-### 4.3 Report completion
-
-**For Initial Mode:**
+**Task:**
 ```
-README.md Created Successfully!
-
-Mode: Initial Creation
-Feature Added: [feature-name]
-Location: ./ai-docs/README.md
+"Read each module file → Parse all import statements → 
+Build complete bidirectional dependency map → 
+Mark modules with 3+ incoming connections as SHARED → 
+Detect any circular dependency chains → 
+Output structured graph in tree format"
 ```
 
-**For Update Mode:**
-```
-README.md Updated Successfully!
+**Expected Output:**
+- Complete module list with paths
+- Bidirectional relationships
+- Circular dependencies if found
+- Shared modules identified
 
-Mode: Update
-Feature Added: [feature-name]
-Dependencies Analyzed: [count]
-Location: ./ai-docs/README.md
-```
+## Phase 3: Save
+
+1. **Generate content:**
+   - Initial Mode: Fill all template sections
+   - Update Mode: 
+     - Keep Project Header and Codebase Overview
+     - Add new feature to Implementation Status
+     - Replace entire Dependency Graph with updated version
+
+2. **Validate before writing:**
+   - No placeholders ([TBD], [TODO])
+   - Circular dependency check (ERROR = stop)
+   - All paths are real
+
+3. **Write README.md:**
+   - Exclude "Review & Acceptance Checklist" section
+   - Save to `./ai-docs/README.md`
+
+4. **Report:**
+   ```
+   README.md [Created/Updated] Successfully!
+   
+   Mode: [Initial/Update]
+   Feature: [feature-name]
+   Total Modules: [count]
+   Shared Modules: [count]
+   Location: ./ai-docs/README.md
+   ```
 
 # Error Handling
 
-**Input Errors:**
-- **Invalid path**: "Error: Input must be tasks.md file in ./ai-docs/features/*/tasks.md format"
-- **File not found**: "Error: tasks.md not found at provided path"
-- **FEATURES.md not found**: "Error: No FEATURES.md found at ./ai-docs/FEATURES.md. Run feature command first."
-- **Feature incomplete**: "Error: Feature has uncompleted tasks `[ ]`. Only completed features can be added."
+## Critical Errors (Stop Execution)
+- **Circular dependency**: "Error: Circular [A→B→C→A]. Fix code before updating README"
+- **Invalid input**: "Error: Input must be ./ai-docs/features/*/tasks.md"
+- **Incomplete tasks**: "Error: Feature has uncompleted tasks [ ]"
 
-**Analysis Errors:**
-- **Feature not in index**: "Error: Feature [name] not found in FEATURES.md"
-- **Dependency not found**: "Warning: Dependency [name] tasks.md not found. Graph context incomplete."
-- **Circular dependency**: "Error: Circular dependency found: [A]→[B]→[C]→[A] in code modules."
-- **Module not found**: "Warning: Module [path] referenced but not found in codebase."
+## Warnings (Continue)
+- **Module not found**: "Warning: Cannot resolve import [module] in [file]"
+- **Parse error**: "Warning: Cannot parse [file]. Skipping"
 
-**Common Errors:**
-- **Template not found**: "Error: Template not found at @.claude/templates/readme-template.md"
-- **Write permission denied**: "Error: Cannot write to ./ai-docs/README.md. Check permissions."
+## System Errors
+- **Template missing**: "Error: Template not found at @.claude/templates/readme-template.md"
+- **Write denied**: "Error: Cannot write ./ai-docs/README.md"
