@@ -30,8 +30,8 @@ For Content Generation:
 - Readme: @.claude/templates/readme-template.md
 
 **File Structure:**
-- Input: `./ai-docs/features/[feature]/tasks.md` (completed feature tasks file)
-- Context: `./ai-docs/FEATURES.md` (for dependencies lookup)
+- Input: `./ai-docs/features/[feature]/tasks.md`
+- Context: `./ai-docs/FEATURES.md`
 - Output: `./ai-docs/README.md`
 
 # Task
