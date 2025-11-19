@@ -15,7 +15,30 @@ Output compact, structured documents that complement (not duplicate) feature spe
 - `/mcp__sequential-thinking__sequentialthinking`: For complex analysis when needed
   - See @.claude/tools/sequential-thinking.md for details
 
-**Sequential Thinking Usage:**
+**Template:**
+- UX: @.claude/templates/ux-template.md
+
+**Project context:**
+- PRD: @ai-docs/PRD.md
+
+**File Structure:**
+- Input: `./ai-docs/features/[feature]/` (expects spec.md)
+- Output: `./ai-docs/features/[feature]/ux.md`
+
+# Task
+
+Transform feature specifications into compact UX documents.
+Focus on user interactions, behavior patterns, and platform UX conventions.
+
+# Core Principles
+
+## Content Rules
+- **Complement, don't duplicate** - Add UX insights, not repeat requirements
+- **Structured data** - Use JSON for all component definitions, Mermaid for flows
+- **Platform-aware** - Include only UX-relevant patterns for detected platform
+- **Template compliance** - Exclude Review Checklist from final output
+
+## Sequential Thinking Usage
 Use `/mcp__sequential-thinking__sequentialthinking`:
 
 For Platform Detection:
@@ -33,45 +56,25 @@ For Interaction Model:
 For Error Presentation:
 - When categorizing errors: "Analyze edge cases → Map to four types → Define UI responses → Ensure all scenarios covered"
 
-**File Structure:**
-- Input: `./ai-docs/PRD.md` (platform info) + `./ai-docs/features/[feature]/spec.md`
-- Output: `./ai-docs/features/[feature]/ux.md`
-
-**Template:** @.claude/templates/ux-template.md
-
-# Task
-
-Transform feature specifications into compact UX documents.
-Focus on user interactions, behavior patterns, and platform UX conventions.
-Document should be comprehensive yet concise, focusing on UX patterns essential for implementation.
-
-# Rules
-
-## Content Rules
-- **Complement, don't duplicate** - Add UX insights, not repeat requirements
-- **Structured data** - Use JSON for all component definitions, Mermaid for flows
-- **Platform-aware** - Include only UX-relevant patterns for detected platform
-- **Template compliance** - Exclude Review Checklist from final output
-
 # Execution Flow
 
-## Phase 1: Initialize
+## Phase 0: Context & Validation
 
-### 1.1 Validate Input
+### 0.1 Initialize UX Generation
 ```bash
-if [ ! -f "./ai-docs/features/$FEATURE/spec.md" ]; then
-  echo "Error: spec.md not found for feature: $FEATURE"
-  exit 1
-fi
+# Validate required inputs exist
+[ ! -f "./ai-docs/features/$FEATURE/spec.md" ] && echo "Error: spec.md not found" && exit 1
 ```
 
-### 1.2 Load Sources
-- Read `./ai-docs/features/[feature]/spec.md` - Extract requirements and functionality
-- Read `./ai-docs/PRD.md` if exists - Extract platform information
+### 0.2 Load Sources
+- Read `./ai-docs/features/[feature]/spec.md` → Extract requirements and functionality
+- Read `./ai-docs/PRD.md` → Extract platform information and technical context
 
-## Phase 2: Platform Detection
+**Keep in context throughout execution**
 
-### 2.1 Analyze Platform Indicators
+## Phase 1: Platform Detection
+
+### 1.1 Analyze Platform Indicators
 ```
 PRD explicit platform → Use PRD platform
 Else analyze keywords:
@@ -81,7 +84,7 @@ Else analyze keywords:
   - Browser Extension: extension, popup, content script, chrome API, manifest
 ```
 
-### 2.2 Confirm Platform
+### 1.2 Confirm Platform
 If platform unclear, apply `/mcp__sequential-thinking__sequentialthinking` for platform detection.
 
 ```
@@ -90,16 +93,16 @@ If platform unclear, apply `/mcp__sequential-thinking__sequentialthinking` for p
 Generating [platform]-specific UX specification...
 ```
 
-## Phase 3: Content Generation
+## Phase 2: Content Generation
 
-### 3.1 Extract Core Functionality
+### 2.1 Extract Core Functionality
 From spec.md extract:
 - Primary user story → Main flow
 - Acceptance scenarios → Interaction points
 - Requirements → UX patterns needed
 - Edge cases → Critical scenarios
 
-### 3.2 Generate User Flow
+### 2.2 Generate User Flow
 Apply `/mcp__sequential-thinking__sequentialthinking` for flow completeness analysis.
 
 Create comprehensive Mermaid diagram showing complete user journey:
@@ -112,7 +115,7 @@ flowchart TD
     Error --> Recovery[Recovery]
 ```
 
-### 3.3 Build Interaction Model
+### 2.3 Build Interaction Model
 Generate JSON for core user actions and system responses.
 
 **Important:** Replace `[PRIMARY_ACTION_NAME]` and `[SECONDARY_ACTION_NAME]` with actual action names (e.g., "submit_form", "upload_file", "refresh_data")
@@ -138,7 +141,7 @@ For States & Transitions, define complete lifecycle states:
 }
 ```
 
-### 3.4 Platform-Specific UX Patterns
+### 2.4 Platform-Specific UX Patterns
 **Include only non-N/A patterns for the detected platform. Remove entire platform section if all items are N/A.**
 
 Key patterns by platform:
@@ -147,7 +150,7 @@ Key patterns by platform:
 - **Desktop**: Window management, System integration, File operations
 - **Browser Extension**: Permissions, Context injection, Storage strategy
 
-### 3.5 Define Error Presentation
+### 2.5 Define Error Presentation
 Apply `/mcp__sequential-thinking__sequentialthinking` for error categorization.
 
 Define four error types (as required by template):
@@ -165,7 +168,7 @@ Define four error types (as required by template):
 }
 ```
 
-### 3.6 Accessibility Standards
+### 2.6 Accessibility Standards
 Define accessibility requirements:
 
 - **Screen Readers**: ARIA requirements, label structure
@@ -173,9 +176,9 @@ Define accessibility requirements:
 - **Visual**: Contrast requirements, color independence
 - **Touch Targets**: Minimum sizes for mobile/desktop
 
-## Phase 4: Assembly
+## Phase 3: Assembly & Output
 
-### 4.1 Structure Document
+### 3.1 Structure Document
 Follow template sections:
 1. Header (platform)
 2. User Flow (Mermaid)
@@ -186,14 +189,17 @@ Follow template sections:
 
 **Note:** Do NOT include Review & Acceptance Checklist in final output
 
-### 4.2 Optimize Content
+### 3.2 Optimize Content
 - Keep descriptions concise but complete
 - Remove any N/A sections entirely
 - Priority: Flows > Interactions > Error Presentation > Accessibility
 
-## Phase 5: Validation
+### 3.3 Write Document
+Write to: `./ai-docs/features/[feature]/ux.md`
 
-### 5.1 Content Validation
+## Phase 4: Validate & Report
+
+### 4.1 Content Validation
 Verify:
 - No duplication of spec.md content
 - Focus on UX, not technical implementation
@@ -201,32 +207,27 @@ Verify:
 - JSON structure valid
 - All four error types defined
 
-## Phase 6: Save
-
-### 6.1 Write Document
-Write to: `./ai-docs/features/[feature]/ux.md`
-
-### 6.2 Report Success
+### 4.2 Report Success
 ```
 ✅ UX Specification Complete!
 
-Platform: [platform]
 Feature: [feature-name]
+Platform: [platform]
 Location: ./ai-docs/features/[feature]/ux.md
+
+Summary:
+- User Flow: Generated
+- Core Actions: Defined
+- Platform Patterns: [platform]-specific
+- Error Types: 4 scenarios covered
+- Accessibility: Standards defined
 ```
 
 # Error Handling
 
-## Input Errors
-- **Spec not found**: "Error: No spec.md found at ./ai-docs/features/[feature]/spec.md"
-- **PRD missing**: "Warning: PRD.md not found, using spec.md for platform detection"
-
-## Detection Errors
-- **Platform unclear**: "Platform detection ambiguous. Please specify: 1) Web 2) Mobile 3) Desktop 4) Browser Extension"
-
-## Generation Errors
+- **Missing files**: "Error: [file] not found. Run [command] first."
+- **Platform unclear**: "Platform detection ambiguous. Using spec.md context for best match."
 - **Template missing**: "Error: UX template not found at specified path"
-
-## Validation Errors
-- **Duplicate content**: "Warning: Content duplicates spec.md requirements"
+- **Duplicate content**: "Warning: Content duplicates spec.md requirements. Regenerating..."
 - **Invalid JSON**: "Error: Generated JSON structure invalid. Regenerating..."
+- **Incomplete sections**: "Error: Missing required section: [section-name]"

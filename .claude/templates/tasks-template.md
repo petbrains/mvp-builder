@@ -4,11 +4,12 @@
 Template for generating implementation tasks using TDD cycles for each user story.
 
 ## Task Format
-- **ID**: Prefix-Number format (TEST-001, IMPL-002...)
+- **ID**: Prefix-Number format (INIT-001, TEST-001, IMPL-001...)
 - **[Story]**: User story reference (US1, US2...)
 - **Description**: Action with file path
 
 ### Task Prefixes
+- **INIT-**: Project initialization and setup
 - **TEST-**: Tests
 - **IMPL-**: Implementation
 
@@ -52,17 +53,17 @@ Template for generating implementation tasks using TDD cycles for each user stor
 
 ## Phase 1: Core Infrastructure
 
-- [ ] IMPL-001 Create project structure per plan.md
-- [ ] IMPL-002 Initialize [language] project per setup.md dependencies
-- [ ] IMPL-003 Configure linting and formatting tools
-- [ ] IMPL-004 Setup data layer from data-model.md
-- [ ] IMPL-005 Implement authentication if required
-- [ ] IMPL-006 Setup API layer per contracts/openapi specifications
-- [ ] IMPL-007 Create base entities from data-model.md
-- [ ] IMPL-008 Configure error handling
-- [ ] IMPL-009 Setup environment per setup.md requirements
-- [ ] IMPL-010 Implement state management if specified
-- [ ] IMPL-011 Setup validation layer if required
+- [ ] INIT-001 Create project structure per plan.md
+- [ ] INIT-002 Initialize [language] project per setup.md dependencies
+- [ ] INIT-003 Configure linting and formatting tools
+- [ ] INIT-004 Setup data layer from data-model.md
+- [ ] INIT-005 Implement authentication if required
+- [ ] INIT-006 Setup API layer per contracts/openapi specifications
+- [ ] INIT-007 Create base entities from data-model.md
+- [ ] INIT-008 Configure error handling
+- [ ] INIT-009 Setup environment per setup.md requirements
+- [ ] INIT-010 Implement state management if specified
+- [ ] INIT-011 Setup validation layer if required
 
 ## Phase 2: User Story 1 - [Title] (P1 - MVP)
 
@@ -78,8 +79,8 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - [ ] TEST-002 [US1] Test [edge case from spec.md]
 
 #### GREEN Phase  
-- [ ] IMPL-012 [US1] Create [entity] per data-model.md in src/[location]/[file]
-- [ ] IMPL-013 [US1] Implement logic to pass tests
+- [ ] IMPL-001 [US1] Create [entity] per data-model.md in src/[location]/[file]
+- [ ] IMPL-002 [US1] Implement logic to pass tests
 
 ### TDD Cycle 2: [API Endpoint]
 **Coverage**: 
@@ -90,7 +91,7 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - [ ] TEST-003 [US1] Test [requirement]
 
 #### GREEN Phase
-- [ ] IMPL-014 [US1] Implement in src/[location]/[file]
+- [ ] IMPL-003 [US1] Implement in src/[location]/[file]
 
 ## Phase 3: User Story 2 - [Title] (P2)
 
@@ -102,7 +103,7 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - [ ] TEST-004 [US2] Test [requirement]
 
 #### GREEN Phase
-- [ ] IMPL-015 [US2] Implement in src/[location]/[file]
+- [ ] IMPL-004 [US2] Implement in src/[location]/[file]
 
 ## Phase 4: User Story 3 - [Title] (P3)
 
@@ -114,7 +115,7 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - [ ] TEST-005 [US3] Test [requirement]
 
 #### GREEN Phase
-- [ ] IMPL-016 [US3] Implement in src/[location]/[file]
+- [ ] IMPL-005 [US3] Implement in src/[location]/[file]
 
 ## Execution Order
 
@@ -150,7 +151,7 @@ Within each story: RED → GREEN cycles
 - [ ] Each cycle has RED and GREEN phases
 
 ### Structure
-- [ ] Task IDs use correct prefixes (TEST-, IMPL-)
+- [ ] Task IDs use correct prefixes (INIT-, TEST-, IMPL-)
 - [ ] Story labels consistent ([US1], [US2])
 - [ ] File paths specified
 - [ ] Priority order maintained (P1 → P2 → P3)
