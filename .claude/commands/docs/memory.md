@@ -5,7 +5,7 @@ allowed-tools: Read, Write, mcp__sequential-thinking__sequentialthinking
 
 # Instructions
 
-Generate and maintain README.md as external memory bank for AI agents - a navigation map of implemented code.
+Generate README.md as navigation map of implemented code for AI agents.
 
 **Tools Usage:**
 - `Read`: Load tasks.md, existing README.md, and source files
@@ -19,7 +19,7 @@ Generate and maintain README.md as external memory bank for AI agents - a naviga
 
 # Task
 
-Process feature folder to add completed implementation to README.md and build/update complete code dependency graph.
+Process feature folder to add completed implementation to README.md with dependency graph.
 
 # Template
 
@@ -44,8 +44,8 @@ Stack: [LANGUAGE] | [FRAMEWORK]
 # Rules
 
 ## Mode Detection
-- No `./ai-docs/README.md` → Initial Mode (scan entire project)
-- Exists `./ai-docs/README.md` → Update Mode (full rescan with new feature)
+- No README.md or empty → Initial Mode
+- Valid README.md exists → Update Mode
 
 ## Content Rules
 - Real file paths only
@@ -53,84 +53,74 @@ Stack: [LANGUAGE] | [FRAMEWORK]
 - Bidirectional graph (depends on + used by)
 - Mark modules with 3+ incoming as [SHARED]
 - Circular dependency = ERROR (blocks update)
-- No placeholders, no water, every word matters
+- No placeholders in final output
 
 ## Import Filtering
-Include only project modules:
-- Paths starting with `./` or `../`
-- Exclude: node_modules, system libraries, external packages
+Project modules only:
+- Relative: `./`, `../`
+- Aliases: `@/`, `~/`, `#/`
+- Absolute: `/src/`
+- Exclude: node_modules, system libraries
 
 ## Dependency Graph Format
-Complete bidirectional map as shown in Template - mark modules with [SHARED] if 3+ incoming connections.
+Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 
 # Execution Flow
 
 ## Phase 1: Load & Extract
 
-1. **Extract feature name** from folder path: `./ai-docs/features/[name]/`
-2. **Read tasks.md** from `[name]/tasks.md` → Verify all marked `[x]`
-3. **Extract entry file** from first IMPL task with "Create" or "Implement" in first TDD cycle of the feature (Phase 2+)
-4. **Set mode** based on README.md existence
+1. **Extract feature name** from folder: `./ai-docs/features/[name]/`
+2. **Load tasks.md** → Verify all tasks marked `[x]`
+3. **Extract feature description** from first User Story title in tasks.md Phase 2
+4. **Extract feature entry** from first IMPL creating main component in Phase 2
+5. **Detect mode** per Mode Detection rules
 
 ## Phase 2: Build Navigation Map
 
-Call `/mcp__sequential-thinking__sequentialthinking` once:
+Use `/mcp__sequential-thinking__sequentialthinking`:
 
-**For Initial Mode - Project analysis:**
+**Initial Mode - Full scan:**
 ```
-Steps:
 1. Scan all project files
-2. Determine primary language by file extensions
-3. Identify main framework from dependencies/config files
+2. Determine primary language by extensions
+3. Identify main framework from config/dependencies
 4. Locate primary entry point (main/index/app)
 5. Parse all module imports
 6. Build bidirectional dependency map
-7. Mark modules with 3+ incoming connections as SHARED
-8. Detect circular dependency chains
+7. Mark shared modules (3+ incoming)
+8. Detect circular dependencies
 ```
 
-**For Update Mode - Graph update:**
+**Update Mode - Incremental:**
 ```
-Steps:
-1. Scan entire project including new feature modules
-2. Parse all imports across codebase
-3. Build complete bidirectional dependency map
-4. Mark shared modules (3+ incoming)
+1. Scan project including new feature
+2. Parse all imports
+3. Build complete bidirectional map
+4. Mark shared modules
 5. Detect circular dependencies
 ```
 
-**Expected Output:**
-- Project metadata:
-  - Primary language
-  - Main framework
-  - Entry point
-- Dependency graph:
-  - Complete module list with paths
-  - Bidirectional relationships (depends on / used by)
-  - Circular dependencies if found
-  - Shared modules identified
+**Output:**
+- Primary language
+- Main framework  
+- Entry point
+- Complete dependency graph with bidirectional relations
+- Circular dependencies if found
 
-**If metadata cannot be determined, use placeholders:**
-```
-Language: [LANGUAGE]
-Framework: [FRAMEWORK]
-Entry point: [ENTRY]
-```
+## Phase 3: Generate & Save
 
-## Phase 3: Save
+1. **Map data to template:**
+   - Stack = `[language] | [framework]` from Phase 2
+   - Entry = main entry point from Phase 2
+   - Features = existing + new feature with description from Phase 1
+   - Graph = complete bidirectional map from Phase 2
 
-1. **Generate content using template:**
-   - Initial Mode: Entry, Stack, empty Features section, complete Graph
-   - Update Mode: Add new feature to Features, replace entire Graph with updated version
+2. **Validate:**
+   - No placeholders remain
+   - No circular dependencies
+   - All paths exist
 
-2. **Validate before writing:**
-   - No placeholders ([TBD], [TODO])
-   - Circular dependency check (ERROR = stop)
-   - All paths are real
-
-3. **Write README.md:**
-   - Save to `./ai-docs/README.md`
-   - Use template structure from Template section
+3. **Write README.md** to `./ai-docs/README.md`
 
 4. **Report:**
    ```
@@ -145,15 +135,15 @@ Entry point: [ENTRY]
 
 # Error Handling
 
-## Critical Errors (Stop Execution)
-- **Circular dependency**: "Error: Circular [A→B→C→A]. Fix code before updating README"
+## Critical Errors (Stop)
+- **Circular dependency**: "Error: Circular [A→B→C→A]. Fix before updating"
 - **Invalid input**: "Error: Input must be ./ai-docs/features/[feature]/ folder"
-- **Incomplete tasks**: "Error: Feature has uncompleted tasks [ ]"
+- **Incomplete tasks**: "Error: Feature has uncompleted tasks"
 - **Missing tasks.md**: "Error: tasks.md not found in feature folder"
 
 ## Warnings (Continue)
-- **Module not found**: "Warning: Cannot resolve import [module] in [file]"
-- **Parse error**: "Warning: Cannot parse [file]. Skipping"
+- **Module not found**: "Warning: Cannot resolve [module] in [file]"
+- **Parse error**: "Warning: Cannot parse [file]"
 
 ## System Errors
-- **Write denied**: "Error: Cannot write ./ai-docs/README.md"
+- **Write denied**: "Error: Cannot write README.md"
