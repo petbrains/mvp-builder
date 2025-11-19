@@ -1,5 +1,5 @@
 ---
-description: Generate actionable, dependency-ordered tasks.md for the feature based on available design artifacts.
+description: Generate actionable, dependency-ordered tasks.md
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
