@@ -59,20 +59,8 @@ Include only project modules:
 - Paths starting with `./` or `../`
 - Exclude: node_modules, system libraries, external packages
 
-## Implementation Status Format
-Minimal entry per feature:
-```markdown
-- [FEATURE_NAME]: [ONE_LINE_DESCRIPTION]
-  Entry: `[FEATURE_ENTRY_FILE]`
-```
-
 ## Dependency Graph Format
-Complete bidirectional map:
-```
-[MODULE_NAME] (`[PATH]`) [SHARED_IF_APPLICABLE]
-├── depends on: [MODULE_1], [MODULE_2]
-└── used by: [MODULE_A], [MODULE_B]
-```
+Complete bidirectional map as shown in Template - mark modules with [SHARED] if 3+ incoming connections.
 
 # Execution Flow
 
