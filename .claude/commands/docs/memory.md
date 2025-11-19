@@ -1,5 +1,5 @@
 ---
-description: Generate and maintain README.md as navigation map for AI agents
+description: Generate and maintain README.md
 allowed-tools: Read, Write, mcp__sequential-thinking__sequentialthinking
 ---
 
@@ -10,7 +10,23 @@ Generate README.md as navigation map of implemented code for AI agents.
 **Tools Usage:**
 - `Read`: Load tasks.md, existing README.md, and source files
 - `Write`: Save README.md
-- `/mcp__sequential-thinking__sequentialthinking`: Build dependency graph
+- `/mcp__sequential-thinking__sequentialthinking`: Build dependency graph and analyze module relationships
+  - See @.claude/tools/sequential-thinking.md for details
+
+**Sequential Thinking Usage:**
+Use `/mcp__sequential-thinking__sequentialthinking`:
+
+For dependency graph building:
+- "Scan all project files → Parse imports → Build bidirectional map → Detect circular dependencies → Mark shared modules"
+
+For mode detection:
+- "Check README exists → Validate structure → Determine update strategy"
+
+For incremental updates:
+- "Scan new feature files → Merge with existing graph → Rebuild bidirectional relations → Verify no cycles introduced"
+
+**Template:**
+- README structure: Embedded in Template section below
 
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/`
@@ -19,7 +35,9 @@ Generate README.md as navigation map of implemented code for AI agents.
 
 # Task
 
-Process feature folder to add completed implementation to README.md with dependency graph.
+Transform completed feature implementation into navigation map for AI agents.
+Updates README.md with bidirectional dependency graph showing module relationships.
+Maintains single source of truth for project structure and entry points.
 
 # Template
 
@@ -69,6 +87,14 @@ Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 
 ## Phase 1: Load & Extract
 
+### 1.1 Validate Feature Folder
+```bash
+# Validate feature folder structure
+[ ! -d "./ai-docs/features/$FEATURE" ] && echo "Error: Feature folder not found" && exit 1
+[ ! -f "./ai-docs/features/$FEATURE/tasks.md" ] && echo "Error: tasks.md not found" && exit 1
+```
+
+### 1.2 Load Feature Context
 1. **Extract feature name** from folder: `./ai-docs/features/[name]/`
 2. **Load tasks.md** → Verify all tasks marked `[x]`
 3. **Extract feature description** from first User Story title in tasks.md Phase 2
@@ -77,30 +103,33 @@ Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 
 ## Phase 2: Build Navigation Map
 
-Use `/mcp__sequential-thinking__sequentialthinking`:
+### 2.1 Execute Dependency Analysis
+
+Apply `/mcp__sequential-thinking__sequentialthinking`:
 
 **Initial Mode - Full scan:**
 ```
-1. Scan all project files
-2. Determine primary language by extensions
-3. Identify main framework from config/dependencies
-4. Locate primary entry point (main/index/app)
-5. Parse all module imports
-6. Build bidirectional dependency map
-7. Mark shared modules (3+ incoming)
-8. Detect circular dependencies
+"Scan all project files →
+Determine primary language by extensions →
+Identify main framework from config/dependencies →
+Locate primary entry point (main/index/app) →
+Parse all module imports →
+Build bidirectional dependency map →
+Mark shared modules (3+ incoming) →
+Detect circular dependencies"
 ```
 
 **Update Mode - Incremental:**
 ```
-1. Scan project including new feature
-2. Parse all imports
-3. Build complete bidirectional map
-4. Mark shared modules
-5. Detect circular dependencies
+"Scan project including new feature →
+Parse all imports →
+Build complete bidirectional map →
+Mark shared modules →
+Detect circular dependencies"
 ```
 
-**Output:**
+### 2.2 Process Analysis Output
+**Output validation:**
 - Primary language
 - Main framework  
 - Entry point
@@ -109,17 +138,20 @@ Use `/mcp__sequential-thinking__sequentialthinking`:
 
 ## Phase 3: Generate & Save
 
+### 3.1 Map to Template
 1. **Map data to template:**
    - Stack = `[language] | [framework]` from Phase 2
    - Entry = main entry point from Phase 2
    - Features = existing + new feature with description from Phase 1
    - Graph = complete bidirectional map from Phase 2
 
+### 3.2 Validate Output
 2. **Validate:**
    - No placeholders remain
    - No circular dependencies
    - All paths exist
 
+### 3.3 Write and Report
 3. **Write README.md** to `./ai-docs/README.md`
 
 4. **Report:**
