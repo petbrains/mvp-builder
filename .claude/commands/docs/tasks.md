@@ -66,27 +66,28 @@ Every task MUST use prefix-number format from template "Task Format" section:
 
 **Prefix System:**
 Use prefixes from template "Task Prefixes" section:
+- **INIT-**: For Phase 1 infrastructure tasks
 - **TEST-**: For RED phase of TDD cycle
-- **IMPL-**: For GREEN phase or infrastructure tasks
+- **IMPL-**: For GREEN phase or story implementation
 
 **Format Components:**
 1. **Checkbox**: ALWAYS start with `- [ ]` (markdown checkbox)
-2. **Prefix-ID**: Continuous numbering across all phases (e.g., TEST-001...005, then IMPL-001 for infrastructure, IMPL-012... for stories)
+2. **Prefix-ID**: Each prefix has independent numbering (INIT-001..., TEST-001..., IMPL-001...)
 3. **[Story] label**: REQUIRED for user story tasks only
    - Format: [US1], [US2], [US3] (maps to user stories from spec.md)
    - Core Infrastructure phase: NO story labels
 4. **Description**: Clear action with exact file path
 
 **Valid Examples:**
-- ✅ `- [ ] IMPL-001 Create project structure per plan.md`
+- ✅ `- [ ] INIT-001 Create project structure per plan.md`
 - ✅ `- [ ] TEST-001 [US1] Test user registration validation in tests/user/registration.test.py`
-- ✅ `- [ ] IMPL-012 [US1] Create User model in src/models/user.py`
+- ✅ `- [ ] IMPL-001 [US1] Create User model in src/models/user.py`
 
 **Invalid Examples:**
 - ❌ `- [ ] T001 [US1] Create model` (wrong prefix format)
 - ❌ `- [ ] Create User model` (missing ID and Story label)
 - ❌ `TEST-001 [US1] Test validation` (missing checkbox)
-- ❌ `- [ ] IMPL-001 [US1] Create model` (infrastructure IDs can't have story labels)
+- ❌ `- [ ] INIT-001 [US1] Create model` (infrastructure IDs can't have story labels)
 
 ## Task Organization Rules
 
@@ -129,7 +130,7 @@ Each cycle within a user story must have:
 
 **Phase Organization:**
 - **Phase 1: Core Infrastructure** - Project setup and shared components
-  - All IMPL- tasks, no story labels
+  - All INIT- tasks, no story labels
   - Blocks all user stories
 - **Phase 2+: User Stories** - In priority order (P1 → P2 → P3)
   - Each story organized into TDD cycles
@@ -220,9 +221,9 @@ For each user story phase:
      - If entity exists in dependency: skip model creation tasks, generate only integration tests for new relationships
 
 ### 2.4 Generate Task Hierarchy
-- Core Infrastructure: Start with IMPL-001, generate project-specific tasks following Phase 1 structure from template
-- User Story phases: TEST- tasks continue from TEST-001, IMPL- tasks continue from last IMPL- number of previous phase
-- Maintain continuous numbering as shown in template examples
+- Core Infrastructure: Start with INIT-001
+- User Story phases: TEST- tasks start from TEST-001, IMPL- tasks start from IMPL-001
+- Each prefix maintains its own sequential numbering
 
 ### 2.5 Validate Task Completeness
 Check:
@@ -249,14 +250,14 @@ Never use placeholder values or generic descriptions.
 **Important:** Generate content following template structure but exclude all meta-sections (Task Format, Prefixes, Conventions, Mapping, Checklist).
 
 **Generate Core Infrastructure (Phase 1):**
-- Start numbering with IMPL-001
+- Start numbering with INIT-001
 - Generate project-specific tasks following Phase 1 structure from template
 - Generate infrastructure tasks using exact dependencies from setup.md
 - Skip tasks not relevant to project (e.g., auth if not needed)
 - No story labels for infrastructure tasks
 
 **Minimum generation requirements:**
-- Phase 1 must contain at least 5 IMPL- tasks
+- Phase 1 must contain at least 5 INIT- tasks
 - Each user story must contain at least 1 TDD cycle
 - Each TDD cycle must have at least 2 TEST- tasks and 2 IMPL- tasks
 
@@ -268,8 +269,8 @@ For each user story (in priority order):
    - Name each cycle by its component
    - Fill Coverage section (requirements, entities, contracts)
    - Include only applicable Coverage fields
-   - Generate RED phase (TEST- tasks with continuous numbering)
-   - Generate GREEN phase (IMPL- tasks continuing from last IMPL number)
+   - Generate RED phase (TEST- tasks with sequential numbering)
+   - Generate GREEN phase (IMPL- tasks with sequential numbering)
 
 **Template Section Mapping:**
 - Feature name → from plan.md
@@ -281,7 +282,7 @@ For each user story (in priority order):
 ### 3.2 Format Validation
 Ensure ALL tasks follow format:
 - Checkbox present (- [ ])
-- Prefix-ID format (TEST-001, IMPL-012)
+- Prefix-ID format (INIT-001, TEST-001, IMPL-001)
 - [Story] label for story tasks only
 - File paths included
 - Coverage sections complete with only applicable fields
@@ -326,7 +327,7 @@ Feature: [feature-name]
 Location: ./ai-docs/features/[feature]/tasks.md
 
 Summary:
-- Core Infrastructure: [count] IMPL tasks
+- Core Infrastructure: [count] INIT tasks
 - User Stories: [count] stories
   
 Per Story Breakdown:
@@ -343,6 +344,7 @@ Dependencies Context:
 - [List any dependency features loaded]
 
 Total Tasks: [total count]
+- INIT tasks: [total]
 - TEST tasks: [total]
 - IMPL tasks: [total]
 
@@ -352,36 +354,12 @@ Format validation: ✅ All tasks follow PREFIX-### format
 
 # Error Handling
 
-## Input Errors
-- **Missing required files**: "Error: [file] not found. Run [command] first."
-- **No user stories**: "Error: No user stories found in spec.md"
-- **Invalid priority**: "Warning: User story without priority designation"
-- **Template not found**: "Error: tasks-template.md not found at specified path"
+- **Missing files**: "Error: [file] not found. Run [command] first."
+- **Invalid format**: "Error: Task [ID] - [specific issue with format/prefix/numbering]"
+- **Incomplete TDD**: "Error: TDD Cycle [N] missing [RED/GREEN] phase"
+- **Coverage gaps**: "Warning: [Requirement/Entity/Contract] not mapped to any cycle"
+- **Dependency issues**: "Warning: Dependency [name] [not found/circular/incomplete]"
+- **Invalid numbering**: "Error: Task numbering not sequential within prefix"
+- **Template issues**: "Error: Review Checklist must not be in output"
 
-## Dependency Errors
-- **Circular dependency**: "Error: Circular dependency detected between [feature1] and [feature2]"
-- **Missing dependency**: "Warning: Dependency [feature-name] not found, proceeding without context"
-- **Incomplete dependency**: "Warning: Dependency [feature-name] missing [artifact], partial context loaded"
-
-## TDD Generation Errors
-- **Missing coverage**: "Error: TDD Cycle [N] in [US1] missing Coverage section"
-- **No RED phase**: "Error: TDD Cycle [N] missing RED phase (TEST- tasks)"
-- **No GREEN phase**: "Error: TDD Cycle [N] missing GREEN phase (IMPL- tasks)"
-- **Orphaned tests**: "Error: TEST-[ID] not part of any TDD cycle"
-
-## Task Format Errors
-- **Wrong prefix**: "Error: Task [ID] using invalid prefix. Use TEST- or IMPL-"
-- **Missing story label**: "Error: Task [ID] in user story phase missing [US#] label"
-- **Invalid numbering**: "Error: Task numbering not continuous"
-- **Missing file paths**: "Error: [count] tasks missing file paths"
-
-## Coverage Errors
-- **Incomplete requirements**: "Warning: Requirement [FR-XXX] not mapped to any TDD cycle"
-- **Unmapped entities**: "Warning: Entity [name] from data-model.md not covered"
-- **Missing contracts**: "Warning: API endpoint [path] not tested"
-- **Story mismatch**: "Error: Story label [US] not found in spec.md"
-
-## Validation Errors
-- **Review Checklist included**: "Error: Review Checklist must not be in final output"
-- **Cycle incomplete**: "Warning: TDD Cycle has tests but no implementation"
-- **Test mapping invalid**: "Error: Test type doesn't match Test Case Mapping rules"
+Report first 5 errors, then summary count if more.
