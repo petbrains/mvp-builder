@@ -13,12 +13,13 @@ Generate and maintain README.md as external memory bank for AI agents - a naviga
 - `/mcp__sequential-thinking__sequentialthinking`: Build dependency graph
 
 **File Structure:**
-- Input: `./ai-docs/features/[feature]/tasks.md`
+- Input: `./ai-docs/features/[feature]/`
+  - tasks.md (completed implementation tasks)
 - Output: `./ai-docs/README.md`
 
 # Task
 
-Add completed feature to README.md and build/update complete code dependency graph.
+Process feature folder to add completed implementation to README.md and build/update complete code dependency graph.
 
 # Template
 
@@ -66,8 +67,8 @@ Complete bidirectional map as shown in Template - mark modules with [SHARED] if 
 
 ## Phase 1: Load & Extract
 
-1. **Extract feature name** from path: `./ai-docs/features/[name]/tasks.md`
-2. **Read tasks.md** → Verify all marked `[x]`
+1. **Extract feature name** from folder path: `./ai-docs/features/[name]/`
+2. **Read tasks.md** from `[name]/tasks.md` → Verify all marked `[x]`
 3. **Extract entry file** from first IMPL task with "Create" or "Implement" in first TDD cycle of the feature (Phase 2+)
 4. **Set mode** based on README.md existence
 
@@ -146,8 +147,9 @@ Entry point: [ENTRY]
 
 ## Critical Errors (Stop Execution)
 - **Circular dependency**: "Error: Circular [A→B→C→A]. Fix code before updating README"
-- **Invalid input**: "Error: Input must be ./ai-docs/features/*/tasks.md"
+- **Invalid input**: "Error: Input must be ./ai-docs/features/[feature]/ folder"
 - **Incomplete tasks**: "Error: Feature has uncompleted tasks [ ]"
+- **Missing tasks.md**: "Error: tasks.md not found in feature folder"
 
 ## Warnings (Continue)
 - **Module not found**: "Warning: Cannot resolve import [module] in [file]"
