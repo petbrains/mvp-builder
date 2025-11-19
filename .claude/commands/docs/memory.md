@@ -97,8 +97,8 @@ Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 ### 1.2 Load Feature Context
 1. **Extract feature name** from folder: `./ai-docs/features/[name]/`
 2. **Load tasks.md** → Verify all tasks marked `[x]`
-3. **Extract feature description** from first User Story title in tasks.md Phase 2
-4. **Extract feature entry** from first IMPL creating main component in Phase 2
+3. **Extract feature description** from Phase 2 section title (text after "Phase 2:" excluding priority markers)
+4. **Extract feature entry point** from first IMPL task in first GREEN Phase of Phase 2
 5. **Detect mode** per Mode Detection rules
 
 ## Phase 2: Build Navigation Map
