@@ -13,7 +13,7 @@ Interactive agent generator that uses sequential thinking to analyze requirement
 - `Write` - Creates the final agent file
 - `Bash(ls)` - Checks existing agents and commands to avoid duplicates
 - `/mcp__sequential-thinking__sequentialthinking`: For analyzing requirements and optimizing dialogue flow
-  - See @.claude/tools/sequential-thinking.md for details
+  - Uses Sequential Thinking methodology for structured reasoning
 
 **Template:** @.claude/templates/agent-template.md
 
