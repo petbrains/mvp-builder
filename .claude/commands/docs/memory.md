@@ -11,7 +11,7 @@ Generate README.md as navigation map of implemented code for AI agents.
 - `Read`: Load tasks.md, existing README.md, and source files
 - `Write`: Save README.md
 - `/mcp__sequential-thinking__sequentialthinking`: Build dependency graph and analyze module relationships
-  - See @.claude/tools/sequential-thinking.md for details
+  - Uses Sequential Thinking methodology for structured analysis
 
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
