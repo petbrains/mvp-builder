@@ -12,7 +12,7 @@ Generate actionable tasks list organized by user story priority, enabling indepe
 - `Write`: For saving generated tasks.md
 - `Bash`: For directory existence verification
 - `/mcp__sequential-thinking__sequentialthinking`: For complex task dependency analysis and optimization
-  - See @.claude/tools/sequential-thinking.md for details
+  - Uses Sequential Thinking methodology for structured reasoning
 
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
