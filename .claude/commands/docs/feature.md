@@ -12,7 +12,7 @@ Generate feature specifications from PRD or user description into structured spe
 - `Write`: For saving spec files and index
 - `Bash`: For directory creation
 - `/mcp__sequential-thinking__sequentialthinking`: For analyzing and generating specs
-  - See @.claude/tools/sequential-thinking.md for details
+  - Uses Sequential Thinking methodology for complex multi-step analysis
 
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking`:
