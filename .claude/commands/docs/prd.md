@@ -12,7 +12,7 @@ Generate MVP Product Requirements Document through interactive dialogue with inc
 - `Write`: For incremental PRD saving after each stage
 - `Bash`: For project discovery
 - `/mcp__sequential-thinking__sequentialthinking`: For analysis at decision points
-  - See @.claude/tools/sequential-thinking.md for details
+  - Uses Sequential Thinking methodology for structured reasoning
 
 **Sequential Thinking Usage:**
 Use `/mcp__sequential-thinking__sequentialthinking` at analysis points:
