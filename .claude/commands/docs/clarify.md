@@ -11,7 +11,7 @@ Interactive command that refines existing feature specifications through targete
 - `Read`: For loading current spec state
 - `Write`: For incremental spec updates after clarifications  
 - `/mcp__sequential-thinking__sequentialthinking`: For analyzing section coherence after collecting clarifications
-  - See @.claude/tools/sequential-thinking.md for details
+  - Uses Sequential Thinking methodology for complex analysis
 
 **Template:** @.claude/templates/spec-template.md
 
