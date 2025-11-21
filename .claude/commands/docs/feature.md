@@ -209,7 +209,7 @@ Apply `/mcp__sequential-thinking__sequentialthinking` for content parsing and re
 **3.A.3 Fill Template**
 - Load spec-template.md
 - Fill all sections with extracted content
-- Apply template's internal validation checklist
+- Apply template's internal validation checklist (but DO NOT include in output)
 
 **Validation before saving:**
 - Ensure Technical Context not duplicated unnecessarily across features
@@ -284,7 +284,7 @@ Add new feature to selected/created epic while preserving existing structure.
 - Follow features-template.md structure
 - PRD Mode: Create complete new structure
 - User Input Mode: Add new feature to appropriate epic, preserve existing
-- Apply template's internal validation checklist
+- Apply template's internal validation checklist (for validation only)
 
 ### 4.4 Save Index
 
@@ -311,7 +311,7 @@ For User Input Mode:
 
 For Both Modes:
 - All spec files created successfully
-- Template checklists satisfied
+- Template checklists satisfied (validated internally, not included in output)
 
 ### 5.2 Generate Summary
 
@@ -355,3 +355,4 @@ FEATURES.md updated with new feature.
 **Common Errors:**
 - **Template not found**: Report missing template path and stop execution
 - **File write error**: Report specific file path that failed to save
+- **Checklist in output**: "Error: Review Checklist must not be included in output files"
