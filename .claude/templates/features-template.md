@@ -27,9 +27,9 @@ Total Features: [TOTAL_COUNT]
 
 ---
 
-## Review & Acceptance Checklist
+## Review Checklist
 *GATE: Automated checks*
-** MODEL INSTRUCTION: This section is for internal validation only. Do not include in final FEATURES.md output.**
+** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final FEATURES.md output.**
 
 ### Redundancy Check
 - [ ] No duplicate feature titles (>70% similarity)

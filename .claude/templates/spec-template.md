@@ -39,7 +39,7 @@
 
 ---
 
-## Review & Acceptance Checklist
+## Review Checklist
 *GATE: Automated checks*
 ** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final spec.md output.**
 

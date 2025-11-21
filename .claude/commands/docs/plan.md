@@ -13,9 +13,9 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 - `Write`: For saving plan artifacts and research notes
 - `Bash`: For directory creation and file verification
 - `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`: For library documentation and compatibility verification
-  - See @.claude/tools/context7.md for details
+  - Uses Context7 documentation retrieval framework
 - `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions and analysis
-  - See @.claude/tools/sequential-thinking.md for details
+  - Uses Sequential Thinking methodology for multi-step analysis
 
 **Template:**
 - Plan: @.claude/templates/plan-template.md
