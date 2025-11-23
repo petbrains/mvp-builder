@@ -52,7 +52,8 @@ else
 fi
 
 # Output JSON result
-printf '{"FEATURE_DIR":"%s","AVAILABLE":[' "$FEATURE_DIR"
+FEATURE_DIR_JSON=$(printf '%s' "$FEATURE_DIR" | jq -Rr @json)
+printf '{"FEATURE_DIR":%s,"AVAILABLE":[' "$FEATURE_DIR_JSON"
 first=true
 for doc in "${available_docs[@]}"; do
     if [ "$first" = true ]; then
