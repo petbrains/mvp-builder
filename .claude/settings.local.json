@@ -6,8 +6,8 @@
       "mcp__context7__get-library-docs",
       "Bash(mkdir:*)",
       "Bash(git:*)",
-      "Skill(skill-creator)",
-      "Bash(python:*)"
+      "Skill(self-improve)",
+      "Skill(git)"
     ]
   },
   "enableAllProjectMcpServers": true
