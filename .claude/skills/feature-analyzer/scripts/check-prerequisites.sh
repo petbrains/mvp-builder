@@ -61,7 +61,8 @@ for doc in "${available_docs[@]}"; do
     else
         printf ','
     fi
-    printf '"%s"' "$doc"
+    doc_json=$(printf '%s' "$doc" | jq -Rr @json)
+    printf '%s' "$doc_json"
 done
 printf '],"MISSING":['
 first=true
@@ -71,7 +72,8 @@ for doc in "${missing_docs[@]}"; do
     else
         printf ','
     fi
-    printf '"%s"' "$doc"
+    doc_json=$(printf '%s' "$doc" | jq -Rr @json)
+    printf '%s' "$doc_json"
 done
 printf ']}\n'
 
