@@ -62,6 +62,17 @@ If your spec is code written in English, the checklist is its test suite. You te
 | `api` | contracts/, plan.md | spec.md | Endpoints, errors, auth, versioning |
 | `data` | data-model.md | spec.md | Entities, validation, states, relationships |
 
+**Categories:**
+
+| Category | Question Focus |
+|----------|---------------|
+| Completeness | Are all necessary requirements documented? |
+| Clarity | Are requirements specific and unambiguous? |
+| Consistency | Do requirements align without conflicts? |
+| Measurability | Are success criteria objectively verifiable? |
+| Coverage | Are all flows/cases addressed? |
+| Edge Case | Are boundary conditions defined? |
+
 **Default categories per domain:**
 - `requirements`: Completeness, Clarity, Consistency, Measurability, Coverage
 - `ux`: Completeness, Clarity, Consistency, Coverage, Edge Case
@@ -94,22 +105,11 @@ If your spec is code written in English, the checklist is its test suite. You te
 - [ ] CHK003 Are loading state requirements defined for async data? [Gap]
 ```
 
-## Category Structure
-
-| Category | Question Focus |
-|----------|---------------|
-| Completeness | Are all necessary requirements documented? |
-| Clarity | Are requirements specific and unambiguous? |
-| Consistency | Do requirements align without conflicts? |
-| Measurability | Are success criteria objectively verifiable? |
-| Coverage | Are all flows/cases addressed? |
-| Edge Case | Are boundary conditions defined? |
-
 ## Traceability Rules
 
-- **Minimum 80%** of items must include traceability reference
-- Reference format: `[FR-XXX]`, `[UX-XXX]`, `[Plan: Section]`
-- Gap markers: `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]`
+- **Minimum 80%** of items must include reference per Item Format Rules
+- `[FR-XXX]`, `[UX-XXX]`, `[Plan: Section]` for existing requirements
+- `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]` for issues
 
 ## Content Rules
 
