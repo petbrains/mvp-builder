@@ -2,8 +2,7 @@
 
 **Purpose**: Validate [DOMAIN] requirement quality for [FEATURE_NAME]
 **Domain**: [DOMAIN_TYPE]
-**Created**: [DATE]
-**Feature**: [FEATURE_PATH]/spec.md
+**Source**: [PRIMARY_SOURCE]
 
 ## [CATEGORY_1]
 
