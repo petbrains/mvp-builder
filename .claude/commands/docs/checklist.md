@@ -79,7 +79,7 @@ If your spec is code written in English, the checklist is its test suite. You te
 - `CHK###`: Sequential ID starting from CHK001 per checklist
 - Question: Asks about requirement completeness, clarity, or consistency
 - `[Dimension]`: Completeness | Clarity | Consistency | Measurability | Coverage | Edge Case
-- `[Reference]`: `Spec §FR-XXX` | `Gap` | `Ambiguity` | `Conflict` | `Assumption`
+- `[Reference]`: `[FR-XXX]` | `[UX-XXX]` | `[Gap]` | `[Ambiguity]` | `[Conflict]` | `[Assumption]`
 
 **Valid patterns:**
 - "Are [requirements] defined/specified/documented for [scenario]?"
@@ -90,7 +90,7 @@ If your spec is code written in English, the checklist is its test suite. You te
 
 **Examples:**
 ```markdown
-- [ ] CHK001 Are visual hierarchy requirements defined with measurable criteria? [Clarity, Spec §FR-001]
+- [ ] CHK001 Are visual hierarchy requirements defined with measurable criteria? [Clarity, FR-001]
 - [ ] CHK002 Is fallback behavior specified when images fail to load? [Edge Case, Gap]
 - [ ] CHK003 Are loading state requirements defined for async data? [Completeness, Gap]
 ```
@@ -111,7 +111,7 @@ If your spec is code written in English, the checklist is its test suite. You te
 ## Traceability Rules
 
 - **Minimum 80%** of items must include traceability reference
-- Reference format: `[Spec §FR-XXX]`, `[Spec §UX-XXX]`, `[Plan §Section]`
+- Reference format: `[FR-XXX]`, `[UX-XXX]`, `[Plan: Section]`
 - Gap markers: `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]`
 
 ## Content Rules
