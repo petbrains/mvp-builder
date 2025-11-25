@@ -14,12 +14,6 @@
 - [ ] CHK003 [ITEM_QUESTION] [DIMENSION, REFERENCE]
 - [ ] CHK004 [ITEM_QUESTION] [DIMENSION, REFERENCE]
 
-## Notes
-
-- Check off when requirement confirmed complete/clear
-- [Gap] items indicate requirements to add to spec
-- [Ambiguity] items need clarification before implementation
-
 ---
 
 ## Review Checklist
@@ -34,7 +28,7 @@
 
 ### Traceability
 - [ ] ≥80% items have references
-- [ ] References use format: [Spec §FR-XXX] or [Gap/Ambiguity/Conflict]
+- [ ] References use format: [FR-XXX], [UX-XXX] or [Gap/Ambiguity/Conflict]
 
 ### Content
 - [ ] Categories match domain type
