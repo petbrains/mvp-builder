@@ -23,16 +23,21 @@ Generate "Unit Tests for Requirements" — checklists that validate requirement 
 
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/` (requires all core artifacts)
-- Output: `./ai-docs/features/[feature]/checklists/[domain]-checklist.md`
+- Output: `./ai-docs/features/[feature]/checklists/[domain]-checklist.md` (4 files)
 
 # Task
 
 Generate checklists that validate requirements quality: completeness, clarity, consistency, and measurability.
 Each checklist item asks whether requirements are well-written, not whether implementation works.
 
-**Input format:** `/checklist [feature-path] [domain]`
+**Input format:** `/checklist [feature-path]`
 - `feature-path`: Path to feature folder (required)
-- `domain`: Checklist type — requirements | ux | api | data (required)
+
+**Output:** 4 checklists generated automatically:
+- `requirements-checklist.md` — from spec.md
+- `ux-checklist.md` — from ux.md
+- `api-checklist.md` — from contracts/, plan.md
+- `data-checklist.md` — from data-model.md
 
 # Rules
 
@@ -48,16 +53,20 @@ If your spec is code written in English, the checklist is its test suite. You te
 | "Test error handling works" | "Are error scenarios documented with expected behaviors?" |
 | "Confirm API returns 200" | "Are success response formats specified for all endpoints?" |
 
-## Domain Types
+## Domain Configuration
 
-| Domain | Primary Source | Focus |
-|--------|---------------|-------|
-| `requirements` | spec.md | Overall requirement quality, FR/NFR coverage, acceptance criteria |
-| `ux` | ux.md | Visual specs, interactions, states, accessibility, error presentation |
-| `api` | contracts/, plan.md | Endpoints, errors, auth, versioning, request/response formats |
-| `data` | data-model.md | Entities, validation rules, states, relationships, constraints |
+| Domain | Primary Source | Secondary | Focus |
+|--------|---------------|-----------|-------|
+| `requirements` | spec.md | plan.md, tasks.md | FR/NFR coverage, acceptance criteria |
+| `ux` | ux.md | spec.md (UX-XXX) | Interactions, states, accessibility, errors |
+| `api` | contracts/, plan.md | spec.md | Endpoints, errors, auth, versioning |
+| `data` | data-model.md | spec.md | Entities, validation, states, relationships |
 
-Each domain maps to specific categories based on its primary source file.
+**Default categories per domain:**
+- `requirements`: Completeness, Clarity, Consistency, Acceptance Criteria, Scenario Coverage
+- `ux`: Completeness, Clarity, Consistency, Edge Case Coverage, Non-Functional (Accessibility)
+- `api`: Completeness, Clarity, Consistency, Edge Case Coverage, Dependencies
+- `data`: Completeness, Clarity, Consistency, Edge Case Coverage
 
 ## Item Format Rules
 
@@ -67,7 +76,7 @@ Each domain maps to specific categories based on its primary source file.
 ```
 
 **Components:**
-- `CHK###`: Sequential ID starting from CHK001
+- `CHK###`: Sequential ID starting from CHK001 per checklist
 - Question: Asks about requirement completeness, clarity, or consistency
 - `[Dimension]`: Completeness | Clarity | Consistency | Measurability | Coverage | Edge Case
 - `[Reference]`: `Spec §FR-XXX` | `Gap` | `Ambiguity` | `Conflict` | `Assumption`
@@ -84,12 +93,9 @@ Each domain maps to specific categories based on its primary source file.
 - [ ] CHK001 Are visual hierarchy requirements defined with measurable criteria? [Clarity, Spec §FR-001]
 - [ ] CHK002 Is fallback behavior specified when images fail to load? [Edge Case, Gap]
 - [ ] CHK003 Are loading state requirements defined for async data? [Completeness, Gap]
-- [ ] CHK004 Can "prominent display" be objectively measured? [Measurability, Spec §FR-004]
 ```
 
 ## Category Structure
-
-Group items by quality dimensions:
 
 | Category | Question Focus |
 |----------|---------------|
@@ -102,14 +108,11 @@ Group items by quality dimensions:
 | Non-Functional Requirements | Are NFRs (performance, security, a11y) specified? |
 | Dependencies & Assumptions | Are external dependencies documented? |
 
-Select 4-6 relevant categories based on domain type.
-
 ## Traceability Rules
 
 - **Minimum 80%** of items must include traceability reference
 - Reference format: `[Spec §FR-XXX]`, `[Spec §UX-XXX]`, `[Plan §Section]`
 - Gap markers: `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]`
-- If no ID system exists, include: "Is a requirement ID scheme established? [Traceability, Gap]"
 
 ## Content Rules
 
@@ -132,11 +135,7 @@ Select 4-6 relevant categories based on domain type.
 ## Phase 0: Context & Validation
 
 ### 0.1 Parse Input
-Extract from command arguments:
-- `FEATURE_PATH`: Path to feature folder
-- `DOMAIN`: Checklist type (requirements | ux | api | data)
-
-Validate domain is one of allowed types.
+Extract `FEATURE_PATH` from command arguments.
 
 ### 0.2 Load Feature Context
 
@@ -152,148 +151,103 @@ If core files missing → Report error and exit.
 - ux.md → Flows, interactions, states, error presentation
 - plan.md → Architecture, components, tech stack
 - tasks.md → Implementation phases, TDD coverage
-- data-model.md → Entities, validation, states (if exists)
-- contracts/ → API specs, message formats (if exists)
+- data-model.md → Entities, validation, states
+- contracts/ → API specs, message formats
 
 ## Phase 1: Analyze Context
 
-### 1.1 Map Domain to Sources
-
-| Domain | Primary | Secondary |
-|--------|---------|-----------|
-| requirements | spec.md | plan.md, tasks.md |
-| ux | ux.md | spec.md (UX-XXX requirements) |
-| api | contracts/, plan.md | spec.md (API requirements) |
-| data | data-model.md | spec.md (entity requirements) |
-
-### 1.2 Analyze Requirements Quality
-
 Apply `/mcp__sequential-thinking__sequentialthinking`:
 ```
-"Analyze [domain] requirements from [primary source]:
-→ Identify requirement gaps (missing specifications)
+"Analyze all feature artifacts:
+→ Extract requirements with IDs (FR-XXX, UX-XXX, NFR-XXX)
+→ Identify gaps per domain (missing specifications)
 → Detect ambiguities (vague terms, unmeasurable criteria)
 → Find inconsistencies (conflicting requirements)
-→ Map to quality dimensions (completeness, clarity, consistency, measurability)
-→ Prioritize findings by impact on implementation"
-```
-
-**Extract:**
-- Existing requirements with IDs (FR-XXX, UX-XXX, NFR-XXX)
-- Vague terms needing quantification
-- Missing scenario coverage
-- Undefined edge cases
-- Assumption dependencies
-
-## Phase 2: Generate Checklist
-
-### 2.1 Select Categories
-
-Based on domain and analysis results, select 4-6 categories from Category Structure.
-
-**Domain defaults:**
-- `requirements`: Completeness, Clarity, Consistency, Acceptance Criteria, Scenario Coverage
-- `ux`: Completeness, Clarity, Consistency, Edge Case Coverage, Non-Functional (Accessibility)
-- `api`: Completeness, Clarity, Consistency, Edge Case Coverage, Dependencies
-- `data`: Completeness, Clarity, Consistency, Edge Case Coverage
-
-### 2.2 Generate Items
-
-Apply `/mcp__sequential-thinking__sequentialthinking`:
-```
-"For each selected category:
-→ Extract relevant requirements from source files
-→ Formulate quality validation questions
-→ Apply item format rules (question pattern, dimension, reference)
-→ Ensure ≥80% traceability
-→ Filter against anti-patterns
+→ Map findings to quality dimensions
 → Prioritize by implementation impact"
 ```
 
-**Per category:** Generate 5-10 items focusing on requirement quality.
-
-### 2.3 Consolidate Items
-
-- Remove near-duplicates
-- Merge related edge cases
-- Ensure total ≤40 items
-- Verify sequential CHK### numbering
-
-### 2.4 Create Output
+## Phase 2: Generate Checklists
 
 ```bash
 mkdir -p $FEATURE_PATH/checklists
 ```
 
-**If file exists:** Warn and overwrite
+**For each domain** (requirements, ux, api, data):
+
+### 2.1 Select Categories
+Select 4-5 categories from Domain Configuration defaults.
+
+### 2.2 Generate Items
+
+Apply `/mcp__sequential-thinking__sequentialthinking`:
 ```
-Warning: Existing [domain]-checklist.md will be overwritten.
+"For [domain] checklist:
+→ Extract relevant requirements from primary source
+→ Formulate quality validation questions
+→ Apply item format rules
+→ Ensure traceability per Rules
+→ Filter against anti-patterns
+→ Prioritize by impact"
 ```
 
-**Fill template and write:**
+Generate 5-10 items per category.
+
+### 2.3 Consolidate
+- Remove near-duplicates
+- Merge related edge cases
+- Ensure total ≤40 items
+- Verify sequential CHK### numbering (starting CHK001 per file)
+
+### 2.4 Write Output
+
+**If file exists:** Warn and overwrite.
+
+**Fill template fields:**
+
+| Field | Source |
+|-------|--------|
+| `[DOMAIN]` | Current domain, capitalized |
+| `[FEATURE_NAME]` | Feature folder name |
+| `[DOMAIN_TYPE]` | Current domain (requirements/ux/api/data) |
+| `[PRIMARY_SOURCE]` | Primary source per Domain Configuration |
+| `[CATEGORY_N]` | Selected categories from 2.1 |
+| `[ITEM_QUESTION]` | Generated questions from 2.2 |
+| `[DIMENSION, REFERENCE]` | Per Item Format Rules |
+
 Write to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
-
-**Output structure:**
-```markdown
-# [DOMAIN] Requirements Quality Checklist: [Feature Name]
-
-**Purpose**: Validate [domain] requirement quality for [feature]
-**Created**: [DATE]
-**Feature**: [feature-path]/spec.md
-
-## [Category 1]
-
-- [ ] CHK001 [Question] [Dimension, Reference]
-- [ ] CHK002 [Question] [Dimension, Reference]
-
-## [Category 2]
-
-- [ ] CHK003 [Question] [Dimension, Reference]
-...
-
-## Notes
-
-- Items validate requirement quality, not implementation
-- Check off when requirement is confirmed complete/clear
-- [Gap] items indicate missing requirements to add
-```
 
 ## Phase 3: Validate & Report
 
 ### 3.1 Validation
 
-Verify generated checklist:
+For each generated checklist verify:
 - All items follow format rules
 - No anti-pattern violations
-- Traceability ≥80%
+- Traceability per Rules
 - Categories match domain
 - Sequential numbering correct
 
 ### 3.2 Report
 
 ```
-✅ Checklist Generated
+✅ Checklists Generated
 
-Feature: [feature-name]
-Domain: [domain]
-Location: [feature-path]/checklists/[domain]-checklist.md
+Feature: [FEATURE_NAME]
+Location: [FEATURE_PATH]/checklists/
 
-Summary:
-- Categories: [count]
-- Total Items: [count]
-- Traceability: [percentage]%
+Files created:
+- requirements-checklist.md ([count] items)
+- ux-checklist.md ([count] items)
+- api-checklist.md ([count] items)
+- data-checklist.md ([count] items)
 
-Categories covered:
-- [Category 1]: [count] items
-- [Category 2]: [count] items
-...
+Total: [total] items across 4 checklists
 ```
 
 # Error Handling
 
-- **Invalid domain**: "Error: Unknown domain '[domain]'. Use: requirements | ux | api | data"
-- **Missing feature path**: "Error: Feature path required. Usage: /checklist [feature-path] [domain]"
+- **Missing feature path**: "Error: Feature path required. Usage: /checklist [feature-path]"
 - **Missing core files**: "Error: [file] not found. Run [command] first."
-- **Primary source missing**: "Error: [domain] requires [file] which is not available."
 - **Anti-pattern detected**: "Error: Item CHK### violates anti-pattern rules. Regenerating..."
-- **Low traceability**: "Warning: Traceability at [X]%, below 80% minimum. Adding references..."
+- **Low traceability**: "Warning: Traceability below 80% minimum. Adding references..."
