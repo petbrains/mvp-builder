@@ -63,23 +63,22 @@ If your spec is code written in English, the checklist is its test suite. You te
 | `data` | data-model.md | spec.md | Entities, validation, states, relationships |
 
 **Default categories per domain:**
-- `requirements`: Completeness, Clarity, Consistency, Acceptance Criteria, Scenario Coverage
-- `ux`: Completeness, Clarity, Consistency, Edge Case Coverage, Non-Functional (Accessibility)
-- `api`: Completeness, Clarity, Consistency, Edge Case Coverage, Dependencies
-- `data`: Completeness, Clarity, Consistency, Edge Case Coverage
+- `requirements`: Completeness, Clarity, Consistency, Measurability, Coverage
+- `ux`: Completeness, Clarity, Consistency, Coverage, Edge Case
+- `api`: Completeness, Clarity, Consistency, Coverage, Edge Case
+- `data`: Completeness, Clarity, Consistency, Edge Case
 
 ## Item Format Rules
 
 **Structure:**
 ```
-- [ ] CHK### Question about requirement quality [Dimension, Reference]
+- [ ] CHK### Question about requirement quality [Reference]
 ```
 
 **Components:**
 - `CHK###`: Sequential ID starting from CHK001 per checklist
 - Question: Asks about requirement completeness, clarity, or consistency
-- `[Dimension]`: Completeness | Clarity | Consistency | Measurability | Coverage | Edge Case
-- `[Reference]`: `[FR-XXX]` | `[UX-XXX]` | `[Gap]` | `[Ambiguity]` | `[Conflict]` | `[Assumption]`
+- `[Reference]`: `[FR-XXX]` | `[UX-XXX]` | `[Plan: Section]` | `[Gap]` | `[Ambiguity]` | `[Conflict]` | `[Assumption]`
 
 **Valid patterns:**
 - "Are [requirements] defined/specified/documented for [scenario]?"
@@ -90,23 +89,21 @@ If your spec is code written in English, the checklist is its test suite. You te
 
 **Examples:**
 ```markdown
-- [ ] CHK001 Are visual hierarchy requirements defined with measurable criteria? [Clarity, FR-001]
-- [ ] CHK002 Is fallback behavior specified when images fail to load? [Edge Case, Gap]
-- [ ] CHK003 Are loading state requirements defined for async data? [Completeness, Gap]
+- [ ] CHK001 Are visual hierarchy requirements defined with measurable criteria? [FR-001]
+- [ ] CHK002 Is fallback behavior specified when images fail to load? [Gap]
+- [ ] CHK003 Are loading state requirements defined for async data? [Gap]
 ```
 
 ## Category Structure
 
 | Category | Question Focus |
 |----------|---------------|
-| Requirement Completeness | Are all necessary requirements documented? |
-| Requirement Clarity | Are requirements specific and unambiguous? |
-| Requirement Consistency | Do requirements align without conflicts? |
-| Acceptance Criteria Quality | Are success criteria measurable? |
-| Scenario Coverage | Are all flows/cases addressed? |
-| Edge Case Coverage | Are boundary conditions defined? |
-| Non-Functional Requirements | Are NFRs (performance, security, a11y) specified? |
-| Dependencies & Assumptions | Are external dependencies documented? |
+| Completeness | Are all necessary requirements documented? |
+| Clarity | Are requirements specific and unambiguous? |
+| Consistency | Do requirements align without conflicts? |
+| Measurability | Are success criteria objectively verifiable? |
+| Coverage | Are all flows/cases addressed? |
+| Edge Case | Are boundary conditions defined? |
 
 ## Traceability Rules
 
@@ -119,7 +116,7 @@ If your spec is code written in English, the checklist is its test suite. You te
 - **Soft cap**: Maximum 40 items per checklist
 - **Prioritize** by risk/impact if candidates exceed cap
 - **Merge** near-duplicates checking same requirement aspect
-- **Consolidate** low-impact edge cases: "Are edge cases X, Y, Z addressed? [Coverage]"
+- **Consolidate** low-impact edge cases: "Are edge cases X, Y, Z addressed? [Gap]"
 
 ## Anti-Patterns
 
@@ -163,7 +160,7 @@ Apply `/mcp__sequential-thinking__sequentialthinking`:
 → Identify gaps per domain (missing specifications)
 → Detect ambiguities (vague terms, unmeasurable criteria)
 → Find inconsistencies (conflicting requirements)
-→ Map findings to quality dimensions
+→ Map findings to categories
 → Prioritize by implementation impact"
 ```
 
@@ -209,11 +206,10 @@ Generate 5-10 items per category.
 |-------|--------|
 | `[DOMAIN]` | Current domain, capitalized |
 | `[FEATURE_NAME]` | Feature folder name |
-| `[DOMAIN_TYPE]` | Current domain (requirements/ux/api/data) |
 | `[PRIMARY_SOURCE]` | Primary source per Domain Configuration |
 | `[CATEGORY_N]` | Selected categories from 2.1 |
 | `[ITEM_QUESTION]` | Generated questions from 2.2 |
-| `[DIMENSION, REFERENCE]` | Per Item Format Rules |
+| `[REFERENCE]` | Per Item Format Rules |
 
 Write to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
 
