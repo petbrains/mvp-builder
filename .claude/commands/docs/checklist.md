@@ -59,7 +59,7 @@ If your spec is code written in English, the checklist is its test suite. You te
 |--------|---------------|-----------|-------|
 | `requirements` | spec.md | plan.md, tasks.md | FR coverage, acceptance criteria |
 | `ux` | ux.md | spec.md (UX-XXX) | Interactions, states, accessibility, errors |
-| `api` | contracts/, plan.md | spec.md | Endpoints, errors, auth, versioning |
+| `api` | contracts/, plan.md | spec.md | Endpoints, messages, storage, errors, auth |
 | `data` | data-model.md | spec.md | Entities, validation, states, relationships |
 
 **Categories:**
@@ -157,6 +157,7 @@ Apply `/mcp__sequential-thinking__sequentialthinking`:
 ```
 "Analyze all feature artifacts:
 → Extract requirements with IDs (FR-XXX, UX-XXX)
+→ Cross-reference research.md and setup.md for undocumented assumptions
 → Identify gaps per domain (missing specifications)
 → Detect ambiguities (vague terms, unmeasurable criteria)
 → Find inconsistencies (conflicting requirements)
