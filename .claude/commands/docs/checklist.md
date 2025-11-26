@@ -57,8 +57,8 @@ If your spec is code written in English, the checklist is its test suite. You te
 
 | Domain | Primary Source | Secondary | Focus |
 |--------|---------------|-----------|-------|
-| `requirements` | spec.md | plan.md, tasks.md | FR coverage, acceptance criteria |
-| `ux` | ux.md | spec.md (UX-XXX) | Interactions, states, accessibility, errors |
+| `requirements` | spec.md | plan.md, tasks.md | FR coverage, acceptance criteria, edge cases |
+| `ux` | ux.md | spec.md (UX-XXX) | Flows, interactions, states, accessibility, errors |
 | `api` | contracts/, plan.md | spec.md | Endpoints, messages, storage, errors, auth |
 | `data` | data-model.md | spec.md | Entities, validation, states, relationships |
 
