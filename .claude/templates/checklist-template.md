@@ -22,7 +22,7 @@
 ### Format Compliance
 - [ ] All items use CHK### sequential numbering
 - [ ] All items are questions (not verification statements)
-- [ ] No prohibited verbs (verify, test, confirm, check)
+- [ ] No prohibited verbs (verify, test, confirm, check) or implementation language (displays, works, click, render, execute)
 
 ### Traceability
 - [ ] ≥80% items have references
@@ -31,6 +31,7 @@
 ### Content
 - [ ] Categories match domain defaults
 - [ ] Total items ≤40
+- [ ] Each category has 5-10 items
 - [ ] No near-duplicate items
 
 ---
