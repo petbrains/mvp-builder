@@ -57,7 +57,7 @@ If your spec is code written in English, the checklist is its test suite. You te
 
 | Domain | Primary Source | Secondary | Focus |
 |--------|---------------|-----------|-------|
-| `requirements` | spec.md | plan.md, tasks.md | FR/NFR coverage, acceptance criteria |
+| `requirements` | spec.md | plan.md, tasks.md | FR coverage, acceptance criteria |
 | `ux` | ux.md | spec.md (UX-XXX) | Interactions, states, accessibility, errors |
 | `api` | contracts/, plan.md | spec.md | Endpoints, errors, auth, versioning |
 | `data` | data-model.md | spec.md | Entities, validation, states, relationships |
@@ -100,9 +100,10 @@ If your spec is code written in English, the checklist is its test suite. You te
 
 **Examples:**
 ```markdown
-- [ ] CHK001 Are visual hierarchy requirements defined with measurable criteria? [FR-001]
-- [ ] CHK002 Is fallback behavior specified when images fail to load? [Gap]
-- [ ] CHK003 Are loading state requirements defined for async data? [Gap]
+- [ ] CHK001 Are success criteria defined with measurable values? [FR-001]
+- [ ] CHK002 Is fallback behavior specified for failure scenarios? [Gap]
+- [ ] CHK003 Are entity relationships documented for all referenced entities? [Plan: Data Model]
+- [ ] CHK004 Are error response formats specified for all error types? [Plan: API Contract]
 ```
 
 ## Traceability Rules
@@ -156,7 +157,7 @@ If core files missing → Report error and exit.
 Apply `/mcp__sequential-thinking__sequentialthinking`:
 ```
 "Analyze all feature artifacts:
-→ Extract requirements with IDs (FR-XXX, UX-XXX, NFR-XXX)
+→ Extract requirements with IDs (FR-XXX, UX-XXX)
 → Identify gaps per domain (missing specifications)
 → Detect ambiguities (vague terms, unmeasurable criteria)
 → Find inconsistencies (conflicting requirements)
