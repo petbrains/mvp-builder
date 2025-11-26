@@ -102,8 +102,7 @@ If your spec is code written in English, the checklist is its test suite. You te
 ```markdown
 - [ ] CHK001 Are success criteria defined with measurable values? [FR-001]
 - [ ] CHK002 Is fallback behavior specified for failure scenarios? [Gap]
-- [ ] CHK003 Are entity relationships documented for all referenced entities? [Plan: Data Model]
-- [ ] CHK004 Are error response formats specified for all error types? [Plan: API Contract]
+- [ ] CHK003 Are requirements consistent between functional and UX sections? [Conflict]
 ```
 
 ## Traceability Rules
