@@ -45,6 +45,7 @@
 - [ ] No intermediate markers remaining after Phase 4
 - [ ] Questions are self-descriptive (specify what aspects need documentation)
 - [ ] [Conflict] items name both sources in question text
+- [ ] Concrete values in questions exist in referenced source
 
 ### Content
 - [ ] Categories match domain defaults (4-5 per domain)
