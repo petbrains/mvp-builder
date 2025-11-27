@@ -102,13 +102,14 @@ ai-docs/
 │       ├── research.md    # Technical research and decisions
 │       ├── data-model.md  # Entities
 │       ├── setup.md       # Environment setup and configuration
-│       └── contracts/     # API contracts
+│       ├── contracts/     # API contracts
+│       └── checklists/    # Requirement quality validation
 ```
 
 ## Session Continuity
 
 Use searchable comment prefixes in code:
-- AICODE-NOTE: critical implementation details for next session
+- AICODE-NOTE: critical implementation details
 - AICODE-TODO: pending tasks to complete
 
 Before modifying code: grep for AICODE- prefixes

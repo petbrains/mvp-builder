@@ -1,6 +1,7 @@
 ---
 name: sequential-thinking
 description: Structured reasoning framework for complex multi-step analysis using MCP sequential thinking tool. Provides state-based reasoning, branch/revise decision thresholds, quality scoring, and convergence rules for problems requiring 3+ logical steps, debugging unclear root causes, or handling multiple valid approaches.
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Sequential Thinking Methodology
