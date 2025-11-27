@@ -5,13 +5,13 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 # Instructions
 
-Generate "Unit Tests for Requirements" — checklists that validate requirement quality and guide implementation decisions.
+Generate "Unit Tests for Requirements" — deterministic checklists that validate requirement quality and guide implementation decisions.
 
 **Tools Usage:**
 - `Read`: For loading feature artifacts
 - `Write`: For saving checklist files
 - `Bash`: For directory creation and file verification
-- `/mcp__sequential-thinking__sequentialthinking`: For gap analysis and item generation
+- `/mcp__sequential-thinking__sequentialthinking`: For gap analysis, item generation, and resolution proposals
   - Uses Sequential Thinking methodology for structured reasoning
 
 **Skills:**
@@ -29,12 +29,12 @@ Generate "Unit Tests for Requirements" — checklists that validate requirement 
 
 Generate checklists that validate requirements quality: completeness, clarity, consistency, and measurability.
 Each checklist item asks whether requirements are well-written, not whether implementation works.
-Checklists serve as implementation companion — guiding agents to resolve gaps and ambiguities during development.
+Checklists serve as source of truth for implementation agents — all items must be deterministic with concrete validation criteria.
 
 **Input format:** `/checklist [feature-path]`
 - `feature-path`: Path to feature folder (required)
 
-**Output:** 4 checklists generated automatically:
+**Output:** 4 deterministic checklists:
 - `requirements-checklist.md` — from spec.md
 - `ux-checklist.md` — from ux.md
 - `api-checklist.md` — from contracts/, plan.md
@@ -92,15 +92,19 @@ If your spec is code written in English, the checklist is its test suite. You te
 - Question: Asks about requirement completeness, clarity, or consistency
 - `[Reference]`: See Reference Format below
 
-**Reference Format:**
-- `[FR-XXX]`, `[UX-XXX]` — explicit requirement IDs from spec.md
+**Reference Format (final output):**
+- `[FR-XXX]`, `[UX-XXX]` — requirement IDs from spec.md
 - `[source: Section]` — section within artifact, e.g., `[data-model: Validation Rules]`
-- `[Gap]` — specification missing, check secondary sources or implement reasonable default
-- `[Ambiguity]` — specification unclear, interpret conservatively
-- `[Conflict]` — specifications disagree, follow domain-primary source
-- `[Assumption]` — implicit requirement, validate before implementing
 
-**Conflict reference format:**
+**Intermediate markers (must be resolved before output):**
+- `[Gap]` — specification missing
+- `[Ambiguity]` — specification unclear
+- `[Conflict]` — specifications disagree
+- `[Assumption]` — implicit requirement
+
+All intermediate markers are resolved in Phase 4. Final checklists contain only concrete references.
+
+**Conflict reference format (during generation):**
 When specifications disagree, item question must name both conflicting sources:
 ```markdown
 - [ ] CHK### Does [X] in [source-A] align with [Y] in [source-B]? [Conflict]
@@ -113,12 +117,11 @@ When specifications disagree, item question must name both conflicting sources:
 - "Can [requirement] be objectively measured/verified?"
 - "Does the spec define [missing aspect]?"
 
-**Examples:**
+**Examples (final output):**
 ```markdown
 - [ ] CHK001 Are success criteria defined with measurable values? [FR-001]
-- [ ] CHK002 Is fallback behavior specified for failure scenarios? [Gap]
-- [ ] CHK003 Does error_type in contracts.md align with error presentation in ux.md? [Conflict]
-- [ ] CHK004 Is timeout duration specified in data-model.md constants? [data-model: Constants]
+- [ ] CHK002 Is Bearer token authentication implemented for all endpoints? [spec: Technical Context]
+- [ ] CHK003 Is timeout duration 300 seconds per MAX_OPTIMIZATION_DURATION? [data-model: Constants]
 ```
 
 ## Traceability Rules
@@ -126,8 +129,9 @@ When specifications disagree, item question must name both conflicting sources:
 - **Minimum 80%** of items must include reference
 - All reference types count toward threshold
 - Item question must be self-descriptive: specify what aspects need documentation
-- For `[Gap]` and `[Ambiguity]`: question must enumerate expected specification elements
+- For intermediate markers: question must enumerate expected specification elements
 - Before marking `[Gap]`: verify information not present in secondary sources per Domain Configuration
+- **Final output must have 0% intermediate markers** — all resolved in Phase 4
 
 ## Content Rules
 
@@ -222,38 +226,95 @@ Generate 5-10 items per category.
 - Ensure total ≤40 items
 - Verify sequential CHK### numbering (starting CHK001 per file)
 
-### 2.4 Write Output
-
-**If file exists:** Warn and overwrite.
-
-**Fill template fields:**
-
-| Field | Source |
-|-------|--------|
-| `[DOMAIN]` | Current domain, capitalized |
-| `[FEATURE_NAME]` | Feature folder name |
-| `[PRIMARY_SOURCE]` | Primary source per Domain Configuration |
-| `[CATEGORY_N]` | Selected categories from 2.1 |
-| `[ITEM_QUESTION]` | Generated questions from 2.2 |
-| `[REFERENCE]` | Per Reference Format |
+### 2.4 Write Draft Output
+Write draft checklists to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
 
 **Exclude from output:** Review Checklist section (template internal validation only)
 
-Write to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
-
-## Phase 3: Validate & Report
-
-### 3.1 Validation
+## Phase 3: Validate Draft
 
 For each generated checklist verify:
 - All items follow format rules
 - No anti-pattern violations
-- Traceability per Rules
+- Traceability ≥80%
 - Categories match domain
 - Sequential numbering correct
 - Conflict items name both sources
 
-### 3.2 Report
+## Phase 4: Resolve Uncertainties
+
+### 4.1 Collect Unresolved Items
+Scan all 4 checklists for items marked `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]`.
+
+If none found → Proceed to Phase 5.
+
+### 4.2 Generate Resolution Options
+
+For each unresolved item, apply `/mcp__sequential-thinking__sequentialthinking`:
+```
+"Resolve uncertainty for CHK###:
+→ Extract context from source artifacts
+→ Generate 2-3 concrete resolution options (MVP-focused)
+→ Assess implications of each option
+→ Formulate recommended option with rationale"
+```
+
+### 4.3 Present Resolution Dialogue
+
+Present unresolved items per checklist (max 5 per batch):
+```
+⚠️ [count] items need resolution in [domain]-checklist.md:
+
+1. CHK### [original question]
+   a) [option-1]: [brief implication]
+   b) [option-2]: [brief implication]
+   → Recommend: [a/b] — [rationale]
+
+2. CHK### [original question]
+   a) [option-1]
+   b) [option-2]
+   → Recommend: [a/b] — [rationale]
+
+Select all (e.g., "1a, 2b"):
+```
+
+**Wait for user response.** Do not proceed until selection received.
+
+### 4.4 Rewrite Resolved Items
+
+For each resolved item:
+
+Apply `/mcp__sequential-thinking__sequentialthinking`:
+```
+"Rewrite CHK### with resolution [user selection]:
+→ Transform question to concrete validation check
+→ Remove intermediate marker
+→ Add appropriate reference to source artifact
+→ Ensure question is deterministic and verifiable"
+```
+
+**Transformation example:**
+```
+Before:  "Is API auth mechanism specified? [Gap]"
+User:    "1a" (Bearer token)
+After:   "Is Bearer token authentication specified for all endpoints? [spec: Technical Context]"
+```
+
+### 4.5 Update Checklists
+
+Read checklist → Replace resolved items → Write updated file.
+
+Repeat 4.3-4.5 for each checklist with remaining unresolved items.
+
+## Phase 5: Final Report
+
+### 5.1 Final Validation
+Verify all checklists:
+- Zero intermediate markers remaining
+- All items have concrete references
+- Traceability 100% (no unresolved items)
+
+### 5.2 Report
 
 ```
 ✅ Checklists Generated
@@ -268,6 +329,7 @@ Files created:
 - data-checklist.md ([count] items)
 
 Total: [total] items across 4 checklists
+Resolved: [count] uncertainties
 ```
 
 # Error Handling
@@ -277,3 +339,6 @@ Total: [total] items across 4 checklists
 - **Anti-pattern detected**: "Error: Item CHK### violates anti-pattern rules. Regenerating..."
 - **Low traceability**: "Warning: Traceability below 80% minimum. Adding references..."
 - **Conflict without sources**: "Error: Item CHK### marked [Conflict] but missing source references in question."
+- **No user response**: "Waiting for resolution selection. Enter choices (e.g., '1a, 2b')."
+- **Invalid selection**: "Invalid selection '[input]'. Use format: 1a, 2b, 3c"
+- **Unresolved items remaining**: "Error: [count] items still unresolved. Cannot finalize checklists."
