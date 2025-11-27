@@ -129,13 +129,6 @@ When specifications disagree, item question must name both conflicting sources:
 - For `[Gap]` and `[Ambiguity]`: question must enumerate expected specification elements
 - Before marking `[Gap]`: verify information not present in secondary sources per Domain Configuration
 
-**Reference semantics for implementation:**
-- `[FR-XXX]`, `[UX-XXX]`, `[source: Section]` — specification exists, follow it
-- `[Gap]` — specification missing, check secondary sources or implement reasonable default
-- `[Ambiguity]` — specification unclear, interpret conservatively
-- `[Conflict]` — specifications disagree, follow domain-primary source
-- `[Assumption]` — implicit requirement, validate before implementing
-
 ## Content Rules
 
 - **Soft cap**: Maximum 40 items per checklist
@@ -243,6 +236,8 @@ Generate 5-10 items per category.
 | `[CATEGORY_N]` | Selected categories from 2.1 |
 | `[ITEM_QUESTION]` | Generated questions from 2.2 |
 | `[REFERENCE]` | Per Reference Format |
+
+**Exclude from output:** Review Checklist section (template internal validation only)
 
 Write to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
 
