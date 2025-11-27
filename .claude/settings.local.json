@@ -7,7 +7,10 @@
       "Bash(mkdir:*)",
       "Bash(git:*)",
       "Skill(self-improve)",
-      "Skill(git)"
+      "Skill(git)",
+      "Skill(feature-analyzer)",
+      "Skill(sequential-thinking)",
+      "Skill(context7)"
     ]
   },
   "enableAllProjectMcpServers": true
