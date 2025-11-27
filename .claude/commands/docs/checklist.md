@@ -5,7 +5,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 # Instructions
 
-Generate "Unit Tests for Requirements" — checklists that validate requirement quality, not implementation correctness.
+Generate "Unit Tests for Requirements" — checklists that validate requirement quality and guide implementation decisions.
 
 **Tools Usage:**
 - `Read`: For loading feature artifacts
@@ -29,6 +29,7 @@ Generate "Unit Tests for Requirements" — checklists that validate requirement 
 
 Generate checklists that validate requirements quality: completeness, clarity, consistency, and measurability.
 Each checklist item asks whether requirements are well-written, not whether implementation works.
+Checklists serve as implementation companion — guiding agents to resolve gaps and ambiguities during development.
 
 **Input format:** `/checklist [feature-path]`
 - `feature-path`: Path to feature folder (required)
@@ -64,14 +65,14 @@ If your spec is code written in English, the checklist is its test suite. You te
 
 **Categories:**
 
-| Category | Question Focus |
-|----------|---------------|
-| Completeness | Are all necessary requirements documented? |
-| Clarity | Are requirements specific and unambiguous? |
-| Consistency | Do requirements align without conflicts? |
-| Measurability | Are success criteria objectively verifiable? |
-| Coverage | Are all flows/cases addressed? |
-| Edge Case | Are boundary conditions defined? |
+| Category | Question Pattern | Implementation Trigger |
+|----------|-----------------|----------------------|
+| Completeness | "Is [X] documented/specified?" | If no: check secondary sources, implement default |
+| Clarity | "Is [X] unambiguous/quantified?" | If no: interpret conservatively, document choice |
+| Consistency | "Does [X] align with [Y]?" | If no: follow domain-primary source |
+| Measurability | "Can [X] be objectively verified?" | If no: define concrete success criteria |
+| Coverage | "Are all [X scenarios] addressed?" | If no: enumerate missing cases, implement each |
+| Edge Case | "Is behavior for [boundary] defined?" | If no: implement defensive handling |
 
 **Default categories per domain:**
 - `requirements`: Completeness, Clarity, Consistency, Measurability, Coverage
@@ -89,7 +90,21 @@ If your spec is code written in English, the checklist is its test suite. You te
 **Components:**
 - `CHK###`: Sequential ID starting from CHK001 per checklist
 - Question: Asks about requirement completeness, clarity, or consistency
-- `[Reference]`: `[FR-XXX]` | `[UX-XXX]` | `[Plan: Section]` | `[Gap]` | `[Ambiguity]` | `[Conflict]` | `[Assumption]`
+- `[Reference]`: See Reference Format below
+
+**Reference Format:**
+- `[FR-XXX]`, `[UX-XXX]` — explicit requirement IDs from spec.md
+- `[source: Section]` — section within artifact, e.g., `[data-model: Validation Rules]`
+- `[Gap]` — specification missing, check secondary sources or implement reasonable default
+- `[Ambiguity]` — specification unclear, interpret conservatively
+- `[Conflict]` — specifications disagree, follow domain-primary source
+- `[Assumption]` — implicit requirement, validate before implementing
+
+**Conflict reference format:**
+When specifications disagree, item question must name both conflicting sources:
+```markdown
+- [ ] CHK### Does [X] in [source-A] align with [Y] in [source-B]? [Conflict]
+```
 
 **Valid patterns:**
 - "Are [requirements] defined/specified/documented for [scenario]?"
@@ -102,14 +117,24 @@ If your spec is code written in English, the checklist is its test suite. You te
 ```markdown
 - [ ] CHK001 Are success criteria defined with measurable values? [FR-001]
 - [ ] CHK002 Is fallback behavior specified for failure scenarios? [Gap]
-- [ ] CHK003 Are requirements consistent between functional and UX sections? [Conflict]
+- [ ] CHK003 Does error_type in contracts.md align with error presentation in ux.md? [Conflict]
+- [ ] CHK004 Is timeout duration specified in data-model.md constants? [data-model: Constants]
 ```
 
 ## Traceability Rules
 
-- **Minimum 80%** of items must include reference per Item Format Rules
-- `[FR-XXX]`, `[UX-XXX]`, `[Plan: Section]` for existing requirements
-- `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]` for issues
+- **Minimum 80%** of items must include reference
+- All reference types count toward threshold
+- Item question must be self-descriptive: specify what aspects need documentation
+- For `[Gap]` and `[Ambiguity]`: question must enumerate expected specification elements
+- Before marking `[Gap]`: verify information not present in secondary sources per Domain Configuration
+
+**Reference semantics for implementation:**
+- `[FR-XXX]`, `[UX-XXX]`, `[source: Section]` — specification exists, follow it
+- `[Gap]` — specification missing, check secondary sources or implement reasonable default
+- `[Ambiguity]` — specification unclear, interpret conservatively
+- `[Conflict]` — specifications disagree, follow domain-primary source
+- `[Assumption]` — implicit requirement, validate before implementing
 
 ## Content Rules
 
@@ -126,6 +151,12 @@ If your spec is code written in English, the checklist is its test suite. You te
 - ❌ "Click", "navigate", "render", "load", "execute"
 - ❌ References to code execution or user actions
 - ❌ Test cases, QA procedures, manual testing steps
+
+**Borderline — rewrite these patterns:**
+- "Is X mapped/linked to Y" → "Is relationship between X and Y documented?"
+- "Is X properly specified" → "Is X specified with [criteria]?"
+- "Does X handle Y" → "Is X behavior for Y scenario documented?"
+- "Test/Verify X works" → "Are success criteria for X defined?"
 
 # Execution Flow
 
@@ -160,7 +191,7 @@ Apply `/mcp__sequential-thinking__sequentialthinking`:
 → Cross-reference research.md and setup.md for undocumented assumptions
 → Identify gaps per domain (missing specifications)
 → Detect ambiguities (vague terms, unmeasurable criteria)
-→ Find inconsistencies (conflicting requirements)
+→ Find inconsistencies (conflicting requirements between sources)
 → Map findings to categories
 → Prioritize by implementation impact"
 ```
@@ -182,11 +213,12 @@ Apply `/mcp__sequential-thinking__sequentialthinking`:
 ```
 "For [domain] checklist:
 → Extract relevant requirements from primary source
-→ Formulate quality validation questions
-→ Apply item format rules
+→ Check secondary sources before marking [Gap]
+→ Formulate self-descriptive quality validation questions
+→ Apply item format rules and reference format
 → Ensure traceability per Rules
 → Filter against anti-patterns
-→ Prioritize by impact"
+→ Prioritize by implementation impact"
 ```
 
 Generate 5-10 items per category.
@@ -210,7 +242,7 @@ Generate 5-10 items per category.
 | `[PRIMARY_SOURCE]` | Primary source per Domain Configuration |
 | `[CATEGORY_N]` | Selected categories from 2.1 |
 | `[ITEM_QUESTION]` | Generated questions from 2.2 |
-| `[REFERENCE]` | Per Item Format Rules |
+| `[REFERENCE]` | Per Reference Format |
 
 Write to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
 
@@ -224,6 +256,7 @@ For each generated checklist verify:
 - Traceability per Rules
 - Categories match domain
 - Sequential numbering correct
+- Conflict items name both sources
 
 ### 3.2 Report
 
@@ -248,3 +281,4 @@ Total: [total] items across 4 checklists
 - **Missing core files**: "Error: [file] not found. Run [command] first."
 - **Anti-pattern detected**: "Error: Item CHK### violates anti-pattern rules. Regenerating..."
 - **Low traceability**: "Warning: Traceability below 80% minimum. Adding references..."
+- **Conflict without sources**: "Error: Item CHK### marked [Conflict] but missing source references in question."
