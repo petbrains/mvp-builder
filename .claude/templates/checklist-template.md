@@ -38,23 +38,13 @@
 - [ ] All items use CHK### sequential numbering
 - [ ] All items are questions (not verification statements)
 - [ ] No prohibited verbs (verify, test, confirm, check) or implementation language
-
-### Gap Detection
-- [ ] Vague terms without source definition marked [Gap]
-- [ ] Qualitative criteria without thresholds marked [Gap]
-- [ ] Mechanisms/formats without specification marked [Gap]
-- [ ] [Gap] questions ask WHETHER defined, not WHAT definition is
-
-### Source Fidelity
-- [ ] No fabricated values (numbers, percentages, thresholds not in source)
-- [ ] No assumed mechanisms (auth types, protocols, formats)
-- [ ] Constants use exact source values only
-- [ ] Secondary sources checked before marking [Gap]
+- [ ] No borderline patterns (mapped/linked, properly specified, handles)
 
 ### Traceability
 - [ ] All items have references (concrete or intermediate markers)
-- [ ] Questions are self-descriptive
-- [ ] [Conflict] items name both sources in question
+- [ ] No intermediate markers remaining after Phase 4
+- [ ] Questions are self-descriptive (specify what aspects need documentation)
+- [ ] [Conflict] items name both sources in question text
 
 ### Content
 - [ ] Categories match domain defaults (4-5 per domain)
