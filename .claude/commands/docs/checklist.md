@@ -11,12 +11,12 @@ Generate "Unit Tests for Requirements" — deterministic checklists that validat
 - `Read`: For loading feature artifacts
 - `Write`: For saving checklist files
 - `Bash`: For directory creation and file verification
-- `/mcp__sequential-thinking__sequentialthinking`: For gap analysis, item generation, and resolution proposals
-  - Uses Sequential Thinking methodology for structured reasoning
 
 **Skills:**
 - Feature Analyzer: For loading complete feature context from artifacts
   - Scans and loads: spec.md, ux.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
+- Sequential Thinking Methodology: For structured reasoning during analysis and generation
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
 **Template:**
 - Checklist: @.claude/templates/checklist-template.md
@@ -171,27 +171,13 @@ Extract `FEATURE_PATH` from command arguments.
 
 If core files missing → Report error and exit.
 
-**Artifacts loaded into context:**
-- spec.md → Requirements, user stories, acceptance criteria
-- ux.md → Flows, interactions, states, error presentation
-- plan.md → Architecture, components, tech stack
-- tasks.md → Implementation phases, TDD coverage
-- data-model.md → Entities, validation, states
-- contracts/ → API specs, message formats
-
 ## Phase 1: Analyze Context
 
-Apply `/mcp__sequential-thinking__sequentialthinking`:
-```
-"Analyze all feature artifacts:
-→ Extract requirements with IDs (FR-XXX, UX-XXX)
-→ Cross-reference research.md and setup.md for undocumented assumptions
-→ Identify gaps per domain (missing specifications)
-→ Detect ambiguities (vague terms, unmeasurable criteria)
-→ Find inconsistencies (conflicting requirements between sources)
-→ Map findings to categories
-→ Prioritize by implementation impact"
-```
+**Apply Sequential Thinking Methodology** for artifact analysis:
+- Extract requirements with IDs (FR-XXX, UX-XXX)
+- Identify gaps, ambiguities, and inconsistencies per domain
+- Map findings to categories
+- Prioritize by implementation impact
 
 ## Phase 2: Generate Checklists
 
@@ -206,17 +192,12 @@ Select 4-5 categories from Domain Configuration defaults.
 
 ### 2.2 Generate Items
 
-Apply `/mcp__sequential-thinking__sequentialthinking`:
-```
-"For [domain] checklist:
-→ Extract relevant requirements from primary source
-→ Check secondary sources before marking [Gap]
-→ Formulate self-descriptive quality validation questions
-→ Apply item format rules and reference format
-→ Ensure traceability per Rules
-→ Filter against anti-patterns
-→ Prioritize by implementation impact"
-```
+**Apply Sequential Thinking Methodology** for item generation:
+- Extract relevant requirements from primary source
+- Check secondary sources before marking [Gap]
+- Formulate self-descriptive quality validation questions
+- Apply item format rules and reference format
+- Filter against anti-patterns
 
 Generate 5-10 items per category.
 
@@ -250,14 +231,10 @@ If none found → Proceed to Phase 5.
 
 ### 4.2 Generate Resolution Options
 
-For each unresolved item, apply `/mcp__sequential-thinking__sequentialthinking`:
-```
-"Resolve uncertainty for CHK###:
-→ Extract context from source artifacts
-→ Generate 2-3 concrete resolution options (MVP-focused)
-→ Assess implications of each option
-→ Formulate recommended option with rationale"
-```
+**Apply Sequential Thinking Methodology** for each unresolved item:
+- Generate 2-3 concrete resolution options (MVP-focused)
+- Assess implications of each option
+- Formulate recommended option with rationale
 
 ### 4.3 Present Resolution Dialogue
 
@@ -282,16 +259,10 @@ Select all (e.g., "1a, 2b"):
 
 ### 4.4 Rewrite Resolved Items
 
-For each resolved item:
-
-Apply `/mcp__sequential-thinking__sequentialthinking`:
-```
-"Rewrite CHK### with resolution [user selection]:
-→ Transform question to concrete validation check
-→ Remove intermediate marker
-→ Add appropriate reference to source artifact
-→ Ensure question is deterministic and verifiable"
-```
+**Apply Sequential Thinking Methodology** for each resolved item:
+- Transform question to concrete validation check
+- Remove intermediate marker
+- Add appropriate reference to source artifact
 
 **Transformation example:**
 ```
