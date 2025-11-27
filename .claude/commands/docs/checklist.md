@@ -120,9 +120,23 @@ When specifications disagree, item question must name both conflicting sources:
 **Examples (final output):**
 ```markdown
 - [ ] CHK001 Are success criteria defined with measurable values? [FR-001]
-- [ ] CHK002 Is Bearer token authentication implemented for all endpoints? [spec: Technical Context]
-- [ ] CHK003 Is timeout duration 300 seconds per MAX_OPTIMIZATION_DURATION? [data-model: Constants]
+- [ ] CHK002 Is authentication mechanism specified for API endpoints? [spec: Technical Context]
+- [ ] CHK003 Is MAX_OPTIMIZATION_DURATION constant defined with value? [data-model: Constants]
 ```
+
+## Source Fidelity Rules
+
+**Critical:** Items must contain ONLY information explicitly stated in source artifacts.
+
+- **Preserve source wording**: Vague terms in source remain vague in checklist
+- **No inference**: Missing details → mark `[Gap]`, never assume or add values
+- **No quantification**: Do not add numbers, percentages, or thresholds not in source
+- **No mechanism specification**: Do not specify auth types, protocols, formats not documented
+- **Verbatim constants**: Use exact values from source (e.g., "300 seconds" only if source says "300")
+
+**Source Fidelity Test:** For each item ask: "Can I point to exact text in source that contains this information?"
+- If yes → valid item
+- If no → mark `[Gap]` or remove fabricated detail
 
 ## Traceability Rules
 
@@ -148,6 +162,22 @@ When specifications disagree, item question must name both conflicting sources:
 - ❌ "Click", "navigate", "render", "load", "execute"
 - ❌ References to code execution or user actions
 - ❌ Test cases, QA procedures, manual testing steps
+
+**Prohibited — these fabricate specifications:**
+- ❌ Adding specific values not present in source (numbers, percentages, thresholds)
+- ❌ Specifying mechanisms not documented (auth type, protocol, format)
+- ❌ Inferring "reasonable" defaults or industry standards
+- ❌ Quantifying vague terms without explicit source backing
+- ❌ Adding HTTP status codes, error codes, or enums not in source
+
+**Fabrication examples:**
+| Source says | ❌ Fabrication | ✅ Correct |
+|-------------|---------------|-----------|
+| "authentication" | "Bearer token auth" | mark `[Gap]` for auth type |
+| "rate limiting" | "10 req/min limit" | "Is rate limit value specified?" |
+| "prominently featured" | "top 3 sections" | preserve "prominently featured" |
+| "transferable skills" | "≥50% similarity" | preserve "transferable skills" |
+| "error responses" | "HTTP 409 Conflict" | only codes explicitly in openapi.yaml |
 
 **Borderline — rewrite these patterns:**
 - "Is X mapped/linked to Y" → "Is relationship between X and Y documented?"
@@ -209,12 +239,14 @@ Select 4-5 categories from Domain Configuration defaults.
 Apply `/mcp__sequential-thinking__sequentialthinking`:
 ```
 "For [domain] checklist:
-→ Extract relevant requirements from primary source
+→ Extract ONLY explicitly stated requirements (no inference)
+→ Preserve source wording for vague terms (do not quantify)
+→ Mark [Gap] for missing specifics rather than assuming values
 → Check secondary sources before marking [Gap]
 → Formulate self-descriptive quality validation questions
 → Apply item format rules and reference format
-→ Ensure traceability per Rules
-→ Filter against anti-patterns
+→ Verify source fidelity: every detail must trace to exact source text
+→ Filter against anti-patterns (implementation AND fabrication)
 → Prioritize by implementation impact"
 ```
 
@@ -235,7 +267,8 @@ Write draft checklists to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
 
 For each generated checklist verify:
 - All items follow format rules
-- No anti-pattern violations
+- No anti-pattern violations (implementation OR fabrication)
+- Source fidelity: every value, mechanism, or specific traces to exact source text
 - Traceability ≥80%
 - Categories match domain
 - Sequential numbering correct
@@ -313,6 +346,7 @@ Verify all checklists:
 - Zero intermediate markers remaining
 - All items have concrete references
 - Traceability 100% (no unresolved items)
+- Source fidelity 100% (no fabricated values)
 
 ### 5.2 Report
 
@@ -337,6 +371,7 @@ Resolved: [count] uncertainties
 - **Missing feature path**: "Error: Feature path required. Usage: /checklist [feature-path]"
 - **Missing core files**: "Error: [file] not found. Run [command] first."
 - **Anti-pattern detected**: "Error: Item CHK### violates anti-pattern rules. Regenerating..."
+- **Fabrication detected**: "Error: Item CHK### contains values not in source. Removing fabricated details..."
 - **Low traceability**: "Warning: Traceability below 80% minimum. Adding references..."
 - **Conflict without sources**: "Error: Item CHK### marked [Conflict] but missing source references in question."
 - **No user response**: "Waiting for resolution selection. Enter choices (e.g., '1a, 2b')."
