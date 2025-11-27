@@ -68,7 +68,7 @@ If your spec is code written in English, the checklist is its test suite. You te
 | Category | Question Pattern | Implementation Trigger |
 |----------|-----------------|----------------------|
 | Completeness | "Is [X] documented/specified?" | If no: check secondary sources, implement default |
-| Clarity | "Is [X] unambiguous/quantified?" | If no: interpret conservatively, document choice |
+| Clarity | "Is [X] defined with explicit criteria?" | If no: mark [Gap], resolve in Phase 4 |
 | Consistency | "Does [X] align with [Y]?" | If no: follow domain-primary source |
 | Measurability | "Can [X] be objectively verified?" | If no: define concrete success criteria |
 | Coverage | "Are all [X scenarios] addressed?" | If no: enumerate missing cases, implement each |
@@ -96,11 +96,11 @@ If your spec is code written in English, the checklist is its test suite. You te
 - `[FR-XXX]`, `[UX-XXX]` — requirement IDs from spec.md
 - `[source: Section]` — section within artifact, e.g., `[data-model: Validation Rules]`
 
-**Intermediate markers (must be resolved before output):**
-- `[Gap]` — specification missing
-- `[Ambiguity]` — specification unclear
-- `[Conflict]` — specifications disagree
-- `[Assumption]` — implicit requirement
+**Intermediate markers (resolved in Phase 4):**
+- `[Gap]` — specification missing, needs user decision
+- `[Ambiguity]` — specification unclear, needs clarification
+- `[Conflict]` — specifications disagree, needs resolution
+- `[Assumption]` — implicit requirement, needs validation
 
 All intermediate markers are resolved in Phase 4. Final checklists contain only concrete references.
 
@@ -110,49 +110,66 @@ When specifications disagree, item question must name both conflicting sources:
 - [ ] CHK### Does [X] in [source-A] align with [Y] in [source-B]? [Conflict]
 ```
 
-**Valid patterns:**
-- "Are [requirements] defined/specified/documented for [scenario]?"
-- "Is [vague term] quantified with specific criteria?"
+**Valid question patterns:**
+- "Is [X] documented/specified/defined?"
+- "Are [requirements] defined for [scenario]?"
 - "Are requirements consistent between [section A] and [section B]?"
 - "Can [requirement] be objectively measured/verified?"
-- "Does the spec define [missing aspect]?"
+- "Is [behavior/format/mechanism] specified?"
 
-**Examples (final output):**
+**Examples (final output after Phase 4):**
 ```markdown
 - [ ] CHK001 Are success criteria defined with measurable values? [FR-001]
-- [ ] CHK002 Is authentication mechanism specified for API endpoints? [spec: Technical Context]
-- [ ] CHK003 Is MAX_OPTIMIZATION_DURATION constant defined with value? [data-model: Constants]
+- [ ] CHK002 Is Bearer token authentication specified for all endpoints? [spec: Technical Context]
+- [ ] CHK003 Is timeout duration 300 seconds per MAX_OPTIMIZATION_DURATION? [data-model: Constants]
 ```
+
+## Gap Detection Rules
+
+**Mark `[Gap]` when source contains:**
+- Vague term without explicit definition ("professional tone", "transferable skills")
+- Qualitative criterion without threshold ("prominently featured", "most relevant")
+- Format/mechanism mention without specification ("progress indicator", "authentication")
+- Behavior reference without details ("rate limiting", "error handling")
+
+**Gap Detection Test:** Can you quote exact definition/value from source?
+- If yes → use concrete reference
+- If no → mark `[Gap]` for Phase 4 resolution
+
+**Examples:**
+| Source text | Has definition? | Action |
+|-------------|-----------------|--------|
+| "MAX_OPTIMIZATION_DURATION: 300" | ✅ Yes (300) | Use value: "Is timeout 300 seconds?" |
+| "professional tone" | ❌ No definition | Mark [Gap]: "Is professional tone defined?" |
+| "authentication required" | ❌ No mechanism | Mark [Gap]: "Is auth mechanism specified?" |
+| "relevance_score: 0.0-1.0" | ✅ Yes (range) | Use value: "Is score in 0.0-1.0 range?" |
 
 ## Source Fidelity Rules
 
 **Critical:** Items must contain ONLY information explicitly stated in source artifacts.
 
-- **Preserve source wording**: Vague terms in source remain vague in checklist
-- **No inference**: Missing details → mark `[Gap]`, never assume or add values
-- **No quantification**: Do not add numbers, percentages, or thresholds not in source
-- **No mechanism specification**: Do not specify auth types, protocols, formats not documented
-- **Verbatim constants**: Use exact values from source (e.g., "300 seconds" only if source says "300")
+- **Preserve source wording**: Vague terms remain vague until Phase 4 resolution
+- **No inference**: Missing details → mark `[Gap]`, never assume values
+- **Verbatim constants**: Use exact values from source only
+- **Check secondary sources**: Before marking `[Gap]`, verify not in secondary sources per Domain Configuration
 
-**Source Fidelity Test:** For each item ask: "Can I point to exact text in source that contains this information?"
-- If yes → valid item
-- If no → mark `[Gap]` or remove fabricated detail
+**Source Fidelity Test:** For each item detail ask: "Can I point to exact text in source?"
+- If yes → valid
+- If no → mark `[Gap]` or remove detail
 
 ## Traceability Rules
 
-- **Minimum 80%** of items must include reference
-- All reference types count toward threshold
-- Item question must be self-descriptive: specify what aspects need documentation
-- For intermediate markers: question must enumerate expected specification elements
-- Before marking `[Gap]`: verify information not present in secondary sources per Domain Configuration
-- **Final output must have 0% intermediate markers** — all resolved in Phase 4
+- **Draft phase**: Minimum 80% items must include reference (including intermediate markers)
+- **Final output**: 100% concrete references (all markers resolved)
+- Item question must be self-descriptive: specify what needs documentation
+- For `[Gap]` items: question asks WHETHER defined, not WHAT definition should be
 
 ## Content Rules
 
 - **Soft cap**: Maximum 40 items per checklist
 - **Prioritize** by risk/impact if candidates exceed cap
 - **Merge** near-duplicates checking same requirement aspect
-- **Consolidate** low-impact edge cases: "Are edge cases X, Y, Z addressed? [Gap]"
+- **Consolidate** low-impact edge cases into single item
 
 ## Anti-Patterns
 
@@ -161,29 +178,24 @@ When specifications disagree, item question must name both conflicting sources:
 - ❌ "Displays correctly", "works properly", "functions as expected"
 - ❌ "Click", "navigate", "render", "load", "execute"
 - ❌ References to code execution or user actions
-- ❌ Test cases, QA procedures, manual testing steps
 
-**Prohibited — these fabricate specifications:**
+**Prohibited — these skip Phase 4 resolution:**
 - ❌ Adding specific values not present in source (numbers, percentages, thresholds)
 - ❌ Specifying mechanisms not documented (auth type, protocol, format)
-- ❌ Inferring "reasonable" defaults or industry standards
-- ❌ Quantifying vague terms without explicit source backing
-- ❌ Adding HTTP status codes, error codes, or enums not in source
+- ❌ Defining vague terms without user input
+- ❌ Quantifying qualitative criteria without source backing
 
-**Fabrication examples:**
-| Source says | ❌ Fabrication | ✅ Correct |
-|-------------|---------------|-----------|
-| "authentication" | "Bearer token auth" | mark `[Gap]` for auth type |
-| "rate limiting" | "10 req/min limit" | "Is rate limit value specified?" |
-| "prominently featured" | "top 3 sections" | preserve "prominently featured" |
-| "transferable skills" | "≥50% similarity" | preserve "transferable skills" |
-| "error responses" | "HTTP 409 Conflict" | only codes explicitly in openapi.yaml |
+**Wrong vs Correct (Clarity items):**
+| ❌ Skips Phase 4 | ✅ Triggers Phase 4 |
+|-----------------|-------------------|
+| "Is X defined as Y?" | "Is X defined? [Gap]" |
+| "Is rate limit 10/min?" | "Is rate limit value specified? [Gap]" |
+| "Is format percentage?" | "Is format specified? [Gap]" |
 
 **Borderline — rewrite these patterns:**
 - "Is X mapped/linked to Y" → "Is relationship between X and Y documented?"
-- "Is X properly specified" → "Is X specified with [criteria]?"
+- "Is X properly specified" → "Is X specified with explicit criteria?"
 - "Does X handle Y" → "Is X behavior for Y scenario documented?"
-- "Test/Verify X works" → "Are success criteria for X defined?"
 
 # Execution Flow
 
@@ -239,14 +251,12 @@ Select 4-5 categories from Domain Configuration defaults.
 Apply `/mcp__sequential-thinking__sequentialthinking`:
 ```
 "For [domain] checklist:
-→ Extract ONLY explicitly stated requirements (no inference)
-→ Preserve source wording for vague terms (do not quantify)
-→ Mark [Gap] for missing specifics rather than assuming values
-→ Check secondary sources before marking [Gap]
-→ Formulate self-descriptive quality validation questions
-→ Apply item format rules and reference format
-→ Verify source fidelity: every detail must trace to exact source text
-→ Filter against anti-patterns (implementation AND fabrication)
+→ Extract requirements from primary source
+→ Apply Gap Detection Rules: mark [Gap] for undefined terms
+→ Apply Source Fidelity Rules: no assumed values
+→ Formulate questions per Valid patterns
+→ Check secondary sources before finalizing [Gap]
+→ Filter against Anti-Patterns
 → Prioritize by implementation impact"
 ```
 
@@ -267,12 +277,11 @@ Write draft checklists to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
 
 For each generated checklist verify:
 - All items follow format rules
-- No anti-pattern violations (implementation OR fabrication)
-- Source fidelity: every value, mechanism, or specific traces to exact source text
+- No anti-pattern violations
+- Gap Detection applied: vague terms marked [Gap]
+- Source Fidelity: no fabricated values
 - Traceability ≥80%
-- Categories match domain
 - Sequential numbering correct
-- Conflict items name both sources
 
 ## Phase 4: Resolve Uncertainties
 
@@ -345,8 +354,7 @@ Repeat 4.3-4.5 for each checklist with remaining unresolved items.
 Verify all checklists:
 - Zero intermediate markers remaining
 - All items have concrete references
-- Traceability 100% (no unresolved items)
-- Source fidelity 100% (no fabricated values)
+- Traceability 100%
 
 ### 5.2 Report
 
@@ -371,7 +379,7 @@ Resolved: [count] uncertainties
 - **Missing feature path**: "Error: Feature path required. Usage: /checklist [feature-path]"
 - **Missing core files**: "Error: [file] not found. Run [command] first."
 - **Anti-pattern detected**: "Error: Item CHK### violates anti-pattern rules. Regenerating..."
-- **Fabrication detected**: "Error: Item CHK### contains values not in source. Removing fabricated details..."
+- **Fabrication detected**: "Error: Item CHK### contains values not in source. Converting to [Gap]..."
 - **Low traceability**: "Warning: Traceability below 80% minimum. Adding references..."
 - **Conflict without sources**: "Error: Item CHK### marked [Conflict] but missing source references in question."
 - **No user response**: "Waiting for resolution selection. Enter choices (e.g., '1a, 2b')."
