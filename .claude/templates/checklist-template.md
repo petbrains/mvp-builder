@@ -41,9 +41,8 @@
 - [ ] No borderline patterns (mapped/linked, properly specified, handles)
 
 ### Traceability
-- [ ] ≥80% items have references
-- [ ] [Gap] items verified against secondary sources before marking
-- [ ] [Conflict] items name both conflicting sources in question text
+- [ ] All items have concrete references ([FR-XXX], [UX-XXX], [source: Section])
+- [ ] No intermediate markers remaining ([Gap], [Ambiguity], [Conflict], [Assumption])
 - [ ] Questions are self-descriptive (specify what aspects need documentation)
 
 ### Content
