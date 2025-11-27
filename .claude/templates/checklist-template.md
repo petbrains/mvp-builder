@@ -13,23 +13,36 @@
 - [ ] CHK003 [ITEM_QUESTION] [REFERENCE]
 - [ ] CHK004 [ITEM_QUESTION] [REFERENCE]
 
+## [CATEGORY_3]
+
+- [ ] CHK005 [ITEM_QUESTION] [REFERENCE]
+- [ ] CHK006 [ITEM_QUESTION] [REFERENCE]
+
+## [CATEGORY_4]
+
+- [ ] CHK007 [ITEM_QUESTION] [REFERENCE]
+- [ ] CHK008 [ITEM_QUESTION] [REFERENCE]
+
 ---
 
 ## Review Checklist
 *GATE: Automated checks*
-** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final output.**
+**MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final output.**
 
 ### Format Compliance
 - [ ] All items use CHK### sequential numbering
 - [ ] All items are questions (not verification statements)
-- [ ] No prohibited verbs (verify, test, confirm, check) or implementation language (displays, works, click, render, execute)
+- [ ] No prohibited verbs (verify, test, confirm, check) or implementation language
+- [ ] No borderline patterns (mapped/linked, properly specified, handles)
 
 ### Traceability
 - [ ] ≥80% items have references
-- [ ] References use format: [FR-XXX], [UX-XXX], [Plan: Section] or [Gap/Ambiguity/Conflict/Assumption]
+- [ ] [Gap] items verified against secondary sources before marking
+- [ ] [Conflict] items name both conflicting sources in question text
+- [ ] Questions are self-descriptive (specify what aspects need documentation)
 
 ### Content
-- [ ] Categories match domain defaults
+- [ ] Categories match domain defaults (4-5 per domain)
 - [ ] Total items ≤40
 - [ ] Each category has 5-10 items
 - [ ] No near-duplicate items
