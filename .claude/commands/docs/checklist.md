@@ -113,6 +113,7 @@ When specifications disagree, item question must name both conflicting sources:
 **Valid patterns:**
 - "Are [requirements] defined/specified/documented for [scenario]?"
 - "Is [vague term] quantified with specific criteria?"
+- "Is [constraint] documented with enforcement behavior?"
 - "Are requirements consistent between [section A] and [section B]?"
 - "Can [requirement] be objectively measured/verified?"
 - "Does the spec define [missing aspect]?"
@@ -120,8 +121,8 @@ When specifications disagree, item question must name both conflicting sources:
 **Examples (final output):**
 ```markdown
 - [ ] CHK001 Are success criteria defined with measurable values? [FR-001]
-- [ ] CHK002 Is Bearer token authentication specified for all endpoints? [spec: Technical Context]
-- [ ] CHK003 Is timeout duration 300 seconds per MAX_OPTIMIZATION_DURATION? [data-model: Constants]
+- [ ] CHK002 Is rationale word count range (10-75 words) documented with enforcement behavior? [data-model: Validation Rules]
+- [ ] CHK003 Does OptimizedCV schema in openapi.yaml match Optimized CV entity in data-model.md? [contracts: openapi.yaml, data-model: Entities]
 ```
 
 ## Traceability Rules
@@ -262,7 +263,9 @@ Select all (e.g., "1a, 2b"):
 **Apply Sequential Thinking Methodology** for each resolved item:
 - Transform question to concrete validation check
 - Remove intermediate marker
-- Add appropriate reference to source artifact
+- Add reference to source artifact (existing section or "Technical Context" for new decisions)
+
+**Note:** Phase 4 decisions introduce new specifications. Reference format `[source: Technical Context]` signals these need backport to source artifacts.
 
 **Transformation example:**
 ```
