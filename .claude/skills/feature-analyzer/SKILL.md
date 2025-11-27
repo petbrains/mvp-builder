@@ -19,7 +19,7 @@ Load and analyze all feature artifacts to build comprehensive understanding for 
 Run prerequisites scanner to identify available artifacts:
 
 ```bash
-scripts/check-prerequisites.sh <feature-directory>
+.claude/skills/feature-analyzer/scripts/check-prerequisites.sh <feature-directory>
 ```
 
 Scanner checks for:
