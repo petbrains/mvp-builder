@@ -40,6 +40,12 @@
 - [ ] No prohibited verbs (verify, test, confirm, check) or implementation language
 - [ ] No borderline patterns (mapped/linked, properly specified, handles)
 
+### Source Fidelity
+- [ ] No fabricated values (numbers, percentages, thresholds not explicitly in source)
+- [ ] No inferred mechanisms (auth types, protocols, formats not documented)
+- [ ] Vague source terms preserved as-is (not quantified or specified)
+- [ ] Every detail traces to exact text in source artifact
+
 ### Traceability
 - [ ] All items have concrete references ([FR-XXX], [UX-XXX], [source: Section])
 - [ ] No intermediate markers remaining ([Gap], [Ambiguity], [Conflict], [Assumption])
