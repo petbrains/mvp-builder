@@ -11,22 +11,10 @@ Generate feature specifications from PRD or user description into structured spe
 - `Read`: For loading PRD and existing FEATURES.md
 - `Write`: For saving spec files and index
 - `Bash`: For directory creation
-- `/mcp__sequential-thinking__sequentialthinking`: For analyzing and generating specs
-  - Uses Sequential Thinking methodology for complex multi-step analysis
 
-**Sequential Thinking Usage:**
-Use `/mcp__sequential-thinking__sequentialthinking`:
-
-For PRD Mode:
-- When extracting epics from PRD: "Analyze PRD structure → Extract feature groupings → Map to epic boundaries → Verify coverage"
-- When parsing PRD sections: "Parse section content → Identify user actions → Apply boundary rules → Generate feature list"
-- When distributing constraints: "Identify constraint type → Determine affected features → Map to requirement format → Verify no conflicts"
-- When building FEATURES.md: "Load all features → Analyze relationships → Detect dependencies → Generate index structure"
-
-For User Input Mode:
-- When validating user input: "Analyze description completeness → Identify missing template elements → Generate clarification questions"
-- When checking conflicts: "Analyze existing features → Compare functionality → Detect overlaps → Generate conflict report"
-- When assigning epic: "Analyze epic features → Compare domains → Calculate similarity → Select best match"
+**Skills:**
+- Sequential Thinking Methodology: For analyzing PRD structure, extracting features, validating input, and detecting conflicts
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
 **Templates:**
 - Spec: @.claude/templates/spec-template.md
@@ -152,7 +140,9 @@ For User Input Mode:
 
 ### 2.1 PRD Mode
 
-Apply `/mcp__sequential-thinking__sequentialthinking` for epic extraction and feature identification.
+**Apply Sequential Thinking Methodology** for epic extraction and feature identification:
+- Analyze PRD structure → Extract feature groupings
+- Map to epic boundaries → Verify coverage
 
 **Extract and Track Coverage:**
 When processing PRD sections:
@@ -170,7 +160,9 @@ Based on PRD content, create logical epic groupings
 
 ### 2.2 User Input Mode
 
-Apply `/mcp__sequential-thinking__sequentialthinking` for input validation and conflict detection.
+**Apply Sequential Thinking Methodology** for input validation and conflict detection:
+- Analyze description completeness → Identify missing elements
+- Compare with existing features → Detect overlaps
 
 **Conflict Detection:**
 - Compare functionality with existing features
@@ -195,7 +187,9 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 
 **3.A.2 Extract Content from PRD**
 
-Apply `/mcp__sequential-thinking__sequentialthinking` for content parsing and requirement extraction.
+**Apply Sequential Thinking Methodology** for content parsing and requirement extraction:
+- Parse section content → Identify user actions
+- Apply boundary rules → Generate feature list
 
 **Map PRD to Template Sections:**
 - User descriptions from PRD → Primary User Story
@@ -229,7 +223,9 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 
 **3.B.2 Extract Content from User Description**
 
-Apply `/mcp__sequential-thinking__sequentialthinking` for description analysis and validation.
+**Apply Sequential Thinking Methodology** for description analysis and validation:
+- Analyze description → Map to template sections
+- Identify gaps → Generate clarification questions if needed
 
 **Map User Input to Template:**
 - Main description → Primary User Story
@@ -273,7 +269,9 @@ If gaps found:
 - Report: "Warning: PRD element '[element]' not mapped to any feature spec"
 - Continue with generation but note in summary
 
-Apply `/mcp__sequential-thinking__sequentialthinking` for relationship analysis and index generation.
+**Apply Sequential Thinking Methodology** for relationship analysis and index generation:
+- Load all features → Analyze relationships
+- Detect dependencies → Generate index structure
 
 **User Input Mode:**
 

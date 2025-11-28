@@ -12,10 +12,12 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 - `Read`: For loading spec.md, ux.md, and existing planning documents
 - `Write`: For saving plan artifacts and research notes
 - `Bash`: For directory creation and file verification
-- `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs`: For library documentation and compatibility verification
-  - Uses Context7 documentation retrieval framework
-- `/mcp__sequential-thinking__sequentialthinking`: For complex architectural decisions and analysis
-  - Uses Sequential Thinking methodology for multi-step analysis
+
+**Skills:**
+- Sequential Thinking Methodology: For complex architectural decisions and multi-step analysis
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
+- Context7 Documentation Retrieval: For library documentation and compatibility verification
+  - Tools: `/mcp__context7__resolve-library-id`, `/mcp__context7__get-library-docs`
 
 **Template:**
 - Plan: @.claude/templates/plan-template.md
@@ -97,34 +99,25 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 **Keep in context throughout execution**
 
 ### 0.2 Execute Research & Document
+
 **Extract dependencies from spec.md and ux.md:**
 - Identify mentioned libraries, frameworks, packages
 - Note technology stack references  
 - Verify alignment with PRD architecture choices
 
-**Research Analysis (mandatory):**
-Apply `/mcp__sequential-thinking__sequentialthinking` with query:
-```
-"Analyze feature dependencies: [list extracted libraries] → 
-Evaluate compatibility with PRD stack → 
-Identify integration risks → 
-Select optimal versions → 
-Document critical decisions"
-```
+**Apply Sequential Thinking Methodology** for research analysis:
+- Analyze feature dependencies from extracted libraries
+- Evaluate compatibility with PRD stack
+- Identify integration risks
+- Select optimal versions
+- Document critical decisions
 
-**Library Documentation (execute for each library found):**
-If no external libraries identified, skip to "Create concise research.md"
+**Apply Context7 Documentation Retrieval** for each identified library:
+- Resolve library ID (trust score ≥7 preferred)
+- Fetch documentation with feature-specific topic
+- Use 20000 tokens for comprehensive coverage
 
-For each library:
-1. Apply `/mcp__context7__resolve-library-id` with:
-   - `libraryName`: "[exact package name]"
-2. From results, select library with:
-   - Trust score ≥ 7 (prefer 9-10)
-   - Highest snippet count if multiple high-trust options
-3. Apply `/mcp__context7__get-library-docs` with:
-   - `context7CompatibleLibraryID`: "[selected /org/project ID]"
-   - `topic`: "[feature-specific functionality needed]"
-   - `tokens`: 20000
+If no external libraries identified, skip library documentation step.
 
 **Create concise research.md:**
 ```markdown
@@ -137,7 +130,7 @@ For each library:
 - **[Risk]**: [Impact] → [Mitigation]
 
 ## Stack Compatibility
-- [Verified combination]: ✓
+- [Verified combination]: ✔
 ```
 
 NO alternatives, NO lengthy explanations, NO rejected approaches.
@@ -240,19 +233,14 @@ NO justifications for dependencies (those are in research.md).
 - Continue with research.md, data-model.md, setup.md, contracts/ in memory
 - No re-reading needed as content is already in context
 
-**Analyze complete context:**
-Apply `/mcp__sequential-thinking__sequentialthinking` with query:
-```
-"Synthesize planning context: 
-Sources (PRD, spec, ux, FEATURES) → 
-Research decisions from research.md → 
-Entity model from data-model.md → 
-Setup from setup.md → 
-Contracts from contracts/ → 
-Map to plan-template sections → 
-Select optimal code organization → 
-Define component architecture"
-```
+**Apply Sequential Thinking Methodology** for planning synthesis:
+- Synthesize sources (PRD, spec, ux, FEATURES)
+- Integrate research decisions from research.md
+- Incorporate entity model from data-model.md
+- Include setup from setup.md and contracts from contracts/
+- Map to plan-template sections
+- Select optimal code organization
+- Define component architecture
 
 ### Fill Template Sections
 
