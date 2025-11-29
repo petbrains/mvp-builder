@@ -10,7 +10,8 @@
       "Skill(git)",
       "Skill(feature-analyzer)",
       "Skill(sequential-thinking)",
-      "Skill(context7)"
+      "Skill(context7)",
+      "Skill(prompt-optimizer)"
     ]
   },
   "enableAllProjectMcpServers": true
