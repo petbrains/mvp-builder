@@ -112,6 +112,7 @@ After answers:
 - Explore feature necessity
 - Generate MVP scope
 - Verify completeness
+- Enumerate discrete capabilities within Core MVP Feature for downstream traceability
 
 Share analysis → Wait for "ok"
 
@@ -129,6 +130,7 @@ Opening: "Let me determine the optimal stack for your requirements."
 Questions:
 1. Any technical constraints or specific requirements?
 2. Any preferences for specific technologies or platforms?
+3. Any measurable constraints (numeric limits, thresholds, quotas)?
 
 After answers:
 

@@ -100,6 +100,11 @@ From spec.md extract:
 - Create complete flow with recovery routes
 
 Create comprehensive Mermaid diagram showing complete user journey:
+- Include all decision points and their outcomes
+- **For each exit path (Cancel, Back, Close, Abort):**
+  - Document cleanup behavior (pending request handling, state reset, data persistence)
+  - Specify target state after exit
+
 ```mermaid
 flowchart TD
     Start([Entry]) --> Check{Condition}
@@ -134,7 +139,12 @@ For States & Transitions, define complete lifecycle states:
 }
 ```
 
-### 2.4 Platform-Specific UX Patterns
+### 2.4 Quantified UX Elements
+- Any numeric value displayed to user (percentages, counts, durations, estimates) MUST have calculation formula
+- Any duration or estimate MUST reference source constant from data-model.md or define formula
+- Format: `[Element]: [Formula or constant reference]`
+
+### 2.5 Platform-Specific UX Patterns
 **Include only non-N/A patterns for the detected platform. Remove entire platform section if all items are N/A.**
 
 Key patterns by platform:
@@ -143,7 +153,7 @@ Key patterns by platform:
 - **Desktop**: Window management, System integration, File operations
 - **Browser Extension**: Permissions, Context injection, Storage strategy
 
-### 2.5 Define Error Presentation
+### 2.6 Define Error Presentation
 
 **Apply Sequential Thinking Methodology** for error categorization:
 - Analyze edge cases from spec.md
@@ -166,13 +176,15 @@ Define four error types (as required by template):
 }
 ```
 
-### 2.6 Accessibility Standards
-Define accessibility requirements:
+### 2.7 Accessibility Standards
+Define accessibility requirements with testable criteria:
 
-- **Screen Readers**: ARIA requirements, label structure
-- **Navigation**: Keyboard support, focus management
-- **Visual**: Contrast requirements, color independence
-- **Touch Targets**: Minimum sizes for mobile/desktop
+- **Screen Readers**: ARIA roles, live region types, label associations
+- **Navigation**: Keyboard bindings (specific keys: Tab, Enter, Escape, Arrow keys)
+- **Visual**: Contrast ratio value, color independence method
+- **Touch Targets**: Minimum size value per platform
+
+**Rule**: Each standard MUST include specific testable value or reference to external guideline. Avoid vague terms: "adequate", "sufficient", "appropriate".
 
 ## Phase 3: Assembly & Output
 
@@ -181,9 +193,10 @@ Follow template sections:
 1. Header (platform)
 2. User Flow (Mermaid)
 3. Interaction Model (Core Actions, States & Transitions)
-4. Platform-Specific Patterns (only non-N/A items)
-5. Accessibility Standards (4 categories)
-6. Error Presentation (4 error types)
+4. Quantified UX Elements (formulas and constants)
+5. Platform-Specific Patterns (only non-N/A items)
+6. Accessibility Standards (4 categories with testable values)
+7. Error Presentation (4 error types)
 
 **Note:** Do NOT include Review & Acceptance Checklist in final output
 
@@ -204,6 +217,9 @@ Verify:
 - Platform patterns are UX-relevant
 - JSON structure valid
 - All four error types defined
+- All exit paths have cleanup behavior documented
+- All numeric UI elements have formulas
+- All accessibility standards have testable values
 
 ### 4.2 Report Success
 ```
@@ -218,7 +234,7 @@ Summary:
 - Core Actions: Defined
 - Platform Patterns: [platform]-specific
 - Error Types: 4 scenarios covered
-- Accessibility: Standards defined
+- Accessibility: Standards defined with testable values
 ```
 
 # Error Handling
@@ -229,3 +245,6 @@ Summary:
 - **Duplicate content**: "Warning: Content duplicates spec.md requirements. Regenerating..."
 - **Invalid JSON**: "Error: Generated JSON structure invalid. Regenerating..."
 - **Incomplete sections**: "Error: Missing required section: [section-name]"
+- **Missing exit path cleanup**: "Error: Exit path [name] missing cleanup behavior documentation"
+- **Missing formula**: "Error: Numeric UI element [name] missing calculation formula"
+- **Vague accessibility**: "Error: Accessibility standard [name] missing testable value"

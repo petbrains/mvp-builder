@@ -35,6 +35,10 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - Validation rules from data-model.md → Validation tests
 - Message contracts from contracts.md → Integration tests
 - Setup requirements → Environment tests
+- **Accessibility standards from ux.md → Accessibility tests**
+  - Screen reader requirements → ARIA attribute assertions
+  - Keyboard navigation → Focus management and key handler tests
+  - Visual requirements → Style/attribute validation tests
 
 ## MODEL INSTRUCTION
 **Task examples below are templates. Generate project-specific tasks based on feature artifacts.**
@@ -50,6 +54,9 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - Each task must reference specific file paths derived from plan.md
 - Maintain consistency with project's naming conventions
 - Each user story must have at least RED and GREEN phases
+- **TEST-/IMPL- numbering is sequential across ALL user story phases (not reset per phase)**
+- **Each state transition from data-model.md must have a TEST task**
+- **Each accessibility standard from ux.md must have a TEST task**
 
 ## Phase 1: Core Infrastructure
 
@@ -58,7 +65,7 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - [ ] INIT-003 Configure linting and formatting tools
 - [ ] INIT-004 Setup data layer from data-model.md
 - [ ] INIT-005 Implement authentication if required
-- [ ] INIT-006 Setup API layer per contracts/openapi specifications
+- [ ] INIT-006 Setup API layer per contracts/ (openapi.yaml if present)
 - [ ] INIT-007 Create base entities from data-model.md
 - [ ] INIT-008 Configure error handling
 - [ ] INIT-009 Setup environment per setup.md requirements
@@ -67,12 +74,15 @@ Template for generating implementation tasks using TDD cycles for each user stor
 
 ## Phase 2: User Story 1 - [Title] (P1 - MVP)
 
+> Note: TEST-/IMPL- numbering is sequential across all user story phases
+
 ### TDD Cycle 1: [Component Name]
 **Coverage**: 
 - Requirements: [FR-001, UX-001]
 - Data entities: [from data-model.md]
-- Contracts: [from openapi.yaml or contracts.md]
+- Contracts: [from contracts.md, and openapi.yaml if present]
 - States: [if applicable from data-model.md]
+- Accessibility: [if applicable from ux.md]
 
 #### RED Phase
 - [ ] TEST-001 [US1] Test [requirement/behavior]
@@ -93,17 +103,42 @@ Template for generating implementation tasks using TDD cycles for each user stor
 #### GREEN Phase
 - [ ] IMPL-003 [US1] Implement in src/[location]/[file]
 
+### TDD Cycle 3: [State Machine]
+**Coverage**:
+- States: [all transitions from data-model.md]
+
+#### RED Phase
+- [ ] TEST-004 [US1] Test state transition [from] → [to] on [trigger]
+- [ ] TEST-005 [US1] Test state transition [from] → [to] on [trigger]
+
+#### GREEN Phase
+- [ ] IMPL-004 [US1] Implement state machine in src/[location]/[file]
+
+### TDD Cycle 4: [Accessibility]
+**Coverage**:
+- Accessibility: [standards from ux.md]
+
+#### RED Phase
+- [ ] TEST-006 [US1] Test ARIA [role/attribute] on [component]
+- [ ] TEST-007 [US1] Test keyboard navigation [key] triggers [action]
+
+#### GREEN Phase
+- [ ] IMPL-005 [US1] Add ARIA attributes to [component]
+- [ ] IMPL-006 [US1] Implement keyboard handlers
+
 ## Phase 3: User Story 2 - [Title] (P2)
+
+> Note: Numbering continues from previous story
 
 ### TDD Cycle 1: [Component Name]
 **Coverage**: 
 - Requirements: [FR-004, UX-002]
 
 #### RED Phase
-- [ ] TEST-004 [US2] Test [requirement]
+- [ ] TEST-008 [US2] Test [requirement]
 
 #### GREEN Phase
-- [ ] IMPL-004 [US2] Implement in src/[location]/[file]
+- [ ] IMPL-007 [US2] Implement in src/[location]/[file]
 
 ## Phase 4: User Story 3 - [Title] (P3)
 
@@ -112,10 +147,10 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - Requirements: [FR-005]
 
 #### RED Phase
-- [ ] TEST-005 [US3] Test [requirement]
+- [ ] TEST-009 [US3] Test [requirement]
 
 #### GREEN Phase
-- [ ] IMPL-005 [US3] Implement in src/[location]/[file]
+- [ ] IMPL-008 [US3] Implement in src/[location]/[file]
 
 ## Execution Order
 
@@ -123,6 +158,7 @@ Template for generating implementation tasks using TDD cycles for each user stor
 
 1. **Phase 1**: Core Infrastructure (blocks all stories)  
 2. **Phase 2-N**: User Stories in priority order (P1 → P2 → P3)
+   - Each story is independently testable after Phase 1
 
 Within each story: RED → GREEN cycles
 
@@ -134,6 +170,9 @@ Within each story: RED → GREEN cycles
 - Tests precede implementation
 - No test stubs or always-passing mocks
 - All state transitions must match data-model.md specifications
+- All state transitions must have corresponding tests
+- All accessibility standards must have corresponding tests
+- TEST-/IMPL- numbering is sequential across all user stories (not reset per story)
 
 ---
 
@@ -149,6 +188,9 @@ Within each story: RED → GREEN cycles
 - [ ] Setup requirements from setup.md implemented
 - [ ] Research constraints from research.md applied
 - [ ] Each cycle has RED and GREEN phases
+- [ ] All state transitions from data-model.md have TEST tasks
+- [ ] All accessibility standards from ux.md have TEST tasks
+- [ ] All constants from data-model.md referenced in tasks
 
 ### Structure
 - [ ] Task IDs use correct prefixes (INIT-, TEST-, IMPL-)
@@ -156,5 +198,6 @@ Within each story: RED → GREEN cycles
 - [ ] File paths specified
 - [ ] Priority order maintained (P1 → P2 → P3)
 - [ ] Coverage sections properly filled
+- [ ] TEST-/IMPL- numbering is sequential across all phases
 
 ---

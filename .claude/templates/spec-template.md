@@ -9,12 +9,13 @@
 [Describe the main user journey in plain language - resolved through dialogue or PRD]
 
 ### Acceptance Scenarios
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-2. **Given** [initial state], **When** [action], **Then** [expected outcome]
+1. [P1] **Given** [initial state], **When** [action], **Then** [expected outcome]
+2. [P2] **Given** [initial state], **When** [action], **Then** [expected outcome]
+3. [P3] **Given** [initial state], **When** [action], **Then** [expected outcome]
 
 ### Edge Cases
-- When [boundary condition], system MUST [expected behavior]
-- When [error scenario], system MUST [expected behavior]
+- When [boundary condition], system MUST [expected behavior] [FR-XXX]
+- When [error scenario], system MUST [expected behavior] [FR-XXX]
 
 ## Requirements
 
@@ -23,7 +24,7 @@
 - **FR-002**: System MUST [specific capability]
 - **FR-003**: Users MUST be able to [key interaction]
 - **FR-004**: System MUST [data requirement]
-- **FR-005**: System MUST [behavior]
+- **FR-005**: System MUST [behavior with verification criteria if using maintain/preserve/ensure]
 
 ### UX Requirements
 - **UX-001**: [User interaction requirement]
@@ -58,6 +59,8 @@
 - [ ] Requirements use MUST/SHOULD/MAY keywords
 - [ ] Primary user story clearly described
 - [ ] Minimum 2 acceptance scenarios in Given/When/Then format
-- [ ] Edge cases documented
+- [ ] Acceptance scenarios have P1/P2/P3 priority markers
+- [ ] Edge cases documented with FR-XXX references
+- [ ] Requirements with "maintain"/"preserve"/"ensure" have verification criteria
 
 ---

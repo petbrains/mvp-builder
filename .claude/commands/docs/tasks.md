@@ -21,7 +21,9 @@ Generate actionable tasks list organized by user story priority, enabling indepe
 
 **Handling Template Instructions:**
 - MODEL INSTRUCTION blocks are for generator guidance only - exclude from output
-- Template meta-sections (Task Format, Task Prefixes, Path Conventions, Test Case Mapping, Review Checklist) - use for guidance, don't copy to output
+- Template meta-sections - use for guidance, don't copy to output:
+  - Task Format, Task Prefixes, Path Conventions, Test Case Mapping
+  - MODEL INSTRUCTION, Task Generation Rules, Review Checklist
 - Output only: Title, Purpose, Phase sections with tasks, Execution Order, Notes
 
 **Feature Context:**
@@ -33,7 +35,7 @@ Generate actionable tasks list organized by user story priority, enabling indepe
   - spec.md (user stories with priorities) 
   - ux.md (flows, patterns)
   - data-model.md (entities)
-  - contracts/ (API endpoints)
+  - contracts/ (openapi.yaml for REST API, contracts.md for messages — both optional)
   - research.md (decisions)
   - setup.md (quick start)
 - Output: `./ai-docs/features/[feature]/tasks.md`
@@ -94,8 +96,9 @@ Each cycle within a user story must have:
 1. **Coverage section**: Lists what this cycle implements
    - Requirements: [FR-XXX, UX-XXX] from spec.md
    - Data entities: from data-model.md
-   - Contracts: from openapi.yaml or contracts.md
+   - Contracts: from contracts/ (openapi.yaml and/or contracts.md if present)
    - States: from data-model.md if applicable
+   - Accessibility: from ux.md Accessibility Standards (if applicable)
    - Include only applicable fields (skip if no relevant content exists)
 2. **RED Phase**: TEST- prefixed tasks
 3. **GREEN Phase**: IMPL- prefixed tasks
@@ -108,6 +111,11 @@ Each cycle within a user story must have:
 - Map each entity to user story(ies) that need it
 - If entity serves multiple stories: Put in earliest story or Core Infrastructure
 - Relationships → service layer tasks in appropriate story phase
+
+**From State Machine (data-model.md States section):**
+- Extract all state transitions from data-model.md
+- Each state transition MUST have corresponding TEST task
+- Map transitions to TDD cycles by trigger type (user action, system event, timeout, error)
 
 **From Setup/Infrastructure:**
 - Shared infrastructure → Core Infrastructure phase (Phase 1)
@@ -144,11 +152,18 @@ The template defines how different requirement types map to test types.
 - Read `./ai-docs/features/[feature]/spec.md` → Extract user stories with priorities
 - Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns
 - Read `./ai-docs/features/[feature]/data-model.md` → Extract entities, map to stories
-- Read `./ai-docs/features/[feature]/contracts/` → Map endpoints to stories
+- Read `./ai-docs/features/[feature]/contracts/` → Map endpoints/messages to stories
+  - openapi.yaml: REST API contracts (if present)
+  - contracts.md: Message/event contracts (if present)
 - Read `./ai-docs/features/[feature]/research.md` → Extract decisions for setup
 - Read `./ai-docs/features/[feature]/setup.md` → Extract dependencies
 
-### 1.2 Check Feature Dependencies
+### 1.2 Apply Research Constraints
+- Extract technology decisions and constraints from research.md
+- Apply to infrastructure task generation (affects HOW, not WHAT)
+- Note rejected alternatives to avoid regenerating them
+
+### 1.3 Check Feature Dependencies
 - Read `./ai-docs/FEATURES.md` → Extract current feature's dependencies
 - If "Depends on:" folders listed for current feature:
   - For each dependency folder that exists in `./ai-docs/features/`:
@@ -186,6 +201,9 @@ For each user story:
 - Determine service layer needs
 - Note shared components that should be referenced, not duplicated
 - Group related requirements for TDD cycles
+- **Extract state machine from data-model.md States section**
+  - Each state transition MUST have corresponding TEST task
+  - Map transitions to TDD cycles by trigger type (user action, system event, timeout, error)
 
 ### 2.3 Organize TDD Cycles
 
@@ -205,13 +223,21 @@ For each user story phase:
    - RED phase: TEST- tasks testing the requirements
      - Generate separate test for each error type defined in ux.md Error Presentation section
      - If component exists in dependency: generate integration tests, not unit tests
+     - Generate test for each state transition from data-model.md
    - GREEN phase: IMPL- tasks implementing functionality
      - If entity exists in dependency: skip model creation tasks, generate only integration tests for new relationships
 
 ### 2.4 Generate Task Hierarchy
 - Core Infrastructure: Start with INIT-001
-- User Story phases: TEST- tasks start from TEST-001, IMPL- tasks start from IMPL-001
-- Each prefix maintains its own sequential numbering
+- User Story phases: TEST- and IMPL- tasks use cross-phase sequential numbering
+- Each prefix maintains independent sequential numbering across ALL phases
+
+**Numbering Scope:**
+- INIT-: Sequential within Phase 1 only (INIT-001 to INIT-NNN)
+- TEST-: Sequential across all user story phases (US1: TEST-001...TEST-007, US2: TEST-008...)
+- IMPL-: Sequential across all user story phases (US1: IMPL-001...IMPL-006, US2: IMPL-007...)
+
+This ensures unique task IDs across entire document.
 
 ### 2.5 Validate Task Completeness
 Check:
@@ -221,6 +247,8 @@ Check:
 - Test Case Mapping from template properly applied
 - All platform-specific patterns from ux.md have corresponding tests
 - All accessibility standards from ux.md have validation tests
+- All state transitions from data-model.md have corresponding tests
+- All constants from data-model.md are referenced in at least one task
 
 ## Phase 3: Generate tasks.md
 
@@ -232,6 +260,10 @@ Check:
 - State names from data-model.md
 - Component paths from plan.md
 Never use placeholder values or generic descriptions.
+
+**Constants Coverage Rule:**
+- Every constant defined in data-model.md MUST appear in at least one TEST or IMPL task
+- During validation, flag unused constants: "Warning: Constant [NAME] defined but not referenced"
 
 ### 3.1 Fill Template Sections
 
@@ -246,8 +278,9 @@ Never use placeholder values or generic descriptions.
 
 **Minimum generation requirements:**
 - Phase 1 must contain at least 5 INIT- tasks
-- Each user story must contain at least 1 TDD cycle
-- Each TDD cycle must have at least 2 TEST- tasks and 2 IMPL- tasks
+- Each user story must contain at least 1 TDD cycle covering its requirements
+- Each TDD cycle must have at least 1 TEST- task and 1 IMPL- task
+- Complex cycles (multiple requirements) typically have 2-4 tasks per phase
 
 **Generate User Story Phases (Phase 2+):**
 For each user story (in priority order):
@@ -305,6 +338,8 @@ Write to: `./ai-docs/features/[feature]/tasks.md`
 - Task IDs use correct prefixes
 - File paths specified
 - Dependencies from FEATURES.md accounted for
+- All state transitions have tests
+- All constants referenced
 
 ### 4.2 Generate Summary Report
 ```
@@ -335,6 +370,10 @@ Total Tasks: [total count]
 - TEST tasks: [total]
 - IMPL tasks: [total]
 
+Coverage Validation:
+- State transitions: [count] tested
+- Constants referenced: [count]/[total]
+
 TDD Coverage: ✅ All requirements have test coverage
 Format validation: ✅ All tasks follow PREFIX-### format
 ```
@@ -348,5 +387,8 @@ Format validation: ✅ All tasks follow PREFIX-### format
 - **Dependency issues**: "Warning: Dependency [name] [not found/circular/incomplete]"
 - **Invalid numbering**: "Error: Task numbering not sequential within prefix"
 - **Template issues**: "Error: Review Checklist must not be in output"
+- **Missing state transition test**: "Error: State transition [from → to] has no corresponding TEST task"
+- **Unused constant**: "Warning: Constant [NAME] defined in data-model.md but not referenced in any task"
+- **Missing accessibility test**: "Warning: Accessibility standard [name] has no corresponding TEST task"
 
 Report first 5 errors, then summary count if more.

@@ -90,11 +90,23 @@ Wait for response before proceeding.
 **Title**: Action verb + object ("Create Profile", "View Dashboard")
 
 **Acceptance Scenarios**: Flow → Given/When/Then format
+- Assign priority (P1/P2/P3) based on user flow criticality:
+  - P1: Core flow completion (happy path)
+  - P2: Feedback and status visibility
+  - P3: Error recovery and edge cases
+- **Coverage rule**: Every FR-XXX MUST have at least one Acceptance Scenario that exercises it
 
 **Requirements**:
 - Each "must"/"should" → FR-XXX requirement
 - Each validation → FR-XXX requirement
 - Interface preferences → UX-XXX requirement
+- **Testability rule**: Requirements with "maintain", "preserve", "ensure" MUST include verification criteria in parentheses
+  - Example: "System MUST maintain [quality] (verified by [criteria])"
+
+**Edge Cases**:
+- Each edge case MUST reference the FR-XXX it extends
+- Format: "When [condition], system MUST [behavior] [FR-XXX]"
+- If edge case spans multiple requirements, list all affected FR-XXX
 
 **Entities**: Nouns that get stored/retrieved → Entity with relationships
 
@@ -193,10 +205,10 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 
 **Map PRD to Template Sections:**
 - User descriptions from PRD → Primary User Story
-- Flow steps from PRD → Acceptance Scenarios (Given/When/Then)
-- "must"/"should" from PRD → FR-XXX requirements
+- Flow steps from PRD → Acceptance Scenarios (Given/When/Then) with P1/P2/P3 priority
+- "must"/"should" from PRD → FR-XXX requirements (apply testability rule)
 - Interface mentions → UX-XXX requirements
-- Error handling from PRD → Edge Cases
+- Error handling from PRD → Edge Cases (with FR-XXX references)
 - Data objects from PRD → Key Entities
 - Critical technical limits → Technical Context > Constraints
 
@@ -208,8 +220,9 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 **Validation before saving:**
 - Ensure Technical Context not duplicated unnecessarily across features
 - Verify UX requirements are actual requirements, not descriptions
-- Check FR requirements are testable
-- Confirm Edge Cases are questions with implied answers
+- Check FR requirements are testable (especially those with "maintain", "preserve", "ensure")
+- Confirm Edge Cases have FR-XXX references
+- **Verify every FR-XXX has at least one Acceptance Scenario**
 
 **3.A.4 Save Specification**
 Write to: `./ai-docs/features/[feature-name]/spec.md`
@@ -229,9 +242,9 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 
 **Map User Input to Template:**
 - Main description → Primary User Story
-- Implied flows → Acceptance Scenarios
-- Stated requirements → FR-XXX/UX-XXX
-- Error conditions → Edge Cases
+- Implied flows → Acceptance Scenarios with P1/P2/P3 priority
+- Stated requirements → FR-XXX/UX-XXX (apply testability rule)
+- Error conditions → Edge Cases (with FR-XXX references)
 - Data mentioned → Key Entities
 
 **3.B.3 Fill Template**
@@ -243,6 +256,7 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 - Check if Technical Context needed based on feature type
 - Verify requirements don't conflict with existing features
 - Ensure compatibility with epic's other features
+- **Verify every FR-XXX has at least one Acceptance Scenario**
 
 **3.B.4 Save Specification**
 Write to: `./ai-docs/features/[feature-name]/spec.md`
@@ -310,6 +324,9 @@ For User Input Mode:
 For Both Modes:
 - All spec files created successfully
 - Template checklists satisfied (validated internally, not included in output)
+- All Edge Cases have FR-XXX references
+- All requirements with "maintain"/"preserve"/"ensure" have verification criteria
+- **Every FR-XXX has at least one Acceptance Scenario**
 
 ### 5.2 Generate Summary
 
@@ -354,3 +371,6 @@ FEATURES.md updated with new feature.
 - **Template not found**: Report missing template path and stop execution
 - **File write error**: Report specific file path that failed to save
 - **Checklist in output**: "Error: Review Checklist must not be included in output files"
+- **Missing verification criteria**: "Error: FR-XXX uses 'maintain'/'preserve'/'ensure' without verification criteria"
+- **Edge case without reference**: "Error: Edge case '[description]' missing FR-XXX reference"
+- **FR without acceptance scenario**: "Error: FR-XXX has no corresponding Acceptance Scenario. Add scenario or clarify requirement scope."
