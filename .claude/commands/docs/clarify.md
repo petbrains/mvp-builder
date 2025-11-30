@@ -9,9 +9,12 @@ Interactive command that refines existing feature specifications through targete
 
 **Tools Usage:**
 - `Read`: For loading current spec state
-- `Write`: For incremental spec updates after clarifications  
-- `/mcp__sequential-thinking__sequentialthinking`: For analyzing section coherence after collecting clarifications
-  - Uses Sequential Thinking methodology for complex analysis
+- `Write`: For incremental spec updates after clarifications
+- `Bash`: For file operations
+
+**Skills:**
+- Sequential Thinking Methodology: For analyzing section coherence and validating clarification consistency
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
 **Template:** @.claude/templates/spec-template.md
 
@@ -113,7 +116,8 @@ Please answer all: (e.g., "1:b, 2:500ms")
 
 ### 2.3 Analyze Section Coherence
 After receiving ALL answers for section:
-- Apply `/mcp__sequential-thinking__sequentialthinking`
+
+**Apply Sequential Thinking Methodology** for coherence analysis:
 - Verify clarifications are mutually consistent
 - Check section completeness
 - Validate testability improvement

@@ -10,20 +10,10 @@ Generate README.md as navigation map of implemented code for AI agents.
 **Tools Usage:**
 - `Read`: Load tasks.md, existing README.md, and source files
 - `Write`: Save README.md
-- `/mcp__sequential-thinking__sequentialthinking`: Build dependency graph and analyze module relationships
-  - Uses Sequential Thinking methodology for structured analysis
 
-**Sequential Thinking Usage:**
-Use `/mcp__sequential-thinking__sequentialthinking`:
-
-For dependency graph building:
-- "Scan all project files → Parse imports → Build bidirectional map → Detect circular dependencies → Mark shared modules"
-
-For mode detection:
-- "Check README exists → Validate structure → Determine update strategy"
-
-For incremental updates:
-- "Scan new feature files → Merge with existing graph → Rebuild bidirectional relations → Verify no cycles introduced"
+**Skills:**
+- Sequential Thinking Methodology: For building dependency graphs and analyzing module relationships
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
 **Template:**
 - README structure: Embedded in Template section below
@@ -40,7 +30,6 @@ Updates README.md with bidirectional dependency graph showing module relationshi
 Maintains single source of truth for project structure and entry points.
 
 # Template
-
 ```markdown
 # Code Map
 
@@ -105,28 +94,24 @@ Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 
 ### 2.1 Execute Dependency Analysis
 
-Apply `/mcp__sequential-thinking__sequentialthinking`:
+**Apply Sequential Thinking Methodology** for dependency graph construction:
 
 **Initial Mode - Full scan:**
-```
-"Scan all project files →
-Determine primary language by extensions →
-Identify main framework from config/dependencies →
-Locate primary entry point (main/index/app) →
-Parse all module imports →
-Build bidirectional dependency map →
-Mark shared modules (3+ incoming) →
-Detect circular dependencies"
-```
+- Scan all project files
+- Determine primary language by extensions
+- Identify main framework from config/dependencies
+- Locate primary entry point (main/index/app)
+- Parse all module imports
+- Build bidirectional dependency map
+- Mark shared modules (3+ incoming)
+- Detect circular dependencies
 
 **Update Mode - Incremental:**
-```
-"Scan project including new feature →
-Parse all imports →
-Build complete bidirectional map →
-Mark shared modules →
-Detect circular dependencies"
-```
+- Scan project including new feature
+- Parse all imports
+- Build complete bidirectional map
+- Mark shared modules
+- Detect circular dependencies
 
 ### 2.2 Process Analysis Output
 **Output validation:**
@@ -155,7 +140,7 @@ Detect circular dependencies"
 3. **Write README.md** to `./ai-docs/README.md`
 
 4. **Report:**
-   ```
+```
    README.md [Created/Updated] Successfully!
    
    Mode: [Initial/Update]
@@ -163,7 +148,7 @@ Detect circular dependencies"
    Total Modules: [count]
    Shared Modules: [count]
    Location: ./ai-docs/README.md
-   ```
+```
 
 # Error Handling
 

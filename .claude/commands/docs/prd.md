@@ -11,16 +11,10 @@ Generate MVP Product Requirements Document through interactive dialogue with inc
 - `Read`: For loading current PRD state before updates
 - `Write`: For incremental PRD saving after each stage
 - `Bash`: For project discovery
-- `/mcp__sequential-thinking__sequentialthinking`: For analysis at decision points
-  - Uses Sequential Thinking methodology for structured reasoning
 
-**Sequential Thinking Usage:**
-Use `/mcp__sequential-thinking__sequentialthinking` at analysis points:
-- After Stage 1: Analyze user-problem fit → Explore solution effectiveness → Generate hypothesis → Verify assumptions
-- After Stage 2: Analyze flow effectiveness → Explore feature necessity → Generate MVP scope → Verify completeness
-- After Stage 3: Analyze requirements → Explore stack options → Generate technology hypothesis → Verify feasibility
-- After Stage 4: Analyze interface requirements → Explore UX patterns → Generate design hypothesis → Verify flow
-- Final validation: Analyze coherence → Explore completeness → Generate readiness hypothesis → Verify clarity
+**Skills:**
+- Sequential Thinking Methodology: For analysis at decision points and validation
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
 **Output:** `./ai-docs/PRD.md`
 
@@ -82,7 +76,15 @@ Questions:
 3. What specific problem are they experiencing?
 4. How would you describe the solution?
 
-After answers → Apply sequential thinking → Share analysis → Wait for "ok"
+After answers:
+
+**Apply Sequential Thinking Methodology** for user-problem fit analysis:
+- Analyze user-problem fit
+- Explore solution effectiveness
+- Generate hypothesis
+- Verify assumptions
+
+Share analysis → Wait for "ok"
 
 **Save after confirmation:**
 ```bash
@@ -103,7 +105,15 @@ Questions:
 2. Describe how the main feature of your product will work
 3. What supporting features are essential for the MVP?
 
-After answers → Apply sequential thinking → Share analysis → Wait for "ok"
+After answers:
+
+**Apply Sequential Thinking Methodology** for MVP scope analysis:
+- Analyze flow effectiveness
+- Explore feature necessity
+- Generate MVP scope
+- Verify completeness
+
+Share analysis → Wait for "ok"
 
 **Save after confirmation:**
 Read ./ai-docs/PRD.md → Write updated version with:
@@ -120,7 +130,15 @@ Questions:
 1. Any technical constraints or specific requirements?
 2. Any preferences for specific technologies or platforms?
 
-After answers → Apply sequential thinking → Present recommendation with rationale → Wait for "ok"
+After answers:
+
+**Apply Sequential Thinking Methodology** for technology selection:
+- Analyze requirements
+- Explore stack options
+- Generate technology hypothesis
+- Verify feasibility
+
+Present recommendation with rationale → Wait for "ok"
 
 **Save after confirmation:**
 Read ./ai-docs/PRD.md → Write updated version with:
@@ -137,7 +155,15 @@ Questions:
 1. Any specific UX preferences (mobile-first, desktop-first, design style)?
 2. Any additional design or interface requirements?
 
-After answers → Apply sequential thinking → Share analysis → Wait for "ok"
+After answers:
+
+**Apply Sequential Thinking Methodology** for UX analysis:
+- Analyze interface requirements
+- Explore UX patterns
+- Generate design hypothesis
+- Verify flow
+
+Share analysis → Wait for "ok"
 
 **Save after confirmation:**
 Read ./ai-docs/PRD.md → Write updated version with:
@@ -148,7 +174,13 @@ Read ./ai-docs/PRD.md → Write updated version with:
 
 ## Phase 3: Validation
 
-Read ./ai-docs/PRD.md → Apply sequential thinking for final validation
+Read ./ai-docs/PRD.md
+
+**Apply Sequential Thinking Methodology** for final validation:
+- Analyze coherence
+- Explore completeness
+- Generate readiness hypothesis
+- Verify clarity
 
 If issues found:
 "Validation notes: [issues]. Would you like to address these? (specify / 'ok' to proceed)"
@@ -177,7 +209,7 @@ Would you like to:
 If modifications requested:
 - Read ./ai-docs/PRD.md
 - Apply requested changes to section
-- Apply sequential thinking to verify consistency
+- **Apply Sequential Thinking Methodology** for consistency verification
 - Show before/after comparison
 - Wait for user confirmation ("ok")
 - Write updated ./ai-docs/PRD.md

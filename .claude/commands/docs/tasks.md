@@ -11,19 +11,10 @@ Generate actionable tasks list organized by user story priority, enabling indepe
 - `Read`: For loading spec.md, ux.md, plan.md, and other planning documents
 - `Write`: For saving generated tasks.md
 - `Bash`: For directory existence verification
-- `/mcp__sequential-thinking__sequentialthinking`: For complex task dependency analysis and optimization
-  - Uses Sequential Thinking methodology for structured reasoning
 
-**Sequential Thinking Usage:**
-Use `/mcp__sequential-thinking__sequentialthinking`:
-
-For User Story Analysis:
-- When extracting stories: "Parse spec.md priorities → Map to implementation phases → Identify dependencies → Verify independence"
-- When organizing tasks: "Group by user story → Analyze parallelization → Optimize execution order → Generate dependency graph"
-
-For Task Generation:
-- When mapping components: "Extract entities from data-model → Map to user stories → Identify shared components → Assign to phases"
-- When validating completeness: "Check all requirements covered → Verify testability → Ensure no orphaned tasks → Validate dependencies"
+**Skills:**
+- Sequential Thinking Methodology: For complex task dependency analysis and optimization
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
 **Templates:**
 - Tasks: @.claude/templates/tasks-template.md
@@ -175,14 +166,13 @@ The template defines how different requirement types map to test types.
 ## Phase 2: Execute Task Generation
 
 ### 2.1 Analyze User Stories
-Apply `/mcp__sequential-thinking__sequentialthinking` for story analysis:
-```
-"Extract user stories from spec.md →
-Identify priority levels (P1, P2, P3) →
-Map acceptance criteria to test scenarios →
-Detect inter-story dependencies →
-Generate implementation order"
-```
+
+**Apply Sequential Thinking Methodology** for story analysis:
+- Extract user stories from spec.md
+- Identify priority levels (P1, P2, P3)
+- Map acceptance criteria to test scenarios
+- Detect inter-story dependencies
+- Generate implementation order
 
 ### 2.2 Map Components to Stories
 For each user story:
@@ -198,15 +188,13 @@ For each user story:
 - Group related requirements for TDD cycles
 
 ### 2.3 Organize TDD Cycles
-Apply `/mcp__sequential-thinking__sequentialthinking` for cycle organization:
-```
-"For each user story:
-Group related requirements into logical cycles by target component →
-Define Coverage for each cycle (FR-*, UX-*, entities, contracts) →
-Generate RED phase tests from requirements →
-Generate GREEN phase implementation tasks →
-Validate cycle completeness"
-```
+
+**Apply Sequential Thinking Methodology** for cycle organization:
+- Group related requirements into logical cycles by target component
+- Define Coverage for each cycle (FR-*, UX-*, entities, contracts)
+- Generate RED phase tests from requirements
+- Generate GREEN phase implementation tasks
+- Validate cycle completeness
 
 **TDD Cycle Generation:**
 For each user story phase:
@@ -300,14 +288,13 @@ Write to: `./ai-docs/features/[feature]/tasks.md`
 ## Phase 4: Validate & Report
 
 ### 4.1 Final Validation
-Apply `/mcp__sequential-thinking__sequentialthinking` for completeness check:
-```
-"Verify all user stories have TDD cycles →
-Check RED-GREEN phase completeness →
-Validate Coverage sections filled →
-Confirm task format compliance →
-Verify Review Checklist criteria (without including in output)"
-```
+
+**Apply Sequential Thinking Methodology** for completeness check:
+- Verify all user stories have TDD cycles
+- Check RED-GREEN phase completeness
+- Validate Coverage sections filled
+- Confirm task format compliance
+- Verify Review Checklist criteria (without including in output)
 
 **Validation using template's Review Checklist (internal only):**
 - All user stories have TDD cycles
