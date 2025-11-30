@@ -12,8 +12,10 @@ Output compact, structured documents that complement (not duplicate) feature spe
 - `Read`: For loading PRD.md and spec.md files
 - `Write`: For saving ux.md output
 - `Bash`: For checking file existence
-- `/mcp__sequential-thinking__sequentialthinking`: For complex analysis when needed
-  - Uses Sequential Thinking methodology for structured reasoning
+
+**Skills:**
+- Sequential Thinking Methodology: For platform detection, flow analysis, and error categorization
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
 **Template:**
 - UX: @.claude/templates/ux-template.md
@@ -37,24 +39,6 @@ Focus on user interactions, behavior patterns, and platform UX conventions.
 - **Structured data** - Use JSON for all component definitions, Mermaid for flows
 - **Platform-aware** - Include only UX-relevant patterns for detected platform
 - **Template compliance** - Exclude Review Checklist from final output
-
-## Sequential Thinking Usage
-Use `/mcp__sequential-thinking__sequentialthinking`:
-
-For Platform Detection:
-- When platform ambiguous: "Analyze keywords in spec → Check PRD context → Calculate platform confidence → Select best match"
-- When multiple platforms possible: "Extract platform indicators → Weight by context → Compare scores → Determine primary platform"
-
-For User Flow Generation:
-- When mapping scenarios: "Extract acceptance scenarios → Identify decision points → Map error paths → Create complete flow"
-- When validating flow completeness: "Check all paths → Verify error handling → Ensure recovery routes → Validate start/end points"
-
-For Interaction Model:
-- When selecting core actions: "List all user actions → Analyze frequency → Determine criticality → Select primary set"
-- When defining states: "Map user journey → Identify state changes → Define transitions → Verify completeness"
-
-For Error Presentation:
-- When categorizing errors: "Analyze edge cases → Map to four types → Define UI responses → Ensure all scenarios covered"
 
 # Execution Flow
 
@@ -85,8 +69,13 @@ Else analyze keywords:
 ```
 
 ### 1.2 Confirm Platform
-If platform unclear, apply `/mcp__sequential-thinking__sequentialthinking` for platform detection.
+If platform unclear:
 
+**Apply Sequential Thinking Methodology** for platform detection:
+- Analyze keywords in spec
+- Check PRD context
+- Calculate platform confidence
+- Select best match
 ```
 ✅ Feature loaded: [feature-name]
 🎯 Platform detected: [platform]
@@ -103,7 +92,12 @@ From spec.md extract:
 - Edge cases → Critical scenarios
 
 ### 2.2 Generate User Flow
-Apply `/mcp__sequential-thinking__sequentialthinking` for flow completeness analysis.
+
+**Apply Sequential Thinking Methodology** for flow completeness analysis:
+- Extract acceptance scenarios
+- Identify decision points
+- Map error paths
+- Create complete flow with recovery routes
 
 Create comprehensive Mermaid diagram showing complete user journey:
 ```mermaid
@@ -119,7 +113,6 @@ flowchart TD
 Generate JSON for core user actions and system responses.
 
 **Important:** Replace `[PRIMARY_ACTION_NAME]` and `[SECONDARY_ACTION_NAME]` with actual action names (e.g., "submit_form", "upload_file", "refresh_data")
-
 ```json
 {
   "[actual_action_name]": {
@@ -151,7 +144,12 @@ Key patterns by platform:
 - **Browser Extension**: Permissions, Context injection, Storage strategy
 
 ### 2.5 Define Error Presentation
-Apply `/mcp__sequential-thinking__sequentialthinking` for error categorization.
+
+**Apply Sequential Thinking Methodology** for error categorization:
+- Analyze edge cases from spec.md
+- Map to four error types
+- Define UI responses for each
+- Ensure all scenarios covered
 
 Define four error types (as required by template):
 ```json

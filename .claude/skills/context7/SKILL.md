@@ -1,6 +1,7 @@
 ---
 name: context7
 description: Up-to-date library documentation retrieval using Context7 MCP tools. Process THINK → RESOLVE → FETCH → APPLY. Use when fetching library docs, resolving package names to IDs, getting implementation guides, exploring API references. Provides package resolution strategy, trust score evaluation, token scaling (3K-20K), topic selection patterns.
+allowed-tools: Read, Write, Bash (*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 ---
 
 # Context7 Documentation Retrieval
