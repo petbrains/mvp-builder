@@ -141,8 +141,8 @@ For States & Transitions, define complete lifecycle states:
 
 ### 2.4 Quantified UX Elements
 - Any numeric value displayed to user (percentages, counts, durations, estimates) MUST have calculation formula
-- Any duration or estimate MUST reference source constant from data-model.md or define formula
-- Format: `[Element]: [Formula or constant reference]`
+- Any duration or estimate MUST define formula (will be formalized as constants in data-model.md by plan command)
+- Format: `[Element]: [Formula or source reference]`
 
 ### 2.5 Platform-Specific UX Patterns
 **Include only non-N/A patterns for the detected platform. Remove entire platform section if all items are N/A.**

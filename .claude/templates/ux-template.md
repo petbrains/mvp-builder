@@ -59,10 +59,10 @@ flowchart TD
 
 ## Quantified UX Elements
 
-| Element | Formula / Constant Reference |
-|---------|------------------------------|
-| [NUMERIC_ELEMENT_1] | [FORMULA or data-model.md constant] |
-| [NUMERIC_ELEMENT_2] | [FORMULA or data-model.md constant] |
+| Element | Formula / Source Reference |
+|---------|----------------------------|
+| [NUMERIC_ELEMENT_1] | [FORMULA - formalized in data-model.md] |
+| [NUMERIC_ELEMENT_2] | [FORMULA - formalized in data-model.md] |
 
 ## Platform-Specific Patterns
 ** MODEL INSTRUCTION: Only include platforms where requirements differ from "N/A". Remove entire platform section if all items are "N/A".**
@@ -144,8 +144,8 @@ flowchart TD
 - [ ] Transitions between states logical
 
 ### Quantified Elements
-- [ ] All numeric UI elements have formulas or constant references
-- [ ] Formulas reference data-model.md constants where applicable
+- [ ] All numeric UI elements have formulas or source references
+- [ ] Formulas will be formalized in data-model.md by plan command
 
 ### Platform Consistency
 - [ ] Platform-specific requirements identified

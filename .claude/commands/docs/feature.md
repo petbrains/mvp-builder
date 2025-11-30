@@ -103,6 +103,10 @@ Wait for response before proceeding.
 - **Testability rule**: Requirements with "maintain", "preserve", "ensure" MUST include verification criteria in parentheses
   - Example: "System MUST maintain [quality] (verified by [criteria])"
 
+**UX Details Distribution:**
+- Platform Strategy → Technical Context (if affects feature implementation)
+- Interface Requirements → UX-XXX requirements
+
 **Edge Cases**:
 - Each edge case MUST reference the FR-XXX it extends
 - Format: "When [condition], system MUST [behavior] [FR-XXX]"
@@ -140,7 +144,7 @@ For PRD Mode:
 - If not exists:
   - Read `./ai-docs/PRD.md`
   - If not found: "No PRD.md found. Run PRD command first."
-  - Extract: Core Proposition, Solution Design, Technical Requirements
+  - Extract: Core Proposition, Solution Design, Technical Requirements, UX Details
 
 For User Input Mode:
 - Read `./ai-docs/FEATURES.md`
@@ -211,6 +215,7 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 - Error handling from PRD → Edge Cases (with FR-XXX references)
 - Data objects from PRD → Key Entities
 - Critical technical limits → Technical Context > Constraints
+- Platform Strategy from UX Details → Technical Context (if affects implementation)
 
 **3.A.3 Fill Template**
 - Load spec-template.md

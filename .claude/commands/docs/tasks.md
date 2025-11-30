@@ -10,7 +10,7 @@ Generate actionable tasks list organized by user story priority, enabling indepe
 **Tools Usage:**
 - `Read`: For loading spec.md, ux.md, plan.md, and other planning documents
 - `Write`: For saving generated tasks.md
-- `Bash`: For directory existence verification
+- `Bash`: For directory existence verification and prerequisites validation
 
 **Skills:**
 - Sequential Thinking Methodology: For complex task dependency analysis and optimization
@@ -48,6 +48,12 @@ Each user story becomes independently implementable phase with clear test criter
 
 # Rules
 
+## Story Mapping
+- Acceptance Scenarios from spec.md with priorities (P1, P2, P3) become User Stories in tasks
+- [US1] maps to first P1 scenario, [US2] to second scenario by priority order, etc.
+- Story labels follow scenario priority order: all P1 scenarios first, then P2, then P3
+- Each scenario with unique priority marker becomes a separate User Story phase
+
 ## Task Format Rules
 
 **Task ID Format (REQUIRED)**
@@ -67,7 +73,7 @@ Use prefixes from template "Task Prefixes" section:
 1. **Checkbox**: ALWAYS start with `- [ ]` (markdown checkbox)
 2. **Prefix-ID**: Each prefix has independent numbering (INIT-001..., TEST-001..., IMPL-001...)
 3. **[Story] label**: REQUIRED for user story tasks only
-   - Format: [US1], [US2], [US3] (maps to user stories from spec.md)
+   - Format: [US1], [US2], [US3] (maps to acceptance scenarios from spec.md by priority order)
    - Core Infrastructure phase: NO story labels
 4. **Description**: Clear action with exact file path
 
@@ -85,7 +91,7 @@ Use prefixes from template "Task Prefixes" section:
 ## Task Organization Rules
 
 **From User Stories (spec.md) - PRIMARY:**
-- Each user story (P1, P2, P3...) becomes a phase with TDD cycles
+- Each acceptance scenario (P1, P2, P3...) becomes a phase with TDD cycles
 - Organize story tasks into TDD Cycles:
   - Group requirements by their target component (same model, same endpoint, same UI component)
   - Each cycle covers specific component/feature
@@ -145,11 +151,31 @@ The template defines how different requirement types map to test types.
 
 # Execution Flow
 
+## Phase 0: Validate Prerequisites
+
+### 0.1 Check Required Inputs
+```bash
+# Validate core inputs exist
+[ ! -f "./ai-docs/features/$FEATURE/spec.md" ] && echo "Error: spec.md not found. Run feature command first." && exit 1
+[ ! -f "./ai-docs/features/$FEATURE/ux.md" ] && echo "Error: ux.md not found. Run ux command first." && exit 1
+[ ! -f "./ai-docs/features/$FEATURE/plan.md" ] && echo "Error: plan.md not found. Run plan command first." && exit 1
+[ ! -f "./ai-docs/features/$FEATURE/data-model.md" ] && echo "Error: data-model.md not found. Run plan command first." && exit 1
+```
+
+### 0.2 Check Optional Inputs
+```bash
+# Note optional files availability
+[ -f "./ai-docs/features/$FEATURE/contracts/openapi.yaml" ] && echo "OpenAPI spec found"
+[ -f "./ai-docs/features/$FEATURE/contracts/contracts.md" ] && echo "Message contracts found"
+[ -f "./ai-docs/features/$FEATURE/research.md" ] && echo "Research notes found"
+[ -f "./ai-docs/features/$FEATURE/setup.md" ] && echo "Setup guide found"
+```
+
 ## Phase 1: Load Design Documents
 
 ### 1.1 Load All Feature Documents
 - Read `./ai-docs/features/[feature]/plan.md` → Extract tech stack, libraries, structure
-- Read `./ai-docs/features/[feature]/spec.md` → Extract user stories with priorities
+- Read `./ai-docs/features/[feature]/spec.md` → Extract acceptance scenarios with priorities
 - Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns
 - Read `./ai-docs/features/[feature]/data-model.md` → Extract entities, map to stories
 - Read `./ai-docs/features/[feature]/contracts/` → Map endpoints/messages to stories
@@ -183,8 +209,9 @@ The template defines how different requirement types map to test types.
 ### 2.1 Analyze User Stories
 
 **Apply Sequential Thinking Methodology** for story analysis:
-- Extract user stories from spec.md
+- Extract acceptance scenarios from spec.md
 - Identify priority levels (P1, P2, P3)
+- Map scenarios to User Story labels ([US1], [US2], [US3]) by priority order
 - Map acceptance criteria to test scenarios
 - Detect inter-story dependencies
 - Generate implementation order
@@ -195,7 +222,6 @@ For each user story:
 - Check if required entities already exist in dependency features
 - Map API endpoints from contracts/
 - Identify which API endpoints can be reused vs need new implementation
-- Extract UI components from ux.md patterns
 - Extract all accessibility requirements from ux.md Accessibility Standards section
 - Map each error type from ux.md Error Presentation to specific error handling components
 - Determine service layer needs

@@ -13,6 +13,14 @@ Template for generating implementation tasks using TDD cycles for each user stor
 - **TEST-**: Tests
 - **IMPL-**: Implementation
 
+## Story Mapping
+** MODEL INSTRUCTION: Acceptance Scenarios from spec.md become User Stories in tasks.md**
+- Acceptance Scenarios with priorities (P1, P2, P3) from spec.md map to User Story labels
+- [US1] = first scenario by priority order (first P1)
+- [US2] = second scenario by priority order (second P1 or first P2)
+- [US3] = third scenario by priority order
+- Story labels follow scenario priority order: all P1 first, then P2, then P3
+
 ## Path Conventions
 
 - **Single project**: `src/`, `tests/` at repository root
