@@ -46,15 +46,15 @@ Checklists test whether **requirements are well-specified**, not whether impleme
 
 ## Categories
 
-| Category | Pattern |
-|----------|---------|
-| Completeness | "Is [X] documented?" |
-| Clarity | "Is [X] unambiguous/quantified?" |
-| Consistency | "Does [X] align with [Y]?" |
-| Measurability | "Can [X] be objectively verified?" |
-| Coverage | "Are all [scenarios] addressed?" |
-| Edge Case | "Is behavior for [boundary] defined?" |
-| **Cross-Artifact** | "Does [X] in [source-A] match [Y] in [source-B]?" |
+| Category | Dimension | Pattern |
+|----------|-----------|---------|
+| Completeness | `Completeness` | "Is [X] documented?" |
+| Clarity | `Clarity` | "Is [X] unambiguous/quantified?" |
+| Consistency | `Consistency` | "Does [X] align with [Y]?" |
+| Measurability | `Measurability` | "Can [X] be objectively verified?" |
+| Coverage | `Coverage` | "Are all [scenarios] addressed?" |
+| Edge Case | `Edge Case` | "Is behavior for [boundary] defined?" |
+| **Cross-Artifact** | `Consistency`/`Coverage` | "Does [X] in [source-A] match [Y] in [source-B]?" |
 
 **Per-domain defaults:**
 - `requirements`: Completeness, Clarity, Consistency, Coverage, **Cross-Artifact**
@@ -69,6 +69,7 @@ Each domain MUST include these cross-checks:
 **requirements:**
 - Are all FR-XXX covered by TEST tasks in tasks.md?
 - Are all edge cases from spec.md covered by TEST tasks?
+- Are all scenario types covered: Primary, Alternate, Exception/Error, Recovery?
 
 **ux:**
 - Are all accessibility requirements covered by TEST tasks?
@@ -82,17 +83,33 @@ Each domain MUST include these cross-checks:
 
 **api:**
 - Do error response codes match error types in ux.md?
+- Are all message/endpoint handlers covered by TEST tasks?
 
 ## Item Format
 
 ```
-- [ ] CHK### Question [Reference]
+- [ ] CHK### Question [Dimension, Reference]
 ```
 
 **Components:**
 - `CHK###`: Sequential ID across ALL checklists (CHK001, CHK002... CHK073, etc.)
 - Question: Tests requirement quality, not implementation
-- `[Reference]`: Source or resolution marker
+- `[Dimension, Reference]`: Quality dimension + source
+
+**Quality Dimensions:**
+- `Completeness` — Is requirement present?
+- `Clarity` — Is requirement unambiguous/quantified?
+- `Consistency` — Does requirement align with others?
+- `Measurability` — Can requirement be objectively verified?
+- `Coverage` — Are all scenarios addressed?
+- `Edge Case` — Are boundary conditions defined?
+
+**Examples:**
+```markdown
+- [ ] CHK007 Is the 60-second timeout explicitly defined with units? [Clarity, FR-009]
+- [ ] CHK018 Are all error types covered by TEST tasks? [Coverage, ux.md → tasks.md]
+- [ ] CHK042 Is behavior defined when estimated time exceeds timeout? [Edge Case, Resolution: CHK042]
+```
 
 **Numbering order:** requirements → ux → api → data (follows artifact chain: spec → ux → contracts → data-model)
 
@@ -114,6 +131,7 @@ Each domain MUST include these cross-checks:
 - Final output: 0% intermediate markers
 - Before `[Gap]`: verify not in secondary sources
 - `[Conflict]` items must name both sources in question
+- Every item must include quality dimension: `[Dimension, Reference]`
 
 ## Content Limits
 
