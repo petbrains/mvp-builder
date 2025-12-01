@@ -7,25 +7,27 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 Generate "Unit Tests for Requirements" — deterministic checklists that validate requirement quality.
 
-**Tools:** `Read`, `Write`, `Bash`
+**Tools Usage:**
+- `Read`: For loading feature artifacts
+- `Write`: For saving checklist files and updating tasks.md
+- `Bash`: For directory creation and file verification
 
 **Skills:**
-- Feature Analyzer: Load all feature artifacts
-- Sequential Thinking: `/mcp__sequential-thinking__sequentialthinking`
+- Feature Analyzer: For loading complete feature context from artifacts
+  - Scans and loads: spec.md, ux.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
+- Sequential Thinking Methodology: For structured reasoning during analysis and generation
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
 **Templates:**
-- @.claude/templates/checklist-template.md
-- @.claude/templates/resolutions-template.md
+- Checklist: @.claude/templates/checklist-template.md
+- Resolutions: @.claude/templates/resolutions-template.md
 
-**Input:** `/checklist [feature-path]`
-
-**Output:**
-- `[feature]/checklists/requirements-checklist.md` — from spec.md
-- `[feature]/checklists/ux-checklist.md` — from ux.md
-- `[feature]/checklists/api-checklist.md` — from contracts/, plan.md
-- `[feature]/checklists/data-checklist.md` — from data-model.md
-- `[feature]/checklists/resolutions.md` — Phase 4 decisions (if any)
-- `[feature]/tasks.md` — updated with resolution tasks (if any)
+**File Structure:**
+- Input: `./ai-docs/features/[feature]/` (requires core artifacts)
+- Output: 
+  - `./ai-docs/features/[feature]/checklists/[domain]-checklist.md` (4 files)
+  - `./ai-docs/features/[feature]/checklists/resolutions.md` (if any)
+  - `./ai-docs/features/[feature]/tasks.md` (updated with resolution tasks)
 
 # Rules
 
@@ -203,20 +205,28 @@ Notes section:
 ### 0.1 Parse Input
 Extract `FEATURE_PATH`.
 
-### 0.2 Load Context
-Apply Feature Analyzer skill. Require: spec.md, ux.md, plan.md, tasks.md.
+### 0.2 Load Feature Context
+
+**Apply Feature Analyzer skill** to scan and load feature artifacts:
+- Validates core files exist (spec.md, ux.md, plan.md, tasks.md, data-model.md)
+- Loads all available artifacts into context
+- Reports missing files if any
+
+If core files missing → Report error and exit.
 
 ### 0.3 Extract Numbering
 From tasks.md: `LAST_TEST_NUM`, `LAST_IMPL_NUM`, `LAST_PHASE_NUM`.
 
-## Phase 1: Analyze
+## Phase 1: Analyze Context
 
-Apply Sequential Thinking:
-- Extract FR-XXX, UX-XXX requirements
+**Apply Sequential Thinking Methodology** for artifact analysis:
+- Extract requirements with IDs (FR-XXX, UX-XXX)
 - Identify gaps, ambiguities, conflicts per domain
-- Map to categories including Cross-Artifact
+- Map findings to categories including Cross-Artifact
+- Detect scenario coverage gaps (Primary, Alternate, Exception, Recovery)
+- Prioritize by implementation impact
 
-## Phase 2: Generate
+## Phase 2: Generate Checklists
 
 ```bash
 mkdir -p $FEATURE_PATH/checklists
@@ -229,9 +239,16 @@ Track `LAST_CHK_NUM = 0` across all domains.
 For each domain:
 
 ### 2.1 Generate Items
-- 5-10 items per category
+
+**Apply Sequential Thinking Methodology** for item generation:
+- Extract relevant requirements from primary source
+- Check secondary sources before marking [Gap]
+- Formulate quality validation questions with dimensions
+- Apply item format rules and reference format
+- Filter against anti-patterns
 - Include mandatory Cross-Artifact checks
-- Apply item format and anti-patterns
+
+Generate 5-10 items per category.
 
 ### 2.2 Consolidate
 - Remove duplicates
@@ -240,6 +257,8 @@ For each domain:
 
 ### 2.3 Write Draft
 Write to `$FEATURE_PATH/checklists/[domain]-checklist.md`
+
+**Exclude from output:** Review Checklist section (template internal validation only)
 
 ## Phase 3: Validate
 
@@ -259,16 +278,15 @@ If none → Phase 5.
 
 Build list: `UNRESOLVED[] = [{id, domain, marker, question}, ...]`
 
-### 4.2 Summary
-```
-⚠️ [N] items need resolution:
-- requirements-checklist.md: [n] items
-- ux-checklist.md: [n] items
-- api-checklist.md: [n] items
-- data-checklist.md: [n] items
-```
+### 4.2 Generate Resolution Options
 
-### 4.3 Iterate One-by-One
+**Apply Sequential Thinking Methodology** for each unresolved item:
+- Generate 2-3 concrete resolution options (MVP-focused)
+- Determine task impact for each option (NEW, UPDATE, or DEFERRED)
+- Find related tasks in tasks.md
+- Formulate recommended option with rationale
+
+### 4.3 Present Resolution Dialogue
 
 **CRITICAL: Process ONE item at a time. Do NOT batch multiple questions.**
 
@@ -312,7 +330,7 @@ Related: [RELATED_TASKS or "None found"]
 
 ### 4.4 Process Resolution
 
-For each selection:
+**Apply Sequential Thinking Methodology** for each selection:
 
 **4.4.1 Rewrite Checklist Item**
 - Transform to concrete validation
