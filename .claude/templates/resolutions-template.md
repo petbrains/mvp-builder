@@ -47,7 +47,7 @@
 ---
 
 ## Review Checklist
-**MODEL INSTRUCTION: Internal validation only. Exclude from output.**
+**MODEL INSTRUCTION: Internal validation only. Exclude entire section from output.**
 
 - [ ] All Phase 4 resolutions documented
 - [ ] Each decision has task_impact field

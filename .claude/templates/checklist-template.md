@@ -19,6 +19,10 @@
 - [ ] CHK### [QUESTION] [Coverage, REFERENCE]
 - [ ] CHK### Are all scenario types covered: Primary, Alternate, Exception, Recovery? [Coverage, REFERENCE]
 
+## Edge Case
+
+- [ ] CHK### [QUESTION] [Edge Case, REFERENCE]
+
 ## Cross-Artifact
 
 - [ ] CHK### [QUESTION] [Consistency, source-A → source-B]
@@ -30,7 +34,7 @@
 **MODEL INSTRUCTION: Internal validation only. Exclude entire section from output.**
 
 **Reference Format:** `[Dimension, Reference]`
-- Dimensions: `Completeness`, `Clarity`, `Consistency`, `Measurability`, `Coverage`, `Edge Case`
+- Dimensions: `Completeness`, `Clarity`, `Consistency`, `Coverage`, `Edge Case`
 - References: `[FR-XXX]`, `[UX-XXX]`, `[source: Section]`, `[source-A → source-B]`, `[Resolution: CHK###]`
 
 **Validation:**

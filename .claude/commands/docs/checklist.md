@@ -53,16 +53,17 @@ Checklists test whether **requirements are well-specified**, not whether impleme
 | Completeness | `Completeness` | "Is [X] documented?" |
 | Clarity | `Clarity` | "Is [X] unambiguous/quantified?" |
 | Consistency | `Consistency` | "Does [X] align with [Y]?" |
-| Measurability | `Measurability` | "Can [X] be objectively verified?" |
 | Coverage | `Coverage` | "Are all [scenarios] addressed?" |
 | Edge Case | `Edge Case` | "Is behavior for [boundary] defined?" |
 | **Cross-Artifact** | `Consistency`/`Coverage` | "Does [X] in [source-A] match [Y] in [source-B]?" |
 
-**Per-domain defaults:**
+**Per-domain categories (required):**
 - `requirements`: Completeness, Clarity, Consistency, Coverage, **Cross-Artifact**
 - `ux`: Completeness, Clarity, Coverage, Edge Case, **Cross-Artifact**
 - `api`: Completeness, Clarity, Consistency, Coverage, **Cross-Artifact**
 - `data`: Completeness, Clarity, Consistency, Edge Case, **Cross-Artifact**
+
+May add other categories if content warrants.
 
 ## Cross-Artifact Checks (mandatory)
 
@@ -102,7 +103,6 @@ Each domain MUST include these cross-checks:
 - `Completeness` — Is requirement present?
 - `Clarity` — Is requirement unambiguous/quantified?
 - `Consistency` — Does requirement align with others?
-- `Measurability` — Can requirement be objectively verified?
 - `Coverage` — Are all scenarios addressed?
 - `Edge Case` — Are boundary conditions defined?
 
