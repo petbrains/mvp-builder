@@ -198,37 +198,50 @@ Scan for `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]`.
 
 If none → Phase 5.
 
-### 4.2 Present Dialogue
+Build list: `UNRESOLVED[] = [{id, domain, marker, question}, ...]`
 
-Present interactive selection menu for each unresolved item:
+### 4.2 Summary
+```
+⚠️ [N] items need resolution:
+- requirements-checklist.md: [n] items
+- ux-checklist.md: [n] items
+- api-checklist.md: [n] items
+- data-checklist.md: [n] items
+```
+
+### 4.3 Iterate One-by-One
+
+**CRITICAL: Process ONE item at a time. Do NOT batch multiple questions.**
+
+For each item in `UNRESOLVED[]`:
 
 ```
-⚠️ Resolving [domain]-checklist.md ([current]/[total])
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Resolution [current]/[total]
 
+[domain]-checklist.md | [marker]
 CHK###: [question]
 
-> a) [option]: [implication] [tasks: yes/no]  ← Recommended
-  b) [option]: [implication] [tasks: yes/no]
+> a) [option] [tasks: yes/no]  ← Recommended
+  b) [option] [tasks: yes/no]
 
-↑/↓ to select · Enter to confirm
+↑/↓ select · Enter confirm
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-**Wait for selection.** Repeat for each unresolved item.
+**Wait for user selection before showing next item.**
 
-### 4.3 Process
-
-For each selection:
-1. Rewrite item with concrete reference
+After selection:
+1. Rewrite checklist item with concrete reference
 2. Record decision for resolutions.md
 3. Generate tasks if required (per Resolution Task Rules)
 
 ### 4.4 Update Files
 
-- Update checklist with rewritten items
+After ALL resolutions complete:
+- Write updated checklists
 - If tasks generated: append Phase N to tasks.md
 - If resolutions made: create resolutions.md per template
-
-Repeat 4.2-4.4 for remaining items.
 
 ## Phase 5: Report
 
