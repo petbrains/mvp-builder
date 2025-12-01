@@ -313,9 +313,15 @@ Add to NEW_TASKS[]
 
 If **UPDATE existing**:
 ```
-Find task in tasks.md by ID
-Append clarification: "(value per CHK###)"
-Add to UPDATED_TASKS[]
+Search tasks.md for task by ID (TEST-XXX or IMPL-XXX)
+If NOT FOUND:
+  Show error: "⚠️ Task [ID] not found in tasks.md"
+  List 3 closest matches by Coverage/Requirements
+  Ask: "Select correct task ID or enter manually:"
+  Wait for user input
+If FOUND:
+  Append clarification: "(value per CHK###)"
+  Add to UPDATED_TASKS[]
 ```
 
 If **DEFERRED**:
