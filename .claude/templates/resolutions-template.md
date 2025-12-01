@@ -9,7 +9,9 @@
 | Conflicts resolved | [N] |
 | Ambiguities clarified | [N] |
 | Assumptions confirmed | [N] |
-| Tasks generated | [N] |
+| New tasks created | [N] |
+| Existing tasks updated | [N] |
+| Deferred to future | [N] |
 
 ## Decisions
 
@@ -21,15 +23,26 @@
 - **Options**: a) [text] / b) [text]
 - **Decision**: [selected]
 - **Rationale**: [why]
-- **Tasks**: [TEST-XXX, IMPL-XXX] or None
+- **Task Impact**: [NEW: TEST-XXX, IMPL-XXX | UPDATE: TEST-XXX | DEFERRED]
 
 ---
 
 ## Tasks Cross-Reference
 
-| CHK | Tasks | Story |
-|-----|-------|-------|
-| [ID] | [IDs] | [USX] |
+### New Tasks
+| CHK | Tasks | Story | Description |
+|-----|-------|-------|-------------|
+| [ID] | TEST-XXX, IMPL-XXX | [USX] | [brief] |
+
+### Updated Tasks
+| CHK | Task | Change |
+|-----|------|--------|
+| [ID] | TEST-XXX | Added: [clarification] |
+
+### Deferred
+| CHK | Reason |
+|-----|--------|
+| [ID] | [reason] |
 
 ---
 
@@ -37,6 +50,7 @@
 **MODEL INSTRUCTION: Internal validation only. Exclude from output.**
 
 - [ ] All Phase 4 resolutions documented
-- [ ] Each decision has all fields
-- [ ] Task IDs match tasks.md
+- [ ] Each decision has task_impact field
+- [ ] New task IDs match tasks.md Phase N
+- [ ] Updated task IDs exist in tasks.md
 - [ ] Summary counts accurate

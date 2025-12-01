@@ -1,6 +1,7 @@
 # [DOMAIN] Checklist: [FEATURE_NAME]
 
 **Source**: [PRIMARY_SOURCE]
+**CHK Range**: [START]-[END] (e.g., CHK020-CHK038)
 
 ## Completeness
 
@@ -40,7 +41,7 @@
 ## Review Checklist
 **MODEL INSTRUCTION: Internal validation only. Exclude from output.**
 
-- [ ] Sequential CHK### numbering
+- [ ] CHK### numbering continues from previous domain
 - [ ] All items are questions (not verification statements)
 - [ ] No prohibited verbs (verify, test, confirm, check)
 - [ ] No intermediate markers after Phase 4

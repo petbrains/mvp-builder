@@ -89,6 +89,13 @@ Each domain MUST include these cross-checks:
 - [ ] CHK### Question [Reference]
 ```
 
+**Components:**
+- `CHK###`: Sequential ID across ALL checklists (CHK001, CHK002... CHK073, etc.)
+- Question: Tests requirement quality, not implementation
+- `[Reference]`: Source or resolution marker
+
+**Numbering order:** requirements → ux → api → data (follows artifact chain: spec → ux → contracts → data-model)
+
 **References:**
 - `[FR-XXX]`, `[UX-XXX]` — requirement IDs
 - `[source: Section]` — artifact section
@@ -197,6 +204,10 @@ Apply Sequential Thinking:
 mkdir -p $FEATURE_PATH/checklists
 ```
 
+**Generate in order:** requirements → ux → api → data (follows artifact chain)
+
+Track `LAST_CHK_NUM = 0` across all domains.
+
 For each domain:
 
 ### 2.1 Generate Items
@@ -206,8 +217,8 @@ For each domain:
 
 ### 2.2 Consolidate
 - Remove duplicates
-- Enforce ≤40 items
-- Sequential CHK### numbering
+- Enforce ≤40 items per checklist
+- Sequential CHK### numbering across all domains
 
 ### 2.3 Write Draft
 Write to `$FEATURE_PATH/checklists/[domain]-checklist.md`
