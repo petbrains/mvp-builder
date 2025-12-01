@@ -92,9 +92,17 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 
 **Load ALL source files once:**
 - Read `./ai-docs/features/[feature]/spec.md` → Extract requirements, entities (note existing Key Entities section)
-- Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns
+- Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns, quantified UX values for constants
 - Read `./ai-docs/PRD.md` → Extract technical requirements and architecture
 - Read `./ai-docs/FEATURES.md` → Understand feature context and dependencies
+
+**Cross-Feature Entity References:**
+- Extract dependency list from FEATURES.md "Depends on:" field (already loaded in context)
+- For each dependency folder:
+  - Check if ./ai-docs/features/[dependency]/data-model.md exists
+  - If exists: reference by path, do not redefine entities
+  - If not exists: define minimal interface with required fields and [Dependency] marker
+  - [Dependency] marker signals: "Full definition in dependent feature, this is contract only"
 
 **Keep in context throughout execution**
 
@@ -149,6 +157,13 @@ NO implementation details (those go in `plan.md`).
 - Map relationships and cardinality
 - Identify state transitions from ux.md flows
 - Extract validation rules from spec.md requirements
+- Extract quantified values from ux.md Quantified UX Elements for constants
+
+**Type Completeness Rule:**
+- Every type referenced in entity fields MUST be defined in data-model.md
+- If field type is complex (not primitive), define as separate entity or type alias
+- Primitives: string, number, boolean, timestamp, array of primitives
+- Referenced but undefined types block downstream generation
 
 **Create data-model.md with technical specs:**
 ```markdown
@@ -158,18 +173,31 @@ NO implementation details (those go in `plan.md`).
 [For each entity from spec.md add:
 - Field types and constraints (required/optional, length limits)
 - System fields (unique identifier, timestamps)
-- Validation rules (word counts, format patterns)
 - Default values and computed fields]
 
-## Relationships
-[How entities connect: cardinality, ownership, lifecycle dependencies]
+## Enums
+[All enumerated types used in entities:
+- Enum name with values
+- Brief description of each value if not self-evident]
 
-## States
-[State transitions: triggers, conditions, timeouts]
+## States & Transitions
+[State machine if applicable:
+- State diagram or transition table
+- Triggers, conditions, side effects
+- Timeouts if any]
 
 ## Constants
 [All numeric values: timeouts, limits, thresholds
-- Use formulas for derived values: // BASE_TIMEOUT + INCREMENT]
+- Include values from ux.md Quantified UX Elements
+- Use formulas for derived values: // BASE_TIMEOUT + INCREMENT
+- For thresholds: specify comparison operator in description (< or <=, > or >=)
+- Reference source: (FR-XXX), (UX-XXX), (ux.md), (PRD constraint)]
+
+## Validation Rules
+[Field-level and entity-level validations:
+- Format patterns, length limits, ranges
+- Cross-field validations
+- Business rule validations]
 ```
 
 NO code, NO SQL, NO platform-specific types.
@@ -190,11 +218,11 @@ Feature may require BOTH files if it uses multiple interface types
 **Content guidelines:**
 - Message/event contracts: type names and message structure only
 - Storage contracts: reference to entity type, not field expansion
-- API contracts: field names and primitive types only, no constraints
+- API contracts: field names, primitive types, and structural constraints
+  - Structural constraints (INCLUDE): required fields, enum values, array minItems/maxItems
+  - Validation constraints (EXCLUDE): string length, numeric ranges, regex patterns — those belong in data-model.md
 - First reference to entity/state types: add origin comment
 - Subsequent references in same contract: no comment needed
-- NO validation rules or constraints (those belong in data-model.md)
-- NO entity field definitions (those belong in data-model.md)
 
 **Contract type determination:**
 - External communication interfaces → formal specification required
@@ -252,6 +280,7 @@ NO justifications for dependencies (those are in research.md).
 - Verify storage approach aligns with spec.md requirements
 - Ensure no constants are hardcoded (reference data-model.md)
 - Check derived values use formula comments
+- Verify all referenced types are defined in data-model.md
 
 **Purpose & Summary:**
 - 1-2 sentences max each
@@ -299,6 +328,10 @@ Internal validation using template's Review Checklist (mental check only):
 - No duplication
 - Consistency across files
 - Single code organization selected
+- All referenced types defined in data-model.md
+- All thresholds have comparison operators specified
+- All constants from ux.md Quantified UX Elements included
+- Cross-feature dependencies properly handled
 
 **Final output:**
 ```
@@ -322,3 +355,7 @@ Generated:
 - **Missing implementation**: "Error: [requirement] from spec.md not addressed in plan."
 - **UX pattern unmapped**: "Error: [pattern] from ux.md not mapped to components."
 - **Constant duplication**: "Error: [value] defined in multiple files. Use data-model.md as single source."
+- **Undefined type**: "Error: Type [name] referenced in [entity] but not defined in data-model.md."
+- **Missing comparison operator**: "Error: Threshold [name] missing comparison operator (< or <=) in description."
+- **Missing dependency definition**: "Error: Entity from [feature-name] referenced but dependency data-model.md not found and no [Dependency] interface defined."
+- **Missing quantified value**: "Warning: Quantified UX Element [name] from ux.md not included in data-model.md Constants."

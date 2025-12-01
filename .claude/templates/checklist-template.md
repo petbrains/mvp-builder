@@ -1,56 +1,49 @@
-# [DOMAIN] Requirements Quality Checklist: [FEATURE_NAME]
+# [DOMAIN] Checklist: [FEATURE_NAME]
 
-**Purpose**: Validate [DOMAIN] requirement quality for [FEATURE_NAME]
 **Source**: [PRIMARY_SOURCE]
 
-## [CATEGORY_1]
+## Completeness
 
-- [ ] CHK001 [ITEM_QUESTION] [REFERENCE]
-- [ ] CHK002 [ITEM_QUESTION] [REFERENCE]
+- [ ] CHK### [QUESTION] [Completeness, REFERENCE]
 
-## [CATEGORY_2]
+## Clarity
 
-- [ ] CHK003 [ITEM_QUESTION] [REFERENCE]
-- [ ] CHK004 [ITEM_QUESTION] [REFERENCE]
+- [ ] CHK### [QUESTION] [Clarity, REFERENCE]
 
-## [CATEGORY_3]
+## Consistency
 
-- [ ] CHK005 [ITEM_QUESTION] [REFERENCE]
-- [ ] CHK006 [ITEM_QUESTION] [REFERENCE]
+- [ ] CHK### [QUESTION] [Consistency, REFERENCE]
 
-## [CATEGORY_4]
+## Coverage
 
-- [ ] CHK007 [ITEM_QUESTION] [REFERENCE]
-- [ ] CHK008 [ITEM_QUESTION] [REFERENCE]
+- [ ] CHK### [QUESTION] [Coverage, REFERENCE]
+- [ ] CHK### Are all scenario types covered: Primary, Alternate, Exception, Recovery? [Coverage, REFERENCE]
 
-## [CATEGORY_5]
+## Edge Case
 
-- [ ] CHK009 [ITEM_QUESTION] [REFERENCE]
-- [ ] CHK010 [ITEM_QUESTION] [REFERENCE]
+- [ ] CHK### [QUESTION] [Edge Case, REFERENCE]
+
+## Cross-Artifact
+
+- [ ] CHK### [QUESTION] [Consistency, source-A → source-B]
+- [ ] CHK### [QUESTION] [Coverage, source-A → source-B]
 
 ---
 
 ## Review Checklist
-*GATE: Automated checks*
-**MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final output.**
+**MODEL INSTRUCTION: Internal validation only. Exclude entire section from output.**
 
-### Format Compliance
-- [ ] All items use CHK### sequential numbering
+**Reference Format:** `[Dimension, Reference]`
+- Dimensions: `Completeness`, `Clarity`, `Consistency`, `Coverage`, `Edge Case`
+- References: `[FR-XXX]`, `[UX-XXX]`, `[source: Section]`, `[source-A → source-B]`, `[Resolution: CHK###]`
+
+**Validation:**
+- [ ] CHK### numbering continues from previous domain
+- [ ] All items include quality dimension in brackets
 - [ ] All items are questions (not verification statements)
-- [ ] No prohibited verbs (verify, test, confirm, check) or implementation language
-- [ ] No borderline patterns (mapped/linked, properly specified, handles)
-
-### Traceability
-- [ ] All items have references (concrete or intermediate markers)
-- [ ] No intermediate markers remaining after Phase 4
-- [ ] Questions are self-descriptive (specify what aspects need documentation)
-- [ ] [Conflict] items name both sources in question text
-- [ ] Concrete values in questions exist in referenced source
-
-### Content
-- [ ] Categories match domain defaults (4-5 per domain)
+- [ ] No prohibited verbs (verify, test, confirm, check)
+- [ ] No intermediate markers after Phase 4
+- [ ] Cross-Artifact category present with ≥2 items
+- [ ] Scenario coverage check present
 - [ ] Total items ≤40
-- [ ] Each category has 5-10 items
-- [ ] No near-duplicate items
-
----
+- [ ] Traceability ≥80%

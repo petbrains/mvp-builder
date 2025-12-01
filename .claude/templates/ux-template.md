@@ -19,6 +19,11 @@ flowchart TD
 ```
 *Note: Expand diagram for complex flows with multiple decision points*
 
+**Exit Path Behaviors:**
+- **Cancel**: [cleanup behavior, target state]
+- **Back**: [cleanup behavior, target state]
+- **Close**: [cleanup behavior, target state]
+
 ## Interaction Model
 
 ### Core Actions
@@ -52,6 +57,13 @@ flowchart TD
 }
 ```
 
+## Quantified UX Elements
+
+| Element | Formula / Source Reference |
+|---------|----------------------------|
+| [NUMERIC_ELEMENT_1] | [FORMULA - formalized in data-model.md] |
+| [NUMERIC_ELEMENT_2] | [FORMULA - formalized in data-model.md] |
+
 ## Platform-Specific Patterns
 ** MODEL INSTRUCTION: Only include platforms where requirements differ from "N/A". Remove entire platform section if all items are "N/A".**
 
@@ -77,10 +89,10 @@ flowchart TD
 
 ## Accessibility Standards
 
-- **Screen Readers**: [ARIA_REQUIREMENTS]
-- **Navigation**: [KEYBOARD_SUPPORT]
-- **Visual**: [CONTRAST_REQUIREMENTS]
-- **Touch Targets**: [SIZE_REQUIREMENTS]
+- **Screen Readers**: [ARIA roles: specific roles], [Live regions: polite/assertive], [Labels: association method]
+- **Navigation**: [Keys: Tab, Enter, Escape, Arrow], [Focus: management approach]
+- **Visual**: [Contrast: ratio value], [Color independence: method]
+- **Touch Targets**: [Size: value in pixels per platform]
 
 ## Error Presentation
 
@@ -124,11 +136,16 @@ flowchart TD
 - [ ] All user paths documented
 - [ ] Error states for each action specified
 - [ ] Recovery paths documented
+- [ ] Exit paths have cleanup behavior documented
 
 ### Interaction Coverage
 - [ ] Core actions have all fields (trigger, feedback, success, error)
 - [ ] States cover full lifecycle
 - [ ] Transitions between states logical
+
+### Quantified Elements
+- [ ] All numeric UI elements have formulas or source references
+- [ ] Formulas will be formalized in data-model.md by plan command
 
 ### Platform Consistency
 - [ ] Platform-specific requirements identified
@@ -136,10 +153,11 @@ flowchart TD
 - [ ] N/A sections removed from output
 
 ### Accessibility Compliance
-- [ ] Screen reader requirements specified
-- [ ] Keyboard navigation documented
-- [ ] Visual standards defined
-- [ ] Touch target sizes specified
+- [ ] Screen reader requirements have specific ARIA roles
+- [ ] Keyboard navigation has specific key bindings
+- [ ] Visual standards have contrast ratio values
+- [ ] Touch target sizes specified in pixels
+- [ ] No vague terms: "adequate", "sufficient", "appropriate"
 
 ### Error Presentation
 - [ ] Visual indicators for all error types
