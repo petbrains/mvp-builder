@@ -1,5 +1,5 @@
 ---
-description: Generate requirement quality checklists for features.
+description: Validate requirements and generate quality checklists for features.
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
