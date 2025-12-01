@@ -5,314 +5,256 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 # Instructions
 
-Generate "Unit Tests for Requirements" — deterministic checklists that validate requirement quality and guide implementation decisions.
+Generate "Unit Tests for Requirements" — deterministic checklists that validate requirement quality.
 
-**Tools Usage:**
-- `Read`: For loading feature artifacts
-- `Write`: For saving checklist files
-- `Bash`: For directory creation and file verification
+**Tools:** `Read`, `Write`, `Bash`
 
 **Skills:**
-- Feature Analyzer: For loading complete feature context from artifacts
-  - Scans and loads: spec.md, ux.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
-- Sequential Thinking Methodology: For structured reasoning during analysis and generation
-  - Tool: `/mcp__sequential-thinking__sequentialthinking`
+- Feature Analyzer: Load all feature artifacts
+- Sequential Thinking: `/mcp__sequential-thinking__sequentialthinking`
 
-**Template:**
-- Checklist: @.claude/templates/checklist-template.md
+**Templates:**
+- @.claude/templates/checklist-template.md
+- @.claude/templates/resolutions-template.md
 
-**File Structure:**
-- Input: `./ai-docs/features/[feature]/` (requires all core artifacts)
-- Output: `./ai-docs/features/[feature]/checklists/[domain]-checklist.md` (4 files)
+**Input:** `/checklist [feature-path]`
 
-# Task
-
-Generate checklists that validate requirements quality: completeness, clarity, consistency, and measurability.
-Each checklist item asks whether requirements are well-written, not whether implementation works.
-Checklists serve as source of truth for implementation agents — all items must be deterministic after Phase 4 resolution.
-
-**Input format:** `/checklist [feature-path]`
-- `feature-path`: Path to feature folder (required)
-
-**Output:** 4 deterministic checklists:
-- `requirements-checklist.md` — from spec.md
-- `ux-checklist.md` — from ux.md
-- `api-checklist.md` — from contracts/, plan.md
-- `data-checklist.md` — from data-model.md
+**Output:**
+- `[feature]/checklists/requirements-checklist.md` — from spec.md
+- `[feature]/checklists/ux-checklist.md` — from ux.md
+- `[feature]/checklists/api-checklist.md` — from contracts/, plan.md
+- `[feature]/checklists/data-checklist.md` — from data-model.md
+- `[feature]/checklists/resolutions.md` — Phase 4 decisions (if any)
+- `[feature]/tasks.md` — updated with resolution tasks (if any)
 
 # Rules
 
 ## Core Principle
 
-**Checklists are unit tests for requirements writing.**
-
-If your spec is code written in English, the checklist is its test suite. You test whether requirements are well-written, complete, unambiguous, and ready for implementation — NOT whether the implementation works.
-
-| ❌ Wrong (tests implementation) | ✅ Correct (tests requirements) |
-|--------------------------------|--------------------------------|
-| "Verify button clicks correctly" | "Are click behavior requirements defined for all buttons?" |
-| "Test error handling works" | "Are error scenarios documented with expected behaviors?" |
-| "Confirm API returns 200" | "Are success response formats specified for all endpoints?" |
+Checklists test whether **requirements are well-specified**, not whether implementation works.
+- ✅ "Is error behavior documented for [scenario]?"
+- ❌ "Verify error handling works correctly"
 
 ## Domain Configuration
 
-| Domain | Primary Source | Secondary | Focus |
-|--------|---------------|-----------|-------|
+| Domain | Primary | Secondary | Focus |
+|--------|---------|-----------|-------|
 | `requirements` | spec.md | plan.md, tasks.md | FR coverage, acceptance criteria, edge cases |
-| `ux` | ux.md | spec.md (UX-XXX) | Flows, interactions, states, accessibility, errors |
-| `api` | contracts/, plan.md | spec.md | Endpoints, messages, storage, errors, auth |
+| `ux` | ux.md | spec.md | Flows, states, accessibility, errors |
+| `api` | contracts/, plan.md | spec.md | Endpoints, messages, schemas, auth |
 | `data` | data-model.md | spec.md | Entities, validation, states, relationships |
 
-**Categories:**
+## Categories
 
-| Category | Question Pattern | Implementation Trigger |
-|----------|-----------------|----------------------|
-| Completeness | "Is [X] documented/specified?" | If no: check secondary sources, implement default |
-| Clarity | "Is [X] unambiguous/quantified?" | If no: interpret conservatively, document choice |
-| Consistency | "Does [X] align with [Y]?" | If no: follow domain-primary source |
-| Measurability | "Can [X] be objectively verified?" | If no: define concrete success criteria |
-| Coverage | "Are all [X scenarios] addressed?" | If no: enumerate missing cases, implement each |
-| Edge Case | "Is behavior for [boundary] defined?" | If no: implement defensive handling |
+| Category | Pattern |
+|----------|---------|
+| Completeness | "Is [X] documented?" |
+| Clarity | "Is [X] unambiguous/quantified?" |
+| Consistency | "Does [X] align with [Y]?" |
+| Measurability | "Can [X] be objectively verified?" |
+| Coverage | "Are all [scenarios] addressed?" |
+| Edge Case | "Is behavior for [boundary] defined?" |
+| **Cross-Artifact** | "Does [X] in [source-A] match [Y] in [source-B]?" |
 
-**Default categories per domain:**
-- `requirements`: Completeness, Clarity, Consistency, Measurability, Coverage
-- `ux`: Completeness, Clarity, Consistency, Coverage, Edge Case
-- `api`: Completeness, Clarity, Consistency, Coverage, Edge Case
-- `data`: Completeness, Clarity, Consistency, Edge Case
+**Per-domain defaults:**
+- `requirements`: Completeness, Clarity, Consistency, Coverage, **Cross-Artifact**
+- `ux`: Completeness, Clarity, Coverage, Edge Case, **Cross-Artifact**
+- `api`: Completeness, Clarity, Consistency, Coverage, **Cross-Artifact**
+- `data`: Completeness, Clarity, Consistency, Edge Case, **Cross-Artifact**
 
-## Item Format Rules
+## Cross-Artifact Checks (mandatory)
 
-**Structure:**
+Each domain MUST include these cross-checks:
+
+**requirements:**
+- Are all FR-XXX covered by TEST tasks in tasks.md?
+- Are all edge cases from spec.md covered by TEST tasks?
+
+**ux:**
+- Are all accessibility requirements covered by TEST tasks?
+- Are all error types from Error Presentation defined in contracts/?
+- Are exit path behaviors covered by state tests in tasks.md?
+
+**data:**
+- Do constants in data-model.md match quantified values in ux.md?
+- Are all state transitions covered by TEST tasks?
+- Do entity fields match schemas in openapi.yaml?
+
+**api:**
+- Do error response codes match error types in ux.md?
+
+## Item Format
+
 ```
-- [ ] CHK### Question about requirement quality [Reference]
+- [ ] CHK### Question [Reference]
 ```
 
-**Components:**
-- `CHK###`: Sequential ID starting from CHK001 per checklist
-- Question: Asks about requirement completeness, clarity, or consistency
-- `[Reference]`: See Reference Format below
-
-**Reference Format (final output):**
-- `[FR-XXX]`, `[UX-XXX]` — requirement IDs from spec.md
-- `[source: Section]` — section within artifact, e.g., `[data-model: Validation Rules]`
+**References:**
+- `[FR-XXX]`, `[UX-XXX]` — requirement IDs
+- `[source: Section]` — artifact section
+- `[source-A → source-B]` — cross-artifact check
+- `[Resolution: CHK###]` — Phase 4 decision
 
 **Intermediate markers (resolved in Phase 4):**
-- `[Gap]` — specification missing
-- `[Ambiguity]` — specification unclear
-- `[Conflict]` — specifications disagree
+- `[Gap]` — missing specification
+- `[Ambiguity]` — unclear specification
+- `[Conflict]` — disagreeing specifications
 - `[Assumption]` — implicit requirement
 
-All intermediate markers are resolved in Phase 4. Final checklists contain only concrete references.
+## Traceability
 
-**Conflict reference format (during generation):**
-When specifications disagree, item question must name both conflicting sources:
-```markdown
-- [ ] CHK### Does [X] in [source-A] align with [Y] in [source-B]? [Conflict]
-```
+- Minimum 80% items with references
+- Final output: 0% intermediate markers
+- Before `[Gap]`: verify not in secondary sources
+- `[Conflict]` items must name both sources in question
 
-**Valid patterns:**
-- "Are [requirements] defined/specified/documented for [scenario]?"
-- "Is [vague term] quantified with specific criteria?"
-- "Is [constraint] documented with enforcement behavior?"
-- "Are requirements consistent between [section A] and [section B]?"
-- "Can [requirement] be objectively measured/verified?"
-- "Does the spec define [missing aspect]?"
+## Content Limits
 
-**Examples (final output):**
-```markdown
-- [ ] CHK001 Are success criteria defined with measurable values? [FR-001]
-- [ ] CHK002 Is rationale word count range (10-75 words) documented with enforcement behavior? [data-model: Validation Rules]
-- [ ] CHK003 Does OptimizedCV schema in openapi.yaml match Optimized CV entity in data-model.md? [contracts: openapi.yaml, data-model: Entities]
-```
-
-## Traceability Rules
-
-- **Minimum 80%** of items must include reference
-- All reference types count toward threshold
-- Item question must be self-descriptive: specify what aspects need documentation
-- For intermediate markers: question must enumerate expected specification elements
-- Before marking `[Gap]`: verify information not present in secondary sources per Domain Configuration
-- **Final output must have 0% intermediate markers** — all resolved in Phase 4
-
-## Content Rules
-
-- **Soft cap**: Maximum 40 items per checklist
-- **Prioritize** by risk/impact if candidates exceed cap
-- **Merge** near-duplicates checking same requirement aspect
-- **Consolidate** low-impact edge cases: "Are edge cases X, Y, Z addressed? [Gap]"
+- Maximum 40 items per checklist
+- Merge near-duplicates
+- Prioritize by implementation risk
 
 ## Anti-Patterns
 
-**Prohibited — these test implementation:**
-- ❌ "Verify", "Test", "Confirm", "Check" + implementation behavior
-- ❌ "Displays correctly", "works properly", "functions as expected"
-- ❌ "Click", "navigate", "render", "load", "execute"
-- ❌ References to code execution or user actions
-- ❌ Test cases, QA procedures, manual testing steps
+**Prohibited verbs:** Verify, Test, Confirm, Check + behavior
+**Prohibited phrases:** "works correctly", "functions as expected", "displays properly"
 
-**Borderline — rewrite these patterns:**
-- "Is X mapped/linked to Y" → "Is relationship between X and Y documented?"
-- "Is X properly specified" → "Is X specified with [criteria]?"
-- "Does X handle Y" → "Is X behavior for Y scenario documented?"
-- "Test/Verify X works" → "Are success criteria for X defined?"
+**Rewrite:**
+- "Does X handle Y" → "Is X behavior for Y documented?"
+- "Test X works" → "Are success criteria for X defined?"
+
+## Resolution Task Rules
+
+When Phase 4 introduces NEW functionality:
+- Generate TEST-XXX and IMPL-XXX tasks
+- Continue numbering from tasks.md
+- Follow tasks-template.md format
+
+**Generate tasks when:**
+- `[Gap]` resolved with new feature
+- `[Conflict]` resolved with new approach
+- `[Assumption]` changed to new requirement
+
+**No tasks when:**
+- `[Gap]` resolved with "not needed for MVP"
+- `[Conflict]` resolved by choosing existing option
+- `[Ambiguity]` clarified with existing value
+- `[Assumption]` confirmed
 
 # Execution Flow
 
-## Phase 0: Context & Validation
+## Phase 0: Validation
 
 ### 0.1 Parse Input
-Extract `FEATURE_PATH` from command arguments.
+Extract `FEATURE_PATH`.
 
-### 0.2 Load Feature Context
+### 0.2 Load Context
+Apply Feature Analyzer skill. Require: spec.md, ux.md, plan.md, tasks.md.
 
-**Apply Feature Analyzer skill** to scan and load feature artifacts:
-- Validates core files exist (spec.md, ux.md, plan.md, tasks.md)
-- Loads all available artifacts into context
-- Reports missing files if any
+### 0.3 Extract Numbering
+From tasks.md: `LAST_TEST_NUM`, `LAST_IMPL_NUM`, `LAST_PHASE_NUM`.
 
-If core files missing → Report error and exit.
+## Phase 1: Analyze
 
-## Phase 1: Analyze Context
+Apply Sequential Thinking:
+- Extract FR-XXX, UX-XXX requirements
+- Identify gaps, ambiguities, conflicts per domain
+- Map to categories including Cross-Artifact
 
-**Apply Sequential Thinking Methodology** for artifact analysis:
-- Extract requirements with IDs (FR-XXX, UX-XXX)
-- Identify gaps, ambiguities, and inconsistencies per domain
-- Map findings to categories
-- Prioritize by implementation impact
-
-## Phase 2: Generate Checklists
+## Phase 2: Generate
 
 ```bash
 mkdir -p $FEATURE_PATH/checklists
 ```
 
-**For each domain** (requirements, ux, api, data):
+For each domain:
 
-### 2.1 Select Categories
-Select 4-5 categories from Domain Configuration defaults.
+### 2.1 Generate Items
+- 5-10 items per category
+- Include mandatory Cross-Artifact checks
+- Apply item format and anti-patterns
 
-### 2.2 Generate Items
+### 2.2 Consolidate
+- Remove duplicates
+- Enforce ≤40 items
+- Sequential CHK### numbering
 
-**Apply Sequential Thinking Methodology** for item generation:
-- Extract relevant requirements from primary source
-- Check secondary sources before marking [Gap]
-- Formulate self-descriptive quality validation questions
-- Apply item format rules and reference format
-- Filter against anti-patterns
+### 2.3 Write Draft
+Write to `$FEATURE_PATH/checklists/[domain]-checklist.md`
 
-Generate 5-10 items per category.
+## Phase 3: Validate
 
-### 2.3 Consolidate
-- Remove near-duplicates
-- Merge related edge cases
-- Ensure total ≤40 items
-- Verify sequential CHK### numbering (starting CHK001 per file)
-
-### 2.4 Write Draft Output
-Write draft checklists to: `$FEATURE_PATH/checklists/[domain]-checklist.md`
-
-**Exclude from output:** Review Checklist section (template internal validation only)
-
-## Phase 3: Validate Draft
-
-For each generated checklist verify:
-- All items follow format rules
-- No anti-pattern violations
+Verify per checklist:
+- Format compliance
+- No anti-patterns
 - Traceability ≥80%
-- Categories match domain
-- Sequential numbering correct
+- Cross-Artifact checks present
 - Conflict items name both sources
 
-## Phase 4: Resolve Uncertainties
+## Phase 4: Resolve
 
-### 4.1 Collect Unresolved Items
-Scan all 4 checklists for items marked `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]`.
+### 4.1 Collect
+Scan for `[Gap]`, `[Ambiguity]`, `[Conflict]`, `[Assumption]`.
 
-If none found → Proceed to Phase 5.
+If none → Phase 5.
 
-### 4.2 Generate Resolution Options
+### 4.2 Present Dialogue
 
-**Apply Sequential Thinking Methodology** for each unresolved item:
-- Generate 2-3 concrete resolution options (MVP-focused)
-- Assess implications of each option
-- Formulate recommended option with rationale
+Present interactive selection menu for each unresolved item:
 
-### 4.3 Present Resolution Dialogue
-
-Present unresolved items per checklist (max 5 per batch):
 ```
-⚠️ [count] items need resolution in [domain]-checklist.md:
+⚠️ Resolving [domain]-checklist.md ([current]/[total])
 
-1. CHK### [original question]
-   a) [option-1]: [brief implication]
-   b) [option-2]: [brief implication]
-   → Recommend: [a/b] — [rationale]
+CHK###: [question]
 
-2. CHK### [original question]
-   a) [option-1]
-   b) [option-2]
-   → Recommend: [a/b] — [rationale]
+> a) [option]: [implication] [tasks: yes/no]  ← Recommended
+  b) [option]: [implication] [tasks: yes/no]
 
-Select all (e.g., "1a, 2b"):
+↑/↓ to select · Enter to confirm
 ```
 
-**Wait for user response.** Do not proceed until selection received.
+**Wait for selection.** Repeat for each unresolved item.
 
-### 4.4 Rewrite Resolved Items
+### 4.3 Process
 
-**Apply Sequential Thinking Methodology** for each resolved item:
-- Transform question to concrete validation check
-- Remove intermediate marker
-- Add reference to source artifact (existing section or "Technical Context" for new decisions)
+For each selection:
+1. Rewrite item with concrete reference
+2. Record decision for resolutions.md
+3. Generate tasks if required (per Resolution Task Rules)
 
-**Note:** Phase 4 decisions introduce new specifications. Reference format `[source: Technical Context]` signals these need backport to source artifacts.
+### 4.4 Update Files
 
-**Transformation example:**
-```
-Before:  "Is API auth mechanism specified? [Gap]"
-User:    "1a" (Bearer token)
-After:   "Is Bearer token authentication specified for all endpoints? [spec: Technical Context]"
-```
+- Update checklist with rewritten items
+- If tasks generated: append Phase N to tasks.md
+- If resolutions made: create resolutions.md per template
 
-### 4.5 Update Checklists
+Repeat 4.2-4.4 for remaining items.
 
-Read checklist → Replace resolved items → Write updated file.
-
-Repeat 4.3-4.5 for each checklist with remaining unresolved items.
-
-## Phase 5: Final Report
-
-### 5.1 Final Validation
-Verify all checklists:
-- Zero intermediate markers remaining
-- All items have concrete references
-- Traceability 100% (no unresolved items)
-
-### 5.2 Report
+## Phase 5: Report
 
 ```
 ✅ Checklists Generated
 
-Feature: [FEATURE_NAME]
-Location: [FEATURE_PATH]/checklists/
+Feature: [NAME]
+Location: [PATH]/checklists/
 
-Files created:
-- requirements-checklist.md ([count] items)
-- ux-checklist.md ([count] items)
-- api-checklist.md ([count] items)
-- data-checklist.md ([count] items)
+Files:
+- requirements-checklist.md ([N] items)
+- ux-checklist.md ([N] items)
+- api-checklist.md ([N] items)
+- data-checklist.md ([N] items)
+- resolutions.md ([N] decisions) [if any]
 
-Total: [total] items across 4 checklists
-Resolved: [count] uncertainties
+Resolved: [N] uncertainties
+Tasks added: [N] TEST, [N] IMPL [if any]
 ```
 
 # Error Handling
 
 - **Missing feature path**: "Error: Feature path required. Usage: /checklist [feature-path]"
 - **Missing core files**: "Error: [file] not found. Run [command] first."
-- **Anti-pattern detected**: "Error: Item CHK### violates anti-pattern rules. Regenerating..."
-- **Low traceability**: "Warning: Traceability below 80% minimum. Adding references..."
-- **Conflict without sources**: "Error: Item CHK### marked [Conflict] but missing source references in question."
-- **No user response**: "Waiting for resolution selection. Enter choices (e.g., '1a, 2b')."
-- **Invalid selection**: "Invalid selection '[input]'. Use format: 1a, 2b, 3c"
-- **Unresolved items remaining**: "Error: [count] items still unresolved. Cannot finalize checklists."
+- **Anti-pattern detected**: "Error: CHK### violates anti-patterns. Regenerating..."
+- **Low traceability**: "Warning: Below 80%. Adding references..."
+- **No user response**: "Waiting for selection. Use ↑/↓ and Enter."
+- **Unresolved remaining**: "Error: [N] items unresolved. Cannot finalize."
+- **tasks.md error**: "Error: Could not update tasks.md."
