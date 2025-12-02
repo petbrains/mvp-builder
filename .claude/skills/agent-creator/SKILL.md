@@ -34,14 +34,14 @@ Determine agent requirements:
 
 ### Color by Domain
 
-| Domain | Colors |
-|--------|--------|
-| Frontend | blue, cyan, teal |
-| Backend | green, emerald |
-| Security | red, crimson |
-| Performance | yellow, orange |
-| Testing | purple, violet |
-| DevOps | gray, slate |
+| Domain | Color |
+|--------|-------|
+| Frontend | blue |
+| Backend | green |
+| Security | red |
+| Performance | yellow |
+| Testing | purple |
+| DevOps | gray |
 
 ## Step 3: Implement
 
