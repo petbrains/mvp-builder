@@ -25,8 +25,8 @@ Generate "Unit Tests for Requirements" — deterministic checklists that validat
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/` (requires core artifacts)
 - Output: 
-  - `./ai-docs/features/[feature]/checklists/[domain]-checklist.md` (4 files)
-  - `./ai-docs/features/[feature]/checklists/resolutions.md` (if any)
+  - `./ai-docs/features/[feature]/validation/[domain]-checklist.md` (4 files)
+  - `./ai-docs/features/[feature]/validation/resolutions.md` (if any)
   - `./ai-docs/features/[feature]/tasks.md` (updated with resolution tasks)
 
 # Rules
@@ -153,8 +153,8 @@ Each domain MUST include these cross-checks:
 ## Resolution Task Rules
 
 **Scope:** Checklist command modifies ONLY:
-- `checklists/*.md` — checklist files
-- `checklists/resolutions.md` — decisions log  
+- `validation/*.md` — checklist files
+- `validation/resolutions.md` — decisions log  
 - `tasks.md` — task updates
 
 **DO NOT propose changes to:** spec.md, ux.md, plan.md, data-model.md, contracts/, or any other artifacts. Resolutions flow INTO tasks.md only.
@@ -256,7 +256,7 @@ Generate 5-10 items per category.
 - Sequential CHK### numbering across all domains
 
 ### 2.3 Write Draft
-Write to `$FEATURE_PATH/checklists/[domain]-checklist.md`
+Write to `$FEATURE_PATH/validation/[domain]-checklist.md`
 
 **Exclude from output:** Review Checklist section (template internal validation only)
 
@@ -394,7 +394,7 @@ Write per template with task_impact for each decision.
 ✅ Checklists Generated
 
 Feature: [NAME]
-Location: [PATH]/checklists/
+Location: [PATH]/validation/
 
 Files:
 - requirements-checklist.md ([N] items)
