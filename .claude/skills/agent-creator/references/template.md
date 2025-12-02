@@ -8,6 +8,7 @@ name: agent-name           # Required: lowercase, hyphens only
 description: When to use   # Required: trigger conditions
 tools: Read, Write, Bash   # Optional: restrict tools (omit = all)
 model: sonnet              # Optional: sonnet/opus/haiku/inherit
+color: blue                # Optional: display color in UI
 ---
 ```
 
@@ -24,6 +25,7 @@ model: sonnet              # Optional: sonnet/opus/haiku/inherit
 |-------|---------|---------|
 | `tools` | All inherited | Comma-separated list |
 | `model` | sonnet | `sonnet`, `opus`, `haiku`, `inherit` |
+| `color` | — | `blue`, `green`, `red`, `yellow`, `purple`, `cyan`, `gray` |
 
 ### Model Selection
 
@@ -66,6 +68,7 @@ name: example-agent
 description: Use when [specific condition]. Specializes in [domain].
 tools: Read, Write, Edit, Bash
 model: sonnet
+color: blue
 ---
 
 You are a [Role] specialist focused on [specific domain].
@@ -113,6 +116,7 @@ You are a [Role] specialist focused on [specific domain].
 name: quick-review
 description: Use for fast code reviews
 model: haiku
+color: purple
 ---
 
 You are a code review specialist. Provide concise feedback on code quality, potential bugs, and improvements.
@@ -131,6 +135,7 @@ Keep reviews brief and actionable.
 name: readonly-analyzer
 description: Use for code analysis without modifications
 tools: Read, Glob, Grep, LS
+color: gray
 ---
 
 You are a code analyzer. Examine codebases and provide insights.
@@ -148,6 +153,7 @@ name: api-designer
 description: Use when designing REST or GraphQL APIs
 tools: Read, Write, Edit, Bash(npm:*)
 model: sonnet
+color: green
 ---
 
 You are an API design specialist focused on RESTful and GraphQL API architecture.

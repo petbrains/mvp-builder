@@ -8,7 +8,7 @@ allowed-tools: Read, Write, Bash(*)
 
 Create specialized Claude Code agents in `.claude/agents/` directory.
 
-**Template:** See `references/template.md` for YAML structure, tools, and model options.
+**Template:** See @.claude/skills/agent-creator/references/template.md for YAML structure, tools, models, colors, and examples.
 
 ## Process
 
@@ -45,35 +45,7 @@ Determine agent requirements:
 
 ## Step 3: Implement
 
-Create file in `.claude/agents/<name>.md`:
-
-```markdown
----
-name: <agent-name>
-description: <when to use + specialization>
-tools: <optional: specific tools>
-model: <optional: sonnet/opus/haiku>
----
-
-You are a [Role] specialist focused on [domain].
-
-## Core Responsibilities
-- [Primary task]
-- [Secondary task]
-
-## Approach
-1. **Assess** - Analyze request
-2. **Plan** - Develop approach
-3. **Execute** - Implement solution
-4. **Validate** - Verify result
-
-## Domain Guidelines
-[Specific instructions for this domain]
-
-## Constraints
-- Never [prohibited action]
-- Always [required check]
-```
+Create file `.claude/agents/<name>.md` using template from @.claude/skills/agent-creator/references/template.md
 
 ## Step 4: Validate
 
@@ -85,15 +57,6 @@ Check before saving:
 - [ ] Constraints defined
 
 ## Decision Rules
-
-### Model Selection
-
-| Task Type | Model | Why |
-|-----------|-------|-----|
-| Complex reasoning | `opus` | Deep analysis |
-| Balanced tasks | `sonnet` | Default, good balance |
-| Fast/simple | `haiku` | Speed priority |
-| Match parent | `inherit` | Consistency |
 
 ### Tool Restriction
 
