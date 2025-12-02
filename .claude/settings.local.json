@@ -6,9 +6,15 @@
       "mcp__context7__get-library-docs",
       "Bash(mkdir:*)",
       "Bash(git:*)",
+      "Bash(grep:*)",
+      "Skill(agent-creator)",
+      "Skill(self-improve)",
+      "Skill(self-commenting)",
+      "Skill(git)",
       "Skill(feature-analyzer)",
       "Skill(sequential-thinking)",
-      "Skill(context7)"
+      "Skill(context7)",
+      "Skill(prompt-optimizer)"
     ]
   },
   "enableAllProjectMcpServers": true

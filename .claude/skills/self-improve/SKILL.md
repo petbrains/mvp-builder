@@ -1,33 +1,26 @@
 ---
-description: Prompt optimization by Workflow
+name: self-improve
+description: Analyzes workflow patterns to identify automation opportunities through commands, agents, and optimizations
 allowed-tools: Read, Bash (*), mcp__sequential-thinking__sequentialthinking
-argument-hints: [prompt]
 ---
 
-# Instructions
+# Workflow Optimizer Skill
 
 Analyzes workflow patterns to identify automation opportunities through commands, agents, and optimizations.
 
 **Tools Usage:**
-- `/mcp__sequential-thinking__sequentialthinking`: For iterative analysis with hypothesis generation and verification.
-  - See @.claude/tools/sequential-thinking.md for details
-
-**Template:** @.claude/templates/prompt-template.md
+- `mcp__sequential-thinking__sequentialthinking`: For iterative analysis with hypothesis generation and verification
 
 ## Usage
 
-```
-/self-improve [prompt]
-```
-
-If `[prompt]` provided - focuses analysis on specific task workflows.
+When invoked with specific prompt - focuses analysis on those task workflows.
 No prompt - comprehensive workflow analysis.
 
 ## Execution
 
 ### 1. Pattern Analysis
 
-Use `/mcp__sequential-thinking__sequentialthinking` to analyze:
+Use `mcp__sequential-thinking__sequentialthinking` to analyze:
 
 ```
 1. Identify patterns:
@@ -50,7 +43,7 @@ Use `/mcp__sequential-thinking__sequentialthinking` to analyze:
 
 ### 2. Prompt Quality Check
 
-When analyzing prompts in workflows, check against template:
+When analyzing prompts in workflows, check:
 
 - **Context field**: Is project tech stack and constraints specified?
 - **Task field**: Is the objective clear and specific?
