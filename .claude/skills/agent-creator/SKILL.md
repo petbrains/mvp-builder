@@ -1,7 +1,7 @@
 ---
 name: agent-creator
 description: Create specialized Claude Code agents (subagents) with proper YAML frontmatter, tool permissions, and domain expertise. Use when: creating new agents, designing agent prompts, configuring agent tools and models. Triggers: create agent, new agent, agent template, subagent, agent design.
-allowed-tools: Read, Write, Bash(*)
+allowed-tools: Read, Write
 ---
 
 # Agent Creator
