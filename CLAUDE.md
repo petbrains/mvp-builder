@@ -103,7 +103,7 @@ ai-docs/
 │       ├── data-model.md  # Entities
 │       ├── setup.md       # Environment setup and configuration
 │       ├── contracts/     # API contracts
-│       └── validation/    # Requirement quality checklists
+│       └── validation/    # Requirement validation criteria
 ```
 
 ## Session Continuity
