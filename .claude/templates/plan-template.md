@@ -132,4 +132,10 @@ extension/
 - [ ] Security considerations addressed
 - [ ] Selected Structure documented with rationale for this feature
 
+### Data Model Completeness
+- [ ] All types referenced in entities are defined in data-model.md
+- [ ] All thresholds have comparison operators specified (< or <=, > or >=)
+- [ ] All constants from ux.md Quantified UX Elements included in data-model.md
+- [ ] Cross-feature dependencies have [Dependency] marker or reference existing data-model.md
+
 ---
