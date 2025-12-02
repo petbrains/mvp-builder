@@ -1,164 +1,130 @@
 ---
 name: prompt-optimizer
-description: Advanced prompt engineering framework for Claude and Claude Code. Use when crafting prompts for code generation, debugging, documentation, or any development task. Provides structured templates (TCRO), phase-based workflows, and proven patterns that improve code generation accuracy by 20-45%. Especially useful for creating new prompts for coding tasks, improving existing prompts that aren't getting desired results, structuring complex multi-step development workflows, and debugging prompt issues and pattern drift.
+description: Prompt engineering framework for Claude Code. Transforms vague requests into precise TCRO-structured prompts. Use when: crafting prompts for code generation, improving prompts not getting results, structuring multi-step workflows, debugging pattern drift. Triggers: optimize prompt, improve prompt, create prompt, prompt engineering, TCRO, prompt template, better prompt.
 ---
 
 # Prompt Optimizer
 
-A streamlined framework for optimizing prompts to maximize Claude's code generation capabilities.
+Transform vague requests into precise, actionable prompts using TCRO structure.
 
-## Core Optimization Process
+**Templates:** See @.claude/skills/prompt-optimizer/references/templates.md when applying structure or selecting template by task type.
 
-When given a prompt to optimize, follow these steps:
+## Process
 
-### 1. Identify Intent and Mode
-Determine the primary goal and ensure single-mode operation:
-- **Build**: Creating new functionality
-- **Debug**: Fixing problems
-- **Refactor**: Improving existing code
-- **Learn**: Understanding concepts
+**IDENTIFY → STRUCTURE → ENHANCE → VALIDATE**
 
-Never mix modes - this reduces quality by 15-30%.
+## Step 1: Identify Mode
 
-### 2. Apply TCRO Structure
+Determine single mode (mixing reduces quality 15-30%):
 
-Transform any prompt into this optimal format:
+| Mode | Intent | Indicators |
+|------|--------|------------|
+| Build | Create new | "implement", "create", "add" |
+| Debug | Fix problem | "fix", "error", "broken" |
+| Refactor | Improve existing | "improve", "optimize", "clean" |
+| Learn | Understand | "explain", "how does", "why" |
+
+**Rule:** One prompt = One mode. Split if mixed.
+
+## Step 2: Apply TCRO Structure
+
+Transform any prompt into:
 
 ```
-Task: [Single-line action statement - start with imperative verb]
-Context: [System context, dependencies, and why this is needed]
+Task: [Imperative verb + specific objective]
+Context: [System, dependencies, why needed]
 Requirements:
-1. [Specific functional requirement]
-2. [Technical constraint or pattern]
-3. [Quality standard to maintain]
-4. [Edge cases to handle]
-Output: [Expected format - code only, with tests, with docs]
+1. [Functional requirement]
+2. [Technical constraint]
+3. [Quality standard]
+4. [Edge cases]
+Output: [Exact format expected]
 ```
 
-### 3. Enhance with Power Patterns
+Select specific template from @.claude/skills/prompt-optimizer/references/templates.md based on task type.
 
-#### Negative Constraints (Highly Effective)
-Add explicit "DO NOT" statements:
-- DO NOT use deprecated APIs
-- AVOID nested loops exceeding O(n²)
-- NEVER expose secrets in logs
+## Step 3: Enhance
 
-#### XML Structure for Complex Requirements
-```xml
-<task>Primary objective</task>
-<constraints>
-  <performance>Max 200ms response</performance>
-  <security>Input validation required</security>
-</constraints>
-<output>TypeScript with JSDoc</output>
+### Add Negative Constraints
+```
+DO NOT use deprecated APIs
+AVOID complexity > O(n²)
+NEVER expose secrets in logs
 ```
 
-#### Phase Separation for Complex Tasks
-For tasks >500 lines or requiring architecture decisions:
+### Add Phase Separation
+Use for tasks >500 lines or requiring architecture decisions:
 ```
-Phase 1: Read [files]. Analyze current implementation.
-Phase 2: Create detailed plan with architecture decisions.
-Phase 3: Implement according to plan.
-Phase 4: Verify and commit with descriptive message.
+Phase 1: Analyze current implementation
+Phase 2: Create detailed plan
+Phase 3: Implement according to plan
+Phase 4: Verify and test
 ```
 
-### 4. Optimize Language Patterns
+### Specify Metrics
+Replace vague terms with concrete values:
+- "fast" → "<100ms for 1000 records"
+- "scalable" → "handle 10K concurrent users"
+- "secure" → "OWASP Top 10 compliant"
 
-#### Remove Ambiguity
-- **Bad**: "Make it better"
-- **Good**: "Reduce time complexity from O(n²) to O(n log n)"
+## Step 4: Validate
 
-#### Use Direct Commands
-- **Bad**: "Could you please help..."
-- **Good**: "Implement..."
+Check before delivering:
 
-#### Specify Concrete Metrics
-- **Bad**: "Fast performance"
-- **Good**: "Response time <100ms for 1000 records"
+- [ ] Single mode (not mixed objectives)
+- [ ] Imperative verb starts Task
+- [ ] Measurable requirements (no "good", "nice")
+- [ ] Tech stack specified
+- [ ] Output format explicit
+- [ ] Constraints stated
 
-### 5. Add Essential Context
+## Decision Rules
 
-Always include:
-- Technology stack and version
-- File paths and relationships
-- Existing patterns to follow
-- Performance/security requirements
-- Example of expected output (when helpful)
+### Template Selection
 
-## Quick Optimization Examples
+| Task Type | Template |
+|-----------|----------|
+| New feature | Feature Development |
+| API work | API Endpoint |
+| UI work | React Component |
+| Bug | Debugging |
+| Slow code | Performance |
+| Tests | Testing |
+| Cleanup | Refactoring |
+| Large scope (>500 LOC) | Multi-Phase |
 
-### Before:
-"Can you help me create a login form that looks nice and works well?"
+### Complexity Escalation
 
-### After:
+- Simple task → Basic TCRO
+- Multiple concerns → Add constraints
+- Large scope → Multi-phase template
+- Architecture decision → Phase 1 = Analysis only
+
+## Example
+
+### Before
+"Create a login form that works well"
+
+### After
 ```
 Task: Implement React login form with email/password authentication.
-Context: Part of user authentication flow in Next.js 14 app using App Router.
+Context: Next.js 14 App Router, part of auth flow.
 Requirements:
-1. Email validation (RFC 5322 compliant)
-2. Password minimum 8 characters with complexity check
-3. Show inline validation errors
-4. Handle loading/error/success states
-5. Responsive design using Tailwind CSS
-Output: TypeScript component with error handling and ARIA labels
+1. Email validation (RFC 5322)
+2. Password min 8 chars with complexity
+3. Inline validation errors
+4. Loading/error/success states
+5. Tailwind CSS, responsive
+Output: TypeScript component with ARIA labels
 ```
-
-### Before:
-"Fix the bug in the payment processing"
-
-### After:
-```
-Task: Fix payment validation error in checkout flow.
-Context: Occurs when processing amounts >$999.99 in PaymentProcessor class.
-Error: "Invalid amount format" thrown at line 156
-Requirements:
-1. Handle currency amounts up to $999,999.99
-2. Maintain decimal precision
-3. Preserve existing validation for other fields
-4. Add unit tests for edge cases
-Output: Fixed code with tests for boundary values
-```
-
-## Validation Checklist
-
-After optimization, verify:
-- [ ] Single, clear task (not mixed modes)
-- [ ] Imperative verb starts the task
-- [ ] Measurable requirements (not "good" or "nice")
-- [ ] Technology stack specified
-- [ ] Output format explicit
-- [ ] Constraints clearly stated
-- [ ] No ambiguous terms
-
-## Common Pitfalls to Fix
-
-1. **Politeness Overhead**: Remove "please", "could you", "would you mind"
-2. **Vague Quality Terms**: Replace "good", "proper", "nice" with specifics
-3. **Missing Context**: Add file locations, dependencies, tech stack
-4. **Implicit Requirements**: Make all assumptions explicit
-5. **Mixed Objectives**: Split into separate prompts
-
-## Templates Reference
-
-See `templates/templates.md` for ready-to-use templates covering:
-- Feature development
-- Bug fixing
-- Testing
-- Refactoring
-- Documentation
-
-- API development
-- Database operations
 
 ## Usage
 
-When a user asks to optimize a prompt:
+When optimizing a prompt:
 
-1. Analyze their original prompt
-2. Identify what's missing or unclear
+1. Identify mode and complexity
+2. Select template from references
 3. Apply TCRO structure
-4. Add necessary constraints and context
-5. Present the optimized version
-6. Explain key improvements made
-
-The goal is to transform vague requests into precise, actionable specifications that produce consistent, high-quality code output.
+4. Add constraints and context
+5. Validate against checklist
+6. Explain key improvements
