@@ -98,24 +98,20 @@ Before `git add`:
 
 ## Phase 0: Prepare Workspace
 
-### 0.1 Create Feature Branch
+### 0.1 Validate & Create Branch
 
-**Apply Git Skill** to create branch:
+**Apply Git Skill:**
 
-```
-Branch: feature/[scope]/[feature-name]-setup
-Source: main
-```
+1. Validate git repository exists
+2. Check current branch — if on `main/master/release/*`, create feature branch
+3. If not on feature branch, create: `feature/[scope]/[feature-name]-setup`
+4. If already on valid feature branch, continue
 
-Follow git conventions from skill. If branch exists, confirm switch.
+Git skill handles: protected branch blocking, naming conventions, source branch selection.
 
 ### 0.2 Load Feature Context
 
-**Apply Feature Analyzer Skill** to scan and load artifacts:
-
-```bash
-.claude/skills/feature-analyzer/scripts/check-prerequisites.sh <feature-path>
-```
+**Apply Feature Analyzer Skill** to scan and load artifacts.
 
 **Required artifacts (halt if missing):**
 - tasks.md → INIT-XXX tasks
@@ -128,7 +124,7 @@ Follow git conventions from skill. If branch exists, confirm switch.
 - contracts/contracts.md → Message schemas
 - research.md → Technical decisions
 
-Build mental model from all available artifacts per Feature Analyzer workflow.
+Build mental model from all available artifacts.
 
 ### 0.3 Extract INIT Tasks
 
