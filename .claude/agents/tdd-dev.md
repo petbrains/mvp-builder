@@ -383,7 +383,10 @@ If regressions detected → HALT and fix before commit.
 
 **1.4.2 Update tasks.md**
 
-Mark completed tasks:
+Mark task complete when:
+- GREEN phase passed (1.3.3)
+- No regressions (1.4.1)
+
 ```markdown
 Before: - [ ] TEST-001 [US1] Test user validation
 After:  - [x] TEST-001 [US1] Test user validation
