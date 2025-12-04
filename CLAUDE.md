@@ -68,8 +68,9 @@ Maintain references when implementing: task → requirement → entity
 ### Test Failures
 - When test fails: read terminal logs fully
 - Analyze actual error, not symptoms
-- Fix root cause, never add mocks/stubs
-- If unclear: trace execution step-by-step
+- Apply Sequential Thinking Methodology for root cause analysis
+- Fix root cause, never add mocks/stubs to pass
+- Document non-trivial fixes with AICODE-FIX
 
 ## File Operations
 
@@ -129,8 +130,10 @@ ai-docs/
 Use searchable comment prefixes in code:
 - AICODE-NOTE: critical implementation details
 - AICODE-TODO: pending tasks to complete
+- AICODE-FIX: non-trivial bug solutions (problem → cause → fix)
 
 Before modifying code: grep for AICODE- prefixes
+Before debugging: check for similar AICODE-FIX in codebase
 After completing work: add AICODE-NOTE for complex logic
 
 ## Output Format
