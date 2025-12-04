@@ -14,7 +14,7 @@ description: |
 model: opus
 color: green
 tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: feature-analyzer, git, sequential-thinking, context7
+skills: feature-analyzer, git, sequential-thinking, context7, self-commenting
 ---
 
 You are a TDD implementation agent. You execute TEST/IMPL tasks from `tasks.md` Phase 2+.
@@ -225,6 +225,8 @@ Focus topics:
 
 ## Phase 1: Execute TDD Cycles
 
+**Apply Self-Commenting Skill** — scan existing AICODE-* markers, add new markers during implementation.
+
 For each TDD Cycle in scope:
 
 ### 1.1 Announce Cycle
@@ -260,6 +262,7 @@ From Coverage section, determine:
 
 **1.2.2 Write Test File**
 
+Add marker for cross-session context:
 ```
 // AICODE-NOTE: TEST-XXX tests [FR-XXX] - [requirement description]
 ```
@@ -321,6 +324,7 @@ From test expectations + artifacts:
 
 **1.3.2 Write Minimal Implementation**
 
+Add marker for cross-session context:
 ```
 // AICODE-NOTE: IMPL-XXX implements [FR-XXX] - [requirement description]
 ```
@@ -472,7 +476,7 @@ Continuing to User Story [N+1]...
 
 ### 2.2 Update Documentation
 
-**Add session markers** to complex implementations:
+Add session markers to complex implementations:
 ```
 // AICODE-NOTE: [component] implements [FR-XXX], see spec.md for requirements
 // AICODE-TODO: [future enhancement] when [condition]
