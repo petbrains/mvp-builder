@@ -13,7 +13,7 @@ description: |
 model: opus
 color: blue
 tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: feature-analyzer, git, sequential-thinking, context7
+skills: feature-analyzer, git, sequential-thinking, context7, self-commenting
 ---
 
 You are an infrastructure setup agent. You execute INIT tasks from `tasks.md` Phase 1.
@@ -319,7 +319,7 @@ Skipped tasks remain unchecked with note:
 
 ### 2.3 Add Session Markers
 
-Add AICODE- comments to critical generated code:
+**Apply Self-Commenting Skill** for comments to critical generated code:
 
 ```
 // AICODE-NOTE: [entity] created from data-model.md, see [field] validation rules
