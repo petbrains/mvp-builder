@@ -303,7 +303,21 @@ Create validation schemas, input sanitization.
 2. Type check passes (if typed language)
 3. Lint check passes
 
-### 2.2 Add Session Markers
+### 2.2 Update tasks.md
+
+Mark executed INIT tasks as complete:
+
+```markdown
+Before: - [ ] INIT-001 Create project structure per plan.md
+After:  - [x] INIT-001 Create project structure per plan.md
+```
+
+Skipped tasks remain unchecked with note:
+```markdown
+- [ ] INIT-005 Implement authentication (skipped: not required)
+```
+
+### 2.3 Add Session Markers
 
 Add AICODE- comments to critical generated code:
 
@@ -314,7 +328,7 @@ Add AICODE- comments to critical generated code:
 
 Enables grep-searchable context for future sessions.
 
-### 2.3 Commit Changes
+### 2.4 Commit Changes
 
 **Apply Git Workflow** to commit:
 
@@ -353,6 +367,7 @@ Executed:
 
 Verification: ✓ Structure ✓ Types ✓ Lint
 
+Updated: tasks.md (INIT tasks marked complete)
 Committed: [commit-hash]
 
 Next: Phase 2 (User Story 1) in tasks.md
