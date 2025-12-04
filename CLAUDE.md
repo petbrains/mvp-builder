@@ -15,6 +15,9 @@ Load these documents when starting work:
 - Single value path: one critical journey only
 - One screen = one primary action
 - Document Non-Goals explicitly in PRD
+- Deliverable outcomes over individual commits
+- Tasks: broad enough to be meaningful, specific enough to be actionable
+- Avoid micro-tasks that clutter plans
 
 ### TDD Workflow
 - RED → GREEN cycles when tasks.md exists
