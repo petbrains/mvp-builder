@@ -132,10 +132,38 @@ If Phase 1 incomplete → HALT: "Run feature-setup first"
 - ux.md → Error states, accessibility requirements
 - contracts/openapi.yaml → API contracts
 - contracts/contracts.md → Message schemas
+- research.md → Technical decisions
 
 Build mental model from all available artifacts.
 
-### 0.3 Parse TDD Structure
+### 0.3 Load Validation Checklists
+
+**If validation/ directory exists:**
+- Load `validation/requirements-checklist.md`
+- Load `validation/ux-checklist.md`
+- Load `validation/api-checklist.md`
+- Load `validation/data-checklist.md`
+
+Extract CHK-XXX items with their references:
+- Map CHK items to TEST-XXX tasks by FR-XXX/UX-XXX coverage
+- Track which CHK items validate which tasks
+
+**If no validation/ directory:** Continue without checklist validation.
+
+### 0.4 Load Resolutions
+
+**If validation/resolutions.md exists:**
+- Parse all decisions with task_impact field
+- Extract NEW tasks (TEST-XXX, IMPL-XXX added from resolutions)
+- Note DEFERRED items for exclusion from current scope
+
+**Find resolution tasks in tasks.md:**
+- Locate "Phase N: Checklist Resolutions" section
+- Include resolution TEST/IMPL tasks in execution scope
+
+**If no resolutions.md:** Continue without resolution tasks.
+
+### 0.5 Parse TDD Structure
 
 From tasks.md, extract:
 
@@ -156,7 +184,7 @@ Phase 3: User Story 2 - [Title] (P2)
 
 Track: `CURRENT_STORY`, `CURRENT_CYCLE`, `LAST_COMPLETED_TASK`
 
-### 0.4 Determine Scope
+### 0.6 Determine Scope
 
 **If scope selector provided:**
 - `US[N]` → filter to specific user story
@@ -166,7 +194,7 @@ Track: `CURRENT_STORY`, `CURRENT_CYCLE`, `LAST_COMPLETED_TASK`
 - Find first incomplete TEST-XXX task
 - Start from that cycle
 
-### 0.5 Plan Implementation
+### 0.7 Plan Implementation
 
 **Apply Sequential Thinking Methodology** for complex features:
 
@@ -182,7 +210,7 @@ Use when:
 - Multiple cycles share dependencies
 - Unfamiliar testing patterns needed
 
-### 0.6 Fetch Library Documentation
+### 0.8 Fetch Library Documentation
 
 **Apply Context7 Skill** for testing/implementation libraries:
 
@@ -360,7 +388,20 @@ Before: - [ ] IMPL-001 [US1] Implement user validator
 After:  - [x] IMPL-001 [US1] Implement user validator
 ```
 
-**1.4.3 Commit Cycle**
+**1.4.3 Update Validation Checklists**
+
+If validation/ exists, mark completed CHK items:
+
+```markdown
+# In validation/[domain]-checklist.md
+Before: - [ ] CHK007 Is error behavior documented for timeout? [Coverage, FR-003]
+After:  - [x] CHK007 Is error behavior documented for timeout? [Coverage, FR-003]
+```
+
+Match by: CHK references FR-XXX/UX-XXX covered by this cycle's TEST tasks.
+Only mark if corresponding test passes.
+
+**1.4.4 Commit Cycle**
 
 **Apply Git Workflow** to commit:
 
@@ -374,7 +415,14 @@ TDD Cycle [N] complete:
 Coverage: [FR-XXX], [UX-XXX]
 ```
 
-### 1.5 Next Cycle or Story
+### 1.5 Progress Report
+
+After each cycle:
+```
+Progress: [completed]/[total] cycles | Tasks: [done]/[total] | CHK: [validated]/[total]
+```
+
+### 1.6 Next Cycle or Story
 
 After cycle commit:
 - If more cycles in story → Continue to next cycle
@@ -418,6 +466,10 @@ Continuing to User Story [N+1]...
    - Verify all edge cases covered
    - Report coverage percentage
 
+5. **Checklist completion**
+   - 100% CHK items in validation/ marked `[x]`
+   - No unresolved `[Gap]`, `[Ambiguity]`, `[Conflict]` markers
+
 ### 2.2 Update Documentation
 
 **Add session markers** to complex implementations:
@@ -446,7 +498,7 @@ All TDD cycles complete:
 Feature Implementation Complete: [feature-name]
 ═══════════════════════════════════════════════════
 
-Branch: feature/[scope]/[feature-name]-impl
+Branch: feature/[feature-name]
 
 User Stories Completed:
 ✓ US1: [Title] (P1) — [N] cycles
@@ -463,9 +515,12 @@ Requirements Coverage:
   FR-XXX: ✓ Tested, ✓ Implemented
   UX-XXX: ✓ Tested, ✓ Implemented
 
+Checklists: [N]/[M] CHK items validated
+Resolutions: [N] implemented, [M] deferred
+
 Commits: [count] ([commit-range])
 
-Updated: tasks.md (all TEST/IMPL marked complete)
+Updated: tasks.md, validation/*.md
 
 Next: Run /validation or /memory command
 ═══════════════════════════════════════════════════
