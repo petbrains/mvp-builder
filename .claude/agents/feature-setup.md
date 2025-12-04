@@ -88,6 +88,28 @@ vendor/
 
 Git Workflow handles automatically. See Safety Guards in Git Workflow.
 
+## Worktree Portability
+
+`.worktreeinclude` specifies gitignored files to copy between worktrees.
+
+**From Security Rules — what to include:**
+
+| Gitignored | Worktreeinclude | Reason |
+|------------|-----------------|--------|
+| `.env`, `.env.*` | ✓ Yes | Needed to run locally |
+| `*.pem`, `*.key`, `*.p12` | ✗ No | Cryptographic keys — too sensitive |
+| `credentials.*`, `secrets.*` | ✗ No | Critical secrets |
+| `.secrets/`, `.credentials/` | ✗ No | Secret directories |
+
+**Default .worktreeinclude:**
+```
+.env
+.env.development
+.env.test
+```
+
+Add platform-specific entries as needed (node_modules/, vendor/, .venv/).
+
 # Execution Flow
 
 ## Phase 0: Prepare Workspace
@@ -235,10 +257,11 @@ Create error classes, handlers, formatters.
 
 **Actions:**
 1. Create/update `.gitignore` with mandatory security entries (see Security Rules)
-2. Create `.env.example` with placeholder values only — NO real secrets
-3. Document each variable with comments
-4. Add env validation on startup (fail fast if missing)
-5. Verify no `.env` files will be committed
+2. Create/update `.env.example` with placeholder values only — NO real secrets
+3. Create/update `.worktreeinclude` per Worktree Portability rules (env files only, not keys)
+4. Document each variable with comments
+5. Add env validation on startup (fail fast if missing)
+6. Verify no `.env` files will be committed
 
 **Placeholder format:**
 ```
