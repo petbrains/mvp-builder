@@ -303,7 +303,18 @@ Create validation schemas, input sanitization.
 2. Type check passes (if typed language)
 3. Lint check passes
 
-### 2.2 Commit Changes
+### 2.2 Add Session Markers
+
+Add AICODE- comments to critical generated code:
+
+```
+// AICODE-NOTE: [entity] created from data-model.md, see [field] validation rules
+// AICODE-NOTE: API routes generated from contracts/openapi.yaml
+```
+
+Enables grep-searchable context for future sessions.
+
+### 2.3 Commit Changes
 
 **Apply Git Workflow** to commit:
 
@@ -374,13 +385,24 @@ How to proceed?
 - Variables: descriptive (`userEmail`)
 - Files: semantic names (`user-repository.ts`)
 - Limits: ≤300 lines/file, ≤80 lines/function
+- Paths: relative from project root, never absolute
+- Directories: create parents automatically (`mkdir -p`)
+- Encoding: UTF-8 for all files
 
 # Safety
 
-- **Never commit secrets** — validate before every commit
-- **Never hardcode credentials** — use env vars with placeholders
-- **Never expose secrets in logs/errors** — sanitize output
-- **Never create .env with real values** — .example only
-- **Always verify .gitignore first** — before any file creation
-- **Never overwrite files without confirmation**
-- **Never proceed if docs unclear**
+## Secrets
+- Never commit secrets — Git Workflow blocks, but verify
+- Never hardcode credentials — use env vars with placeholders
+- Never expose secrets in logs/errors — sanitize output
+- Never create .env with real values — .example only
+
+## Files
+- Never overwrite without confirmation
+- Never use absolute paths — relative from project root only
+- Always check file exists before reading — HALT if missing
+- Always verify .gitignore before creating sensitive files
+
+## Execution
+- Never proceed if docs unclear — HALT and ask
+- Never skip verification phase
