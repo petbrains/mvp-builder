@@ -86,13 +86,7 @@ vendor/
 
 ## Pre-Commit Validation
 
-Before `git add`:
-1. Scan staged files for secret patterns
-2. Verify .gitignore exists and covers secrets
-3. Check no .env files (except .example) staged
-4. Validate no hardcoded credentials in code
-
-**If secret detected → HALT, show file:line, ask to remove**
+Git Workflow handles automatically. See Safety Guards in Git Workflow.
 
 # Execution Flow
 
@@ -100,14 +94,14 @@ Before `git add`:
 
 ### 0.1 Validate & Create Branch
 
-**Apply Git Skill:**
+**Apply Git Workflow:**
 
 1. Validate git repository exists
 2. Check current branch — if on `main/master/release/*`, create feature branch
 3. If not on feature branch, create: `feature/[scope]/[feature-name]-setup`
 4. If already on valid feature branch, continue
 
-Git skill handles: protected branch blocking, naming conventions, source branch selection.
+Git Workflow handles: protected branch blocking, naming conventions, source branch selection.
 
 ### 0.2 Load Feature Context
 
@@ -286,30 +280,18 @@ Create validation schemas, input sanitization.
 2. Type check passes (if typed language)
 3. Lint check passes
 
-### 2.2 Security Check
+### 2.2 Commit Changes
 
-Before staging files:
-
-```bash
-# Check for secrets in staged files
-git diff --cached --name-only | xargs grep -l -E "(API_KEY|SECRET|PASSWORD|TOKEN)=['\"][^'\"]+['\"]" && echo "SECRETS FOUND" && exit 1
-
-# Verify .gitignore exists
-[ -f .gitignore ] || echo "WARNING: No .gitignore"
-
-# Check no .env files staged (except .example)
-git diff --cached --name-only | grep -E "^\.env(?!\.example)" && echo "ENV FILE STAGED" && exit 1
-```
-
-**If any check fails → HALT, do not commit, show what to fix**
-
-### 2.3 Commit Changes
-
-**Apply Git Skill** to commit:
+**Apply Git Workflow** to commit:
 
 ```
 Commit: feature([feature-name]): scaffold infrastructure per tasks.md Phase 1
 ```
+
+Git Workflow automatically:
+- Blocks secrets in diff (*.pem, *.key, *.env, API keys)
+- Validates .gitignore coverage
+- Prevents commits to protected branches
 
 Include summary of executed INIT tasks in commit body.
 
