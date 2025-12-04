@@ -21,6 +21,16 @@ Load these documents when starting work:
 - Complete tests before implementation
 - No stub tests or always-passing mocks
 
+### Traceability IDs
+
+Feature artifacts use consistent ID system:
+- **FR-XXX, UX-XXX**: Requirements in spec.md
+- **[US1], [US2]**: User stories from acceptance scenarios
+- **INIT-/TEST-/IMPL-**: Task prefixes in tasks.md
+- **CHK###**: Validation checklist items
+
+Maintain references when implementing: task → requirement → entity
+
 ### Specifications First
 - No spec → no task
 - Generate tasks.md from spec/ux/plan before implementation
@@ -80,6 +90,11 @@ Load these documents when starting work:
 - Architecture decisions needed
 - Validation fails
 
+**When uncertain:**
+- First: Apply Sequential Thinking Methodology to analyze
+- If still unclear: Ask user for clarification
+- Never assume — continue with confirmed parts while awaiting response
+
 **If operation fails:**
 1. HALT immediately
 2. Report what succeeded
@@ -90,20 +105,20 @@ Load these documents when starting work:
 
 ```
 ai-docs/
-├── PRD.md                 # Product requirements
-├── README.md              # Project overview
-├── FEATURES.md            # Development roadmap
-├── features/
-│   └── [feature-name]/    # Semantic names only
-│       ├── spec.md        # Requirements
-│       ├── ux.md          # UX schemas
-│       ├── plan.md        # Implementation strategy
-│       ├── tasks.md       # TDD execution tasks
-│       ├── research.md    # Technical research and decisions
-│       ├── data-model.md  # Entities
-│       ├── setup.md       # Environment setup and configuration
-│       ├── contracts/     # API contracts
-│       └── validation/    # Requirement validation criteria
+├── PRD.md                 # Product vision and scope
+├── README.md              # Implementation status (code map)
+├── FEATURES.md            # Feature index and dependencies
+└── features/
+    └── [feature-name]/
+        ├── spec.md        # Requirements (FR-*, UX-*), acceptance scenarios
+        ├── ux.md          # Flows, error handling, states
+        ├── plan.md        # Technical approach, code organization
+        ├── tasks.md       # TDD execution tasks
+        ├── data-model.md  # Entities, constants, validation rules
+        ├── research.md    # Technical decisions
+        ├── setup.md       # Environment configuration
+        ├── contracts/     # API specifications
+        └── validation/    # Quality checklists
 ```
 
 ## Session Continuity
