@@ -344,16 +344,11 @@ Add marker for cross-session context:
 
 **Expected:** All tests PASS (green)
 
-If any test fails → Debug:
-```
-✗ GREEN Phase: Test Still Failing
+If any test fails:
 
-TEST-XXX: FAIL
-  Expected: [expected]
-  Actual: [actual]
-
-Debugging...
-```
+1. Read terminal output fully — actual error, not symptoms
+2. Apply Sequential Thinking for root cause analysis
+3. Fix root cause — never add mocks/stubs to pass
 
 Fix implementation until all tests pass.
 
