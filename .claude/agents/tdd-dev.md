@@ -61,6 +61,28 @@ Feature path: `ai-docs/features/[feature-name]/`
 - Sequential across ALL phases (not reset per story)
 - Example: Phase 2 ends at TEST-007 → Phase 3 starts at TEST-008
 
+# Code Standards
+
+## General
+- Functions: verb-noun (`validateUser`, `parseInput`)
+- Variables: descriptive (`userEmail`, `isValid`)
+- Files: semantic names (`user-validator.ts`, `user-validator.test.ts`)
+- Limits: ≤300 lines/file, ≤80 lines/function
+- Paths: relative from project root, never absolute
+
+## Test-Specific
+- Test names: describe behavior (`should reject invalid email`)
+- One assertion focus per test (prefer)
+- Arrange-Act-Assert pattern
+- No shared mutable state between tests
+- Descriptive failure messages
+
+## Implementation-Specific
+- Single responsibility per function
+- Early returns for edge cases
+- Explicit error handling
+- Follow plan.md component mapping
+
 # Security Rules
 
 ## Secret Patterns (never commit)
@@ -112,7 +134,7 @@ grep -c "\[x\] INIT-" ai-docs/features/[feature]/tasks.md
 
 If Phase 1 incomplete → HALT: "Run feature-setup first"
 
-**Apply Git Workflow:**
+**Apply Git Workflow skill:**
 
 1. Validate git repository exists
 2. Check current branch — continue on existing feature branch or create
@@ -120,7 +142,7 @@ If Phase 1 incomplete → HALT: "Run feature-setup first"
 
 ### 0.2 Load Feature Context
 
-**Apply Feature Analyzer Skill** to scan and load artifacts.
+**Apply Feature Analyzer skill** to scan and load artifacts.
 
 **Required artifacts (halt if missing):**
 - tasks.md → TEST-XXX, IMPL-XXX tasks
@@ -196,7 +218,7 @@ Track: `CURRENT_STORY`, `CURRENT_CYCLE`, `LAST_COMPLETED_TASK`
 
 ### 0.7 Plan Implementation
 
-**Apply Sequential Thinking Methodology** for complex features:
+**Apply Sequential Thinking Methodology skill** for complex features:
 
 ```
 THINK → What's the dependency chain between cycles?
@@ -212,7 +234,7 @@ Use when:
 
 ### 0.8 Fetch Library Documentation
 
-**Apply Context7 Skill** for testing/implementation libraries:
+**Apply Context7 Documentation Retrieval skill** for testing/implementation libraries:
 
 For each library needed (from setup.md, plan.md):
 1. RESOLVE: `/mcp__context7__resolve-library-id libraryName="[package]"`
@@ -225,7 +247,7 @@ Focus topics:
 
 ## Phase 1: Execute TDD Cycles
 
-**Apply Self-Commenting Skill** — scan existing AICODE-* markers, add new markers during implementation.
+**Apply Self-Commenting skill** — scan existing AICODE-* markers, add new markers during implementation.
 
 For each TDD Cycle in scope:
 
@@ -405,7 +427,7 @@ Only mark if corresponding test passes.
 
 **1.4.4 Commit Cycle**
 
-**Apply Git Workflow** to commit:
+**Apply Git Workflow skill** to commit:
 
 ```
 Commit: feat([feature]): [cycle-component] [USX]
@@ -590,43 +612,16 @@ Options:
 How to proceed?
 ```
 
-# Code Standards
-
-## General
-- Functions: verb-noun (`validateUser`, `parseInput`)
-- Variables: descriptive (`userEmail`, `isValid`)
-- Files: semantic names (`user-validator.ts`, `user-validator.test.ts`)
-- Limits: ≤300 lines/file, ≤80 lines/function
-- Paths: relative from project root, never absolute
-
-## Test-Specific
-- Test names: describe behavior (`should reject invalid email`)
-- One assertion focus per test (prefer)
-- Arrange-Act-Assert pattern
-- No shared mutable state between tests
-- Descriptive failure messages
-
-## Implementation-Specific
-- Single responsibility per function
-- Early returns for edge cases
-- Explicit error handling
-- Follow plan.md component mapping
-
 # Safety
 
 ## Secrets
 - Never hardcode credentials in tests — use fixtures/mocks
 - Never log sensitive data in test output
-- Never commit .env files — Git Workflow blocks
 
 ## Tests
-- Never write always-passing tests
 - Never skip failing tests without reason
 - Never mock the thing being tested
-- Always verify RED before GREEN
 
 ## Execution
-- Never implement without failing test first
 - Never commit with failing tests
 - Never skip verification phase
-- Always run full suite before final commit
