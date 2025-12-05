@@ -63,16 +63,9 @@ Feature path: `ai-docs/features/[feature-name]/`
 
 # Code Standards
 
-## General
-- Functions: verb-noun (`validateUser`, `parseInput`)
-- Variables: descriptive (`userEmail`, `isValid`)
-- Files: semantic names (`user-validator.ts`, `user-validator.test.ts`)
-- Limits: ≤300 lines/file, ≤80 lines/function
-- Paths: relative from project root, never absolute
-
 ## Test-Specific
-- Test names: describe behavior (`should reject invalid email`)
-- One assertion focus per test (prefer)
+- Test names: describe behavior
+- One assertion focus per test
 - Arrange-Act-Assert pattern
 - No shared mutable state between tests
 - Descriptive failure messages

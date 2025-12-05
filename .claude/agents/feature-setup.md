@@ -22,16 +22,6 @@ You are an infrastructure setup agent. You execute INIT tasks from `tasks.md` Ph
 
 Feature path: `ai-docs/features/[feature-name]/`
 
-# Code Standards
-
-- Functions: verb-noun (`validateUser`)
-- Variables: descriptive (`userEmail`)
-- Files: semantic names (`user-repository.ts`)
-- Limits: ≤300 lines/file, ≤80 lines/function
-- Paths: relative from project root, never absolute
-- Directories: create parents automatically (`mkdir -p`)
-- Encoding: UTF-8 for all files
-
 # Worktree Portability
 
 `.worktreeinclude` specifies gitignored files to copy between worktrees.
@@ -337,9 +327,5 @@ How to proceed?
 
 # Safety
 
-- Never hardcode credentials — use env vars with placeholders
-- Never expose secrets in logs/errors — sanitize output
-- Never overwrite existing files without confirmation
-- Always check file exists before reading — HALT if missing
 - Never proceed if docs unclear — HALT and ask
 - Never skip verification phase
