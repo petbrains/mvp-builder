@@ -126,70 +126,35 @@ Output: Concrete action for each INIT task with library-specific details.
 
 Execute sequentially per tasks.md order.
 
-### INIT-001: Create project structure per plan.md
-**Source:** plan.md → Feature Code Organization
+### Execution Rules
 
-Create directory tree. Verify all directories exist.
+For each INIT-XXX task in tasks.md:
 
----
+1. **Read task description** — contains action and artifact reference
+2. **Load referenced artifact** — source of truth for details
+3. **Apply pattern** from table below if task matches common type
+4. **Execute** per task description, not per pattern
 
-### INIT-002: Initialize project per setup.md
-**Source:** setup.md → Install
+### Common Patterns (guidance, not prescription)
 
-Initialize package manager, install dependencies.
+| Task Pattern | Typical Artifacts | Key Actions |
+|--------------|-------------------|-------------|
+| Project structure | plan.md → Code Organization | Create directories, verify structure |
+| Dependencies | setup.md → Install | Package manager init, install |
+| Linting/formatting | Infer from stack | Linter + formatter config |
+| Data layer | data-model.md → Entities | Repositories, migrations if DB |
+| Authentication | plan.md → Technical Context | Middleware, token handling |
+| API layer | contracts/openapi.yaml | Route stubs, validation |
+| Base entities | data-model.md → Entities, Enums | Types/interfaces |
+| Error handling | plan.md → Error Handling | Error classes, handlers |
+| Environment | setup.md → Config | .env.example, .worktreeinclude |
+| State management | plan.md → Technical Context | Store initialization |
+| Validation layer | data-model.md → Validation Rules | Schemas, sanitization |
 
----
+### Environment Setup Rules
 
-### INIT-003: Configure linting and formatting
-**Source:** Infer from stack
+When task involves environment configuration:
 
-Setup linter + formatter. Add pre-commit hooks.
-
----
-
-### INIT-004: Setup data layer from data-model.md
-**Source:** data-model.md → Entities
-
-Create repositories/data access layer. Create migrations if DB used.
-
----
-
-### INIT-005: Implement authentication (if required)
-**Source:** plan.md → Technical Context
-
-**Skip if:** no auth mentioned
-
-Create auth middleware, token handling.
-
----
-
-### INIT-006: Setup API layer per contracts/
-**Source:** contracts/openapi.yaml
-
-**Skip if:** no contracts/ directory
-
-Generate route stubs, validation middleware. Configure CORS if needed.
-
----
-
-### INIT-007: Create base entities from data-model.md
-**Source:** data-model.md → Entities, Enums
-
-Create types/interfaces and enums.
-
----
-
-### INIT-008: Configure error handling
-**Source:** plan.md → Error Handling Approach
-
-Create error classes, handlers, formatters.
-
----
-
-### INIT-009: Setup environment per setup.md
-**Source:** setup.md → Config
-
-**Actions:**
 1. Create `.env.example` with placeholder values only — NO real secrets
 2. Create `.worktreeinclude` per Worktree Portability rules
 3. Document each variable with comments
@@ -209,25 +174,10 @@ SECRET_KEY=generate-with-openssl-rand-base64-32
 
 Git Workflow skill handles .gitignore creation and secret protection automatically.
 
----
+### Conditional Execution
 
-### INIT-010: Implement state management (if specified)
-**Source:** plan.md → Technical Context
-
-**Skip if:** no state management mentioned
-
-Initialize store, create base state structure.
-
----
-
-### INIT-011: Setup validation layer (if required)
-**Source:** data-model.md → Validation Rules
-
-**Skip if:** no Validation Rules section
-
-Create validation schemas, input sanitization.
-
----
+Skip task if referenced artifact section doesn't exist or indicates "not required".
+Mark skipped: `- [ ] INIT-XXX (skipped: [reason])`
 
 ## Phase 2: Verify & Commit
 

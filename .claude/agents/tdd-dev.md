@@ -94,7 +94,7 @@ If Phase 1 incomplete → HALT: "Run feature-setup first"
 
 1. Validate git repository exists
 2. Check current branch — continue on existing feature branch or create
-3. Branch naming: `feature/[feature-name]` or continue `-setup` branch
+3. Branch naming: `feature/[feature-name]` — continue existing or create
 
 Git Workflow handles secret protection automatically.
 
@@ -249,8 +249,11 @@ Add marker for cross-session context:
 
 **Test structure by type:**
 
-| Source | Test Type | Location |
-|--------|-----------|----------|
+Use test locations from plan.md "Feature Code Organization" section.
+Table below as fallback if plan.md doesn't specify:
+
+| Source | Test Type | Default Location |
+|--------|-----------|------------------|
 | Acceptance scenarios | Integration | `tests/integration/` |
 | FR-XXX requirements | Unit/Contract | `tests/unit/` |
 | UX-XXX requirements | UI/E2E | `tests/e2e/` |
@@ -446,7 +449,8 @@ Continuing to User Story [N+1]...
 4. **Coverage report**
    - Verify all FR-XXX have tests
    - Verify all edge cases covered
-   - Report coverage percentage
+   - Report requirements coverage: (tested FR-XXX / total FR-XXX)
+   - Report code coverage if tooling configured in setup.md
 
 5. **Checklist completion**
    - 100% CHK items in validation/ marked `[x]`
