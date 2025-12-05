@@ -116,34 +116,21 @@ Git Workflow handles secret protection automatically.
 
 Build mental model from all available artifacts.
 
-### 0.3 Load Validation Checklists
+### 0.3 Load Validation Context
 
 **If validation/ directory exists:**
-- Load `validation/requirements-checklist.md`
-- Load `validation/ux-checklist.md`
-- Load `validation/api-checklist.md`
-- Load `validation/data-checklist.md`
-
-Extract CHK-XXX items with their references:
+- Load all `*-checklist.md` files
 - Map CHK items to TEST-XXX tasks by FR-XXX/UX-XXX coverage
 - Track which CHK items validate which tasks
+- If `resolutions.md` exists:
+  - Parse decisions with task_impact field
+  - Extract NEW tasks (TEST-XXX, IMPL-XXX from resolutions)
+  - Note DEFERRED items for exclusion from scope
+  - Locate "Phase N: Checklist Resolutions" in tasks.md
 
 **If no validation/ directory:** Continue without checklist validation.
 
-### 0.4 Load Resolutions
-
-**If validation/resolutions.md exists:**
-- Parse all decisions with task_impact field
-- Extract NEW tasks (TEST-XXX, IMPL-XXX added from resolutions)
-- Note DEFERRED items for exclusion from current scope
-
-**Find resolution tasks in tasks.md:**
-- Locate "Phase N: Checklist Resolutions" section
-- Include resolution TEST/IMPL tasks in execution scope
-
-**If no resolutions.md:** Continue without resolution tasks.
-
-### 0.5 Parse TDD Structure
+### 0.4 Parse TDD Structure
 
 From tasks.md, extract:
 
@@ -164,7 +151,7 @@ Phase 3: User Story 2 - [Title] (P2)
 
 Track: `CURRENT_STORY`, `CURRENT_CYCLE`, `LAST_COMPLETED_TASK`
 
-### 0.6 Determine Scope
+### 0.5 Determine Scope
 
 **If scope selector provided:**
 - `US[N]` → filter to specific user story
@@ -174,7 +161,7 @@ Track: `CURRENT_STORY`, `CURRENT_CYCLE`, `LAST_COMPLETED_TASK`
 - Find first incomplete TEST-XXX task
 - Start from that cycle
 
-### 0.7 Plan Implementation
+### 0.6 Plan Implementation
 
 **Apply Sequential Thinking Methodology skill** for complex features:
 
@@ -190,7 +177,7 @@ Use when:
 - Multiple cycles share dependencies
 - Unfamiliar testing patterns needed
 
-### 0.8 Fetch Library Documentation
+### 0.7 Fetch Library Documentation
 
 **Apply Context7 Documentation Retrieval skill** for testing/implementation libraries:
 
@@ -479,37 +466,19 @@ All TDD cycles complete:
 
 ## Output
 
+**Completion report:**
 ```
-═══════════════════════════════════════════════════
-Feature Implementation Complete: [feature-name]
-═══════════════════════════════════════════════════
+Feature: [feature-name] | Branch: feature/[feature-name]
 
-Branch: feature/[feature-name]
+Stories: US1 ✓ ([N] cycles), US2 ✓ ([N] cycles), US3 ✓ ([N] cycles)
 
-User Stories Completed:
-✓ US1: [Title] (P1) — [N] cycles
-✓ US2: [Title] (P2) — [N] cycles
-✓ US3: [Title] (P3) — [N] cycles
+Tests: [passing]/[total] | Requirements: [covered]/[total] FR, [covered]/[total] UX
 
-Test Summary:
-  Total:    [count]
-  Passing:  [count]
-  Coverage: [percentage]%
-
-Requirements Coverage:
-  FR-XXX: ✓ Tested, ✓ Implemented
-  FR-XXX: ✓ Tested, ✓ Implemented
-  UX-XXX: ✓ Tested, ✓ Implemented
-
-Checklists: [N]/[M] CHK items validated
-Resolutions: [N] implemented, [M] deferred
-
-Commits: [count] ([commit-range])
+Checklists: [validated]/[total] CHK | Resolutions: [N] implemented, [M] deferred
 
 Updated: tasks.md, validation/*.md
 
-Next: Run /validation or /memory command
-═══════════════════════════════════════════════════
+Next: /validation or /memory
 ```
 
 # Error Protocol
