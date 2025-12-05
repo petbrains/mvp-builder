@@ -1,6 +1,6 @@
 ---
 name: self-commenting
-description: AI-native code commenting system with grep-searchable AICODE-* markers for cross-session memory. Use when: working with code files, leaving notes for future sessions, breaking down complex tasks, documenting non-obvious logic. Triggers: start coding session, edit code, complex logic, leave note, todo for later, AICODE markers, self-commenting.
+description: AI-native code commenting system with grep-searchable AICODE-* markers for cross-session memory. Use when: working with code files, leaving notes for future sessions, breaking down complex tasks, documenting non-obvious logic, recording bug fixes. Triggers: start coding session, edit code, complex logic, leave note, todo for later, debug session, bug fix, AICODE markers, self-commenting.
 allowed-tools: Read, Write, Bash(grep:*)
 ---
 
@@ -32,8 +32,9 @@ Add markers for cross-session memory:
 
 - `AICODE-NOTE` — critical implementation details
 - `AICODE-TODO` — pending tasks to complete
+- `AICODE-FIX` — non-trivial bug solutions (problem → cause → fix)
 
-See @.claude/skills/self-commenting/references/conventions.md for format, language syntax, and examples.
+See `references/conventions.md` for format, language syntax, and examples.
 
 ## Decision Rules
 
@@ -48,12 +49,20 @@ See @.claude/skills/self-commenting/references/conventions.md for format, langua
 - Needs more information
 - Depends on other work
 
+### Add AICODE-FIX when:
+- Bug solution was non-trivial
+- Root cause wasn't obvious
+- Similar bugs might occur elsewhere
+
 ### Skip markers when:
 - Code is self-explanatory
 - Standard pattern usage
+- Trivial one-line fix
 
 ## Session Workflow
 
 **Start:** `grep -rn "AICODE-" src/`
 
-**End:** Add TODO for incomplete work, NOTE for key decisions
+**Before debugging:** Check for similar `AICODE-FIX` in codebase
+
+**End:** Add TODO for incomplete work, NOTE for key decisions, FIX for solved bugs
