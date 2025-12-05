@@ -32,77 +32,11 @@ Feature path: `ai-docs/features/[feature-name]/`
 - Directories: create parents automatically (`mkdir -p`)
 - Encoding: UTF-8 for all files
 
-# Security Rules
-
-## Secret Patterns (never commit)
-
-```
-# Files
-*.env
-*.env.*
-!*.env.example
-*.pem
-*.key
-*.p12
-*.pfx
-*.crt
-credentials.*
-secrets.*
-*_secret.*
-*.keystore
-
-# Directories
-.secrets/
-.credentials/
-
-# Content patterns (block if found in code)
-API_KEY=["'][^"']+["']
-SECRET_KEY=["'][^"']+["']
-PASSWORD=["'][^"']+["']
-TOKEN=["'][^"']+["']
-PRIVATE_KEY=["'][^"']+["']
-aws_access_key_id
-aws_secret_access_key
-```
-
-## Mandatory .gitignore Entries
-
-Before any commit, ensure .gitignore contains:
-
-```gitignore
-# Secrets - NEVER COMMIT
-.env
-.env.*
-!.env.example
-*.pem
-*.key
-*.p12
-*.secret
-.secrets/
-.credentials/
-
-# IDE & OS
-.idea/
-.vscode/
-.DS_Store
-Thumbs.db
-
-# Dependencies
-node_modules/
-__pycache__/
-.venv/
-vendor/
-```
-
-## Pre-Commit Validation
-
-Git Workflow handles automatically. See Safety Guards in Git Workflow.
-
-## Worktree Portability
+# Worktree Portability
 
 `.worktreeinclude` specifies gitignored files to copy between worktrees.
 
-**From Security Rules — what to include:**
+**What to include:**
 
 | Gitignored | Worktreeinclude | Reason |
 |------------|-----------------|--------|
@@ -133,7 +67,7 @@ Add platform-specific entries as needed (node_modules/, vendor/, .venv/).
 3. If not on feature branch, create: `feature/[feature-name]`
 4. If already on valid feature branch, continue
 
-Git Workflow handles: protected branch blocking, naming conventions, source branch selection.
+Git Workflow handles: protected branch blocking, naming conventions, source branch selection, secret protection.
 
 ### 0.2 Load Feature Context
 
@@ -266,12 +200,10 @@ Create error classes, handlers, formatters.
 **Source:** setup.md → Config
 
 **Actions:**
-1. Create/update `.gitignore` with mandatory security entries (see Security Rules)
-2. Create/update `.env.example` with placeholder values only — NO real secrets
-3. Create/update `.worktreeinclude` per Worktree Portability rules (env files only, not keys)
-4. Document each variable with comments
-5. Add env validation on startup (fail fast if missing)
-6. Verify no `.env` files will be committed
+1. Create `.env.example` with placeholder values only — NO real secrets
+2. Create `.worktreeinclude` per Worktree Portability rules
+3. Document each variable with comments
+4. Add env validation on startup (fail fast if missing)
 
 **Placeholder format:**
 ```
@@ -284,6 +216,8 @@ SECRET_KEY=generate-with-openssl-rand-base64-32
 ```
 
 **Never include:** Real API keys, passwords, tokens, connection strings with credentials.
+
+Git Workflow skill handles .gitignore creation and secret protection automatically.
 
 ---
 
@@ -346,10 +280,7 @@ Enables grep-searchable context for future sessions.
 Commit: feature([feature-name]): scaffold infrastructure per tasks.md Phase 1
 ```
 
-Git Workflow automatically:
-- Blocks secrets in diff (*.pem, *.key, *.env, API keys)
-- Validates .gitignore coverage
-- Prevents commits to protected branches
+Git Workflow automatically handles secret protection and .gitignore validation.
 
 Include summary of executed INIT tasks in commit body.
 
@@ -410,6 +341,5 @@ How to proceed?
 - Never expose secrets in logs/errors — sanitize output
 - Never overwrite existing files without confirmation
 - Always check file exists before reading — HALT if missing
-- Always verify .gitignore before creating sensitive files
 - Never proceed if docs unclear — HALT and ask
 - Never skip verification phase

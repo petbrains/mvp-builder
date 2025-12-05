@@ -83,43 +83,6 @@ Feature path: `ai-docs/features/[feature-name]/`
 - Explicit error handling
 - Follow plan.md component mapping
 
-# Security Rules
-
-## Secret Patterns (never commit)
-
-```
-# Files
-*.env
-*.env.*
-!*.env.example
-*.pem
-*.key
-*.p12
-*.pfx
-*.crt
-credentials.*
-secrets.*
-*_secret.*
-*.keystore
-
-# Directories
-.secrets/
-.credentials/
-
-# Content patterns (block if found in code)
-API_KEY=["'][^"']+["']
-SECRET_KEY=["'][^"']+["']
-PASSWORD=["'][^"']+["']
-TOKEN=["'][^"']+["']
-PRIVATE_KEY=["'][^"']+["']
-aws_access_key_id
-aws_secret_access_key
-```
-
-## Pre-Commit Validation
-
-Git Workflow handles automatically. See Safety Guards in Git Workflow.
-
 # Execution Flow
 
 ## Phase 0: Prepare Workspace
@@ -139,6 +102,8 @@ If Phase 1 incomplete → HALT: "Run feature-setup first"
 1. Validate git repository exists
 2. Check current branch — continue on existing feature branch or create
 3. Branch naming: `feature/[feature-name]` or continue `-setup` branch
+
+Git Workflow handles secret protection automatically.
 
 ### 0.2 Load Feature Context
 
