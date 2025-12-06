@@ -1,7 +1,7 @@
 ---
 name: debug-linting
 description: Code quality checks. ESLint, TypeScript, Prettier. Run before delivery. Fix errors, check browser console.
-allowed-tools: Read, Edit, Bash (*), mcp__playwright__browser_console_messages, mcp__playwright__browser_evaluate, mcp__playwright__browser_network_requests
+allowed-tools: Read, Edit, Bash (*)
 ---
 
 # Debug & Linting
