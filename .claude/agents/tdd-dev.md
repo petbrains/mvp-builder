@@ -401,7 +401,7 @@ For task linked to REV-XXX:
 
 **1.3.1 Load Context**
 
-From feedback.md § REV-XXX:
+From feedback.md REV-XXX:
 - Diagnosis (Problem, Cause, Root Cause)
 - Required files to read (from For TDD-DEV / Required Context)
 - AICODE-FIX location in code
@@ -425,7 +425,7 @@ From feedback.md § REV-XXX:
 
 **1.3.4 Run Verification**
 
-From feedback.md § For TDD-DEV / Verification table.
+From feedback.md For TDD-DEV / Verification table.
 
 If PASS → continue to 1.3.5
 If FAIL → diagnose (Sequential Thinking, Context7), iterate
@@ -435,11 +435,13 @@ If FAIL → diagnose (Sequential Thinking, Context7), iterate
 **tasks.md:**
 ```markdown
 Before: - [ ] IMPL-003 [US1] Implement validator
-              <!-- REV-001: zod API misuse. See feedback.md § REV-001 -->
+              <!-- TDD: BLOCKED - [original context] -->
+              <!-- REV-001: zod API misuse. See feedback.md REV-001 -->
 
 After:  - [x] IMPL-003 [US1] Implement validator
 ```
 Remove the `<!-- REV-XXX ... -->` inline context.
+Remove `<!-- TDD: BLOCKED ... -->` if present (issue now resolved).
 
 **validation/*.md:**
 Same pattern — mark `[x]`, remove REV context.
