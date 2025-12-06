@@ -109,7 +109,8 @@
 ---
 
 ## Review Checklist
-*Internal validation — exclude from output*
+*GATE: Automated checks*
+** MODEL INSTRUCTION: This checklist is for internal validation only. Do not include in final feedback.md output.**
 
 ### Verification
 - [ ] App startup tested (not just tests)
