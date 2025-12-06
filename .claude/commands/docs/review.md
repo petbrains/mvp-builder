@@ -298,6 +298,8 @@ Aggregate from Phase 1:
 
 Assign severity per rules. Assign REV-XXX IDs sequentially.
 
+**If no findings:** Status = PASSED. Generate minimal feedback.md with empty Findings section and proceed to 2.9.
+
 ### 2.2 Determine Priority Order
 
 Apply Priority Algorithm from Rules section.
