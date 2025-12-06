@@ -153,7 +153,7 @@ Phase 3: User Story 2 - [Title] (P2)
 Track: `CURRENT_STORY`, `CURRENT_CYCLE`, `LAST_COMPLETED_TASK`
 
 **Fix Mode:** Also extract from feedback.md:
-- Priority order from "For TDD-DEV Fix Mode" section
+- Priority order from "For TDD-DEV / Priority" section
 - REV details: severity, affected tasks, AICODE-FIX locations, fix guidance
 
 ### 0.7 Determine Scope
@@ -401,10 +401,10 @@ For task linked to REV-XXX:
 
 From feedback.md § REV-XXX:
 - Diagnosis (Problem, Cause, Root Cause)
-- Required files to read
+- Required files to read (from For TDD-DEV / Required Context)
 - AICODE-FIX location in code
 - Fix guidance and options
-- Verification command
+- Verification command (from For TDD-DEV / Verification)
 
 **1.3.2 Find AICODE-FIX**
 
@@ -413,7 +413,6 @@ From feedback.md § REV-XXX:
 // Problem: [what is wrong]
 // Cause: [why it is wrong]
 // Fix: [how to fix]
-// Context: feedback.md § REV-XXX
 ```
 
 **1.3.3 Apply Fix**
@@ -424,7 +423,7 @@ From feedback.md § REV-XXX:
 
 **1.3.4 Run Verification**
 
-From feedback.md "Verification After Fix" section.
+From feedback.md § For TDD-DEV / Verification table.
 
 If PASS → continue to 1.3.5
 If FAIL → diagnose (Sequential Thinking, Context7), iterate
