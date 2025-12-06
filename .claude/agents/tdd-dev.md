@@ -226,6 +226,8 @@ From Coverage section, determine:
 - Expected inputs/outputs (from data-model.md)
 - Error conditions (from ux.md, spec.md edge cases)
 - State transitions (from data-model.md)
+- Contract compliance (from contracts/ if listed in Coverage)
+- Accessibility requirements (from ux.md if listed in Coverage)
 
 **1.2.2 Write Test File**
 
