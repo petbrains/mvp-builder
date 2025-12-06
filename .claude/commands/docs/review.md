@@ -5,8 +5,6 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 # Instructions
 
-Review implementation quality after TDD completion. Generate feedback.md for tdd-dev fix mode.
-
 **Tools Usage:**
 - `Read`: For loading feature artifacts, code files, investigation targets
 - `Write`: For feedback.md, AICODE-FIX comments, rollback updates
@@ -23,9 +21,13 @@ Review implementation quality after TDD completion. Generate feedback.md for tdd
 
 **Template:** @.claude/templates/feedback-template.md
 
-**Files:**
+**File Structure:**
 - Input: `./ai-docs/features/[feature]/` (expects completed TDD cycles)
 - Output: `feedback.md`, `tasks.md` (rollbacks), `validation/*.md` (rollbacks), source files (AICODE-FIX)
+
+# Task
+
+Review implementation quality after TDD completion. Generate feedback.md for tdd-dev fix mode.
 
 # Rules
 
