@@ -7,6 +7,7 @@
 name: agent-name           # Required: lowercase, hyphens only
 description: When to use   # Required: trigger conditions
 tools: Read, Write, Bash   # Optional: restrict tools (omit = all)
+skills: skill1, skill2     # Optional: skills to auto-load
 model: sonnet              # Optional: sonnet/opus/haiku/inherit
 color: blue                # Optional: display color in UI
 ---
@@ -24,6 +25,7 @@ color: blue                # Optional: display color in UI
 | Field | Default | Options |
 |-------|---------|---------|
 | `tools` | All inherited | Comma-separated list |
+| `skills` | None | Comma-separated skill names |
 | `model` | sonnet | `sonnet`, `opus`, `haiku`, `inherit` |
 | `color` | — | `blue`, `green`, `red`, `yellow`, `purple`, `cyan`, `gray` |
 
@@ -67,6 +69,7 @@ Format: `mcp__server__tool`
 name: example-agent
 description: Use when [specific condition]. Specializes in [domain].
 tools: Read, Write, Edit, Bash
+skills: [relevant-skills]
 model: sonnet
 color: blue
 ---
@@ -152,6 +155,7 @@ You are a code analyzer. Examine codebases and provide insights.
 name: api-designer
 description: Use when designing REST or GraphQL APIs
 tools: Read, Write, Edit, Bash(npm:*)
+skills: openapi-validator
 model: sonnet
 color: green
 ---
