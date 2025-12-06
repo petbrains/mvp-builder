@@ -59,7 +59,29 @@ Add platform-specific entries as needed (node_modules/, vendor/, .venv/).
 
 Git Workflow handles: protected branch blocking, naming conventions, source branch selection, secret protection.
 
-### 0.2 Load Feature Context
+### 0.2 Verify Prerequisites
+
+Before executing INIT tasks, verify required tooling is available.
+
+**From setup.md Install section:**
+
+1. Parse all install commands to identify required tools (package managers, SDKs, CLIs)
+2. Check each tool is available on the system
+3. Build list of missing tools
+
+**If tools missing:**
+```
+⚠️ Missing prerequisites:
+
+- [tool-1]: required for [INIT tasks]
+- [tool-2]: required for [INIT tasks]
+
+Please install missing tools and retry.
+```
+
+**Do not proceed** with INIT tasks that require missing tools — either skip them or halt entirely if critical.
+
+### 0.3 Load Feature Context
 
 **Apply Feature Analyzer skill** to scan and load artifacts.
 
@@ -76,11 +98,11 @@ Git Workflow handles: protected branch blocking, naming conventions, source bran
 
 Build mental model from all available artifacts.
 
-### 0.3 Extract INIT Tasks
+### 0.4 Extract INIT Tasks
 
 From tasks.md Phase 1, parse all `INIT-XXX` lines with descriptions and artifact references.
 
-### 0.4 Plan Execution
+### 0.5 Plan Execution
 
 **Apply Sequential Thinking Methodology skill** for complex setups:
 
@@ -98,7 +120,7 @@ Use when:
 
 Skip for simple features with standard stack.
 
-### 0.5 Fetch Library Documentation
+### 0.6 Fetch Library Documentation
 
 **Apply Context7 Documentation Retrieval skill** for libraries from setup.md:
 
@@ -109,7 +131,7 @@ For each unfamiliar library in Install section:
 
 Focus on setup/config topics, not full API reference.
 
-### 0.6 Synthesize Execution Plan
+### 0.7 Synthesize Execution Plan
 
 **Apply Sequential Thinking Methodology skill** to synthesize:
 
