@@ -69,14 +69,14 @@ Within same level: order by task dependency (earlier tasks first).
 **In tasks.md:**
 ```markdown
 - [ ] IMPL-003 [US1] Implement validator
-      <!-- REV-001: [description]. See feedback.md § REV-001 -->
+      <!-- REV-001: [description]. See feedback.md REV-001 -->
 ```
 
 **On top of TDD context:**
 ```markdown
 - [ ] IMPL-004 [US1] Implement upload
       <!-- TDD: BLOCKED - [original context] -->
-      <!-- REV-002: Fresh diagnosis - [approach]. See feedback.md § REV-002 -->
+      <!-- REV-002: Fresh diagnosis - [approach]. See feedback.md REV-002 -->
 ```
 
 **Accepted workaround:**
@@ -88,7 +88,7 @@ Within same level: order by task dependency (earlier tasks first).
 **In validation/*.md:**
 ```markdown
 - [ ] CHK012 Is validation async? [Coverage, FR-003]
-      <!-- REV-001: Blocked by async issue. See feedback.md § REV-001 -->
+      <!-- REV-001: Blocked by async issue. See feedback.md REV-001 -->
 ```
 
 ## AICODE-FIX Format
@@ -166,7 +166,7 @@ Scan for accumulated context:
 
 ### 1.1 Run Application
 
-From setup.md § Run section:
+From setup.md Run section:
 ```bash
 [run-command] &
 sleep [startup-timeout, default 10s]
@@ -182,7 +182,7 @@ Clean startup → continue. Errors → add as findings.
 
 ### 1.2 Run Test Suite
 
-From setup.md § Test section:
+From setup.md Test section:
 ```bash
 [test-command] 2>&1 | tee test-output.log
 ```
