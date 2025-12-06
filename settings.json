@@ -1,0 +1,35 @@
+{
+    "permissions": {
+      "allow": [
+        "Bash(npm run:*)",
+        "Bash(npx:*)",
+        "Bash(pnpm:*)",
+        "Bash(yarn:*)",
+        "Bash(git log:*)",
+        "Bash(git diff:*)",
+        "Bash(git status:*)",
+        "Bash(git branch:*)",
+        "Bash(mkdir -p:*)",
+        "Bash(cat:*)",
+        "Bash(ls:*)",
+        "Bash(head:*)",
+        "Bash(tail:*)"
+      ],
+      "deny": [
+        "Read(./.env)",
+        "Read(./.env.*)",
+        "Bash(rm -rf:*)",
+        "Bash(sudo:*)",
+        "Bash(curl:*)",
+        "Bash(wget:*)"
+      ]
+    },
+    "env": {
+      "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
+    },
+    "enabledMcpjsonServers": [
+      "context7",
+      "sequential-thinking"
+    ],
+    "includeCoAuthoredBy": true
+  }
