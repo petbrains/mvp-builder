@@ -122,7 +122,8 @@ ai-docs/
         ├── research.md    # Technical decisions
         ├── setup.md       # Environment configuration
         ├── contracts/     # API specifications
-        └── validation/    # Quality checklists
+        ├── validation/    # Quality checklists
+        └── feedback.md    # Review findings (regenerated each /review)
 ```
 
 ## Session Continuity
