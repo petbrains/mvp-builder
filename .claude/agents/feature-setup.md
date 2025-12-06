@@ -164,10 +164,10 @@ For each INIT-XXX task in tasks.md:
 | Project structure | plan.md → Code Organization | Create directories, verify structure |
 | Dependencies | setup.md → Install | Package manager init, install |
 | Linting/formatting | Infer from stack | Linter + formatter config |
-| Data layer | data-model.md → Entities | Repositories, migrations if DB |
+| Data layer | plan.md → Storage, data-model.md → Entities | Repositories, migrations per storage type |
 | Authentication | plan.md → Technical Context | Middleware, token handling |
-| API layer | contracts/openapi.yaml | Route stubs, validation |
-| Base entities | data-model.md → Entities, Enums | Types/interfaces |
+| API layer | contracts/openapi.yaml | Route stubs, schema validation |
+| Base entities | data-model.md → Entities, Enums, Constants | Types/interfaces, constants module |
 | Error handling | plan.md → Error Handling | Error classes, handlers |
 | Environment | setup.md → Config | .env.example, .worktreeinclude |
 | State management | plan.md → Technical Context | Store initialization |
