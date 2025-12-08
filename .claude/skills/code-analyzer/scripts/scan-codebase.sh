@@ -8,7 +8,9 @@
 # - markers: AICODE-NOTE, AICODE-TODO, AICODE-FIX
 # - git: branch, modified, added, deleted files
 #
-# No external dependencies (jq not required)
+# No external dependencies (jq not required).
+# This script provides its own JSON helpers (json_escape, array_to_json) to avoid jq.
+# Note: The related script 'feature-analyzer/scripts/check-prerequisites.sh' does require jq for JSON parsing.
 
 set -e
 
