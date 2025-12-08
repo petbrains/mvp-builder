@@ -13,7 +13,7 @@ Generate README.md as navigation map of implemented code for AI agents.
 - `Bash`: Run code-analyzer script
 
 **Skills:**
-- Code Analyzer: For project structure, stack detection, and markers
+- Code Analyzer: For loading codebase structure, dependencies, markers, and git context
 - Sequential Thinking Methodology: For building dependency graphs and analyzing module relationships
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
