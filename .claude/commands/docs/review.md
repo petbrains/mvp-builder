@@ -12,6 +12,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 **Skills:**
 - Feature Analyzer: For loading complete feature context from artifacts
+- Code Analyzer: For loading codebase structure, dependencies, and markers
 - Git Workflow: For branch validation, diff extraction, commit
 - Sequential Thinking Methodology: For root cause analysis of failures
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
@@ -142,27 +143,22 @@ If no completed tasks → HALT: "No implementation found. Run tdd-dev first."
 - validation/*.md → CHK status
 - contracts/ → API and message schemas
 
-### 0.3 Investigate Dependencies
+### 0.3 Load Code Context
 
-For changed files in implementation, check:
-- Imports from src/ (not node_modules)
-- Extended classes / implemented interfaces
-- Referenced configs / constants
+**Apply Code Analyzer skill** to extract:
+- Changed files and their dependencies
+- AICODE-* markers (NOTE, TODO, FIX)
+- Git branch and modified files
 
 Note constraints that affect review.
 
-### 0.4 Parse Existing Context
+### 0.4 Parse TDD Context
 
-Scan for accumulated context:
+Scan tasks.md for accumulated context:
 
 **In tasks.md:**
 - `<!-- TDD: ... -->` markers from tdd-dev
 - `<!-- TDD: BLOCKED ... -->` blocked tasks
-
-**In code files:**
-- `AICODE-NOTE`: Implementation context
-- `AICODE-TODO`: Pending work
-- `AICODE-FIX`: Previous fixes (check if resolved)
 
 ## Phase 1: Verify & Analyze
 
