@@ -1,6 +1,6 @@
 ---
 description: Generate and maintain README.md
-allowed-tools: Read, Write, mcp__sequential-thinking__sequentialthinking
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Instructions
@@ -10,8 +10,10 @@ Generate README.md as navigation map of implemented code for AI agents.
 **Tools Usage:**
 - `Read`: Load tasks.md, existing README.md, and source files
 - `Write`: Save README.md
+- `Bash`: Run code-analyzer script
 
 **Skills:**
+- Code Analyzer: For project structure, stack detection, and markers
 - Sequential Thinking Methodology: For building dependency graphs and analyzing module relationships
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
@@ -92,28 +94,22 @@ Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 
 ## Phase 2: Build Navigation Map
 
-### 2.1 Execute Dependency Analysis
+### 2.1 Load Code Context
 
-**Apply Sequential Thinking Methodology** for dependency graph construction:
+**Apply Code Analyzer skill** to extract:
+- Stack (language, framework from extensions and configs)
+- Entry points (main/index/app files)
+- Module structure (directories, src_modules)
+- Existing markers (AICODE-NOTE for context)
 
-**Initial Mode - Full scan:**
-- Scan all project files
-- Determine primary language by extensions
-- Identify main framework from config/dependencies
-- Locate primary entry point (main/index/app)
-- Parse all module imports
-- Build bidirectional dependency map
-- Mark shared modules (3+ incoming)
+### 2.2 Build Dependency Graph
+
+**Apply Sequential Thinking Methodology** to process code-analyzer output:
+- Parse all module imports from key files
+- Build bidirectional dependency map (depends on + used by)
+- Mark shared modules (3+ incoming connections)
 - Detect circular dependencies
 
-**Update Mode - Incremental:**
-- Scan project including new feature
-- Parse all imports
-- Build complete bidirectional map
-- Mark shared modules
-- Detect circular dependencies
-
-### 2.2 Process Analysis Output
 **Output validation:**
 - Primary language
 - Main framework  
