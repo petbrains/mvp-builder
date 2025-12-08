@@ -1,150 +1,61 @@
 ---
 name: self-improve
-description: Analyzes workflow patterns to identify automation opportunities through commands, agents, and optimizations
-allowed-tools: Read, Bash (*), mcp__sequential-thinking__sequentialthinking
+description: Transforms simple user requests into enriched descriptions with traceable findings. Use when interpreting vague user intent, preparing context for agent generation, or synthesizing actionable insights from available project context.
+allowed-tools: Read
 ---
 
-# Workflow Optimizer Skill
+# Self-Improve
 
-Analyzes workflow patterns to identify automation opportunities through commands, agents, and optimizations.
+Transform user intent into actionable understanding.
 
-**Tools Usage:**
-- `mcp__sequential-thinking__sequentialthinking`: For iterative analysis with hypothesis generation and verification
-
-## Usage
-
-When invoked with specific prompt - focuses analysis on those task workflows.
-No prompt - comprehensive workflow analysis.
-
-## Execution
-
-### 1. Pattern Analysis
-
-Use `mcp__sequential-thinking__sequentialthinking` to analyze:
-
+## Core Function
 ```
-1. Identify patterns:
-   - Repetitive tasks and commands
-   - Multi-step workflows
-   - Time-consuming operations
-   - Manual processes
-
-2. Calculate impact:
-   - Frequency of occurrence
-   - Time spent per pattern
-   - Automation potential
-   - Implementation complexity
-
-3. Generate solutions:
-   - Commands for frequent tasks
-   - Agents for complex workflows
-   - Templates for repetitive structures
+User Intent + Available Context → Enriched Description
 ```
 
-### 2. Prompt Quality Check
+## Behavior
 
-When analyzing prompts in workflows, check:
+- **Specific intent** → focused interpretation, targeted findings
+- **Vague intent** → broader scan, note what clarification needed
 
-- **Context field**: Is project tech stack and constraints specified?
-- **Task field**: Is the objective clear and specific?
-- **Instructions field**: Are steps numbered and sequential?
-- **Requirements field**: Are constraints non-negotiable and clear?
-- **Examples field**: Are good/bad patterns provided for clarity?
-- **Success criteria field**: Are outcomes measurable?
-- **Thinking field**: Is complex reasoning prompted where needed?
+## Process
 
-### 3. Categorize by Priority
+### 1. Interpret Intent
 
-**High Priority:**
-- Daily repetitive tasks
-- Workflows >10 min that could be automated
-- Simple implementation, high value
+Extract from user request:
+- **Action:** What to do
+- **Subject:** What to affect  
+- **Implicit:** What's assumed but not said
 
-**Medium Priority:**
-- Weekly tasks
-- Workflow improvements
-- Moderate complexity
+### 2. Synthesize Findings
 
-**Low Priority:**
-- Occasional workflows
-- Advanced features
-- Complex implementation
+Connect intent with relevant context. Each finding:
+```
+[Discovery] → [source]
+```
 
-## Output Format
+Requirements: traceable, relevant, actionable.
 
-### 📊 Workflow Analysis Summary
-- **Patterns identified:** [X]
-- **Time savings potential:** [Y hours/week]
-- **Recommended implementations:** [Z]
+### 3. Assess Complexity
 
-### 🔴 High Priority Improvements
+| Factor | Question |
+|--------|----------|
+| Scope | How much affected? |
+| Conflicts | Findings contradict? |
+| Trade-offs | Significant choices? |
 
-1. **Create command `/[command-name]`**
-   - **Description:** [What the command does, e.g., "Automatically generates test files for Python modules"]
-   - **Automates:** [Current manual process]
-   - **Usage frequency:** [X times/day]
-   - **Time saved:** [Y minutes per use]
-   - **Implementation complexity:** Simple/Moderate/Complex
+Any factor high → flag for deeper analysis.
 
-2. **Create agent `[agent-name]`**
-   - **Description:** [What the agent handles, e.g., "Manages complete code review workflow including tests, linting, and PR preparation"]
-   - **Replaces workflow:** [Current manual steps]
-   - **Time saved:** [Y minutes per workflow]
-   - **Key features:** [List main capabilities]
+## Output
+```markdown
+## Intent
+[Interpreted user intent]
 
-### 🟡 Medium Priority Improvements
+## Findings
+1. [Discovery] → [source]
+2. [Discovery] → [source]
+3. [Discovery] → [source]
 
-1. **Create command `/[command-name]`**
-   - **Description:** [Detailed functionality description]
-   - **Use case:** [When and why to use it]
-   - **Weekly time savings:** [X minutes]
-
-2. **Create template `[template-name]`**
-   - **Description:** [What structure it provides]
-   - **Common scenarios:** [Where it applies]
-   - **Benefit:** [Standardization/speed improvement]
-
-### 🟢 Low Priority Improvements
-
-1. **Create utility command `/[command-name]`**
-   - **Description:** [What it accomplishes]
-   - **Nice-to-have because:** [Reason for lower priority]
-   - **Future benefit:** [Long-term value]
-
-2. **Create advanced agent `[agent-name]`**
-   - **Description:** [Complex functionality it would provide]
-   - **Advanced features:** [What makes it complex]
-   - **Consider when:** [Conditions that would elevate priority]
-
-### 💡 Implementation Roadmap
-
-**Week 1:** 
-- Implement [highest impact command/agent]
-- Expected outcome: [X hours saved weekly]
-
-**Week 2-3:**
-- Deploy [second priority items]
-- Cumulative benefit: [Total improvement]
-
-**Future considerations:**
-- [Long-term optimization opportunities]
-- [Scalability improvements]
-
-**Total estimated time savings:** [X hours/week once fully implemented]
-
-## Examples of Improvement Types
-
-**Command Examples:**
-- `/test-gen` - Generates comprehensive test suites for modules
-- `/docs-update` - Updates documentation based on code changes
-- `/dep-check` - Validates and updates dependencies
-
-**Agent Examples:**
-- `refactor-assistant` - Handles complete refactoring workflows
-- `deployment-manager` - Manages build, test, and deploy pipeline
-- `code-reviewer` - Performs thorough code review with suggestions
-
-**Template Examples:**
-- API endpoint templates
-- Test suite structures
-- Documentation frameworks
+## Complexity
+[Simple | Needs analysis: scope/conflicts/trade-offs]
+```
