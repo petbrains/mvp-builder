@@ -11,7 +11,7 @@ Analyze codebase to build comprehensive mental model for downstream operations.
 ## Workflow Overview
 
 1. **Scan** — Collect facts via bash script (deterministic)
-2. **Understand** — Interpret structure and stack (AI)
+2. **Understand** — Interpret structure and stack
 3. **Build** — Construct dependency graph and mental model
 4. **Confirm** — Ready for operations
 
@@ -37,20 +37,11 @@ Outputs JSON. No external dependencies required.
 
 ## Step 2: Understand Structure
 
-**Apply Sequential Thinking** to interpret scan results:
-
-```
-THINK → What is the primary language? (by extension distribution)
-THINK → What framework is used? (by config files)
-THINK → What are the entry points? (main/index/app patterns)
-THINK → What are the module boundaries? (src_modules or directories)
-THINK → What naming conventions are used?
-```
-
-Determine from scan output:
-- **Stack**: Infer language(s) from extensions, framework from configs
-- **Entry points**: Find main/index/app files in directories
-- **Modules**: Identify domain boundaries from src_modules or directories
+Interpret scan results to determine:
+- **Stack**: Language(s) from extensions, framework from configs
+- **Entry points**: Main/index/app files in directories
+- **Modules**: Domain boundaries from src_modules or directories
+- **Conventions**: Naming patterns, structure style
 
 ## Step 3: Build Mental Model
 
@@ -71,7 +62,7 @@ Extract and internalize from scan results:
 - Current branch → feature context
 - Changed files → review/focus scope
 
-**From reading key files (AI):**
+**From reading key files:**
 - Import patterns → dependency relationships
 - Shared modules → components with 3+ incoming connections
 - Circular dependencies → architectural issues
