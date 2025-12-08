@@ -192,6 +192,21 @@ if [[ -d "$PROJECT_DIR/.git" ]] || git -C "$PROJECT_DIR" rev-parse --git-dir >/d
                 " M"|"MM"|"AM"|"M ") git_modified+=("$file") ;;
                 "A "|"??") git_added+=("$file") ;;
                 " D"|"D ") git_deleted+=("$file") ;;
+                "R "*) 
+                    # Renamed file: format is "R  oldname -> newname"
+                    newfile="${file##*-> }"
+                    git_modified+=("$newfile")
+                    ;;
+                "RM")
+                    # Renamed and modified
+                    newfile="${file##*-> }"
+                    git_modified+=("$newfile")
+                    ;;
+                "C "*) 
+                    # Copied file: format is "C  oldname -> newname"
+                    newfile="${file##*-> }"
+                    git_added+=("$newfile")
+                    ;;
             esac
         fi
     done < <(git -C "$PROJECT_DIR" status --porcelain 2>/dev/null || true)
