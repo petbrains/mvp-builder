@@ -12,7 +12,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 **Skills:**
 - Feature Analyzer: For loading complete feature context from artifacts
-- Code Analyzer: For loading codebase structure, dependencies, and markers
+- Code Analyzer: For loading codebase structure, dependencies, markers, and git context
 - Git Workflow: For branch validation, diff extraction, commit
 - Sequential Thinking Methodology: For root cause analysis of failures
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
