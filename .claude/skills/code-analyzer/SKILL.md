@@ -42,32 +42,15 @@ Outputs JSON. No external dependencies required.
 ```
 THINK → What is the primary language? (by extension distribution)
 THINK → What framework is used? (by config files)
-THINK → What are the entry points? (main/index/app in directories)
-THINK → What are the module boundaries? (src_modules or top directories)
+THINK → What are the entry points? (main/index/app patterns)
+THINK → What are the module boundaries? (src_modules or directories)
 THINK → What naming conventions are used?
 ```
 
-### Stack Detection Patterns
-
-| Config Files | Stack |
-|--------------|-------|
-| package.json + tsconfig.json | TypeScript/Node |
-| package.json + next.config.* | Next.js |
-| package.json + vite.config.* | Vite |
-| Cargo.toml | Rust |
-| go.mod | Go |
-| pyproject.toml / requirements.txt | Python |
-| composer.json | PHP |
-| Gemfile | Ruby |
-
-### Entry Point Patterns
-
-| Pattern | Type |
-|---------|------|
-| src/main.*, src/index.* | Application entry |
-| src/app.*, src/server.* | Server entry |
-| lib/index.*, src/lib.* | Library entry |
-| tests/, __tests__/, *.test.*, *.spec.* | Test entry |
+Determine from scan output:
+- **Stack**: Infer language(s) from extensions, framework from configs
+- **Entry points**: Find main/index/app files in directories
+- **Modules**: Identify domain boundaries from src_modules or directories
 
 ## Step 3: Build Mental Model
 
