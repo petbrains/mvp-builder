@@ -58,13 +58,13 @@ TDD-structured task list for implementing user registration feature with email/p
 - States: RegistrationState from data-model.md (idle, validating, submitting, error, success)
 
 #### RED Phase
-- [ ] TEST-008 [US1] Test state transition idle → submitting on form submit in frontend/tests/SignUpForm.test.tsx
-- [ ] TEST-009 [US1] Test state transition submitting → success on API 201 in frontend/tests/SignUpForm.test.tsx
-- [ ] TEST-010 [US1] Test state transition submitting → error on API error in frontend/tests/SignUpForm.test.tsx
+- [x] TEST-008 [US1] Test state transition idle → submitting on form submit in frontend/tests/SignUpForm.test.tsx
+- [x] TEST-009 [US1] Test state transition submitting → success on API 201 in frontend/tests/SignUpForm.test.tsx
+- [x] TEST-010 [US1] Test state transition submitting → error on API error in frontend/tests/SignUpForm.test.tsx
 
 #### GREEN Phase
-- [ ] IMPL-007 [US1] Create useRegister hook with state machine in frontend/src/hooks/useRegister.ts
-- [ ] IMPL-008 [US1] Implement React Query mutation for registration in frontend/src/services/auth.api.ts
+- [x] IMPL-007 [US1] Create useRegister hook with state machine in frontend/src/hooks/useRegister.ts
+- [x] IMPL-008 [US1] Implement React Query mutation for registration in frontend/src/services/auth.api.ts
 
 ### TDD Cycle 4: SignUp Form UI
 **Coverage**:
@@ -72,12 +72,12 @@ TDD-structured task list for implementing user registration feature with email/p
 - Constants: FORM_FIELD_MIN_HEIGHT=44
 
 #### RED Phase
-- [ ] TEST-011 [US1] Test form autofocuses email field on mount in frontend/tests/SignUpForm.test.tsx
-- [ ] TEST-012 [US1] Test form submits on Enter key in frontend/tests/SignUpForm.test.tsx
-- [ ] TEST-013 [US1] Test successful registration redirects to dashboard in frontend/tests/SignUpForm.test.tsx
+- [x] TEST-011 [US1] Test form autofocuses email field on mount in frontend/tests/SignUpForm.test.tsx
+- [x] TEST-012 [US1] Test form submits on Enter key in frontend/tests/SignUpForm.test.tsx
+- [x] TEST-013 [US1] Test successful registration redirects to dashboard in frontend/tests/SignUpForm.test.tsx
 
 #### GREEN Phase
-- [ ] IMPL-009 [US1] Create SignUpForm component with email/password fields in frontend/src/components/SignUpForm.tsx
+- [x] IMPL-009 [US1] Create SignUpForm component with email/password fields in frontend/src/components/SignUpForm.tsx
 - [ ] IMPL-010 [US1] Create SignUpPage with centered card layout in frontend/src/pages/SignUpPage.tsx
 - [ ] IMPL-011 [US1] Implement redirect to dashboard on success in frontend/src/pages/SignUpPage.tsx
 
