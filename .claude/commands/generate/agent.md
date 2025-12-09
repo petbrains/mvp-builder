@@ -155,28 +155,32 @@ Parse skill names and descriptions. Keep in context for Phase 3.
 - Execution: [inferred Bash level]
 ```
 
-### 3.2 Tools & Integration Clarification
+### 3.2 Configuration Clarification
 
 ```dialogue
 "**Configuration**
 
-1️⃣ **File Operations** (suggested: [list])
+1️⃣ **Model** (suggested: [model] — [rationale])
+   Options: haiku (fast, simple) | sonnet (balanced) | opus (complex reasoning)
+   → Adjust?
+
+2️⃣ **File Operations** (suggested: [list])
    Options: Read, Write, Edit, MultiEdit, Glob, Grep, LS
    → Adjust? (add/remove or 'ok')
 
-2️⃣ **Execution** (suggested: [level])
+3️⃣ **Execution** (suggested: [level])
    Options: Bash | Bash(git:*) | Bash(npm:*) | Bash(docker:*) | none
    → Adjust?
 
-3️⃣ **Skills** (suggested: [list based on intent])
+4️⃣ **Skills** (suggested: [list based on intent])
    Available: [parsed skill names]
    → Adjust?
 
-4️⃣ **MCP Tools** (suggested: [list or none])
+5️⃣ **MCP Tools** (suggested: [list or none])
    Options: sequential-thinking, context7, [other detected]
    → Adjust?
 
-5️⃣ **Additional requirements?**
+6️⃣ **Additional requirements?**
    Domain knowledge, constraints, special behaviors...
 
 Your input:"
@@ -206,7 +210,7 @@ Wait for user response.
 | description | intent + key findings summary |
 | tools | file ops + execution + MCP combined |
 | skills | user selections from Phase 3 |
-| model | from analysis rationale |
+| model | user selection from Phase 3 (default: suggested) |
 | color | domain mapping (frontend→blue, backend→green, debug→red, devops→gray, security→red, test→purple) |
 
 ## Phase 5: Confirm & Generate
