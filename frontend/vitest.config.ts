@@ -21,6 +21,9 @@ export default defineConfig({
     // Setup file for Testing Library matchers
     setupFiles: ['./tests/setup.ts'],
 
+    // Pass even when no tests are found (like jest --passWithNoTests)
+    passWithNoTests: true,
+
     // Coverage configuration
     coverage: {
       provider: 'v8',
