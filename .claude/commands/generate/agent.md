@@ -51,7 +51,7 @@ Generate agent following Agent Creator template structure.
 
 ## Sequential Thinking Usage
 - Apply when Self-Improve flags Complexity = "Needs analysis"
-- Apply when user clarifications introduce new requirements
+- Apply when user clarifications introduce requirements that change workflow or add new phases
 - Skip for simple agents with clear intent and obvious tools
 - Use for: workflow design, decision points mapping, error handling
 
@@ -90,6 +90,7 @@ Generate agent following Agent Creator template structure.
 | Frontend, UI, React, Vue | blue |
 | Backend, API, database | green |
 | Debug, fix, error | red |
+| Performance, optimization | yellow |
 | DevOps, deploy, CI/CD | gray |
 | Security, audit | red |
 | Testing, QA | purple |
@@ -185,14 +186,13 @@ Parse skill names and descriptions for Phase 3 options.
 - Suggested file tools (from intent patterns)
 - Suggested execution level (from intent patterns)
 - Suggested color (from domain mapping)
-- Suggested skills (from task requirements)
 
 ## Phase 3: Clarify & Enrich
 
 ### 3.1 Present Analysis
 
 ```dialogue
-"🔍 Analysis Complete
+"Analysis Complete
 
 **Intent:** [action + subject from Self-Improve]
 
@@ -205,7 +205,7 @@ Parse skill names and descriptions for Phase 3 options.
 - Model: [model] — [rationale from inference]
 - File Tools: [list from inference]
 - Execution: [level from inference]
-- Skills: [list from inference]
+- Color: [color] — [domain from inference]"
 ```
 
 ### 3.2 Configuration Clarification
@@ -214,7 +214,7 @@ Parse skill names and descriptions for Phase 3 options.
 "**Configuration**
 
 1️⃣ **Model** (suggested: [model] — [rationale])
-   Options: haiku (fast, simple) | sonnet (balanced) | opus (complex reasoning)
+   Options: haiku (fast, simple) | sonnet (balanced) | opus (complex)
    → Adjust?
 
 2️⃣ **File Operations** (suggested: [list])
@@ -225,13 +225,13 @@ Parse skill names and descriptions for Phase 3 options.
    Options: Bash | Bash(git:*) | Bash(npm:*) | Bash(docker:*) | none
    → Adjust?
 
-4️⃣ **Skills** (suggested: [list])
+4️⃣ **Skills**
    Available: [parsed skill names from 1.3]
-   → Adjust?
+   → Select? (names or 'none')
 
-5️⃣ **MCP Tools** (suggested: [list or none])
+5️⃣ **MCP Tools**
    Options: sequential-thinking, context7, [other detected]
-   → Adjust?
+   → Select? (names or 'none')
 
 6️⃣ **Additional requirements?**
    Domain knowledge, constraints, special behaviors...
@@ -243,7 +243,7 @@ Wait for user response.
 
 ### 3.3 Deep Analysis (conditional)
 
-If Self-Improve Complexity = "Needs analysis" OR user added significant new requirements:
+If Self-Improve Complexity = "Needs analysis" OR user clarifications introduce requirements that change workflow or add new phases:
 
 **Apply Sequential Thinking Methodology** to:
 - Synthesize all inputs (description + context + clarifications)
@@ -253,8 +253,8 @@ If Self-Improve Complexity = "Needs analysis" OR user added significant new requ
 - Plan error handling and recovery strategies
 - Validate architecture completeness
 
-If Complexity = "Simple" and no new requirements:
-- Derive workflow directly from intent (2-3 phases)
+If Complexity = "Simple" and no workflow-changing requirements:
+- Derive 2-3 phases directly from intent without deep analysis
 - Map tools to obvious responsibilities
 
 ## Phase 4: Design Agent
@@ -279,7 +279,7 @@ Output: [What agent produces/achieves]
 
 ### 4.2 Design Workflow
 
-From Phase 3.3 analysis (or direct derivation):
+From Phase 3.3 Sequential Thinking analysis, or if skipped — derive 2-3 phases directly from intent:
 
 Define workflow phases (typically 2-4):
 - Phase name and objective
@@ -309,7 +309,7 @@ Extract from TCRO Requirements:
 ### 5.1 Final Summary
 
 ```dialogue
-"📋 Agent Ready
+"Agent Ready
 
 **Name:** [name]
 **Model:** [model]
