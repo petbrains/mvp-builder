@@ -1,5 +1,5 @@
 ---
-name: debug-linting
+name: frontend-debug-linting
 description: Code quality checks. ESLint, TypeScript, Prettier. Run before delivery. Fix errors, check browser console.
 allowed-tools: Read, Edit, Bash (*)
 ---
