@@ -15,11 +15,11 @@ Generate specialized AI agents by analyzing user intent, loading project context
 **Skills:**
 - Feature Analyzer: For loading complete feature context when path provided
 - Code Analyzer: For scanning codebase structure, markers, git state
-- Self-Improve: For interpreting user intent, extracting findings with sources
-- Sequential Thinking Methodology: For synthesizing inputs and designing agent architecture
+- Self-Improve: For interpreting user intent, extracting findings with sources, assessing complexity
+- Sequential Thinking Methodology: For deep analysis when complexity flagged
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 - Prompt Optimizer: For structuring agent spec into TCRO format
-- Agent Creator: For generating final agent file from spec
+- Agent Creator: For applying template and generating final agent file
 
 **File Structure:**
 - Input: User description + optional feature path (via dialogue)
@@ -45,17 +45,58 @@ Generate agent following Agent Creator template structure.
 
 ## Clarification Rules
 - Present findings BEFORE asking questions
-- Maximum 5 clarification points in single block
+- Maximum 6 configuration points in single block
 - Questions based on analysis, not generic
 - Wait for user response before proceeding
 
 ## Sequential Thinking Usage
-- ALWAYS apply after clarifications received
-- Use for: synthesis, architecture design, validation
-- Not optional — core part of pipeline
+- Apply when Self-Improve flags Complexity = "Needs analysis"
+- Apply when user clarifications introduce new requirements
+- Skip for simple agents with clear intent and obvious tools
+- Use for: workflow design, decision points mapping, error handling
+
+## Tool Inference Rules
+
+**From intent keywords:**
+
+| Pattern | Inferred File Tools |
+|---------|---------------------|
+| "analyze", "check", "review", "validate" | Read, Glob, Grep |
+| "fix", "modify", "update", "patch" | Read, Edit |
+| "create", "generate", "scaffold" | Read, Write |
+| "refactor", "restructure" | Read, Edit, MultiEdit |
+| "search", "find" | Read, Glob, Grep, LS |
+
+| Pattern | Inferred Execution |
+|---------|-------------------|
+| "test", "lint", "format" | Bash(npm:*) |
+| "commit", "branch", "merge", "blame" | Bash(git:*) |
+| "deploy", "build", "docker" | Bash(docker:*) |
+| "run", "execute", "script" | Bash |
+| read-only intent | none |
+
+**Model selection:**
+
+| Signal | Model |
+|--------|-------|
+| Single-purpose, read-only, fast tasks | haiku |
+| Multi-step workflow, file modifications | sonnet |
+| Deep analysis, autonomous decisions, complex orchestration | opus |
+
+**Color mapping:**
+
+| Domain | Color |
+|--------|-------|
+| Frontend, UI, React, Vue | blue |
+| Backend, API, database | green |
+| Debug, fix, error | red |
+| DevOps, deploy, CI/CD | gray |
+| Security, audit | red |
+| Testing, QA | purple |
+| Documentation | cyan |
 
 ## Tool Assembly
-Final `tools:` field combines:
+Final `tools:` field in agent combines:
 1. File Operations (Read, Write, Edit, etc.)
 2. Execution tools (Bash levels)
 3. MCP tools (format: `mcp__server__tool`)
@@ -82,10 +123,10 @@ Wait for response. Do not proceed without description.
 ### 1.1 Code Context
 
 **Apply Code Analyzer skill** to extract:
-- Stack (language, framework, tools)
-- Structure (directories, modules)
-- Markers (AICODE-NOTE, TODO, FIX)
-- Git state (branch, changes)
+- Stack (language, framework from extensions and configs)
+- Structure (directories, src modules)
+- Markers (AICODE-NOTE, TODO, FIX with locations)
+- Git state (branch, modified files)
 
 ### 1.2 Feature Context
 
@@ -124,16 +165,27 @@ If user provides feature name:
 ls .claude/skills/*/SKILL.md 2>/dev/null
 ```
 
-Parse skill names and descriptions. Keep in context for Phase 3.
+Parse skill names and descriptions for Phase 3 options.
 
 ## Phase 2: Analyze Intent
+
+### 2.1 Interpret Intent
 
 **Apply Self-Improve skill** with:
 - Input: description + code context + feature context (if loaded)
 - Output:
   - Intent (action, subject, implicit assumptions)
   - Findings with traceable sources
-  - Gaps requiring clarification
+  - Complexity assessment (Simple | Needs analysis: [reason])
+
+### 2.2 Infer Configuration
+
+**Apply Tool Inference Rules** to derive from intent:
+- Suggested model (from complexity + task type)
+- Suggested file tools (from intent patterns)
+- Suggested execution level (from intent patterns)
+- Suggested color (from domain mapping)
+- Suggested skills (from task requirements)
 
 ## Phase 3: Clarify & Enrich
 
@@ -142,7 +194,7 @@ Parse skill names and descriptions. Keep in context for Phase 3.
 ```dialogue
 "🔍 Analysis Complete
 
-**Intent:** [interpreted action + subject]
+**Intent:** [action + subject from Self-Improve]
 
 **Findings:**
 1. [discovery] → [source]
@@ -150,9 +202,10 @@ Parse skill names and descriptions. Keep in context for Phase 3.
 3. [discovery] → [source]
 
 **Suggested Configuration:**
-- Model: [haiku/sonnet/opus] — [one-line rationale]
-- File Tools: [inferred list]
-- Execution: [inferred Bash level]
+- Model: [model] — [rationale from inference]
+- File Tools: [list from inference]
+- Execution: [level from inference]
+- Skills: [list from inference]
 ```
 
 ### 3.2 Configuration Clarification
@@ -172,8 +225,8 @@ Parse skill names and descriptions. Keep in context for Phase 3.
    Options: Bash | Bash(git:*) | Bash(npm:*) | Bash(docker:*) | none
    → Adjust?
 
-4️⃣ **Skills** (suggested: [list based on intent])
-   Available: [parsed skill names]
+4️⃣ **Skills** (suggested: [list])
+   Available: [parsed skill names from 1.3]
    → Adjust?
 
 5️⃣ **MCP Tools** (suggested: [list or none])
@@ -188,30 +241,68 @@ Your input:"
 
 Wait for user response.
 
-### 3.3 Synthesize
+### 3.3 Deep Analysis (conditional)
+
+If Self-Improve Complexity = "Needs analysis" OR user added significant new requirements:
 
 **Apply Sequential Thinking Methodology** to:
-- Combine: description + context + findings + tool selections
+- Synthesize all inputs (description + context + clarifications)
 - Design workflow phases with clear objectives
-- Map tools to specific responsibilities
+- Map tools to specific responsibilities per phase
 - Define decision points and autonomous behaviors
-- Plan error handling and recovery
+- Plan error handling and recovery strategies
 - Validate architecture completeness
+
+If Complexity = "Simple" and no new requirements:
+- Derive workflow directly from intent (2-3 phases)
+- Map tools to obvious responsibilities
 
 ## Phase 4: Design Agent
 
-**Apply Prompt Optimizer skill** to structure final agent specification.
+### 4.1 Structure Specification
 
-### Derive Agent Properties
+**Apply Prompt Optimizer skill** to structure agent spec in TCRO format:
+
+```
+Task: [Agent objective from intent.action + intent.subject]
+Context: 
+  - Stack: [from Code Analyzer]
+  - Feature: [from Feature Analyzer if loaded]
+  - Constraints: [from findings]
+Requirements:
+  1. [Primary capability from intent]
+  2. [Secondary capability from findings]
+  3. [User-specified requirements from clarifications]
+  4. [Constraints and boundaries]
+Output: [What agent produces/achieves]
+```
+
+### 4.2 Design Workflow
+
+From Phase 3.3 analysis (or direct derivation):
+
+Define workflow phases (typically 2-4):
+- Phase name and objective
+- Tools used in this phase
+- Expected output/state after phase
+
+### 4.3 Define Responsibilities
+
+Extract from TCRO Requirements:
+- Primary responsibility (main task from intent.action)
+- Secondary responsibilities (supporting tasks from findings)
+- Boundaries (what agent should NOT do)
+
+### 4.4 Compile Properties
 
 | Property | Source |
 |----------|--------|
 | name | intent.subject → kebab-case |
 | description | intent + key findings summary |
-| tools | file ops + execution + MCP combined |
-| skills | user selections from Phase 3 |
-| model | user selection from Phase 3 (default: suggested) |
-| color | domain mapping (frontend→blue, backend→green, debug→red, devops→gray, security→red, test→purple) |
+| tools | file ops + execution + MCP (from Phase 3 selections) |
+| skills | user selections from Phase 3.2 |
+| model | user selection from Phase 3.2 (default: suggested) |
+| color | domain mapping from inference |
 
 ## Phase 5: Confirm & Generate
 
@@ -222,19 +313,20 @@ Wait for user response.
 
 **Name:** [name]
 **Model:** [model]
+**Color:** [color]
 
 **Tools:** [full assembled list]
 **Skills:** [list or none]
 
 **Responsibilities:**
-- [primary responsibility]
-- [secondary responsibility]
-- [constraints/boundaries]
+- [primary from 4.3]
+- [secondary from 4.3]
+- [boundaries from 4.3]
 
 **Workflow:**
-1. [Phase name] — [what it does]
-2. [Phase name] — [what it does]
-3. [Phase name] — [what it does]
+1. [Phase name] — [objective, tools]
+2. [Phase name] — [objective, tools]
+3. [Phase name] — [objective, tools]
 
 Generate? (yes / modify / cancel)"
 ```
@@ -259,17 +351,16 @@ Wait for response. Use provided or selected name.
 
 ### 5.3 Generate Agent
 
-**Apply Agent Creator skill** to generate `.claude/agents/[name].md`
+**Apply Agent Creator skill** with compiled specification from Phase 4.
 
-Agent file includes:
+Agent Creator applies its template to generate `.claude/agents/[name].md` with:
 - YAML frontmatter (name, description, tools, skills, model, color)
 - Core Responsibilities section
-- Approach & Methodology with workflow phases
-- Specific Instructions per phase
+- Approach & Methodology with workflow phases from 4.2
 - Autonomous Decision Criteria
-- Domain-Specific Knowledge (if applicable)
-- Constraints & Safety
-- Error Handling
+- Domain-Specific Knowledge (if feature context loaded)
+- Constraints & Safety from boundaries
+- Error Handling from 3.3 analysis
 - Success Criteria
 
 ### 5.4 Complete
