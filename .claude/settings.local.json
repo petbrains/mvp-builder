@@ -14,7 +14,9 @@
       "Skill(feature-analyzer)",
       "Skill(sequential-thinking)",
       "Skill(context7)",
-      "Skill(prompt-optimizer)"
+      "Skill(prompt-optimizer)",
+      "Bash(npm test:*)",
+      "Bash(cat:*)"
     ]
   },
   "enableAllProjectMcpServers": true
