@@ -1,0 +1,134 @@
+openapi: 3.1.0
+info:
+  title: User Authentication API
+  version: 1.0.0
+
+paths:
+  /auth/login:
+    post:
+      summary: Authenticate user
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+
+  /auth/logout:
+    post:
+      summary: End current session
+      operationId: logoutUser
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Logged out successfully
+        '401':
+          description: Not authenticated
+
+  /auth/logout-all:
+    post:
+      summary: End all user sessions
+      operationId: logoutAllSessions
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: All sessions invalidated
+        '401':
+          description: Not authenticated
+
+  /auth/me:
+    get:
+      summary: Get current user
+      operationId: getCurrentUser
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Current user data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '401':
+          description: Not authenticated
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+
+  schemas:
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserPublic'
+
+    UserPublic:  # from user-registration/data-model.md
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    AuthError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum: [invalid_credentials]
+        message:
+          type: string
+
+    RateLimitError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum: [rate_limited]
+        retry_after:
+          type: integer
+          description: Seconds until retry allowed

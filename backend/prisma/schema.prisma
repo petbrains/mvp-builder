@@ -1,0 +1,59 @@
+// AICODE-NOTE: Prisma schema for SpendNote user-registration feature
+// Entities defined per data-model.md: User, Session
+// Default categories provisioned per FR-005
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User entity from data-model.md
+// Fields: id (UUID), email (unique), password_hash, created_at, updated_at
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique @db.VarChar(255)
+  password_hash String
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  sessions      Session[]
+  categories    Category[]
+
+  @@map("users")
+}
+
+// Session entity from data-model.md
+// Fields: id (UUID), user_id (FK), expires_at, device_id (optional), created_at
+model Session {
+  id         String    @id @default(uuid())
+  user_id    String
+  expires_at DateTime
+  device_id  String?
+  created_at DateTime  @default(now())
+
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([expires_at])
+  @@map("sessions")
+}
+
+// Category entity for expense categorization
+// Default categories provisioned on user registration per FR-005
+model Category {
+  id         String    @id @default(uuid())
+  user_id    String
+  name       String    @db.VarChar(100)
+  is_default Boolean   @default(false)
+  created_at DateTime  @default(now())
+
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, name])
+  @@index([user_id])
+  @@map("categories")
+}

@@ -1,0 +1,93 @@
+openapi: 3.1.0
+info:
+  title: User Registration API
+  version: 1.0.0
+
+paths:
+  /auth/register:
+    post:
+      summary: Register new user
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Session cookie (HttpOnly)
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '409':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '429':
+          description: Rate limit exceeded
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+
+    RegisterResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserPublic'
+
+    UserPublic:  # from data-model.md User entity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum: [validation_error]
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+
+    ConflictError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum: [email_taken]
+        message:
+          type: string

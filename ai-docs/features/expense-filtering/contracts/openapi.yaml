@@ -1,0 +1,90 @@
+openapi: 3.1.0
+info:
+  title: Expense Filtering API
+  version: 1.0.0
+
+paths:
+  /expenses:
+    get:
+      summary: List filtered expenses
+      operationId: listFilteredExpenses
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: month
+          in: query
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}$'
+          description: Filter by month (YYYY-MM)
+        - name: category_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by category
+        - name: cursor
+          in: query
+          schema:
+            type: string
+          description: Pagination cursor (expense ID)
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+          description: Items per page
+      responses:
+        '200':
+          description: Filtered expense list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExpenseResponse'
+        '401':
+          description: Not authenticated
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+
+  schemas:
+    PaginatedExpenseResponse:
+      type: object
+      properties:
+        expenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expense'
+        next_cursor:
+          type: string
+          nullable: true
+          description: Cursor for next page, null if no more
+        total_count:
+          type: integer
+          description: Total matching expenses
+
+    Expense:  # from expense-crud/data-model.md
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amount:
+          type: number
+        category_id:
+          type: string
+          format: uuid
+          nullable: true
+        category_name:
+          type: string
+        date:
+          type: string
+          format: date
+        note:
+          type: string
+          nullable: true

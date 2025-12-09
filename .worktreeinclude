@@ -1,0 +1,6 @@
+# Files to copy between worktrees
+# These are gitignored but needed to run the app locally
+
+.env
+.env.development
+.env.test
