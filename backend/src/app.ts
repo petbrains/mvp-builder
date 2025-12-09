@@ -4,8 +4,13 @@
 
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
+import { PrismaClient } from '@prisma/client';
+import { createAuthRoutes } from './api/auth.routes';
 
 const app: Express = express();
+
+// Initialize Prisma client
+const prisma = new PrismaClient();
 
 // Built-in middleware for parsing JSON requests
 app.use(express.json({ limit: '10mb' }));
@@ -21,8 +26,8 @@ app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// API routes will be mounted here
-// app.use('/auth', authRoutes);
+// API routes
+app.use('/auth', createAuthRoutes(prisma));
 
 // 404 handler for unmatched routes
 app.use((_req: Request, res: Response) => {

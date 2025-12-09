@@ -27,13 +27,13 @@ TDD-structured task list for implementing user registration feature with email/p
 - Constants: PASSWORD_MIN_LENGTH=8
 
 #### RED Phase
-- [ ] TEST-001 [US1] Test password hashing with argon2 produces valid hash in backend/tests/auth.service.test.ts
-- [ ] TEST-002 [US1] Test password validation rejects < 8 characters in backend/tests/auth.service.test.ts
-- [ ] TEST-003 [US1] Test password validation accepts exactly 8 characters (boundary) in backend/tests/auth.service.test.ts
+- [x] TEST-001 [US1] Test password hashing with argon2 produces valid hash in backend/tests/auth.service.test.ts
+- [x] TEST-002 [US1] Test password validation rejects < 8 characters in backend/tests/auth.service.test.ts
+- [x] TEST-003 [US1] Test password validation accepts exactly 8 characters (boundary) in backend/tests/auth.service.test.ts
 
 #### GREEN Phase
-- [ ] IMPL-001 [US1] Create AuthService with hashPassword method using argon2 in backend/src/services/auth.service.ts
-- [ ] IMPL-002 [US1] Implement password validation with PASSWORD_MIN_LENGTH=8 in backend/src/services/auth.service.ts
+- [x] IMPL-001 [US1] Create AuthService with hashPassword method using argon2 in backend/src/services/auth.service.ts
+- [x] IMPL-002 [US1] Implement password validation with PASSWORD_MIN_LENGTH=8 in backend/src/services/auth.service.ts
 
 ### TDD Cycle 2: Registration API Endpoint
 **Coverage**:
@@ -42,16 +42,16 @@ TDD-structured task list for implementing user registration feature with email/p
 - Constants: EMAIL_MAX_LENGTH=255
 
 #### RED Phase
-- [ ] TEST-004 [US1] Test POST /auth/register returns 201 with valid user data in backend/tests/auth.test.ts
-- [ ] TEST-005 [US1] Test registration creates session cookie (HttpOnly) in backend/tests/auth.test.ts
-- [ ] TEST-006 [US1] Test registration provisions 6 default categories in backend/tests/auth.test.ts
-- [ ] TEST-007 [US1] Test email is trimmed before validation in backend/tests/auth.test.ts
+- [x] TEST-004 [US1] Test POST /auth/register returns 201 with valid user data in backend/tests/auth.test.ts
+- [x] TEST-005 [US1] Test registration creates session cookie (HttpOnly) in backend/tests/auth.test.ts
+- [x] TEST-006 [US1] Test registration provisions 6 default categories in backend/tests/auth.test.ts
+- [x] TEST-007 [US1] Test email is trimmed before validation in backend/tests/auth.test.ts
 
 #### GREEN Phase
-- [ ] IMPL-003 [US1] Create AuthController with register method in backend/src/api/auth.controller.ts
-- [ ] IMPL-004 [US1] Implement UserRepository with create method in backend/src/repositories/user.repository.ts
-- [ ] IMPL-005 [US1] Implement default category provisioning in transaction in backend/src/services/auth.service.ts
-- [ ] IMPL-006 [US1] Setup auth routes POST /auth/register in backend/src/api/auth.routes.ts
+- [x] IMPL-003 [US1] Create AuthController with register method in backend/src/api/auth.controller.ts
+- [x] IMPL-004 [US1] Implement UserRepository with create method in backend/src/repositories/user.repository.ts
+- [x] IMPL-005 [US1] Implement default category provisioning in transaction in backend/src/services/auth.service.ts
+- [x] IMPL-006 [US1] Setup auth routes POST /auth/register in backend/src/api/auth.routes.ts
 
 ### TDD Cycle 3: Registration State Machine
 **Coverage**:
@@ -92,12 +92,12 @@ TDD-structured task list for implementing user registration feature with email/p
 - Error types: permission_denied from ux.md
 
 #### RED Phase
-- [ ] TEST-014 [US2] Test POST /auth/register returns 409 for duplicate email in backend/tests/auth.test.ts
-- [ ] TEST-015 [US2] Test 409 response includes error type email_taken in backend/tests/auth.test.ts
+- [x] TEST-014 [US2] Test POST /auth/register returns 409 for duplicate email in backend/tests/auth.test.ts
+- [x] TEST-015 [US2] Test 409 response includes error type email_taken in backend/tests/auth.test.ts
 
 #### GREEN Phase
-- [ ] IMPL-012 [US2] Add email uniqueness check in AuthService in backend/src/services/auth.service.ts
-- [ ] IMPL-013 [US2] Return 409 ConflictError for duplicate emails in backend/src/api/auth.controller.ts
+- [x] IMPL-012 [US2] Add email uniqueness check in AuthService in backend/src/services/auth.service.ts
+- [x] IMPL-013 [US2] Return 409 ConflictError for duplicate emails in backend/src/api/auth.controller.ts
 
 ### TDD Cycle 2: Inline Error Display
 **Coverage**:

@@ -1,13 +1,15 @@
 // AICODE-NOTE: Prisma schema for SpendNote user-registration feature
 // Entities defined per data-model.md: User, Session
 // Default categories provisioned per FR-005
+// AICODE-NOTE: Schema designed to work with both PostgreSQL and SQLite
+// SQLite used for local dev and testing (per PRD)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -15,7 +17,7 @@ datasource db {
 // Fields: id (UUID), email (unique), password_hash, created_at, updated_at
 model User {
   id            String    @id @default(uuid())
-  email         String    @unique @db.VarChar(255)
+  email         String    @unique
   password_hash String
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
@@ -47,7 +49,7 @@ model Session {
 model Category {
   id         String    @id @default(uuid())
   user_id    String
-  name       String    @db.VarChar(100)
+  name       String
   is_default Boolean   @default(false)
   created_at DateTime  @default(now())
 
