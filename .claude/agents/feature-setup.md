@@ -48,16 +48,17 @@ Add platform-specific entries as needed (node_modules/, vendor/, .venv/).
 
 ## Phase 0: Prepare Workspace
 
-### 0.1 Validate & Create Branch
+### 0.1 Ensure Feature Branch
 
-**Apply Git Workflow skill:**
+**Target branch:** `feature/[feature-name]`
 
-1. Validate git repository exists
-2. Check current branch — if on `main/master/release/*`, create feature branch
-3. If not on feature branch, create: `feature/[feature-name]`
-4. If already on valid feature branch, continue
+1. If on target branch → continue
+2. If on protected branch (main/master/release/*) → create target branch, switch
+3. If on other branch → create/checkout target branch
 
-Git Workflow handles: protected branch blocking, naming conventions, source branch selection, secret protection.
+**Never work directly on protected branches.**
+
+**Apply Git Workflow skill** for branch operations. Git Workflow handles: naming conventions, source branch selection, secret protection.
 
 ### 0.2 Verify Prerequisites
 
@@ -203,11 +204,18 @@ Mark skipped: `- [ ] INIT-XXX (skipped: [reason])`
 
 ## Phase 2: Verify & Commit
 
-### 2.1 Verification
+### 2.1 Build & Verify
 
-1. Structure matches plan.md
-2. Type check passes (if typed language)
-3. Lint check passes
+Run build from setup.md and verify infrastructure works:
+
+1. Run lint check
+2. Run type check (if applicable)
+3. Run build command
+
+**If errors — fix and repeat until build succeeds.**
+
+Use Sequential Thinking if error cause is unclear.
+Use Context7 if error is library-related.
 
 ### 2.2 Update tasks.md
 
@@ -253,7 +261,7 @@ Include summary of executed INIT tasks in commit body.
 Feature Setup Complete: [feature-name]
 ═══════════════════════════════════════════════════
 
-Branch: feature/[scope]/[feature-name]-setup
+Branch: feature/[feature-name]
 
 Executed:
 ✓ INIT-001 Created project structure
@@ -268,7 +276,7 @@ Executed:
 ⊘ INIT-010 (skipped: no state management)
 ✓ INIT-011 Created validation schemas
 
-Verification: ✓ Structure ✓ Types ✓ Lint
+Verification: ✓ Lint ✓ Types ✓ Build
 
 Updated: tasks.md (INIT tasks marked complete)
 Committed: [commit-hash]
