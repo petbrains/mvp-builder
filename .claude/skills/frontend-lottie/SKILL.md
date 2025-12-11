@@ -1,6 +1,6 @@
 ---
-name: lottie
-description: Decorative animations that play/loop. Use for loaders, success/error feedback, empty states, illustrations. JSON-based, lightweight.
+name: frontend-lottie
+description: Decorative JSON animations for UI feedback and polish. Use for loading spinners, success/error checkmarks, empty state illustrations, animated icons. Just plays and loops - no interactivity. For reactive/stateful animations use Rive instead. Lightweight and SSR-compatible.
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
 

@@ -1,6 +1,6 @@
 ---
-name: rive
-description: State-driven interactive animations. Use when animations react to user input (hover, clicks), have state machines, or respond to data. Ideal for animated buttons, toggles, progress indicators.
+name: frontend-rive
+description: State-driven interactive animations with built-in state machines. Use when animations must REACT to user input (hover, click, drag), have multiple states/transitions, or respond to data values (progress bars, counters). Ideal for animated buttons, toggles, checkboxes, characters. For simple play/loop animations use Lottie instead.
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
 
