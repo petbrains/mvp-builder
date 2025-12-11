@@ -206,13 +206,15 @@ Mark skipped: `- [ ] INIT-XXX (skipped: [reason])`
 
 ### 2.1 Build & Verify
 
-Run build from setup.md and verify infrastructure works:
+Run all checks and verify infrastructure works:
 
 1. Run lint check
 2. Run type check (if applicable)
 3. Run build command
 
-**If errors — fix and repeat until build succeeds.**
+**All checks must pass.** If any fails — fix and repeat until all pass.
+
+**After all checks pass:** Re-verify implementation against data-model.md, contracts/, and plan.md. Fix any discrepancies before proceeding.
 
 Use Sequential Thinking if error cause is unclear.
 Use Context7 if error is library-related.
