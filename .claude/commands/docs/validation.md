@@ -469,7 +469,7 @@ Files:
 
 Resolved: [N] uncertainties
 Tasks impact:
-- New: [N] tasks added to [Phase 2, Phase 5, ...]
+- New: [N] tasks added
 - Updated: [N] tasks clarified
 - Deferred: [N] items (see Notes)
 ```
