@@ -438,8 +438,9 @@ For each phase in PHASE_GROUPS (sorted by phase number ascending):
 ```
 
 **4.5.2.3 Numbering Continuity**
-- TEST-/IMPL- numbers assigned sequentially from LAST_TEST_NUM/LAST_IMPL_NUM
-- Numbers assigned in phase order (lower phases get lower numbers first)
+- TEST-/IMPL- numbers continue sequentially from LAST_TEST_NUM/LAST_IMPL_NUM
+- Numbers reflect creation order, not position in file
+- Execution order determined by file structure (Phase → Cycle → Task)
 
 If `UPDATED_TASKS[]` not empty:
 - Find each task by ID
