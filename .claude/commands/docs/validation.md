@@ -182,9 +182,29 @@ Each domain MUST include these cross-checks:
 ### New Task Format
 ```markdown
 ### From CHK###: [Title]
+**Coverage**:
+- Resolution: [CHK### decision summary]
+
+#### RED Phase
 - [ ] TEST-{N} [USX] Test [resolved requirement] in [path]
+
+#### GREEN Phase
 - [ ] IMPL-{N} [USX] Implement [resolved requirement] in [path]
 ```
+
+### Target Phase Determination
+
+New tasks inherit [USX] from resolution context and are placed in corresponding phase:
+
+| Task Label | Target Phase |
+|------------|--------------|
+| [US1] | Phase containing "User Story 1" |
+| [US2] | Phase containing "User Story 2" |
+| [USN] | Phase containing "User Story N" |
+| INIT-* | Phase 1: Core Infrastructure |
+| No label | Last user story phase |
+
+**Rule:** Tasks are appended as new TDD Cycles at the end of their target phase, preserving phase integrity and logical grouping.
 
 ### Update Existing Task Format
 ```markdown
@@ -216,6 +236,16 @@ If core files missing → Report error and exit.
 
 ### 0.3 Extract Numbering
 From tasks.md: `LAST_TEST_NUM`, `LAST_IMPL_NUM`, `LAST_PHASE_NUM`.
+
+### 0.4 Build Phase Map
+Parse tasks.md to create phase-to-story mapping:
+```
+PHASE_MAP = {}
+For each "## Phase N:" header:
+  - Extract phase number N
+  - Extract user story label from header (e.g., "User Story 1" → US1)
+  - PHASE_MAP[USX] = N
+```
 
 ## Phase 1: Analyze Context
 
@@ -308,7 +338,7 @@ Resolution [current]/[total]
 CHK###: [question]
 
 > a) [option]
-     → NEW: TEST-XXX, IMPL-XXX
+     → NEW: TEST-XXX, IMPL-XXX [USX] → Phase N
   b) [option]
      → UPDATE: TEST-XXX (add: [clarification])
   c) Defer to post-MVP
@@ -344,7 +374,12 @@ Add to `RESOLUTIONS[]` with task_impact field.
 If **NEW tasks**:
 ```
 LAST_TEST_NUM++; LAST_IMPL_NUM++
-Add to NEW_TASKS[]
+Extract [USX] label from resolution context (from related tasks or requirement reference)
+Determine target_phase using PHASE_MAP:
+  - [USX] found in PHASE_MAP → target_phase = PHASE_MAP[USX]
+  - INIT-* prefix → target_phase = 1
+  - No US context → target_phase = LAST_PHASE_NUM (last user story phase)
+Add to NEW_TASKS[] with {task, target_phase, chk_id, us_label}
 ```
 
 If **UPDATE existing**:
@@ -375,8 +410,36 @@ Write rewritten items to checklist files.
 **4.5.2 Update tasks.md**
 
 If `NEW_TASKS[]` not empty:
-- Add Phase N: Checklist Resolutions section
-- Insert new tasks
+
+**4.5.2.1 Group Tasks by Target Phase**
+```
+PHASE_GROUPS = {}
+For each task in NEW_TASKS[]:
+  phase = task.target_phase
+  PHASE_GROUPS[phase].append(task)
+```
+
+**4.5.2.2 Insert into Existing Phases**
+For each phase in PHASE_GROUPS (sorted by phase number ascending):
+```
+- Locate "## Phase {N}:" section in tasks.md
+- Find last "### TDD Cycle" or "### From CHK" subsection in that phase
+- After last subsection (before next "## Phase" or end of file), append:
+
+### From CHK###: [Resolution Title]
+**Coverage**:
+- Resolution: [CHK### decision summary]
+
+#### RED Phase
+- [ ] TEST-{N} [USX] [description]
+
+#### GREEN Phase
+- [ ] IMPL-{N} [USX] [description]
+```
+
+**4.5.2.3 Numbering Continuity**
+- TEST-/IMPL- numbers assigned sequentially from LAST_TEST_NUM/LAST_IMPL_NUM
+- Numbers assigned in phase order (lower phases get lower numbers first)
 
 If `UPDATED_TASKS[]` not empty:
 - Find each task by ID
@@ -405,7 +468,7 @@ Files:
 
 Resolved: [N] uncertainties
 Tasks impact:
-- New: [N] tasks added (Phase [X])
+- New: [N] tasks added to [Phase 2, Phase 5, ...]
 - Updated: [N] tasks clarified
 - Deferred: [N] items (see Notes)
 ```
@@ -419,3 +482,4 @@ Tasks impact:
 - **No user response**: "Waiting for selection. Use ↑/↓ and Enter."
 - **Unresolved remaining**: "Error: [N] items unresolved. Cannot finalize."
 - **tasks.md error**: "Error: Could not update tasks.md."
+- **Phase not found**: "Error: Cannot locate Phase [N] for [USX]. Check tasks.md structure."
