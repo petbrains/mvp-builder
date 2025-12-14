@@ -1,5 +1,5 @@
 ---
-description: Review feature implementation and generate actionable feedback for tdd-dev fix mode.
+description: Review feature implementation and generate actionable feedback.
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 ---
 
@@ -28,7 +28,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 
 # Task
 
-Review implementation quality after TDD completion. Generate feedback.md for tdd-dev fix mode.
+Review implementation quality after TDD completion. Generate feedback.md
 
 # Rules
 
@@ -56,7 +56,7 @@ Review implementation quality after TDD completion. Generate feedback.md for tdd
 
 ## Priority Algorithm
 
-Order findings for tdd-dev fix mode:
+Order findings:
 
 1. **App startup blockers** — nothing works without this
 2. **Test infrastructure blockers** — can't verify anything
@@ -302,9 +302,9 @@ Assign severity per rules. Assign REV-XXX IDs sequentially.
 
 Apply Priority Algorithm from Rules section.
 
-Generate ordered list for For TDD-DEV section.
+Generate ordered list for For Feature-Fix Section.
 
-### 2.3 Generate For TDD-DEV Section
+### 2.3 Generate For Feature-Fix Section
 
 **Priority table:**
 ```markdown
@@ -380,7 +380,7 @@ Record all changes made:
 
 Load template. Fill all sections:
 - Findings (BLOCKER, MAJOR, Warnings, Info)
-- For TDD-DEV (Priority, Required Context, Verification)
+- For Feature-Fix (Priority, Required Context, Verification)
 - Rollback Summary
 
 **Overwrite** existing feedback.md.
@@ -408,7 +408,7 @@ Actions:
 - [N] tasks rolled back
 - [N] AICODE-FIX added
 
-Next: [tdd-dev [feature] | /memory [feature]]
+Next: [feature-fix [feature] | /memory [feature]]
 ```
 
 # Error Handling

@@ -1,0 +1,103 @@
+{
+    "skills": {
+        "feature-analyzer": {
+            "path": ".claude/skills/feature-analyzer/SKILL.md",
+            "keywords": [
+                "feature",
+                "artifacts",
+                "spec",
+                "plan",
+                "tasks",
+                "data-model",
+                "requirements",
+                "context",
+                "ux",
+                "contracts"
+            ],
+            "when": "Loading feature context OR reading documentation artifacts OR need requirements understanding",
+            "priority": "high",
+            "enforcement": "required"
+        },
+        "code-analyzer": {
+            "path": ".claude/skills/code-analyzer/SKILL.md",
+            "keywords": [
+                "codebase",
+                "structure",
+                "dependencies",
+                "markers",
+                "AICODE",
+                "imports",
+                "modules",
+                "architecture",
+                "existing code"
+            ],
+            "when": "Need project structure OR dependency analysis OR find existing AICODE markers OR understand architecture",
+            "priority": "medium",
+            "enforcement": "suggest"
+        },
+        "git": {
+            "path": ".claude/skills/git/SKILL.md",
+            "keywords": [
+                "branch",
+                "commit",
+                "push",
+                "merge",
+                "git",
+                "repository",
+                "checkout",
+                "stash"
+            ],
+            "when": "Any git operation — branch creation, commits, pushes, merges",
+            "priority": "high",
+            "enforcement": "required"
+        },
+        "sequential-thinking": {
+            "path": ".claude/skills/sequential-thinking/SKILL.md",
+            "keywords": [
+                "complex",
+                "analysis",
+                "multi-step",
+                "root cause",
+                "debugging",
+                "unclear",
+                "diagnosis",
+                "investigation"
+            ],
+            "when": "Problem requires 3+ logical steps OR unclear root cause OR multiple valid approaches OR low confidence in solution",
+            "priority": "medium",
+            "enforcement": "suggest"
+        },
+        "context7": {
+            "path": ".claude/skills/context7/SKILL.md",
+            "keywords": [
+                "library",
+                "documentation",
+                "package",
+                "npm",
+                "pypi",
+                "external",
+                "api reference",
+                "third-party"
+            ],
+            "when": "Need library documentation OR unfamiliar package OR library-related error OR checking correct API usage",
+            "priority": "medium",
+            "enforcement": "suggest"
+        },
+        "self-commenting": {
+            "path": ".claude/skills/self-commenting/SKILL.md",
+            "keywords": [
+                "AICODE",
+                "marker",
+                "NOTE",
+                "TODO",
+                "FIX",
+                "annotation",
+                "cross-session",
+                "context preservation"
+            ],
+            "when": "Writing code that needs context for future sessions OR documenting non-obvious logic OR leaving markers",
+            "priority": "low",
+            "enforcement": "suggest"
+        }
+    }
+}
