@@ -1,492 +1,384 @@
 ---
-description: Agent generator
-allowed-tools: Read, Write, mcp__sequential-thinking__sequentialthinking, Bash(ls)
-argument-hints: [initial-description]
+description: Generate specialized Claude Code agents from user intent and project context.
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Instructions
 
-Interactive agent generator that uses sequential thinking to analyze requirements and creates sophisticated autonomous agents. Ensures agents follow best practices with decision trees, error recovery, and intelligent tool selection.
+Generate specialized AI agents by analyzing user intent, loading project context, and clarifying requirements through targeted dialogue.
 
 **Tools Usage:**
-- `Read` - Reads agent templates and existing agents/commands for reference
-- `Write` - Creates the final agent file
-- `Bash(ls)` - Checks existing agents and commands to avoid duplicates
-- `/mcp__sequential-thinking__sequentialthinking`: For analyzing requirements and optimizing dialogue flow
-  - Uses Sequential Thinking methodology for structured reasoning
+- `Read`: For loading skills, feature artifacts, project rules, existing agents
+- `Write`: For creating agent file
+- `Bash`: For running analyzer scripts, checking directories
 
-**Template:** @.claude/templates/agent-template.md
+**Skills:**
+- Feature Analyzer: For loading complete feature context when path provided
+- Code Analyzer: For scanning codebase structure, markers, git state
+- Self-Improve: For interpreting user intent, extracting findings with sources, assessing complexity
+- Sequential Thinking Methodology: For deep analysis when complexity flagged
+  - Tool: `/mcp__sequential-thinking__sequentialthinking`
+- Prompt Optimizer: For structuring agent spec into TCRO format
+- Agent Creator: For applying template and generating final agent file
 
-## Usage
+**File Structure:**
+- Input: User description + optional feature path (via dialogue)
+- Output: `.claude/agents/{agent-name}.md`
 
-```
-/generate:agent [initial-description]
-```
+# Task
 
-- `[initial-description]` - Optional description of the agent's purpose and capabilities
-- No arguments - Starts with exploratory questions to understand agent requirements
+Transform user intent into specialized agent through context analysis and targeted clarification.
+Derive maximum from context, ask minimum from user.
+Generate agent following Agent Creator template structure.
 
-## Execution
+# Rules
 
-### Phase 1: Requirements Analysis
+## Input Rules
+- Description is REQUIRED — do not proceed without it
+- Feature path is OPTIONAL — ask in dialogue if features exist
+- No flags or special syntax — natural language input
 
-#### Step 1: Analyze Initial Input
+## Skill Invocation
+- Skills invoked by name: "Apply [Skill Name] skill"
+- Skills know their own execution logic
+- Pass relevant context to each skill
 
-Use `/mcp__sequential-thinking__sequentialthinking` to process the description:
+## Clarification Rules
+- Present findings BEFORE asking questions
+- Maximum 6 configuration points in single block
+- Questions based on analysis, not generic
+- Wait for user response before proceeding
 
-```
-1. Parse initial description:
-   - Extract core purpose and objectives
-   - Identify implied autonomous behaviors
-   - Detect workflow complexity patterns
-   - Find decision point requirements
+## Sequential Thinking Usage
+- Apply when Self-Improve flags Complexity = "Needs analysis"
+- Apply when user clarifications introduce requirements that change workflow or add new phases
+- Skip for simple agents with clear intent and obvious tools
+- Use for: workflow design, decision points mapping, error handling
 
-2. Generate hypotheses:
-   - Agent type and complexity level
-   - Required tools and permissions
-   - Workflow phases and branching
-   - Success/failure criteria
+## Tool Inference Rules
 
-3. Optimize dialogue strategy:
-   - Determine essential vs inferable info
-   - Plan minimal question set
-   - Prepare intelligent defaults
-```
+**From intent keywords:**
 
-#### Step 2: Initial Classification
+| Pattern | Inferred File Tools |
+|---------|---------------------|
+| "analyze", "check", "review", "validate" | Read, Glob, Grep |
+| "fix", "modify", "update", "patch" | Read, Edit |
+| "create", "generate", "scaffold" | Read, Write |
+| "refactor", "restructure" | Read, Edit, MultiEdit |
+| "search", "find" | Read, Glob, Grep, LS |
 
+| Pattern | Inferred Execution |
+|---------|-------------------|
+| "test", "lint", "format" | Bash(npm:*) |
+| "commit", "branch", "merge", "blame" | Bash(git:*) |
+| "deploy", "build", "docker" | Bash(docker:*) |
+| "run", "execute", "script" | Bash |
+| read-only intent | none |
+
+**Model selection:**
+
+| Signal | Model |
+|--------|-------|
+| Single-purpose, read-only, fast tasks | haiku |
+| Multi-step workflow, file modifications | sonnet |
+| Deep analysis, autonomous decisions, complex orchestration | opus |
+
+**Color mapping:**
+
+| Domain | Color |
+|--------|-------|
+| Frontend, UI, React, Vue | blue |
+| Backend, API, database | green |
+| Debug, fix, error | red |
+| Performance, optimization | yellow |
+| DevOps, deploy, CI/CD | gray |
+| Security, audit | red |
+| Testing, QA | purple |
+| Documentation | cyan |
+
+## Tool Assembly
+Final `tools:` field in agent combines:
+1. File Operations (Read, Write, Edit, etc.)
+2. Execution tools (Bash levels)
+3. MCP tools (format: `mcp__server__tool`)
+
+# Execution Flow
+
+## Phase 0: Validate Input
+
+### 0.1 Parse Description
+
+Extract agent description from user message.
+
+If empty or unclear:
 ```dialogue
-"🤖 Let's create an autonomous agent. I'll analyze your requirements using sequential thinking.
+"Agent description required. What task should this agent automate?
 
-[If initial description provided]:
-Based on '[summarized purpose]', I've identified this as a [simple/moderate/complex] agent task.
-
-[If no description]:
-First, what complex or repetitive task should this agent automate?
-
-Key question: What decisions should the agent make autonomously?"
+Example: 'bug fixer for React components'"
 ```
 
-### Phase 2: Duplicate Detection & Validation
+Wait for response. Do not proceed without description.
 
-#### Step 1: Check Existing Solutions
+## Phase 1: Load Context
+
+### 1.1 Code Context
+
+**Apply Code Analyzer skill** to extract:
+- Stack (language, framework from extensions and configs)
+- Structure (directories, src modules)
+- Markers (AICODE-NOTE, TODO, FIX with locations)
+- Git state (branch, modified files)
+
+### 1.2 Feature Context
+
+Check if `./ai-docs/features/` exists.
+
+If exists:
+```dialogue
+"Found features: [list feature folder names]
+
+Link agent to specific feature? (name / skip)"
+```
+
+If user provides feature name:
+
+**Apply Feature Analyzer skill** to load:
+
+**Core Documents:**
+- spec.md → Requirements (FR-XXX, UX-XXX), acceptance criteria, edge cases
+- ux.md → User flows, states, error handling, accessibility
+- plan.md → Architecture, components, code organization
+- tasks.md → TDD cycles, implementation sequence
+
+**Data & Contracts:**
+- data-model.md → Entities, validation rules, state machines, constants
+- contracts/ → API specs, message schemas
+  - openapi.yaml
+  - contracts.md
+
+**Supporting Documents:**
+- research.md → Technical decisions, rationale
+- setup.md → Environment, dependencies, commands
+
+### 1.3 Available Skills
 
 ```bash
-# Check for existing agents
-ls .claude/agents/ 2>/dev/null || echo "No agents directory"
-
-# Check for existing commands
-ls .claude/commands/**/*.md 2>/dev/null
+ls .claude/skills/*/SKILL.md 2>/dev/null
 ```
 
-Use `/mcp__sequential-thinking__sequentialthinking` to analyze existing solutions:
-- Compare descriptions and functionality
-- Identify potential overlaps
-- Determine if new agent is truly needed
+Parse skill names and descriptions for Phase 3 options.
 
-#### Step 2: Validation Dialogue
+## Phase 2: Analyze Intent
 
-If similar solution found:
-```dialogue
-"⚠️ Found existing [agent/command] with similar functionality:
-- [Name]: [Description]
+### 2.1 Interpret Intent
 
-Options:
-1. Use existing [agent/command] instead
-2. Modify existing one to add your requirements
-3. Create new agent with different focus
+**Apply Self-Improve skill** with:
+- Input: description + code context + feature context (if loaded)
+- Output:
+  - Intent (action, subject, implicit assumptions)
+  - Findings with traceable sources
+  - Complexity assessment (Simple | Needs analysis: [reason])
 
-What would you prefer?"
-```
+### 2.2 Infer Configuration
 
-If no duplicates:
-```dialogue
-"✅ No existing solution matches your requirements.
+**Apply Tool Inference Rules** to derive from intent:
+- Suggested model (from complexity + task type)
+- Suggested file tools (from intent patterns)
+- Suggested execution level (from intent patterns)
+- Suggested color (from domain mapping)
 
-This task [does/doesn't] warrant an agent because:
-[Reasoning based on complexity, autonomy needs, decision points]
+## Phase 3: Clarify & Enrich
 
-[If doesn't warrant agent]:
-Would you like me to create a simpler command instead?
-
-[If warrants agent]:
-Let's proceed with the agent creation."
-```
-
-### Phase 3: Intelligent Information Gathering
-
-#### Stage 1: Core Agent Definition
+### 3.1 Present Analysis
 
 ```dialogue
-"Based on analysis, I suggest naming this agent:
-`[suggested-name]`
+"Analysis Complete
 
-The agent's objective would be:
-'[generated objective based on description]'
+**Intent:** [action + subject from Self-Improve]
 
-**Core Responsibilities** (per template):
-- Main focus: [what the agent primarily does]
-- Problem types: [specific problems it solves]
-- Boundaries: [what it should NOT do]
+**Findings:**
+1. [discovery] → [source]
+2. [discovery] → [source]
+3. [discovery] → [source]
 
-Does this capture your intent? Any boundaries or limitations to add?"
+**Suggested Configuration:**
+- Model: [model] — [rationale from inference]
+- File Tools: [list from inference]
+- Execution: [level from inference]
+- Color: [color] — [domain from inference]"
 ```
 
-#### Stage 2: Model Selection
+### 3.2 Configuration Clarification
 
 ```dialogue
-"Which Claude model should this agent use?
+"**Configuration**
 
-- **sonnet** (default) - Balanced performance for most tasks
-- **opus** - Complex reasoning and analysis tasks
-- **haiku** - Fast, simple operations
-- **inherit** - Use the same model as main conversation
+1️⃣ **Model** (suggested: [model] — [rationale])
+   Options: haiku (fast, simple) | sonnet (balanced) | opus (complex)
+   → Adjust?
 
-Based on complexity, I recommend: [suggested-model]
-Choice (sonnet/opus/haiku/inherit):"
+2️⃣ **File Operations** (suggested: [list])
+   Options: Read, Write, Edit, MultiEdit, Glob, Grep, LS
+   → Adjust? (add/remove or 'ok')
+
+3️⃣ **Execution** (suggested: [level])
+   Options: Bash | Bash(git:*) | Bash(npm:*) | Bash(docker:*) | none
+   → Adjust?
+
+4️⃣ **Skills**
+   Available: [parsed skill names from 1.3]
+   → Select? (names or 'none')
+
+5️⃣ **MCP Tools**
+   Options: sequential-thinking, context7, [other detected]
+   → Select? (names or 'none')
+
+6️⃣ **Additional requirements?**
+   Domain knowledge, constraints, special behaviors...
+
+Your input:"
 ```
 
-#### Stage 3: Autonomous Decision Criteria & Specific Instructions
+Wait for user response.
+
+### 3.3 Deep Analysis (conditional)
+
+If Self-Improve Complexity = "Needs analysis" OR user clarifications introduce requirements that change workflow or add new phases:
+
+**Apply Sequential Thinking Methodology** to:
+- Synthesize all inputs (description + context + clarifications)
+- Design workflow phases with clear objectives
+- Map tools to specific responsibilities per phase
+- Define decision points and autonomous behaviors
+- Plan error handling and recovery strategies
+- Validate architecture completeness
+
+If Complexity = "Simple" and no workflow-changing requirements:
+- Derive 2-3 phases directly from intent without deep analysis
+- Map tools to obvious responsibilities
+
+## Phase 4: Design Agent
+
+### 4.1 Structure Specification
+
+**Apply Prompt Optimizer skill** to structure agent spec in TCRO format:
+
+```
+Task: [Agent objective from intent.action + intent.subject]
+Context: 
+  - Stack: [from Code Analyzer]
+  - Feature: [from Feature Analyzer if loaded]
+  - Constraints: [from findings]
+Requirements:
+  1. [Primary capability from intent]
+  2. [Secondary capability from findings]
+  3. [User-specified requirements from clarifications]
+  4. [Constraints and boundaries]
+Output: [What agent produces/achieves]
+```
+
+### 4.2 Design Workflow
+
+From Phase 3.3 Sequential Thinking analysis, or if skipped — derive 2-3 phases directly from intent:
+
+Define workflow phases (typically 2-4):
+- Phase name and objective
+- Tools used in this phase
+- Expected output/state after phase
+
+### 4.3 Define Responsibilities
+
+Extract from TCRO Requirements:
+- Primary responsibility (main task from intent.action)
+- Secondary responsibilities (supporting tasks from findings)
+- Boundaries (what agent should NOT do)
+
+### 4.4 Compile Properties
+
+| Property | Source |
+|----------|--------|
+| name | intent.subject → kebab-case |
+| description | intent + key findings summary |
+| tools | file ops + execution + MCP (from Phase 3 selections) |
+| skills | user selections from Phase 3.2 |
+| model | user selection from Phase 3.2 (default: suggested) |
+| color | domain mapping from inference |
+
+## Phase 5: Confirm & Generate
+
+### 5.1 Final Summary
 
 ```dialogue
-"What conditions should trigger autonomous decisions?
+"Agent Ready
 
-Based on your description, I'm inferring:
-- [Condition 1]: [Action]
-- [Condition 2]: [Action]
+**Name:** [name]
+**Model:** [model]
+**Color:** [color]
 
-Additional decision points to add?
+**Tools:** [full assembled list]
+**Skills:** [list or none]
 
-For the agent's methodology (per template structure):
-**Analysis Phase:**
-- [How agent examines problems]
-- [Key patterns to identify]
+**Responsibilities:**
+- [primary from 4.3]
+- [secondary from 4.3]
+- [boundaries from 4.3]
 
-**Implementation Phase:**
-- [Best practices to follow]
-- [Common pitfalls to avoid]
+**Workflow:**
+1. [Phase name] — [objective, tools]
+2. [Phase name] — [objective, tools]
+3. [Phase name] — [objective, tools]
 
-**Output Guidelines:**
-- [How to structure responses]
-- [Level of detail required]
-
-Any specific instructions to add?"
+Generate? (yes / modify / cancel)"
 ```
 
-#### Stage 4: Smart Tool Detection
+If user says "modify" — ask what to change, update spec, show summary again.
+
+### 5.2 Check Name Availability
+
+```bash
+ls .claude/agents/[name].md 2>/dev/null
+```
+
+If file exists:
+```dialogue
+"Name '[name]' already taken.
+
+Suggestions: [alternative-1], [alternative-2]
+Or enter custom name:"
+```
+
+Wait for response. Use provided or selected name.
+
+### 5.3 Generate Agent
+
+**Apply Agent Creator skill** with compiled specification from Phase 4.
+
+Agent Creator applies its template to generate `.claude/agents/[name].md` with:
+- YAML frontmatter (name, description, tools, skills, model, color)
+- Core Responsibilities section
+- Approach & Methodology with workflow phases from 4.2
+- Autonomous Decision Criteria
+- Domain-Specific Knowledge (if feature context loaded)
+- Constraints & Safety from boundaries
+- Error Handling from 3.3 analysis
+- Success Criteria
+
+### 5.4 Complete
 
 ```dialogue
-"From the workflow, this agent needs these tools:
-- [Tool 1]: for [specific purpose]
-- [Tool 2]: for [specific purpose]
-[Auto-detected tools]
+"✅ Created: .claude/agents/[name].md
 
-Special tools needed:
-- Task tool: [yes/no - for sub-agents]
-- TodoWrite: [yes/no - for progress tracking]
-- mcp__sequential-thinking: [yes/no - for complex analysis]
-
-Confirm or modify tool list:"
+To test: /[name] [task description]"
 ```
 
-#### Stage 5: Domain Knowledge Requirements
-
-```dialogue
-"Does this agent need specialized domain knowledge?
-
-[If yes detected]:
-I'll include (per template):
-- Technical specifications: [relevant to task]
-- Industry standards: [best practices]
-- Common patterns and anti-patterns: [domain-specific]
-
-Additional domain knowledge to include?"
-```
-
-#### Stage 6: Workflow Architecture
-
-```dialogue
-"I've designed this workflow structure:
-
-**Phase 1: [Name]** - [Purpose]
-  → Decision: [Condition]
-    ✓ Yes: [Action/Next Phase]
-    ✗ No: [Alternative Action]
-
-**Phase 2: [Name]** - [Purpose]
-  [Continue structure]
-
-This provides [benefits]. Approve this architecture?"
-```
-
-#### Stage 7: Safety, Constraints & Recovery
-
-```dialogue
-"For robust operation, I'll add:
-
-**Constraints & Safety (per template):**
-- Never modify: [protected patterns]
-- Always validate: [critical conditions]
-- Require confirmation for: [sensitive ops]
-- Respect: [project conventions]
-
-**Success Criteria:**
-- [Measurable condition 1]
-- [Measurable condition 2]
-
-**Error Recovery:**
-- On [error type]: [recovery action]
-- On [failure type]: [fallback strategy]
-
-**Context Persistence:**
-- Maintains: [state between phases]
-- Resets: [cleared between runs]
-
-Any modifications or additional safety guards needed?"
-```
-
-#### Stage 8: Examples (Optional)
-
-```dialogue
-"Would you like to provide example scenarios for the agent?
-
-Example format:
-- Trigger: [what initiates]
-- Expected behavior: [what happens]
-- Result: [outcome]
-
-Add examples? (yes/no/skip):"
-```
-
-### Phase 4: Architecture Design
-
-#### Step 1: Build Decision Trees
-
-Use `/mcp__sequential-thinking__sequentialthinking` to optimize the agent's decision logic:
-```
-1. Map all decision points
-2. Create branching logic
-3. Define state transitions
-4. Establish rollback conditions
-```
-
-#### Step 2: Structure Validation
-
-Validate the complete agent architecture:
-- Ensure all paths lead to completion
-- Verify error handlers cover all cases
-- Check for infinite loops or deadlocks
-- Confirm success criteria are achievable
-
-### Phase 5: Generation & Validation
-
-#### Step 1: Final Confirmation
-
-```dialogue
-"📋 Agent Analysis Complete:
-
-**Agent Summary:**
-- Name: [final-name]
-- Model: [selected-model]
-- Objective: [final-objective]
-- Boundaries: [what it won't do]
-- Autonomy Level: [Low/Medium/High]
-
-**Architecture:**
-- Phases: [count] with [total] decision points
-- Tools: [final-tool-list]
-- Error Recovery: [Comprehensive/Basic]
-- Safety Guards: [count] constraints
-- Sub-agents: [Yes/No]
-
-**Key Features:**
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-
-Ready to generate the agent file? (yes/no/modify)"
-```
-
-#### Step 2: Generate Agent File
-
-Write to `./.claude/agents/[agent-name].md`:
-
-```markdown
----
-name: [agent-name]
-description: [agent-description]
-tools: [comma-separated-tools]
-model: [selected-model]
----
-
-# Agent System Prompt
-
-You are a specialized [role] expert focused on [specific domain].
-
-## Core Responsibilities
-
-[Clear statement per template structure]
-- Main objective and focus area
-- Types of problems this agent solves
-- Boundaries of what this agent should/shouldn't do
-
-## Approach & Methodology
-
-When invoked, follow this structured approach:
-
-### Execution Workflow
-
-#### Phase 1: [Phase Name]
-**Objective:** [What this phase accomplishes]
-
-**Steps:**
-1. [Action with tool usage]
-2. [Decision point]
-   - If [condition]: [action]
-   - Else: [alternative]
-
-[Continue with all phases]
-
-## Specific Instructions
-
-### Analysis Phase
-- [How to examine the problem]
-- [What to look for first]
-- [Key patterns to identify]
-
-### Implementation Phase
-- [Best practices to follow]
-- [Common pitfalls to avoid]
-- [Quality standards to maintain]
-
-### Output Guidelines
-- [How to structure responses]
-- [Level of detail required]
-- [Format for presenting results]
-
-## Autonomous Decision Criteria
-[When and how the agent makes decisions without user input]
-- [Decision point 1]: [Criteria and action]
-- [Decision point 2]: [Criteria and action]
-
-## Domain-Specific Knowledge
-
-[Include per template if applicable]
-- Technical specifications: [if relevant]
-- Industry standards: [if relevant]
-- Best practice guidelines: [if relevant]
-- Common patterns and anti-patterns: [if relevant]
-
-## Constraints & Safety
-
-- Never modify [protected files/patterns]
-- Always validate [specific conditions]
-- Require confirmation for [sensitive operations]
-- Respect existing [project conventions]
-- [Additional safety guards from Stage 7]
-
-## Error Handling
-
-How to handle common issues:
-- If [condition], then [action]
-- When encountering [error], [response]
-- For missing [requirement], [fallback]
-
-## Success Criteria
-Define what constitutes successful completion:
-- [Measurable success condition 1]
-- [Measurable success condition 2]
-
-## Error Recovery
-- **[Error Type]:** [Recovery strategy]
-- **[Failure Type]:** [Fallback approach]
-
-## Context Management
-- Maintains: [What state is preserved]
-- Resets: [What is cleared between runs]
-
-## Sub-Agent Spawning
-[If applicable, when and how sub-agents are created]
-
-## Examples
-
-### Example 1: [Scenario]
-Trigger: [What initiates the agent]
-Expected Behavior: [What happens]
-Result: [Outcome]
-
-[Additional examples if provided in Stage 8]
-```
-
-#### Step 3: Post-Generation
-
-```dialogue
-"✅ Agent successfully created at ./.claude/agents/[agent-name].md
-
-The agent is ready to deploy. You can:
-1. Test the agent now with /[agent-name]
-2. Create another agent
-3. View the generated file
-4. Done
-
-What's next?"
-```
-
-## Interactive Mode
-
-The generator maintains context throughout the dialogue:
-
-```dialogue
-"[Contextual question based on previous answers]"
-
-Context so far:
-- Purpose: [defined]
-- Core Responsibilities: [defined]
-- Tools: [selected]
-- Model: [chosen]
-- Workflow: [structure]
-- Constraints: [defined]
-- Still needed: [remaining items]
-```
-
-## Safety Guards
-
-- Validates agent name uniqueness before creation
-- Checks for existing solutions to prevent duplicates
-- Ensures decision trees have no infinite loops
-- Validates all error paths have handlers
-- Confirms tool permissions match operations
-- Enforces constraints and safety boundaries per template
-- Prevents overwriting existing agents without confirmation
-
-## Error Handling
-
-**During Analysis:**
-- No clear purpose → Guide to better description
-- Too simple for agent → Suggest command instead
-- Too complex → Suggest breaking into multiple agents
-
-**During Generation:**
-- Duplicate name → Suggest alternatives
-- Missing templates → Use embedded defaults
-- Invalid tool combination → Explain conflicts
-
-## Examples
-
-### Example 1: Code Review Agent
-```
-/generate:agent automated code reviewer that checks style, security, and suggests improvements
-```
-Creates sophisticated agent with multi-phase review process
-
-### Example 2: Deployment Agent
-```
-/generate:agent staging deployment with automated rollback on failure
-```
-Generates agent with decision trees for deployment validation
-
-### Example 3: No Arguments
-```
-/generate:agent
-```
-Starts with exploratory questions to understand requirements
+# Error Handling
+
+| Situation | Action |
+|-----------|--------|
+| No description provided | Prompt for description, wait |
+| Feature path not found | Warn, continue with code context |
+| No code context available | Warn about limited analysis, continue |
+| Skills directory missing | Note limitation, skip skill suggestions |
+| Name collision | Offer alternatives, wait for choice |
+| User cancels | "Agent creation cancelled." |
+| User says "modify" | Ask what to change, loop to 5.1 |

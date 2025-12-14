@@ -8,7 +8,7 @@ allowed-tools: Read, Write
 
 Create specialized Claude Code agents in `.claude/agents/` directory.
 
-**Template:** See @.claude/skills/agent-creator/references/template.md for YAML structure, tools, models, colors, and examples.
+**Template:** See `references/template.md` for YAML structure, tools, skills, models, color, and examples.
 
 ## Process
 
