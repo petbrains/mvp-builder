@@ -98,6 +98,52 @@
             "when": "Writing code that needs context for future sessions OR documenting non-obvious logic OR leaving markers",
             "priority": "low",
             "enforcement": "suggest"
+        },
+        "agent-creator": {
+            "path": ".claude/skills/agent-creator/SKILL.md",
+            "keywords": [
+                "agent",
+                "subagent",
+                "create agent",
+                "agent template",
+                "agent design",
+                "specialized agent",
+                "domain expert"
+            ],
+            "when": "Creating new agents OR designing agent prompts OR configuring agent tools and models",
+            "priority": "medium",
+            "enforcement": "suggest"
+        },
+        "self-improve": {
+            "path": ".claude/skills/self-improve/SKILL.md",
+            "keywords": [
+                "intent",
+                "interpret",
+                "vague request",
+                "enrich",
+                "synthesize",
+                "findings",
+                "actionable",
+                "user request"
+            ],
+            "when": "Interpreting vague user intent OR preparing context for agent generation OR synthesizing actionable insights from project context",
+            "priority": "medium",
+            "enforcement": "suggest"
+        },
+        "prompt-optimizer": {
+            "path": ".claude/skills/prompt-optimizer/SKILL.md",
+            "keywords": [
+                "prompt",
+                "TCRO",
+                "prompt engineering",
+                "optimize prompt",
+                "improve prompt",
+                "prompt template",
+                "structure prompt"
+            ],
+            "when": "Crafting prompts for code generation OR improving prompts not getting results OR structuring multi-step workflows OR debugging pattern drift",
+            "priority": "medium",
+            "enforcement": "suggest"
         }
     }
 }
