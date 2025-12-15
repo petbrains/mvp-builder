@@ -160,13 +160,21 @@ If user provides feature name:
 - research.md → Technical decisions, rationale
 - setup.md → Environment, dependencies, commands
 
-### 1.3 Available Skills
+### 1.3 Load Skills Registry
 
+**Load skills with matching rules:**
 ```bash
-ls .claude/skills/*/SKILL.md 2>/dev/null
+cat .claude/skills/skills-rules.json
 ```
 
-Parse skill names and descriptions for Phase 3 options.
+Parse for each skill:
+- name, path
+- keywords (for intent matching)
+- when (condition description)
+- priority (high/medium/low)
+- enforcement (required/suggest)
+
+Store for Phase 2 matching.
 
 ## Phase 2: Analyze Intent
 
@@ -187,6 +195,29 @@ Parse skill names and descriptions for Phase 3 options.
 - Suggested execution level (from intent patterns)
 - Suggested color (from domain mapping)
 
+### 2.3 Match Skills to Intent
+
+**Extract keywords from description:**
+- Action words (analyze, fix, create, test, debug, review, etc.)
+- Domain words (backend, frontend, API, database, validation, etc.)
+- Technology words (React, Express, Prisma, zod, etc.)
+- Problem words (error, bug, issue, failure, etc.)
+
+**Match against skills registry:**
+
+For each skill in skills-rules.json:
+1. Count keyword matches (description keywords ∩ skill keywords)
+2. Check if description situation matches skill's "when" condition
+3. If ≥2 keyword matches OR "when" condition matches → add to suggested
+
+**Rank suggested skills:**
+- priority: high → top of list
+- keyword matches: more matches → higher rank
+
+**Output:**
+- suggested_skills: [matched skills ordered by relevance]
+- other_skills: [remaining available skills]
+
 ## Phase 3: Clarify & Enrich
 
 ### 3.1 Present Analysis
@@ -205,7 +236,8 @@ Parse skill names and descriptions for Phase 3 options.
 - Model: [model] — [rationale from inference]
 - File Tools: [list from inference]
 - Execution: [level from inference]
-- Color: [color] — [domain from inference]"
+- Color: [color] — [domain from inference]
+- Skills: [suggested_skills from 2.3] — [matching rationale]"
 ```
 
 ### 3.2 Configuration Clarification
@@ -225,9 +257,9 @@ Parse skill names and descriptions for Phase 3 options.
    Options: Bash | Bash(git:*) | Bash(npm:*) | Bash(docker:*) | none
    → Adjust?
 
-4️⃣ **Skills**
-   Available: [parsed skill names from 1.3]
-   → Select? (names or 'none')
+4️⃣ **Skills** (suggested: [suggested_skills from 2.3])
+   Other available: [other_skills from 2.3]
+   → Adjust? (add/remove or 'ok')
 
 5️⃣ **MCP Tools**
    Options: sequential-thinking, context7, [other detected]
@@ -378,6 +410,7 @@ To test: /[name] [task description]"
 | No description provided | Prompt for description, wait |
 | Feature path not found | Warn, continue with code context |
 | No code context available | Warn about limited analysis, continue |
+| Skills registry missing | Fallback to directory scan, list all skills without matching |
 | Skills directory missing | Note limitation, skip skill suggestions |
 | Name collision | Offer alternatives, wait for choice |
 | User cancels | "Agent creation cancelled." |
