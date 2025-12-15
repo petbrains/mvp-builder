@@ -39,6 +39,8 @@ Review implementation quality after TDD completion. Generate feedback.md
 3. **Report, don't fix** — Generate actionable feedback, don't write implementation
 4. **Context is key** — Inline context at rollback points + feedback.md
 5. **Commit your work** — Review changes tracked in git
+6. **Mark affected items** — Every REV Affected task/CHK gets `<!-- REV-XXX -->` in tasks.md and validation/*.md
+7. **Rollback for code bugs** — If implementation or test code is wrong, change `[x]` → `[ ]`
 
 ## Finding Severity
 
@@ -56,7 +58,7 @@ Review implementation quality after TDD completion. Generate feedback.md
 
 ## Priority Algorithm
 
-Order findings:
+Order findings for feature-fix agent:
 
 1. **App startup blockers** — nothing works without this
 2. **Test infrastructure blockers** — can't verify anything
@@ -123,7 +125,7 @@ Actions: [N] tasks rolled back, [N] AICODE-FIX added
 grep -c "\[x\] \(TEST\|IMPL\)-" ai-docs/features/[feature]/tasks.md
 ```
 
-If no completed tasks → HALT: "No implementation found. Run tdd-dev first."
+If no completed tasks → HALT: "No implementation found. Run feature-tdd first."
 
 **Apply Git Workflow skill:** Validate on feature branch.
 
@@ -137,10 +139,10 @@ If no completed tasks → HALT: "No implementation found. Run tdd-dev first."
 - data-model.md → Entities, validation rules
 - setup.md → Test and Run commands
 - tasks.md → Task status + inline TDD context
+- validation/*.md → CHK status
 
 **Optional:**
 - ux.md → Error states, accessibility
-- validation/*.md → CHK status
 - contracts/ → API and message schemas
 
 ### 0.3 Load Code Context
@@ -157,7 +159,7 @@ Note constraints that affect review.
 Scan tasks.md for accumulated context:
 
 **In tasks.md:**
-- `<!-- TDD: ... -->` markers from tdd-dev
+- `<!-- TDD: ... -->` markers from feature-tdd
 - `<!-- TDD: BLOCKED ... -->` blocked tasks
 
 ## Phase 1: Verify & Analyze
@@ -284,6 +286,19 @@ Violations → MAJOR or WARN.
 
 Violations → WARN.
 
+### 1.7 Verify Validation Checklists
+
+**For each CHK item in validation/*.md:**
+
+1. **Check if related requirement is satisfied:**
+   - Find FR-XXX/UX-XXX referenced by CHK
+   - Verify corresponding test exists and passes
+   - Verify implementation matches requirement
+
+2. **Record status:**
+   - Satisfied → will keep `[x]` (or mark if was `[ ]`)
+   - Not satisfied → will rollback to `[ ]` with REV context
+
 ## Phase 2: Generate & Commit
 
 ### 2.1 Categorize Findings
@@ -293,6 +308,7 @@ Aggregate from Phase 1:
 - Diagnosis results (1.4)
 - TDD context issues (1.5)
 - Compliance violations (1.6)
+- Checklist failures (1.7)
 
 Assign severity per rules. Assign REV-XXX IDs sequentially.
 
@@ -302,7 +318,7 @@ Assign severity per rules. Assign REV-XXX IDs sequentially.
 
 Apply Priority Algorithm from Rules section.
 
-Generate ordered list for For Feature-Fix Section.
+Generate ordered list for For Feature-Fix section.
 
 ### 2.3 Generate For Feature-Fix Section
 
@@ -350,11 +366,25 @@ Generate ordered list for For Feature-Fix Section.
 
 At each problematic location, insert per AICODE-FIX Format in Rules.
 
-### 2.6 Update tasks.md
+### 2.6 Rollback Rules
 
-**Problematic completed tasks:**
-- Rollback: `[x]` → `[ ]`
-- Add inline context: `<!-- REV-XXX: ... -->`
+**Rollback `[x]` → `[ ]` required when:**
+- Bug in implementation (IMPL-XXX code is wrong)
+- Test logic is wrong (TEST-XXX assertions incorrect)
+
+**Rollback NOT required when:**
+- Infrastructure issue (jest/tsconfig/eslint config)
+- Environment issue (db setup, missing deps)
+- Race condition in test setup
+
+**In both cases:** Add `<!-- REV-XXX -->` inline context to Affected items.
+
+### 2.7 Update tasks.md
+
+**For EVERY task in REV Affected lists:**
+1. Find task in tasks.md
+2. Add inline context: `<!-- REV-XXX: [description] -->` — MANDATORY for all issue types
+3. Additionally, if code bug per 2.6: change `[x]` → `[ ]`
 
 **Blocked tasks with fresh diagnosis:**
 - Add `<!-- REV-XXX: Fresh diagnosis... -->` below TDD context
@@ -363,20 +393,26 @@ At each problematic location, insert per AICODE-FIX Format in Rules.
 - Keep `[x]`
 - Add `<!-- REV-XXX [INFO]: Acceptable... -->`
 
-### 2.7 Update validation/*.md
+### 2.8 Update validation/*.md
 
-**Affected CHK items:**
-- Rollback: `[x]` → `[ ]`
-- Add inline context: `<!-- REV-XXX: Blocked by... -->`
+**For EVERY CHK linked to REV Affected tasks:**
+1. Find CHK in validation/*.md (CHK references FR-XXX → TEST-XXX in Affected)
+2. Add inline context: `<!-- REV-XXX: [description] -->` — MANDATORY for all issue types
+3. Additionally, if code bug per 2.6: change `[x]` → `[ ]`
 
-### 2.8 Generate Rollback Summary
+**If requirement verified and passing (no REV link):**
+- Keep or set `[x]`
+
+**Track changes for Rollback Summary**
+
+### 2.9 Generate Rollback Summary
 
 Record all changes made:
-- tasks.md: which tasks rolled back, which REV
-- validation/*.md: which CHK rolled back, which REV
+- tasks.md: which tasks updated with REV context, which rolled back
+- validation/*.md: which CHK updated with REV context, which rolled back
 - AICODE-FIX: which files, which REV
 
-### 2.9 Write feedback.md
+### 2.10 Write feedback.md
 
 Load template. Fill all sections:
 - Findings (BLOCKER, MAJOR, Warnings, Info)
@@ -387,7 +423,7 @@ Load template. Fill all sections:
 
 **Exclude** Review Checklist from output (internal validation only).
 
-### 2.10 Commit All Changes
+### 2.11 Commit All Changes
 
 **Apply Git Workflow skill:**
 
@@ -395,7 +431,7 @@ Stage: feedback.md, tasks.md, validation/*.md, source files with AICODE-FIX.
 
 Commit per format in Rules.
 
-### 2.11 Output Summary
+### 2.12 Output Summary
 
 ```
 Review Complete: [feature]
@@ -405,11 +441,14 @@ Findings: [N] blockers, [N] major, [N] warnings
 
 Actions:
 - feedback.md generated
-- [N] tasks rolled back
+- [N] tasks updated with REV context
+- [N] CHK updated with REV context
 - [N] AICODE-FIX added
 
-Next: [feature-fix [feature] | /memory [feature]]
+Next: feature-fix [feature] (if BLOCKED) | /memory [feature] (if PASSED)
 ```
+
+**Agent does not provide manual fix instructions — always delegate to feature-fix.**
 
 # Error Handling
 
@@ -429,6 +468,8 @@ Next: [feature-fix [feature] | /memory [feature]]
 - Never approve with BLOCKERs present
 - Never skip verification (tests + app startup)
 - Never modify code beyond AICODE-FIX comments
+- Never skip adding `<!-- REV-XXX -->` to Affected items in tasks.md and validation/*.md
+- Never skip rollback `[x]` → `[ ]` when code bug found (per 2.6 Rollback Rules)
 - Always commit review changes
 - If uncertain about severity → escalate higher
 - If uncertain about fix → provide multiple options
