@@ -112,6 +112,7 @@ ai-docs/
 ├── PRD.md                 # Product vision and scope
 ├── README.md              # Implementation status (code map)
 ├── FEATURES.md            # Feature index and dependencies
+├── references/            # User-provided supplementary materials
 └── features/
     └── [feature-name]/
         ├── spec.md        # Requirements (FR-*, UX-*), acceptance scenarios
