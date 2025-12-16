@@ -1,6 +1,6 @@
 ---
-name: iconify
-description: Icon search and integration. 200,000+ icons via API. Supports Lucide, Heroicons, Phosphor, Tabler. Find icons by concept, download SVGs, or use React component.
+name: frontend-iconify
+description: Image sourcing strategy for UI projects. Use FREE resources first - DiceBear/Boring Avatars for avatars, Unsplash/Picsum for photos, unDraw/Storyset for illustrations, Haikei for backgrounds. AI generation (DALL-E) only when custom branded assets needed and no free alternative exists.
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: image-generation
+name: frontend-image-generation
 description: Image sourcing for UI. Free first (DiceBear avatars, Unsplash photos, unDraw illustrations). AI generation only for custom needs.
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
