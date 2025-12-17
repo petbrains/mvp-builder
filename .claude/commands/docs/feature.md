@@ -169,6 +169,7 @@ When processing PRD sections:
 **Create Structure:**
 ```bash
 mkdir -p ./ai-docs/features
+mkdir -p ./ai-docs/references
 ```
 
 **Generate Epic Structure:**
@@ -346,6 +347,17 @@ Summary:
 - Index: ./ai-docs/FEATURES.md
 
 All features extracted from PRD and saved as individual specs.
+
+📁 References directory created: ai-docs/references/
+
+Place supplementary materials for /docs:ux and /docs:plan commands:
+- Design systems (.md) — colors, typography, spacing
+- Content libraries (.md) — UI texts, error messages
+- Data schemas (.json, .yaml) — API structures, data models
+- Technical decisions (.md) — architecture notes
+
+Recommendation: Keep files under 20KB for optimal context.
+Note: Text files work best. Images/PDFs have limited support in CLI.
 ```
 
 **User Input Mode:**

@@ -1,6 +1,6 @@
 ---
-name: shadcn
-description: Foundation component library for all UI needs. Use as the default starting point for React/Next.js projects needing accessible, production-ready components like buttons, inputs, dialogs, forms, tables, and navigation. Built on Radix UI primitives with Tailwind CSS styling.
+name: frontend-shadcn
+description: DEFAULT foundation component library for all React/Next.js UI needs. Use as the starting point for any project needing buttons, inputs, dialogs, forms, tables, navigation, modals, dropdowns, and other standard UI elements. Built on Radix UI + Tailwind CSS. Check shadcn FIRST before reaching for other libraries.
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
 

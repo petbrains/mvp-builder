@@ -1,6 +1,6 @@
 ---
 name: frontend-debug-linting
-description: Code quality checks. ESLint, TypeScript, Prettier. Run before delivery. Fix errors, check browser console.
+description: Quality gates for frontend code. ALWAYS use after writing React/Next.js code and before delivery. Covers: ESLint linting, TypeScript type-checking, Prettier formatting, browser console debugging. Catches errors before they reach users.
 allowed-tools: Read, Edit, Bash (*)
 ---
 

@@ -1,6 +1,6 @@
 ---
-name: color-system
-description: Color palette generation and accessibility. Generate palettes from brand color, check WCAG contrast, create shadcn/Tailwind themes.
+name: frontend-color-system
+description: Color palette and theme generation from brand colors. Use when setting up project theming, creating shadcn/Tailwind color schemes, checking WCAG accessibility contrast, or building dark mode. Includes API tools for palette generation and contrast validation.
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
 

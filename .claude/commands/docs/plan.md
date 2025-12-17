@@ -106,7 +106,17 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 
 **Keep in context throughout execution**
 
-### 0.2 Execute Research & Document
+### 0.2 Load References
+```bash
+# Load supplementary materials if available
+if [ -d "./ai-docs/references" ] && [ "$(ls -A ./ai-docs/references 2>/dev/null)" ]; then
+    echo "Loading references..."
+fi
+```
+- If references directory contains files: Read all files into context
+- Keep in context throughout planning
+
+### 0.3 Execute Research & Document
 
 **Extract dependencies from spec.md and ux.md:**
 - Identify mentioned libraries, frameworks, packages

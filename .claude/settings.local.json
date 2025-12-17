@@ -7,6 +7,10 @@
       "Bash(mkdir:*)",
       "Bash(git:*)",
       "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
       "Skill(agent-creator)",
       "Skill(self-improve)",
       "Skill(self-commenting)",
@@ -15,8 +19,36 @@
       "Skill(sequential-thinking)",
       "Skill(context7)",
       "Skill(prompt-optimizer)",
-      "Skill(code-analyzer)"
+      "Skill(code-analyzer)",
+      "Skill(backend-auth-js)",
+      "Skill(backend-master)",
+      "Skill(backend-passport-js)",
+      "Skill(backend-pino)",
+      "Skill(backend-prisma)",
+      "Skill(backend-trpc)",
+      "Skill(backend-trpc-openapi)",
+      "Skill(backend-vitest)",
+      "Skill(backend-zod)",
+      "Skill(docker-node)",
+      "Skill(frontend-aceternity)",
+      "Skill(frontend-color-system)",
+      "Skill(frontend-debug-linting)",
+      "Skill(frontend-google-fonts)",
+      "Skill(frontend-iconify)",
+      "Skill(frontend-image-generation)",
+      "Skill(frontend-lottie)",
+      "Skill(frontend-magic-ui)",
+      "Skill(frontend-master)",
+      "Skill(frontend-playwright)",
+      "Skill(frontend-rive)",
+      "Skill(frontend-shadcn)",
+      "Skill(frontend-design-review)"
     ]
   },
-  "enableAllProjectMcpServers": true
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "context7",
+    "sequential-thinking",
+    "playwright"
+  ]
 }

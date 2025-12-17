@@ -1,6 +1,6 @@
 ---
-name: google-fonts
-description: Typography setup with Google Fonts. Font pairing presets for SaaS, editorial, corporate. Next.js + Tailwind integration.
+name: frontend-google-fonts
+description: Typography setup with Google Fonts for Next.js + Tailwind projects. Use when choosing fonts, need font pairing recommendations (SaaS, editorial, corporate presets), or setting up optimized font loading. Includes ready-to-use configurations and performance best practices.
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: frontend-playwright
-description: Browser verification using Playwright MCP. Navigate, screenshot, check console errors, test interactions. Essential QA before delivering frontend code.
+description: Visual QA gate for frontend code. ALWAYS use before delivering any UI changes - navigate, screenshot, verify console is error-free. Use for: responsive testing across viewports, form/interaction testing, debugging hydration and render issues. Catches visual bugs before users see them.
 allowed-tools: Bash (*), mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
 ---
 

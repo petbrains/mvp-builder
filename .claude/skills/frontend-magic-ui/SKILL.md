@@ -1,6 +1,6 @@
 ---
-name: magic-ui
-description: SaaS landing page components (number tickers, marquees, bento grids, device mockups). Polished animations for professional marketing sites. Built on Framer Motion + Tailwind.
+name: frontend-magic-ui
+description: Polished SaaS landing page components. Use for number tickers/stats animations, logo marquees, bento grids, device mockups (iPhone, Safari), shimmer/rainbow buttons, typing effects. Professional marketing polish built on Framer Motion + Tailwind. For dramatic hero effects use Aceternity, for basic UI use shadcn.
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
 

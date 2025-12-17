@@ -68,7 +68,7 @@
 
 ---
 
-## For TDD-DEV
+## For Feature-Fix
 
 ### Priority
 1. **REV-XXX** — [why first, e.g., "blocks app startup"]

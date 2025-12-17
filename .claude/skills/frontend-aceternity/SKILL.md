@@ -1,6 +1,6 @@
 ---
-name: aceternity
-description: Dramatic visual effects for landing pages (spotlights, aurora, 3D cards, text reveals). Use for marketing pages needing wow-factor. Built on Framer Motion + Tailwind.
+name: frontend-aceternity
+description: Dramatic animated effects for landing pages and marketing sites. Use when user needs "wow-factor", hero sections with spotlights/aurora, 3D hover cards, text reveal animations, animated backgrounds. Built on Framer Motion + Tailwind. NOT for basic UI (use shadcn) or SaaS dashboards (use Magic UI).
 allowed-tools: Read, Edit, Write, Bash (*)
 ---
 
