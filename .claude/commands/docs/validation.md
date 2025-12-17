@@ -472,6 +472,8 @@ Tasks impact:
 - New: [N] tasks added
 - Updated: [N] tasks clarified
 - Deferred: [N] items (see Notes)
+
+Next: Use feature-setup <feature-path>
 ```
 
 # Error Handling

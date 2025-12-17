@@ -492,7 +492,7 @@ Checklists: [validated]/[total] CHK — 100%
 
 Updated: tasks.md, validation/*.md
 
-Next: /docs:review [feature] (for verification) OR /docs:memory [feature] (if approved)
+Next: /docs:review <feature-path>
 ```
 
 # Error Protocol

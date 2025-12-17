@@ -137,13 +137,16 @@ Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 
 4. **Report:**
 ```
-   README.md [Created/Updated] Successfully!
-   
-   Mode: [Initial/Update]
-   Feature: [feature-name]
-   Total Modules: [count]
-   Shared Modules: [count]
-   Location: ./ai-docs/README.md
+README.md [Created/Updated] Successfully!
+
+Mode: [Initial/Update]
+Feature: [feature-name]
+Total Modules: [count]
+Shared Modules: [count]
+Location: ./ai-docs/README.md
+
+✅ Feature complete.
+Next: /docs:feature (start new feature)
 ```
 
 # Error Handling

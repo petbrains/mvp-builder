@@ -402,6 +402,8 @@ Coverage Validation:
 
 TDD Coverage: ✅ All requirements have test coverage
 Format validation: ✅ All tasks follow PREFIX-### format
+
+Next: /docs:validation <feature-path>
 ```
 
 # Error Handling

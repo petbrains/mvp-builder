@@ -434,7 +434,7 @@ Commit per format in Rules.
 ### 2.12 Output Summary
 
 ```
-Review Complete: [feature]
+Review Complete: [feature-name]
 
 Status: [BLOCKED | PASSED]
 Findings: [N] blockers, [N] major, [N] warnings
@@ -445,7 +445,8 @@ Actions:
 - [N] CHK updated with REV context
 - [N] AICODE-FIX added
 
-Next: feature-fix [feature] (if BLOCKED) | /memory [feature] (if PASSED)
+Next: Use feature-fix <feature-path> (if BLOCKED)
+      /docs:memory <feature-path> (if PASSED)
 ```
 
 **Agent does not provide manual fix instructions — always delegate to feature-fix.**
