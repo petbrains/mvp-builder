@@ -354,6 +354,8 @@ Generated:
 - data-model.md (entities)
 - setup.md (setup commands)
 - contracts/ (if API needed)
+
+Next: /docs:tasks <feature-path>
 ```
 
 # Error Handling

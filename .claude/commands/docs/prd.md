@@ -217,7 +217,7 @@ If modifications requested:
 - Write updated ./ai-docs/PRD.md
 - Loop until 'done'
 
-"PRD finalized! Ready for implementation."
+"PRD finalized! Ready for implementation. Next: /docs:feature"
 
 # Error Handling
 

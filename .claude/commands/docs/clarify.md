@@ -138,9 +138,15 @@ After all sections processed:
 - Verify all requirements testable
 
 ## 4. Final Report
-- List sections clarified
-- Total ambiguities resolved
+```
+Clarification Complete
+
+- Sections clarified: [list]
+- Total ambiguities resolved: [count]
 - Status: SUCCESS (spec refined and ready)
+
+Next: /docs:ux <feature-path>
+```
 
 # Examples
 

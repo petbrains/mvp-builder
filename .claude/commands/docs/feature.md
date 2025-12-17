@@ -358,6 +358,9 @@ Place supplementary materials for /docs:ux and /docs:plan commands:
 
 Recommendation: Keep files under 20KB for optimal context.
 Note: Text files work best. Images/PDFs have limited support in CLI.
+
+Next: /docs:ux <feature-path>
+      /docs:clarify <feature-path> (optional: refine spec if ambiguities remain)
 ```
 
 **User Input Mode:**
@@ -369,6 +372,9 @@ Feature Added Successfully
 - Location: ./ai-docs/features/[feature-name]/spec.md
 
 FEATURES.md updated with new feature.
+
+Next: /docs:ux <feature-path>
+      /docs:clarify <feature-path> (optional: refine spec if ambiguities remain)
 ```
 
 # Error Handling

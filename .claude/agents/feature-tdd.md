@@ -459,7 +459,7 @@ Checklists: [validated]/[total] CHK — 100%
 
 Updated: tasks.md, validation/*.md
 
-Next: /docs:review [feature]
+Next: /docs:review <feature-path>
 ```
 
 # Error Protocol

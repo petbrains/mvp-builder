@@ -30,7 +30,7 @@ Feature path: `ai-docs/features/[feature-name]/`
 
 | Gitignored | Worktreeinclude | Reason |
 |------------|-----------------|--------|
-| `.env`, `.env.*` | ✓ Yes | Needed to run locally |
+| `.env`, `.env.*` | ✔ Yes | Needed to run locally |
 | `*.pem`, `*.key`, `*.p12` | ✗ No | Cryptographic keys — too sensitive |
 | `credentials.*`, `secrets.*` | ✗ No | Critical secrets |
 | `.secrets/`, `.credentials/` | ✗ No | Secret directories |
@@ -283,7 +283,7 @@ Verification: ✓ Lint ✓ Types ✓ Build
 Updated: tasks.md (INIT tasks marked complete)
 Committed: [commit-hash]
 
-Next: Phase 2 (User Story 1) in tasks.md
+Next: Use feature-tdd <feature-path>
 ═══════════════════════════════════════════════════
 ```
 
@@ -299,7 +299,7 @@ On failure:
 ✗ Setup Failed at INIT-003
 
 Completed:
-✓ INIT-001, ✓ INIT-002
+✔ INIT-001, ✔ INIT-002
 
 Error: [message]
 Context: [file/command/output]

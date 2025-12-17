@@ -245,6 +245,8 @@ Summary:
 - Platform Patterns: [platform]-specific
 - Error Types: 4 scenarios covered
 - Accessibility: Standards defined with testable values
+
+Next: /docs:plan <feature-path>
 ```
 
 # Error Handling
