@@ -182,6 +182,7 @@ ai-docs/
         ├── spec.md             # Requirements (FR-XXX, UX-XXX)
         ├── ux.md               # User flows and states
         ├── plan.md             # Architecture decisions
+        ├── research.md         # Technical research and rationale
         ├── data-model.md       # Entities and validation
         ├── setup.md            # Environment config
         ├── contracts/          # API specifications
