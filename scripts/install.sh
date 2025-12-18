@@ -2,15 +2,33 @@
 set -e
 
 # MVP Builder Installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/petbrains/mvp-builder/main/install.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/petbrains/mvp-builder/main/scripts/install.sh | bash
 
 REPO="petbrains/mvp-builder"
-BRANCH="main"
 FILES_TO_COPY=".claude CLAUDE.md .mcp.json"
 
 echo ""
 echo "🚀 MVP Builder Installer"
 echo ""
+
+# Get latest release or fallback to main
+get_download_url() {
+    # Try to get latest release
+    RELEASE_INFO=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" 2>/dev/null || echo "")
+    
+    if [ -n "$RELEASE_INFO" ] && echo "$RELEASE_INFO" | grep -q "zipball_url"; then
+        VERSION=$(echo "$RELEASE_INFO" | grep '"tag_name"' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
+        DOWNLOAD_URL=$(echo "$RELEASE_INFO" | grep '"zipball_url"' | sed -E 's/.*"zipball_url": *"([^"]+)".*/\1/')
+        echo "📦 Installing $VERSION..."
+    else
+        # Fallback to main branch
+        VERSION="main"
+        DOWNLOAD_URL="https://github.com/$REPO/archive/refs/heads/main.zip"
+        echo "📦 Installing from main branch..."
+    fi
+}
+
+get_download_url
 
 # Check for existing files
 EXISTING=""
@@ -21,6 +39,7 @@ for file in $FILES_TO_COPY; do
 done
 
 if [ -n "$EXISTING" ]; then
+    echo ""
     echo "⚠️  Found existing files:$EXISTING"
     echo ""
     read -p "Overwrite? (y/N) " -n 1 -r
@@ -35,15 +54,14 @@ fi
 TEMP_DIR=$(mktemp -d)
 trap "rm -rf $TEMP_DIR" EXIT
 
-# Download repository
-echo "📦 Downloading from GitHub..."
-curl -fsSL "https://github.com/$REPO/archive/refs/heads/$BRANCH.zip" -o "$TEMP_DIR/repo.zip"
+# Download
+curl -fsSL "$DOWNLOAD_URL" -o "$TEMP_DIR/repo.zip"
 
 # Extract
 echo "📂 Extracting..."
 unzip -q "$TEMP_DIR/repo.zip" -d "$TEMP_DIR"
 
-# Find extracted folder (GitHub adds branch suffix)
+# Find extracted folder
 EXTRACTED_DIR=$(find "$TEMP_DIR" -maxdepth 1 -type d -name "mvp-builder-*" | head -1)
 
 if [ -z "$EXTRACTED_DIR" ]; then
@@ -55,6 +73,7 @@ fi
 echo "📋 Copying files..."
 for file in $FILES_TO_COPY; do
     if [ -e "$EXTRACTED_DIR/$file" ]; then
+        rm -rf "./$file"
         cp -r "$EXTRACTED_DIR/$file" .
         echo "   ✓ $file"
     else
@@ -63,7 +82,7 @@ for file in $FILES_TO_COPY; do
 done
 
 echo ""
-echo "✅ MVP Builder installed!"
+echo "✅ MVP Builder installed! ($VERSION)"
 echo ""
 echo "Next steps:"
 echo "   1. Run /docs:prd to define your product"

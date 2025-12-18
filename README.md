@@ -209,12 +209,6 @@ curl -fsSL https://raw.githubusercontent.com/petbrains/mvp-builder/main/scripts/
 irm https://raw.githubusercontent.com/petbrains/mvp-builder/main/scripts/install.ps1 | iex
 ```
 
-**Windows CMD:**
-
-```cmd
-curl -fsSL https://raw.githubusercontent.com/petbrains/mvp-builder/main/scripts/install.cmd -o install.cmd && install.cmd && del install.cmd
-```
-
 This installs:
 - `.claude/` — commands, agents, skills
 - `CLAUDE.md` — agent identity and rules

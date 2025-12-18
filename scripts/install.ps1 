@@ -1,15 +1,36 @@
-# MVP Builder Installer for Windows
-# Usage: irm https://raw.githubusercontent.com/petbrains/mvp-builder/main/install.ps1 | iex
+# MVP Builder Installer for Windows PowerShell
+# Usage: irm https://raw.githubusercontent.com/petbrains/mvp-builder/main/scripts/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
 $REPO = "petbrains/mvp-builder"
-$BRANCH = "main"
 $FILES_TO_COPY = @(".claude", "CLAUDE.md", ".mcp.json")
 
 Write-Host ""
 Write-Host "🚀 MVP Builder Installer" -ForegroundColor Cyan
 Write-Host ""
+
+# Get latest release or fallback to main
+function Get-DownloadUrl {
+    try {
+        $releaseInfo = Invoke-RestMethod -Uri "https://api.github.com/repos/$REPO/releases/latest" -UseBasicParsing -ErrorAction SilentlyContinue
+        if ($releaseInfo.zipball_url) {
+            $script:VERSION = $releaseInfo.tag_name
+            $script:DOWNLOAD_URL = $releaseInfo.zipball_url
+            Write-Host "📦 Installing $VERSION..." -ForegroundColor Cyan
+            return
+        }
+    } catch {
+        # Fallback to main
+    }
+    
+    # Fallback to main branch
+    $script:VERSION = "main"
+    $script:DOWNLOAD_URL = "https://github.com/$REPO/archive/refs/heads/main.zip"
+    Write-Host "📦 Installing from main branch..." -ForegroundColor Cyan
+}
+
+Get-DownloadUrl
 
 # Check for existing files
 $existing = @()
@@ -20,6 +41,7 @@ foreach ($file in $FILES_TO_COPY) {
 }
 
 if ($existing.Count -gt 0) {
+    Write-Host ""
     Write-Host "⚠️  Found existing files: $($existing -join ', ')" -ForegroundColor Yellow
     Write-Host ""
     $response = Read-Host "Overwrite? (y/N)"
@@ -34,14 +56,12 @@ $tempDir = Join-Path $env:TEMP "mvp-builder-install-$(Get-Random)"
 New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
 
 try {
-    # Download repository
-    Write-Host "📦 Downloading from GitHub..."
-    $zipUrl = "https://github.com/$REPO/archive/refs/heads/$BRANCH.zip"
+    # Download
     $zipPath = Join-Path $tempDir "repo.zip"
-    Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath -UseBasicParsing
+    Invoke-WebRequest -Uri $DOWNLOAD_URL -OutFile $zipPath -UseBasicParsing
 
     # Extract
-    Write-Host "📂 Extracting..."
+    Write-Host "📂 Extracting..." -ForegroundColor Cyan
     Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
 
     # Find extracted folder
@@ -52,7 +72,7 @@ try {
     }
 
     # Copy files
-    Write-Host "📋 Copying files..."
+    Write-Host "📋 Copying files..." -ForegroundColor Cyan
     foreach ($file in $FILES_TO_COPY) {
         $sourcePath = Join-Path $extractedDir.FullName $file
         if (Test-Path $sourcePath) {
@@ -67,7 +87,7 @@ try {
     }
 
     Write-Host ""
-    Write-Host "✅ MVP Builder installed!" -ForegroundColor Green
+    Write-Host "✅ MVP Builder installed! ($VERSION)" -ForegroundColor Green
     Write-Host ""
     Write-Host "Next steps:"
     Write-Host "   1. Run /docs:prd to define your product"
