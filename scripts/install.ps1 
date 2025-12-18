@@ -1,0 +1,82 @@
+# MVP Builder Installer for Windows
+# Usage: irm https://raw.githubusercontent.com/petbrains/mvp-builder/main/install.ps1 | iex
+
+$ErrorActionPreference = "Stop"
+
+$REPO = "petbrains/mvp-builder"
+$BRANCH = "main"
+$FILES_TO_COPY = @(".claude", "CLAUDE.md", ".mcp.json")
+
+Write-Host ""
+Write-Host "🚀 MVP Builder Installer" -ForegroundColor Cyan
+Write-Host ""
+
+# Check for existing files
+$existing = @()
+foreach ($file in $FILES_TO_COPY) {
+    if (Test-Path $file) {
+        $existing += $file
+    }
+}
+
+if ($existing.Count -gt 0) {
+    Write-Host "⚠️  Found existing files: $($existing -join ', ')" -ForegroundColor Yellow
+    Write-Host ""
+    $response = Read-Host "Overwrite? (y/N)"
+    if ($response -notmatch "^[Yy]$") {
+        Write-Host "Cancelled."
+        exit 1
+    }
+}
+
+# Create temp directory
+$tempDir = Join-Path $env:TEMP "mvp-builder-install-$(Get-Random)"
+New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
+
+try {
+    # Download repository
+    Write-Host "📦 Downloading from GitHub..."
+    $zipUrl = "https://github.com/$REPO/archive/refs/heads/$BRANCH.zip"
+    $zipPath = Join-Path $tempDir "repo.zip"
+    Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath -UseBasicParsing
+
+    # Extract
+    Write-Host "📂 Extracting..."
+    Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
+
+    # Find extracted folder
+    $extractedDir = Get-ChildItem -Path $tempDir -Directory -Filter "mvp-builder-*" | Select-Object -First 1
+
+    if (-not $extractedDir) {
+        throw "Could not find extracted directory"
+    }
+
+    # Copy files
+    Write-Host "📋 Copying files..."
+    foreach ($file in $FILES_TO_COPY) {
+        $sourcePath = Join-Path $extractedDir.FullName $file
+        if (Test-Path $sourcePath) {
+            if (Test-Path $file) {
+                Remove-Item $file -Recurse -Force
+            }
+            Copy-Item $sourcePath -Destination . -Recurse -Force
+            Write-Host "   ✓ $file" -ForegroundColor Green
+        } else {
+            Write-Host "   ⚠ $file not found in repository" -ForegroundColor Yellow
+        }
+    }
+
+    Write-Host ""
+    Write-Host "✅ MVP Builder installed!" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Next steps:"
+    Write-Host "   1. Run /docs:prd to define your product"
+    Write-Host "   2. Run /docs:feature to generate specifications"
+    Write-Host ""
+
+} finally {
+    # Cleanup
+    if (Test-Path $tempDir) {
+        Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
