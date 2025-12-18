@@ -197,7 +197,7 @@ ai-docs/
 
 ```bash
 # Clone the repository
-git clone https://github.com/[your-username]/mvp-builder.git
+git clone https://github.com/akhmat-s/mvp-builder.git
 
 # Copy to your project
 cp -r mvp-builder/.claude your-project/
