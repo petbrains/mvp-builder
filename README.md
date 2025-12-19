@@ -152,18 +152,16 @@ Need specialized behavior for your domain?
 
 Analyzes codebase, matches relevant skills, generates `.claude/agents/your-agent.md`.
 
----
+### Skills System
 
-## Skills System
-
-Skills are reusable capabilities that any agent can load on demand. Instead of hardcoding behavior into agents, MVP Builder matches tasks to skills automatically via `skills-rules.json`.
+Skills are reusable capabilities that agents can load on demand. Instead of hardcoding behavior, agents match tasks to skills automatically via Skills Registry.
 
 Each skill contains:
 - Instructions for specific domain (analysis, documentation, git workflow)
 - Decision rules with explicit conditions
 - Tool permissions and constraints
 
-Add new expertise by creating skill folders in `.claude/skills/`. The general agent loads what it needs, when it needs it.
+Add new expertise: create a skill folder in `.claude/skills/`, then add it to the registry table in `.claude/skills/skills-registry/SKILL.md`.
 
 ---
 

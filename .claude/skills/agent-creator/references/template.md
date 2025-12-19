@@ -6,21 +6,43 @@
 ---
 name: agent-name           # Required: lowercase, hyphens only
 description: When to use   # Required: trigger conditions
-tools: Read, Write, Bash   # Optional: restrict tools (omit = all)
-skills: skill1, skill2     # Optional: skills to auto-load
+tools: Read, Write, Bash   # Optional: COMMA-SEPARATED, single line
+skills: skill1, skill2     # Optional: COMMA-SEPARATED, single line
 model: sonnet              # Optional: sonnet/opus/haiku/inherit
 color: blue                # Optional: display color in UI
 ---
 ```
 
-### Required Fields
+## Format Rules
+
+**CRITICAL: tools and skills must be comma-separated on a single line.**
+
+| Field | Format | ✓ Correct | ✗ Wrong |
+|-------|--------|-----------|---------|
+| `tools` | Comma-separated, single line | `tools: Read, Write, Bash` | `tools:\n  - Read` |
+| `skills` | Comma-separated, single line | `skills: git, context7` | `skills:\n  - git` |
+
+```yaml
+# ✓ CORRECT FORMAT
+tools: Read, Write, Edit, Bash(git:*)
+skills: feature-analyzer, git, sequential-thinking
+
+# ✗ WRONG FORMAT (YAML list with dashes)
+tools:
+  - Read
+  - Write
+skills:
+  - feature-analyzer
+```
+
+## Required Fields
 
 | Field | Format | Example |
 |-------|--------|---------|
 | `name` | kebab-case | `react-expert`, `security-specialist` |
 | `description` | Natural language | "Use when optimizing React performance" |
 
-### Optional Fields
+## Optional Fields
 
 | Field | Default | Options |
 |-------|---------|---------|
@@ -29,7 +51,7 @@ color: blue                # Optional: display color in UI
 | `model` | sonnet | `sonnet`, `opus`, `haiku`, `inherit` |
 | `color` | — | `blue`, `green`, `red`, `yellow`, `purple`, `cyan`, `gray` |
 
-### Model Selection
+## Model Selection
 
 | Model | Use Case |
 |-------|----------|
@@ -69,7 +91,7 @@ Format: `mcp__server__tool`
 name: example-agent
 description: Use when [specific condition]. Specializes in [domain].
 tools: Read, Write, Edit, Bash
-skills: [relevant-skills]
+skills: feature-analyzer, git, sequential-thinking
 model: sonnet
 color: blue
 ---
@@ -155,7 +177,7 @@ You are a code analyzer. Examine codebases and provide insights.
 name: api-designer
 description: Use when designing REST or GraphQL APIs
 tools: Read, Write, Edit, Bash(npm:*)
-skills: openapi-validator
+skills: openapi-validator, backend-master
 model: sonnet
 color: green
 ---

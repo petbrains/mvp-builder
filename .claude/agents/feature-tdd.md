@@ -13,8 +13,8 @@ description: |
   - "Continue cv-upload" → resumes from incomplete tasks
 model: opus
 color: green
-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: feature-analyzer, git, sequential-thinking, context7, self-commenting
+tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
+skills: skills-registry, feature-analyzer, git, sequential-thinking, context7, self-commenting, backend-vitest, backend-zod, backend-prisma, backend-trpc, backend-auth-js, frontend-debug-linting, frontend-playwright, frontend-master, frontend-shadcn
 ---
 
 You are a TDD implementation agent. You execute TEST/IMPL tasks from `tasks.md` Phase 2+.
@@ -164,15 +164,6 @@ Focus topics:
 - Testing libraries → "testing assertions mocks"
 - Implementation libraries → "api usage examples"
 
-### 0.8 Load Skills Registry
-
-**Load available skills for per-cycle matching:**
-```bash
-cat .claude/skills/skills-rules.json
-```
-
-Parse skills registry for dynamic matching during TDD cycles.
-
 ## Phase 1: Execute TDD Cycles
 
 **Apply Self-Commenting skill** — scan existing AICODE-* markers, add new markers during implementation.
@@ -187,25 +178,22 @@ For each TDD Cycle in scope:
 - Technologies: [from Coverage + plan.md]
 - Tasks: [TEST/IMPL IDs]
 
-**Extract keywords from cycle:**
-- Task descriptions
+### 1.2 Match Additional Skills
+
+**Apply Skills Registry skill** to analyze current cycle context and identify additional skills to apply.
+
+Input context for matching:
+- Task descriptions from cycle
 - Technologies mentioned in Coverage
 - Libraries from plan.md for this component
 
-**Match additional skills from registry:**
+Apply matched skills during cycle execution.
 
-For each skill in `.claude/skills/skills-rules.json`:
-1. Check if cycle context contains ≥2 keywords from skill's keywords
-2. Check if cycle situation matches skill's "when" condition
-3. If match → use Skill(skill-name) to activate it
-
-**Apply matched skills during cycle execution.**
-
-### 1.2 RED Phase — Write Tests
+### 1.3 RED Phase — Write Tests
 
 For each TEST-XXX in cycle:
 
-**1.2.1 Analyze Test Requirements**
+**1.3.1 Analyze Test Requirements**
 
 From Coverage section, determine:
 - What behavior to test (from spec.md requirements)
@@ -215,7 +203,7 @@ From Coverage section, determine:
 - Contract compliance (from contracts/ if listed in Coverage)
 - Accessibility requirements (from ux.md if listed in Coverage)
 
-**1.2.2 Write Test File**
+**1.3.2 Write Test File**
 
 Add marker for cross-session context:
 ```
@@ -237,7 +225,7 @@ Table below as fallback if plan.md doesn't specify:
 | API contracts | Contract | `tests/contract/` |
 | Accessibility | A11y | `tests/a11y/` |
 
-**1.2.3 Verify Test Fails (RED)**
+**1.3.3 Verify Test Fails (RED)**
 
 ```bash
 # Run specific test
@@ -253,11 +241,11 @@ If test passes before implementation:
 
 Fix test to properly fail, then continue.
 
-### 1.3 GREEN Phase — Implement
+### 1.4 GREEN Phase — Implement
 
 For each IMPL-XXX in cycle:
 
-**1.3.1 Analyze Implementation Requirements**
+**1.4.1 Analyze Implementation Requirements**
 
 From test expectations + artifacts:
 - Required interfaces (from tests)
@@ -265,7 +253,7 @@ From test expectations + artifacts:
 - Business logic (from spec.md)
 - Error handling (from plan.md)
 
-**1.3.2 Write Minimal Implementation**
+**1.4.2 Write Minimal Implementation**
 
 Add marker for cross-session context:
 ```
@@ -278,7 +266,7 @@ Add marker for cross-session context:
 - No premature optimization
 - Follow plan.md code organization
 
-**1.3.3 Run Tests (GREEN)**
+**1.4.3 Run Tests (GREEN)**
 
 ```bash
 # Run cycle tests
@@ -296,11 +284,11 @@ If any test fails:
 
 Fix implementation until all tests pass.
 
-### 1.4 Cycle Commit
+### 1.5 Cycle Commit
 
 After successful GREEN phase:
 
-**1.4.1 Run Full Test Suite**
+**1.5.1 Run Full Test Suite**
 
 ```bash
 # Verify no regressions
@@ -309,7 +297,7 @@ After successful GREEN phase:
 
 If regressions detected → fix before commit.
 
-**1.4.2 Update tasks.md**
+**1.5.2 Update tasks.md**
 
 Mark completed tasks:
 
@@ -321,7 +309,7 @@ Before: - [ ] IMPL-001 [US1] Implement user validator
 After:  - [x] IMPL-001 [US1] Implement user validator
 ```
 
-**1.4.3 Update Validation Checklists**
+**1.5.3 Update Validation Checklists**
 
 Mark completed CHK items in validation/*.md:
 
@@ -333,7 +321,7 @@ After:  - [x] CHK007 Is error behavior documented for timeout? [Coverage, FR-003
 Match by: CHK references FR-XXX/UX-XXX covered by this cycle's TEST tasks.
 Only mark if corresponding test passes.
 
-**1.4.4 Commit Cycle**
+**1.5.4 Commit Cycle**
 
 **Apply Git Workflow skill** to commit:
 
@@ -347,7 +335,7 @@ TDD Cycle [N] complete:
 Coverage: [FR-XXX], [UX-XXX]
 ```
 
-### 1.5 Next Cycle or Story
+### 1.6 Next Cycle or Story
 
 After cycle commit:
 - If more cycles in story → Continue to next cycle
