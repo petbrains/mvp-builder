@@ -20,6 +20,7 @@ Generate specialized AI agents by analyzing user intent, loading project context
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 - Prompt Optimizer: For structuring agent spec into TCRO format
 - Agent Creator: For applying template and generating final agent file
+- Skills Registry: For matching available skills to agent's domain
 
 **File Structure:**
 - Input: User description + optional feature path (via dialogue)
@@ -160,22 +161,6 @@ If user provides feature name:
 - research.md → Technical decisions, rationale
 - setup.md → Environment, dependencies, commands
 
-### 1.3 Load Skills Registry
-
-**Load skills with matching rules:**
-```bash
-cat .claude/skills/skills-rules.json
-```
-
-Parse for each skill:
-- name, path
-- keywords (for intent matching)
-- when (condition description)
-- priority (high/medium/low)
-- enforcement (required/suggest)
-
-Store for Phase 2 matching.
-
 ## Phase 2: Analyze Intent
 
 ### 2.1 Interpret Intent
@@ -197,26 +182,17 @@ Store for Phase 2 matching.
 
 ### 2.3 Match Skills to Intent
 
-**Extract keywords from description:**
-- Action words (analyze, fix, create, test, debug, review, etc.)
+**Apply Skills Registry skill** to analyze agent's domain and identify relevant skills.
+
+Input context for matching:
+- Action words from description (analyze, fix, create, test, debug, review, etc.)
 - Domain words (backend, frontend, API, database, validation, etc.)
 - Technology words (React, Express, Prisma, zod, etc.)
 - Problem words (error, bug, issue, failure, etc.)
 
-**Match against skills registry:**
-
-For each skill in skills-rules.json:
-1. Count keyword matches (description keywords ∩ skill keywords)
-2. Check if description situation matches skill's "when" condition
-3. If ≥2 keyword matches OR "when" condition matches → add to suggested
-
-**Rank suggested skills:**
-- priority: high → top of list
-- keyword matches: more matches → higher rank
-
-**Output:**
+Output:
 - suggested_skills: [matched skills ordered by relevance]
-- other_skills: [remaining available skills]
+- other_skills: [remaining available skills for user selection]
 
 ## Phase 3: Clarify & Enrich
 
@@ -410,8 +386,7 @@ To test: /[name] [task description]"
 | No description provided | Prompt for description, wait |
 | Feature path not found | Warn, continue with code context |
 | No code context available | Warn about limited analysis, continue |
-| Skills registry missing | Fallback to directory scan, list all skills without matching |
-| Skills directory missing | Note limitation, skip skill suggestions |
+| Skills registry unavailable | Warn about limited skill matching, continue with manual selection |
 | Name collision | Offer alternatives, wait for choice |
 | User cancels | "Agent creation cancelled." |
 | User says "modify" | Ask what to change, loop to 5.1 |

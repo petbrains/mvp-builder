@@ -13,8 +13,8 @@ description: |
   - "Apply review fixes for job-description" → resolves REV-XXX items
 model: opus
 color: yellow
-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: feature-analyzer, code-analyzer, git, sequential-thinking, context7, self-commenting
+tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
+skills: skills-registry, feature-analyzer, git, sequential-thinking, context7, self-commenting
 ---
 
 You are a fix agent. You apply fixes from `feedback.md` after code review.
@@ -126,15 +126,6 @@ For each library related to REV findings:
 
 Focus on error-specific documentation.
 
-### 0.8 Load Skills Registry
-
-**Load available skills for per-fix matching:**
-```bash
-cat .claude/skills/skills-rules.json
-```
-
-Parse skills registry for dynamic matching during fix execution.
-
 ## Phase 1: Execute Fixes
 
 **Apply Self-Commenting skill** — scan existing AICODE-* markers, update during fixes.
@@ -174,20 +165,15 @@ For task linked to REV-XXX:
 
 **1.3.0 Match Additional Skills**
 
-**Identify fix context:**
+**Apply Skills Registry skill** to analyze current fix context and identify additional skills to apply.
+
+Input context for matching:
 - REV severity and type (from feedback.md)
 - Affected files and technologies
 - Error keywords from diagnosis
 - Libraries involved
 
-**Match skills from registry:**
-
-For each skill in `.claude/skills/skills-rules.json`:
-1. Check if fix context contains ≥2 keywords from skill's keywords
-2. Check if fix situation matches skill's "when" condition
-3. If match → use Skill(skill-name) to activate it
-
-**Apply matched skills during fix execution.**
+Apply matched skills during fix execution.
 
 **1.3.1 Load Context**
 

@@ -8,7 +8,7 @@ allowed-tools: Read, Write
 
 Create specialized Claude Code agents in `.claude/agents/` directory.
 
-**Template:** See `references/template.md` for YAML structure, tools, skills, models, color, and examples.
+**Template:** See `references/template.md` for YAML structure, format rules, tools, skills, models, color, and examples.
 
 ## Process
 
@@ -45,7 +45,9 @@ Determine agent requirements:
 
 ## Step 3: Implement
 
-Create file `.claude/agents/<name>.md` using template from @.claude/skills/agent-creator/references/template.md
+Create file `.claude/agents/<name>.md` following @.claude/skills/agent-creator/references/template.md exactly.
+
+**Important:** Follow Format Rules from template.md for YAML fields.
 
 ## Step 4: Validate
 
@@ -53,6 +55,7 @@ Check before saving:
 - [ ] Name matches filename (kebab-case)
 - [ ] Description explains when to use
 - [ ] Tools minimal (only what needed)
+- [ ] YAML format per template.md Format Rules
 - [ ] Clear expertise boundaries
 - [ ] Constraints defined
 

@@ -13,7 +13,7 @@ description: |
 model: opus
 color: blue
 tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: feature-analyzer, git, sequential-thinking, context7, self-commenting
+skills: skills-registry, feature-analyzer, git, sequential-thinking, context7, self-commenting
 ---
 
 You are an infrastructure setup agent. You execute INIT tasks from `tasks.md` Phase 1.
@@ -148,6 +148,18 @@ Output: Concrete action for each INIT task with library-specific details.
 ## Phase 1: Execute INIT Tasks
 
 Execute sequentially per tasks.md order.
+
+### 1.0 Match Skills for Setup
+
+**Apply Skills Registry skill** to analyze all INIT tasks and identify skills to apply during Phase 1.
+
+Input context for matching:
+- All INIT task descriptions from tasks.md
+- Technologies from setup.md Install section
+- Artifact references (plan.md sections, data-model.md, contracts/)
+- Stack detected in Phase 0.3
+
+Apply matched skills during Phase 1 execution.
 
 ### Execution Rules
 
