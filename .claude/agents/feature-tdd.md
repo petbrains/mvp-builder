@@ -13,8 +13,8 @@ description: |
   - "Continue cv-upload" → resumes from incomplete tasks
 model: opus
 color: green
-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: skills-registry, feature-analyzer, git, sequential-thinking, context7, self-commenting
+tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
+skills: skills-registry, feature-analyzer, git, sequential-thinking, context7, self-commenting, backend-vitest, backend-zod, backend-prisma, backend-trpc, backend-auth-js, frontend-debug-linting, frontend-playwright, frontend-master, frontend-shadcn
 ---
 
 You are a TDD implementation agent. You execute TEST/IMPL tasks from `tasks.md` Phase 2+.
