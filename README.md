@@ -193,13 +193,23 @@ ai-docs/
 
 ## Installation
 
-```bash
-# Clone the repository
-git clone https://github.com/akhmat-s/mvp-builder.git
+Navigate to your project directory, then run:
 
-# Copy to your project
-cp -r mvp-builder/.claude your-project/
-cp -r mvp-builder/ai-docs your-project/
+**macOS, Linux, WSL:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/petbrains/mvp-builder/main/scripts/install.sh | bash
 ```
+
+**Windows PowerShell:**
+
+```powershell
+irm https://raw.githubusercontent.com/petbrains/mvp-builder/main/scripts/install.ps1 | iex
+```
+
+This installs:
+- `.claude/` — commands, agents, skills
+- `CLAUDE.md` — agent identity and rules
+- `.mcp.json` — MCP server configuration
 
 Start with `/docs:prd` to define your product.
