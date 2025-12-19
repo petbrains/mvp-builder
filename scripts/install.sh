@@ -6,15 +6,25 @@ set -e
 
 REPO="petbrains/mvp-builder"
 FILES_TO_COPY=".claude CLAUDE.md .mcp.json"
+USER_AGENT="mvp-builder"
 
 echo ""
 echo "🚀 MVP Builder Installer"
 echo ""
 
+# Check dependencies
+for cmd in curl unzip; do
+    if ! command -v $cmd &>/dev/null; then
+        echo "❌ Required: $cmd"
+        exit 1
+    fi
+done
+
 # Get latest release or fallback to main
 get_download_url() {
     # Try to get latest release
-    RELEASE_INFO=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" 2>/dev/null || echo "")
+    RELEASE_INFO=$(curl -fsSL -H "User-Agent: $USER_AGENT" \
+        "https://api.github.com/repos/$REPO/releases/latest" 2>/dev/null || echo "")
     
     if [ -n "$RELEASE_INFO" ] && echo "$RELEASE_INFO" | grep -q "zipball_url"; then
         VERSION=$(echo "$RELEASE_INFO" | grep '"tag_name"' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
@@ -40,9 +50,10 @@ done
 
 if [ -n "$EXISTING" ]; then
     echo ""
-    echo "⚠️  Found existing files:$EXISTING"
+    echo "⚠️  Found existing files: $EXISTING"
     echo ""
-    read -p "Overwrite? (y/N) " -n 1 -r
+    # FIX: Read from /dev/tty for pipe compatibility
+    read -p "Overwrite? (y/N) " -n 1 -r </dev/tty
     echo ""
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         echo "Cancelled."
@@ -52,17 +63,18 @@ fi
 
 # Create temp directory
 TEMP_DIR=$(mktemp -d)
-trap "rm -rf $TEMP_DIR" EXIT
+# FIX: Single quotes prevent early expansion, inner quotes handle spaces
+trap 'rm -rf "$TEMP_DIR"' EXIT
 
 # Download
-curl -fsSL "$DOWNLOAD_URL" -o "$TEMP_DIR/repo.zip"
+curl -fsSL -H "User-Agent: $USER_AGENT" "$DOWNLOAD_URL" -o "$TEMP_DIR/repo.zip"
 
 # Extract
 echo "📂 Extracting..."
 unzip -q "$TEMP_DIR/repo.zip" -d "$TEMP_DIR"
 
-# Find extracted folder
-EXTRACTED_DIR=$(find "$TEMP_DIR" -maxdepth 1 -type d -name "mvp-builder-*" | head -1)
+# Find extracted folder (handles both petbrains-mvp-builder-* and mvp-builder-*)
+EXTRACTED_DIR=$(find "$TEMP_DIR" -maxdepth 1 -mindepth 1 -type d | head -1)
 
 if [ -z "$EXTRACTED_DIR" ]; then
     echo "❌ Error: Could not find extracted directory"
