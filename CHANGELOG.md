@@ -1,11 +1,8 @@
 # Changelog
 
-All notable changes to MVP Builder will be documented in this file.
+All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [0.0.1] - 2025-12-18
+## [0.0.1] - 2025-12-19
 
 ### Added
 
@@ -42,6 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Full traceability (FR-XXX → TEST-XXX → IMPL-XXX → CHK → REV)
 - Feedback loop with self-verification
 - Skills matching via `skills-rules.json`
-- Cross-platform installation scripts (bash, PowerShell, CMD)
+- Cross-platform installation scripts (bash, PowerShell)
 
 [0.0.1]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.1
