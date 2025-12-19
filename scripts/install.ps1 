@@ -5,8 +5,6 @@ $ErrorActionPreference = "Stop"
 
 $REPO = "petbrains/mvp-builder"
 $FILES_TO_COPY = @(".claude", "CLAUDE.md", ".mcp.json")
-$USER_AGENT = "mvp-builder"
-$HEADERS = @{ "User-Agent" = $USER_AGENT }
 
 Write-Host ""
 Write-Host "🚀 MVP Builder Installer" -ForegroundColor Cyan
@@ -15,9 +13,7 @@ Write-Host ""
 # Get latest release or fallback to main
 function Get-DownloadUrl {
     try {
-        # FIX: Added User-Agent header
-        $releaseInfo = Invoke-RestMethod -Uri "https://api.github.com/repos/$REPO/releases/latest" `
-            -Headers $HEADERS -UseBasicParsing -ErrorAction SilentlyContinue
+        $releaseInfo = Invoke-RestMethod -Uri "https://api.github.com/repos/$REPO/releases/latest" -Headers @{"User-Agent"="mvp-builder"} -UseBasicParsing -ErrorAction SilentlyContinue
         if ($releaseInfo.zipball_url) {
             $script:VERSION = $releaseInfo.tag_name
             $script:DOWNLOAD_URL = $releaseInfo.zipball_url
@@ -48,17 +44,9 @@ if ($existing.Count -gt 0) {
     Write-Host ""
     Write-Host "⚠️  Found existing files: $($existing -join ', ')" -ForegroundColor Yellow
     Write-Host ""
-    
-    # FIX: Check if running interactively
-    if ([Environment]::UserInteractive -and [Console]::KeyAvailable -ne $null) {
-        $response = Read-Host "Overwrite? (y/N)"
-        if ($response -notmatch "^[Yy]$") {
-            Write-Host "Cancelled."
-            exit 1
-        }
-    } else {
-        # Non-interactive: require -Force parameter or fail safe
-        Write-Host "❌ Existing files found. Run interactively or remove existing files first." -ForegroundColor Red
+    $response = Read-Host "Overwrite? (y/N)"
+    if ($response -notmatch "^[Yy]$") {
+        Write-Host "Cancelled."
         exit 1
     }
 }
@@ -70,17 +58,14 @@ New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
 try {
     # Download
     $zipPath = Join-Path $tempDir "repo.zip"
-    # FIX: Added User-Agent header
-    Invoke-WebRequest -Uri $DOWNLOAD_URL -OutFile $zipPath -Headers $HEADERS -UseBasicParsing
+    Invoke-WebRequest -Uri $DOWNLOAD_URL -OutFile $zipPath -Headers @{"User-Agent"="mvp-builder"} -UseBasicParsing
 
     # Extract
     Write-Host "📂 Extracting..." -ForegroundColor Cyan
     Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
 
-    # Find extracted folder (FIX: removed specific filter)
-    $extractedDir = Get-ChildItem -Path $tempDir -Directory | 
-        Where-Object { $_.Name -ne "repo.zip" } | 
-        Select-Object -First 1
+    # Find extracted folder
+    $extractedDir = Get-ChildItem -Path $tempDir -Directory -Filter "*mvp-builder*" | Select-Object -First 1
 
     if (-not $extractedDir) {
         throw "Could not find extracted directory"
