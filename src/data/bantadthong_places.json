@@ -1,0 +1,334 @@
+{
+  "Pan-Asian Flavors": {
+    "group_description": "A journey through Bangkok's diverse Asian culinary influences, from Chinese shophouses to Japanese izakayas.",
+    "Morning": {
+      "Lao Li Congee": {
+        "primaryType": "Chinese Restaurant",
+        "story": "Three generations of the Li family have perfected their rice porridge recipe. The secret lies in the 6-hour slow simmer.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=1001"
+      },
+      "Hong Kong Dim Sum House": {
+        "primaryType": "Dim Sum Restaurant",
+        "story": "Steaming bamboo baskets arrive at dawn, filled with har gow made by hands that have folded dumplings for 40 years.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=1002"
+      },
+      "Morning Bun Cha": {
+        "primaryType": "Vietnamese Restaurant",
+        "story": "The charcoal grill fires up at 5am. By 6, the neighborhood knows breakfast is ready from the smoke alone.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=1003"
+      }
+    },
+    "Lunch": {
+      "Szechuan Dragon": {
+        "primaryType": "Chinese Restaurant",
+        "story": "The ma la numbing spice here comes from peppercorns hand-carried from Sichuan province.",
+        "rating": 4.6,
+        "googleMapsUri": "https://maps.google.com/?cid=1004"
+      },
+      "Korean BBQ Bantad": {
+        "primaryType": "Korean Restaurant",
+        "story": "Students discovered this spot in 1995. Now their children bring their own kids for the same banchan.",
+        "rating": 4.2,
+        "googleMapsUri": "https://maps.google.com/?cid=1005"
+      },
+      "Pho Nguyen": {
+        "primaryType": "Vietnamese Restaurant",
+        "story": "The broth simmers for 18 hours. Mrs. Nguyen has never revealed what makes it different.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=1006"
+      }
+    },
+    "Afternoon": {
+      "Taiwan Bubble Corner": {
+        "primaryType": "Bubble Tea Shop",
+        "story": "The tapioca pearls are made fresh every two hours. Regulars can tell the difference.",
+        "rating": 4.1,
+        "googleMapsUri": "https://maps.google.com/?cid=1007"
+      },
+      "Japanese Crepe Stand": {
+        "primaryType": "Dessert Shop",
+        "story": "A Harajuku transplant that found a second home in Bangkok. The matcha cream is imported weekly.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=1008"
+      },
+      "Mango Sticky Rice Fusion": {
+        "primaryType": "Dessert Shop",
+        "story": "Thai-Japanese fusion at its sweetest. The mango comes from Chiang Mai, the technique from Tokyo.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=1009"
+      }
+    },
+    "Evening": {
+      "Izakaya Soi": {
+        "primaryType": "Japanese Restaurant",
+        "story": "The master trained in Osaka for 15 years before bringing his yakitori skills to Bangkok.",
+        "rating": 4.7,
+        "googleMapsUri": "https://maps.google.com/?cid=1010"
+      },
+      "Hainanese Chicken Night": {
+        "primaryType": "Chinese Restaurant",
+        "story": "The chicken is poached in a broth passed down from a Hainan grandmother who never wrote it down.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=1011"
+      },
+      "Midnight Ramen": {
+        "primaryType": "Japanese Restaurant",
+        "story": "Opens at 10pm, closes when the broth runs out. The pork bone stock takes three days to prepare.",
+        "rating": 4.6,
+        "googleMapsUri": "https://maps.google.com/?cid=1012"
+      }
+    }
+  },
+  "Urban Hideaways": {
+    "group_description": "Secret spots tucked away in alleys and rooftops, known only to locals and the curious.",
+    "Morning": {
+      "Alley Coffee Roasters": {
+        "primaryType": "Coffee Shop",
+        "story": "Found through an unmarked door, down a corridor of graffiti. The beans are roasted on-site daily.",
+        "rating": 4.6,
+        "googleMapsUri": "https://maps.google.com/?cid=2001"
+      },
+      "Grandma's Balcony": {
+        "primaryType": "Thai Restaurant",
+        "story": "A third-floor apartment converted to a breakfast spot. Grandma still does the cooking herself.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=2002"
+      },
+      "The Quiet Noodle": {
+        "primaryType": "Noodle Shop",
+        "story": "No sign, no menu. Point at what others are eating and trust the process.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=2003"
+      }
+    },
+    "Lunch": {
+      "Rooftop Rice": {
+        "primaryType": "Thai Restaurant",
+        "story": "Climb five floors of a parking garage. The view of old Bangkok is worth every step.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=2004"
+      },
+      "The Garage Kitchen": {
+        "primaryType": "Fusion Restaurant",
+        "story": "A mechanic turned chef. The same precision he used on engines now goes into his pad thai.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=2005"
+      },
+      "Garden in the Wall": {
+        "primaryType": "Vegetarian Restaurant",
+        "story": "A literal hole in the wall leads to a courtyard garden. Everything is grown within these walls.",
+        "rating": 4.2,
+        "googleMapsUri": "https://maps.google.com/?cid=2006"
+      }
+    },
+    "Afternoon": {
+      "The Book Cafe": {
+        "primaryType": "Cafe",
+        "story": "Ten thousand books line the walls. The coffee is good, but people come for the silence.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=2007"
+      },
+      "Temple Tea Room": {
+        "primaryType": "Tea House",
+        "story": "Hidden behind an active temple. Monks sometimes join guests for afternoon tea.",
+        "rating": 4.6,
+        "googleMapsUri": "https://maps.google.com/?cid=2008"
+      },
+      "Vinyl & Brew": {
+        "primaryType": "Coffee Shop",
+        "story": "Record players and pour-over coffee. The owner's jazz collection spans four decades.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=2009"
+      }
+    },
+    "Evening": {
+      "The Speakeasy Kitchen": {
+        "primaryType": "Cocktail Bar",
+        "story": "Ring the doorbell three times. The password changes weekly, but the cocktails are timeless.",
+        "rating": 4.7,
+        "googleMapsUri": "https://maps.google.com/?cid=2010"
+      },
+      "Canal Side Secret": {
+        "primaryType": "Thai Restaurant",
+        "story": "Only accessible by boat after 6pm. The seafood is caught that afternoon.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=2011"
+      },
+      "Midnight Garden": {
+        "primaryType": "Wine Bar",
+        "story": "A courtyard that blooms with night jasmine. The wine list is as curated as the garden.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=2012"
+      }
+    }
+  },
+  "Sweet Bangkok": {
+    "group_description": "A sugar-coated journey through Bangkok's dessert scene, from traditional Thai sweets to modern confections.",
+    "Morning": {
+      "Kanom Krok Auntie": {
+        "primaryType": "Street Food",
+        "story": "The coconut pancakes sizzle in cast iron molds passed down three generations. Perfectly crispy, always.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=3001"
+      },
+      "Sweet Sunrise Bakery": {
+        "primaryType": "Bakery",
+        "story": "The croissants emerge at 6am. By 8, they're gone. The butter is imported from France.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=3002"
+      },
+      "Thai Waffle House": {
+        "primaryType": "Waffle Shop",
+        "story": "Pandan waffles with coconut cream. A Thai twist on a Belgian classic.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=3003"
+      }
+    },
+    "Lunch": {
+      "Mango Paradise": {
+        "primaryType": "Dessert Shop",
+        "story": "Twenty varieties of mango desserts. The owner has a mango farm in Rayong.",
+        "rating": 4.6,
+        "googleMapsUri": "https://maps.google.com/?cid=3004"
+      },
+      "Ice Cream Soi": {
+        "primaryType": "Ice Cream Shop",
+        "story": "Flavors rotate daily based on what's fresh at the market. Tom yum ice cream is the signature.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=3005"
+      },
+      "Coconut Dream": {
+        "primaryType": "Dessert Shop",
+        "story": "Everything here uses fresh coconut. The ice cream is frozen in the shell.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=3006"
+      }
+    },
+    "Afternoon": {
+      "Bingsu Bangkok": {
+        "primaryType": "Korean Dessert Shop",
+        "story": "Shaved ice piled high with mango and condensed milk. A Korean classic with Thai fruits.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=3007"
+      },
+      "Taro Tales": {
+        "primaryType": "Dessert Shop",
+        "story": "Purple taro everything. The bubble tea here started the taro trend in Bangkok.",
+        "rating": 4.2,
+        "googleMapsUri": "https://maps.google.com/?cid=3008"
+      },
+      "Chiffon Cloud Cafe": {
+        "primaryType": "Cake Shop",
+        "story": "Cakes so light they might float away. The pandan chiffon is the stuff of legends.",
+        "rating": 4.6,
+        "googleMapsUri": "https://maps.google.com/?cid=3009"
+      }
+    },
+    "Evening": {
+      "Night Market Sweets": {
+        "primaryType": "Street Food",
+        "story": "Traditional Thai desserts under fairy lights. The luk chup are tiny works of art.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=3010"
+      },
+      "Chocolate Therapy": {
+        "primaryType": "Chocolate Shop",
+        "story": "Belgian chocolate meets Thai chili. The spicy truffle is dangerously addictive.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=3011"
+      },
+      "Durian Dreams": {
+        "primaryType": "Dessert Shop",
+        "story": "For the brave. The king of fruits in every form imaginable. No hotel will take you after.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=3012"
+      }
+    }
+  },
+  "Local Thai Experience": {
+    "group_description": "Authentic Thai flavors from family recipes, street carts, and neighborhood institutions.",
+    "Morning": {
+      "Joke Prince": {
+        "primaryType": "Thai Restaurant",
+        "story": "Rice porridge fit for royalty. The recipe came from a palace kitchen a century ago.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=4001"
+      },
+      "Patongko Siam": {
+        "primaryType": "Street Food",
+        "story": "Chinese doughnuts fried to perfection since 1952. Dip in condensed milk or sweetened soy.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=4002"
+      },
+      "Khao Tom Mat": {
+        "primaryType": "Thai Restaurant",
+        "story": "Sticky rice wrapped in banana leaves. Grandmother's recipe, available only before noon.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=4003"
+      }
+    },
+    "Lunch": {
+      "Pad Thai Legend": {
+        "primaryType": "Thai Restaurant",
+        "story": "Three Michelin Guide mentions haven't changed a thing. Same wok, same recipe, same family.",
+        "rating": 4.7,
+        "googleMapsUri": "https://maps.google.com/?cid=4004"
+      },
+      "Som Tam Queen": {
+        "primaryType": "Isaan Restaurant",
+        "story": "The papaya salad here has made grown men cry. Ask for Thai spicy at your own risk.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=4005"
+      },
+      "Boat Noodle Alley": {
+        "primaryType": "Noodle Shop",
+        "story": "Tiny bowls, intense flavors. Locals compete to stack the most empty bowls.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=4006"
+      }
+    },
+    "Afternoon": {
+      "Thai Tea Original": {
+        "primaryType": "Beverage Shop",
+        "story": "The orange tea that started it all. Same recipe since the owner's grandfather opened in 1960.",
+        "rating": 4.3,
+        "googleMapsUri": "https://maps.google.com/?cid=4007"
+      },
+      "Khanom Buang Cart": {
+        "primaryType": "Street Food",
+        "story": "Crispy Thai crepes made to order. The meringue is whipped by hand.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=4008"
+      },
+      "Coconut Ice Cream Boat": {
+        "primaryType": "Dessert Shop",
+        "story": "Served in a coconut shell from a vintage ice cream cart. Pure nostalgia.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=4009"
+      }
+    },
+    "Evening": {
+      "Night Wok Masters": {
+        "primaryType": "Thai Restaurant",
+        "story": "The flames dance at sunset. Each dish is cooked over charcoal in thirty seconds flat.",
+        "rating": 4.6,
+        "googleMapsUri": "https://maps.google.com/?cid=4010"
+      },
+      "Tom Yum Temple": {
+        "primaryType": "Thai Restaurant",
+        "story": "The soup that defines Thai cuisine. Spicy, sour, and unforgettable.",
+        "rating": 4.5,
+        "googleMapsUri": "https://maps.google.com/?cid=4011"
+      },
+      "Isaan Grill House": {
+        "primaryType": "Isaan Restaurant",
+        "story": "Grilled chicken and sticky rice until midnight. The nam jim jaew sauce is life-changing.",
+        "rating": 4.4,
+        "googleMapsUri": "https://maps.google.com/?cid=4012"
+      }
+    }
+  }
+}
