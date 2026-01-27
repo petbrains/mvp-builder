@@ -25,6 +25,7 @@ Load these documents when starting work:
 - Verify test fails before writing implementation
 - No stub tests or always-passing mocks
 - No test-only methods in production code
+- Tests must be isolated — no dependencies between tests
 
 ### Traceability IDs
 
@@ -51,6 +52,8 @@ Maintain references when implementing: task → requirement → entity
 - Max 300 lines/file, 80 lines/function
 - Line length: 100-120 characters
 - No "god classes" - split by concern
+- Prefer early returns over deep nesting
+- Comments explain WHY, not WHAT
 - Must pass lint/type-check before done
 
 ### Verification Order
