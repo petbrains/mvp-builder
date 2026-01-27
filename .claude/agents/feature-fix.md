@@ -370,7 +370,18 @@ Verify all REV-XXX from feedback.md addressed:
 - All MAJOR findings resolved
 - WARN/INFO reviewed and handled
 
-### 2.2 Full Test Suite
+### 2.2 Quality Gates
+
+**Run verification sequence. Stop on first failure.**
+
+1. Build → catch compile errors
+2. Types → catch type mismatches
+3. Lint → catch style issues
+4. Tests → validate behavior (proceed to 2.3)
+
+If any fails → fix before continuing to next gate.
+
+### 2.3 Full Test Suite
 
 ```bash
 [test-runner] --all --coverage
@@ -378,7 +389,7 @@ Verify all REV-XXX from feedback.md addressed:
 
 All tests must pass.
 
-### 2.3 Application Startup
+### 2.4 Application Startup
 
 ```bash
 [run-command from setup.md] &
@@ -389,7 +400,7 @@ Verify:
 - No startup errors
 - No runtime exceptions in logs
 
-### 2.4 Validation Checklist Update
+### 2.5 Validation Checklist Update
 
 **For ALL CHK items in validation/*.md:**
 
@@ -415,7 +426,7 @@ Verify:
 
 **If any `[ ]`, `<!-- REV-`, or `AICODE-FIX` remain:** Delete/resolve before proceeding.
 
-### 2.5 Final Commit
+### 2.6 Final Commit
 
 **Commit all remaining changes:**
 
@@ -447,7 +458,8 @@ git status  # Must show "nothing to commit, working tree clean"
    - All tasks `[x]`, all CHK `[x]`
    - All `<!-- REV-XXX -->` removed from tasks.md and validation/*.md
    - No AICODE-FIX comments remaining in code
-   - Tests pass, app starts
+   - Quality gates passed (build, types, lint, tests)
+   - App starts
 
 2. **Commit if not clean:**
    ```bash
@@ -463,6 +475,9 @@ Feature: [feature-name] | Branch: feature/[feature-name]
 Commit: [hash]
 
 Phase 2 Verification: ✓ PASSED
+- Build: OK
+- Types: OK
+- Lint: OK
 - Tests: [count] passing
 - App startup: OK
 - Checklists: 100% verified

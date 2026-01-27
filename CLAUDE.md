@@ -53,6 +53,15 @@ Maintain references when implementing: task → requirement → entity
 - No "god classes" - split by concern
 - Must pass lint/type-check before done
 
+### Verification Order
+Before claiming task complete, verify in sequence:
+1. Build passes
+2. Types pass
+3. Lint passes
+4. Tests pass
+
+Stop on first failure. Fix before proceeding.
+
 ### Naming Conventions
 - Files: descriptive names matching content (user-auth.ts not auth.ts)
 - Functions: verb-noun pattern (validateUser not validate)
