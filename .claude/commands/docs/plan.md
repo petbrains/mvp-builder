@@ -109,8 +109,9 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 ### 0.2 Load References
 ```bash
 # Load supplementary materials if available
-if [ -d "./ai-docs/references" ] && [ "$(ls -A ./ai-docs/references 2>/dev/null)" ]; then
+if [ -d "./ai-docs/references" ]; then
     echo "Loading references..."
+    find ./ai-docs/references -type f 2>/dev/null
 fi
 ```
 - If references directory contains files: Read all files into context

@@ -72,6 +72,17 @@ Maintain references when implementing: task → requirement → entity
 - Fix root cause, never add mocks/stubs to pass
 - Document non-trivial fixes with AICODE-FIX
 
+### Simplification
+- No code additions without explicit request
+- Minimal diff: change only what's asked
+- Question unexpected changes before applying
+- Fight complexity bias: simpler is better
+
+### Self-Check
+- After generating: verify each claim
+- For critical changes: create verification table
+- Double-check traceability: task → requirement → entity
+
 ## File Operations
 
 - Check existence before reading - HALT if missing
@@ -143,6 +154,11 @@ After completing work: add AICODE-NOTE for complex logic
 - Lead with status/answer
 - List created/modified files with full paths
 - End with clear next action
+
+## Plan Mode
+
+- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
+- At the end of each plan, give me a list of unresolved questions to answer, if any.
 
 ## Anti-Rules
 
