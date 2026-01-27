@@ -23,9 +23,11 @@ Load these documents when starting work:
 - RED → GREEN cycles when tasks.md exists
 - Complete tests before implementation
 - Verify test fails before writing implementation
+- Verify test fails for expected reason (not syntax/import/setup errors)
 - No stub tests or always-passing mocks
 - No test-only methods in production code
 - Tests must be isolated — no dependencies between tests
+- Test behavior, not implementation details (no internal state assertions)
 
 ### Traceability IDs
 
