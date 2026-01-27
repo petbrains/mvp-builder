@@ -2,6 +2,20 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.0.2] - 2025-01-27
+
+### Changed
+
+**Rules (CLAUDE.md)**
+- TDD: verify test fails for expected reason before implementation
+- Verification Order: build → types → lint → tests sequence
+- New Simplification section: minimal diff, fight complexity bias
+- New Self-Check section: verify claims, no "should/probably" completions
+- Plan Mode: concise plans with unresolved questions list
+
+**Agents**
+- `feature-fix`: added Quality Gates step before test suite
+
 ## [0.0.1] - 2025-12-19
 
 ### Added
@@ -33,4 +47,5 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - Skills Registry for automatic skill matching
 - Cross-platform installation scripts (bash, PowerShell)
 
+[0.0.2]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.2
 [0.0.1]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.1

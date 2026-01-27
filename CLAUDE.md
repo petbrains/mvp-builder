@@ -22,7 +22,12 @@ Load these documents when starting work:
 ### TDD Workflow
 - RED → GREEN cycles when tasks.md exists
 - Complete tests before implementation
+- Verify test fails before writing implementation
+- Verify test fails for expected reason (not syntax/import/setup errors)
 - No stub tests or always-passing mocks
+- No test-only methods in production code
+- Tests must be isolated — no dependencies between tests
+- Test behavior, not implementation details (no internal state assertions)
 
 ### Traceability IDs
 
@@ -49,7 +54,18 @@ Maintain references when implementing: task → requirement → entity
 - Max 300 lines/file, 80 lines/function
 - Line length: 100-120 characters
 - No "god classes" - split by concern
+- Prefer early returns over deep nesting
+- Comments explain WHY, not WHAT
 - Must pass lint/type-check before done
+
+### Verification Order
+Before claiming task complete, verify in sequence:
+1. Build passes
+2. Types pass
+3. Lint passes
+4. Tests pass
+
+Stop on first failure. Fix before proceeding.
 
 ### Naming Conventions
 - Files: descriptive names matching content (user-auth.ts not auth.ts)
@@ -71,6 +87,19 @@ Maintain references when implementing: task → requirement → entity
 - Apply Sequential Thinking Methodology for root cause analysis
 - Fix root cause, never add mocks/stubs to pass
 - Document non-trivial fixes with AICODE-FIX
+- If 3+ fix attempts fail: stop, question architecture
+
+### Simplification
+- No code additions without explicit request
+- Minimal diff: change only what's asked
+- Question unexpected changes before applying
+- Fight complexity bias: simpler is better
+
+### Self-Check
+- After generating: verify each claim
+- For critical changes: create verification table
+- Double-check traceability: task → requirement → entity
+- No completion claims with "should", "probably", "seems to" — run command first
 
 ## File Operations
 
@@ -143,6 +172,11 @@ After completing work: add AICODE-NOTE for complex logic
 - Lead with status/answer
 - List created/modified files with full paths
 - End with clear next action
+
+## Plan Mode
+
+- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
+- At the end of each plan, give me a list of unresolved questions to answer, if any.
 
 ## Anti-Rules
 

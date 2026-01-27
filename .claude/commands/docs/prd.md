@@ -28,6 +28,7 @@ Final PRD contains: Core Proposition, Solution Design, Technical Requirements, U
 
 ## Dialogue Rules
 - Ask 3-4 questions per stage maximum
+- Prefer multiple choice when options are clear
 - Wait for user response before proceeding
 - Share analysis results before saving
 - Save only after user confirms with "ok"
