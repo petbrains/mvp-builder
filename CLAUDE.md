@@ -22,7 +22,9 @@ Load these documents when starting work:
 ### TDD Workflow
 - RED → GREEN cycles when tasks.md exists
 - Complete tests before implementation
+- Verify test fails before writing implementation
 - No stub tests or always-passing mocks
+- No test-only methods in production code
 
 ### Traceability IDs
 
@@ -71,6 +73,7 @@ Maintain references when implementing: task → requirement → entity
 - Apply Sequential Thinking Methodology for root cause analysis
 - Fix root cause, never add mocks/stubs to pass
 - Document non-trivial fixes with AICODE-FIX
+- If 3+ fix attempts fail: stop, question architecture
 
 ### Simplification
 - No code additions without explicit request
@@ -82,6 +85,7 @@ Maintain references when implementing: task → requirement → entity
 - After generating: verify each claim
 - For critical changes: create verification table
 - Double-check traceability: task → requirement → entity
+- No completion claims with "should", "probably", "seems to" — run command first
 
 ## File Operations
 
