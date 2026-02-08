@@ -130,8 +130,8 @@ Finalize and document completed implementation.
 
 | Command | Output | Purpose |
 |---------|--------|---------|
-| `/docs:memory [feature-path]` | `README.md` | Add feature to code map, rebuild dependency graph |
-| `/docs:memory` | `README.md` | Rescan entire project, capture all changes |
+| `/docs:memory [feature-path]` | `ai-docs/README.md` | Add feature to code map, rebuild dependency graph |
+| `/docs:memory` | `ai-docs/README.md` | Rescan entire project, capture all changes |
 
 **Two modes**: with feature path — adds the feature entry and rebuilds the graph. Without arguments — full project rescan for changes made outside feature scope (refactoring, new shared modules, deleted files). Feature list is preserved, only the dependency graph is rebuilt from scratch.
 

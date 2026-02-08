@@ -33,8 +33,8 @@ if [ -z "$CONTEXT" ]; then
   exit 0
 fi
 
-# Escape for JSON: newlines, tabs, quotes, backslashes
-ESCAPED=$(printf '%s' "$CONTEXT" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+# Escape for JSON using node (guaranteed by Claude Code's Node 18+ requirement)
+ESCAPED=$(printf '%s' "$CONTEXT" | node -e 'let d="";process.stdin.on("data",c=>d+=c);process.stdin.on("end",()=>process.stdout.write(JSON.stringify(d).slice(1,-1)))')
 
 cat << EOF
 {
