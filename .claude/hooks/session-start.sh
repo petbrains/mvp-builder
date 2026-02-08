@@ -34,7 +34,13 @@ if [ -z "$CONTEXT" ]; then
 fi
 
 # Escape for JSON using python's json.dumps for portability
-ESCAPED=$(printf '%s' "$CONTEXT" | python3 -c 'import json, sys; s = sys.stdin.read(); print(json.dumps(s)[1:-1])')
+if command -v python3 &>/dev/null; then
+  ESCAPED=$(printf '%s' "$CONTEXT" | python3 -c 'import json, sys; s = sys.stdin.read(); print(json.dumps(s)[1:-1])')
+else
+  echo '{"systemMessage":"session-start hook: python3 not found, skipping context injection"}' >&2
+  echo '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":""}}'
+  exit 0
+fi
 
 cat << EOF
 {
