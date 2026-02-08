@@ -33,8 +33,8 @@ if [ -z "$CONTEXT" ]; then
   exit 0
 fi
 
-# Escape for JSON: newlines, tabs, quotes, backslashes
-ESCAPED=$(printf '%s' "$CONTEXT" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+# Escape for JSON using python's json.dumps for portability
+ESCAPED=$(printf '%s' "$CONTEXT" | python3 -c 'import json, sys; s = sys.stdin.read(); print(json.dumps(s)[1:-1])')
 
 cat << EOF
 {
