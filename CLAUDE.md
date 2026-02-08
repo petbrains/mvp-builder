@@ -11,6 +11,19 @@ Load these documents when starting work:
 
 ## Development Rules
 
+### Execution Priority
+
+Agents execute from existing specs — they do not re-plan.
+
+- Specs, plans, and tasks exist BEFORE agents run. The planning phase is complete.
+- After loading context, produce code changes within first 3 tool calls
+- Do NOT create plan files, analysis documents, or enter plan mode during task execution
+- Do NOT re-read all project files to "understand the codebase" — read only files referenced by current task
+- TodoWrite: track progress on existing tasks only, never create new plans
+- Sequential Thinking: use for debugging and complex logic, not for upfront analysis of entire features
+- Context7: fetch docs when hitting unfamiliar API, not preemptively for all libraries
+- If task has clear requirements and single-file scope — start coding immediately
+
 ### Focus
 - Single value path: one critical journey only
 - One screen = one primary action

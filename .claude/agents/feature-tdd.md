@@ -54,6 +54,8 @@ Execute ALL `[ ]` tasks from tasks.md through Phase 2.
 
 ## Phase 0: Prepare Workspace
 
+**Goal:** Get to first code change within 3 tool calls after context load. Load only what's needed to start the first TDD cycle. Additional artifacts are loaded per-cycle when referenced.
+
 ### 0.1 Validate Prerequisites
 
 **Check Phase 1 completion:**
@@ -72,38 +74,24 @@ If Phase 1 incomplete → HALT: "Run feature-setup first"
 
 Git Workflow handles secret protection automatically.
 
-### 0.2 Load Feature Context
+### 0.2 Load Minimum Context
 
-**Apply Feature Analyzer skill** to scan and load artifacts.
+**Apply Feature Analyzer skill** to scan artifact inventory.
 
-**Required artifacts (halt if missing):**
-- tasks.md → TEST-XXX, IMPL-XXX tasks
-- spec.md → Requirements, acceptance scenarios
-- plan.md → Code organization, component mapping
-- data-model.md → Entities, validation rules
+**Always load (halt if missing):**
+- tasks.md → TEST-XXX, IMPL-XXX tasks, cycle structure, Coverage references
+- spec.md → Requirements (FR-XXX), acceptance scenarios
+- plan.md → Code organization, component mapping, file locations
 
-**Optional artifacts:**
-- ux.md → Error states, accessibility requirements
-- contracts/openapi.yaml → API contracts
-- contracts/contracts.md → Message schemas
-- research.md → Technical decisions
-- setup.md → Test and run commands
+**Do NOT load yet** — deferred to per-cycle (Phase 1.1) when Coverage references them:
+- data-model.md → loaded when cycle Coverage mentions entities or validation rules
+- ux.md → loaded when cycle Coverage references UX-XXX
+- contracts/ → loaded when cycle Coverage references API contracts
+- research.md → loaded when encountering ambiguous technical decisions
+- setup.md → loaded once on first test run, then cached
+- validation/*.md → loaded in Phase 2 (verification), not during implementation
 
-Build mental model from all available artifacts.
-
-### 0.3 Load Validation Context
-
-Load validation checklists for coverage tracking:
-- Load all `validation/*-checklist.md` files
-- Map CHK items to TEST-XXX tasks by FR-XXX/UX-XXX coverage
-- Track which CHK items validate which tasks
-- If `resolutions.md` exists:
-  - Parse decisions with task_impact field
-  - Extract NEW tasks (TEST-XXX, IMPL-XXX from resolutions)
-  - Note DEFERRED items for exclusion from scope
-  - Locate "Phase N: Checklist Resolutions" in tasks.md
-
-### 0.4 Determine Remaining Work
+### 0.3 Determine Current Work
 
 **Parse tasks.md for incomplete tasks:**
 ```bash
@@ -114,55 +102,15 @@ Build task list with: ID, User Story, Description.
 
 **Resume logic:** If no incomplete tasks → skip to Phase 2.
 
-### 0.5 Parse TDD Structure
+**Identify current cycle:**
 
-From tasks.md, extract cycle structure:
+Find the first incomplete task → determine its TDD Cycle and User Story from tasks.md structure.
 
-```
-Phase 2: User Story 1 - [Title] (P1)
-├── TDD Cycle 1: [Component]
-│   ├── Coverage: [FR-XXX, UX-XXX, entities, states]
-│   ├── RED: TEST-001, TEST-002
-│   └── GREEN: IMPL-001, IMPL-002
-├── TDD Cycle 2: [Component]
-│   ├── Coverage: [requirements]
-│   ├── RED: TEST-003
-│   └── GREEN: IMPL-003
-...
-Phase 3: User Story 2 - [Title] (P2)
-...
-```
+Track: `CURRENT_STORY`, `CURRENT_CYCLE`, `NEXT_TASK`
 
-Track: `CURRENT_STORY`, `CURRENT_CYCLE`, `LAST_COMPLETED_TASK`
+**If `resolutions.md` exists:** Quick-scan for DEFERRED items to exclude from scope.
 
-### 0.6 Plan Implementation
-
-**Apply Sequential Thinking Methodology skill** for complex features:
-
-```
-THINK → What's the dependency chain between cycles?
-THINK → Which tests need shared fixtures/mocks?
-THINK → What library APIs are needed for implementation?
-THINK → Optimal test structure for this component?
-```
-
-Use when:
-- Feature has 10+ TEST tasks
-- Multiple cycles share dependencies
-- Unfamiliar testing patterns needed
-
-### 0.7 Fetch Library Documentation
-
-**Apply Context7 Documentation Retrieval skill** for testing/implementation libraries:
-
-For each library needed (from setup.md, plan.md):
-1. RESOLVE: `/mcp__context7__resolve-library-id libraryName="[package]"`
-2. SELECT: Trust score ≥7, highest snippet count
-3. FETCH: `/mcp__context7__get-library-docs context7CompatibleLibraryID="[id]" topic="[testing|api|usage]" tokens=8000`
-
-Focus topics:
-- Testing libraries → "testing assertions mocks"
-- Implementation libraries → "api usage examples"
+**→ Proceed immediately to Phase 1.** Do not analyze beyond the current cycle.
 
 ## Phase 1: Execute TDD Cycles
 
@@ -170,15 +118,27 @@ Focus topics:
 
 For each TDD Cycle in scope:
 
-### 1.1 Before Cycle
+### 1.1 Load Cycle Context
 
-**Identify cycle context:**
+**Identify cycle requirements from Coverage section:**
 - Story: [USX]
 - Coverage: [FR-XXX, UX-XXX, entities]
-- Technologies: [from Coverage + plan.md]
 - Tasks: [TEST/IMPL IDs]
 
-### 1.2 Match Additional Skills
+**Load deferred artifacts based on Coverage references:**
+
+| Coverage mentions | Load artifact |
+|-------------------|---------------|
+| Entity names, validation rules | data-model.md |
+| UX-XXX requirements | ux.md |
+| API contracts, endpoints | contracts/ |
+| Specific technical decisions | research.md |
+
+Only read artifacts listed above when Coverage explicitly references their content. If Coverage only references FR-XXX → spec.md (already loaded) is sufficient.
+
+**Load setup.md** on first cycle only (for test commands, run commands). Cache for subsequent cycles.
+
+### 1.2 Match Skills & Tools
 
 **Apply Skills Registry skill** to analyze current cycle context and identify additional skills to apply.
 
@@ -189,6 +149,18 @@ Input context for matching:
 
 Apply matched skills during cycle execution.
 
+**Conditional tools — use when needed during cycle, not upfront:**
+
+**Sequential Thinking** — apply when:
+- Current cycle involves 3+ files or cross-component dependencies
+- Multiple tests share complex fixtures/mocks
+- Unfamiliar testing patterns needed
+
+**Context7** — apply when:
+- Encountering unfamiliar library API during implementation
+- Library-related test/build error
+- Not for libraries already used successfully in previous cycles
+
 ### 1.3 RED Phase — Write Tests
 
 For each TEST-XXX in cycle:
@@ -197,11 +169,11 @@ For each TEST-XXX in cycle:
 
 From Coverage section, determine:
 - What behavior to test (from spec.md requirements)
-- Expected inputs/outputs (from data-model.md)
-- Error conditions (from ux.md, spec.md edge cases)
-- State transitions (from data-model.md)
-- Contract compliance (from contracts/ if listed in Coverage)
-- Accessibility requirements (from ux.md if listed in Coverage)
+- Expected inputs/outputs (from data-model.md — if loaded in 1.1)
+- Error conditions (from ux.md, spec.md edge cases — if referenced in Coverage)
+- State transitions (from data-model.md — if loaded in 1.1)
+- Contract compliance (from contracts/ — if loaded in 1.1)
+- Accessibility requirements (from ux.md — if loaded in 1.1)
 
 **1.3.2 Write Test File**
 
@@ -338,7 +310,7 @@ Coverage: [FR-XXX], [UX-XXX]
 ### 1.6 Next Cycle or Story
 
 After cycle commit:
-- If more cycles in story → Continue to next cycle
+- If more cycles in story → Continue to next cycle (back to 1.1 — load new cycle context)
 - If story complete → Continue to next story
 - If all stories complete → Phase 2
 
@@ -377,7 +349,11 @@ Add session markers to complex implementations:
 // AICODE-TODO: [future enhancement] when [condition]
 ```
 
-### 2.3 Update Validation Checklists
+### 2.3 Load & Update Validation Checklists
+
+**Now load validation context (deferred from Phase 0):**
+- Load all `validation/*-checklist.md` files
+- If `resolutions.md` exists: parse decisions, extract task impacts, note DEFERRED items
 
 **For EVERY CHK item in validation/*.md:**
 
