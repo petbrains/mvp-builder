@@ -50,7 +50,7 @@ FR-XXX → TEST-XXX → IMPL-XXX → CHK → REV
 Agents check their own work. Review finds issues → feedback.md captures them → fix agent resolves → review verifies. `AICODE-*` markers track what's resolved and what's still relevant. Context stays clean.
 
 **Memory System**  
-CLAUDE.md defines agent identity and rules. `/docs:memory` generates a code map of implemented features. Agent always knows who it is and where it stopped.
+CLAUDE.md defines agent identity and rules. `/docs:memory` maintains a code map of the project — run with a feature path after implementation, or without arguments to rescan the entire codebase. Agent always knows who it is and where it stopped.
 
 **Skills over Agents**  
 The old approach: separate agent for each domain. The new approach: one general agent that loads skills for the task. Add expertise by adding folders, not rewriting agents.
@@ -130,7 +130,10 @@ Finalize and document completed implementation.
 
 | Command | Output | Purpose |
 |---------|--------|---------|
-| `/docs:memory` | `README.md` | Code map with dependency graph for future sessions |
+| `/docs:memory [feature-path]` | `README.md` | Add feature to code map, rebuild dependency graph |
+| `/docs:memory` | `README.md` | Rescan entire project, capture all changes |
+
+**Two modes**: with feature path — adds the feature entry and rebuilds the graph. Without arguments — full project rescan for changes made outside feature scope (refactoring, new shared modules, deleted files). Feature list is preserved, only the dependency graph is rebuilt from scratch.
 
 ### Agents
 
