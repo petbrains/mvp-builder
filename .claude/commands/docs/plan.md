@@ -117,15 +117,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - Existing patterns (state management, API layer, styling approach)
 - AICODE-NOTE markers (developer context)
 
-```bash
-# Check if source code exists (skip for greenfield projects)
-SRC_EXISTS=false
-for dir in src app lib pages components server; do
-  [ -d "./$dir" ] && SRC_EXISTS=true && break
-done
-```
-
-If no source code → skip scan, proceed to 0.3.
+If no source code found → skip, proceed to 0.3.
 
 **Use codebase context in Phase 2:**
 - Reuse existing shared modules instead of creating duplicates
