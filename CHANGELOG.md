@@ -2,6 +2,31 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.0.3] - 2025-02-08
+
+### Added
+
+**Hooks**
+- `session-start.sh` — SessionStart hook auto-injects project context (HANDOFF + PRD + FEATURES + README) into Claude's context window. Zero tool calls on session start.
+
+**Rules (CLAUDE.md)**
+- Context Handoff: update HANDOFF.md after TDD cycles, keep max 2 previous entries
+- Required Context: changed from "Load these documents" to "auto-loaded via SessionStart hook, read manually if not in context"
+- AI Documentation Structure: added HANDOFF.md to graph
+
+**Commands**
+- `/docs:memory` — dual-mode: with feature path (existing behavior) or without arguments (full project rescan for changes outside feature scope)
+- `/docs:plan` — Phase 0.2: conditional codebase scan via Code Analyzer skill before planning. Reuse existing modules, follow established patterns.
+
+### Changed
+
+**Commands**
+- `/docs:plan` — removed inline bash from Phase 0.2, delegates fully to Code Analyzer skill
+
+**Documentation**
+- README.md: added Session Continuity section, HANDOFF.md in document structure, hook mention in installation
+- README.md: updated Memory System principle with HANDOFF and SessionStart hook
+
 ## [0.0.2] - 2025-01-27
 
 ### Changed
@@ -47,5 +72,6 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - Skills Registry for automatic skill matching
 - Cross-platform installation scripts (bash, PowerShell)
 
+[0.0.3]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.3
 [0.0.2]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.2
 [0.0.1]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.1

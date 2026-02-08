@@ -14,6 +14,7 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 - `Bash`: For directory creation and file verification
 
 **Skills:**
+- Code Analyzer: For loading existing codebase structure, dependencies, and reusable modules
 - Sequential Thinking Methodology: For complex architectural decisions and multi-step analysis
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 - Context7 Documentation Retrieval: For library documentation and compatibility verification
@@ -68,6 +69,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 - All functional requirements from spec.md must have implementation approach
 - All UX patterns from ux.md must map to technical components
 - Reference existing documentation instead of duplicating
+- Reference existing code modules instead of proposing duplicates
 
 **Technical Context filling:**
 - Must align with PRD Technical Requirements section where applicable
@@ -106,7 +108,24 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 
 **Keep in context throughout execution**
 
-### 0.2 Load References
+### 0.2 Scan Existing Codebase
+
+**Apply Code Analyzer skill** to extract (if source code exists):
+- Module structure (directories, existing components)
+- Entry points and routing
+- Shared modules and utilities
+- Existing patterns (state management, API layer, styling approach)
+- AICODE-NOTE markers (developer context)
+
+If no source code found → skip, proceed to 0.3.
+
+**Use codebase context in Phase 2:**
+- Reuse existing shared modules instead of creating duplicates
+- Follow established patterns (file naming, component structure, state management)
+- Place new code in locations consistent with existing organization
+- Reference existing utilities in plan.md instead of proposing new ones
+
+### 0.3 Load References
 ```bash
 # Load supplementary materials if available
 if [ -d "./ai-docs/references" ]; then
@@ -117,7 +136,7 @@ fi
 - If references directory contains files: Read all files into context
 - Keep in context throughout planning
 
-### 0.3 Execute Research & Document
+### 0.4 Execute Research & Document
 
 **Extract dependencies from spec.md and ux.md:**
 - Identify mentioned libraries, frameworks, packages
@@ -277,6 +296,7 @@ NO justifications for dependencies (those are in research.md).
 - Integrate research decisions from research.md
 - Incorporate entity model from data-model.md
 - Include setup from setup.md and contracts from contracts/
+- If codebase exists: account for existing modules, patterns, and shared utilities (from Phase 0.2)
 - Map to plan-template sections
 - Select optimal code organization
 - Define component architecture
@@ -292,6 +312,7 @@ NO justifications for dependencies (those are in research.md).
 - Ensure no constants are hardcoded (reference data-model.md)
 - Check derived values use formula comments
 - Verify all referenced types are defined in data-model.md
+- If codebase exists: verify code organization matches existing patterns (from Phase 0.2)
 
 **Purpose & Summary:**
 - 1-2 sentences max each
@@ -316,7 +337,8 @@ NO justifications for dependencies (those are in research.md).
 - NO manual test checklists
 
 **Select Feature Code Organization:**
-- Choose ONE structure (A, B, C, or D) from template
+- If codebase exists: prefer structure consistent with existing code organization (from Phase 0.2)
+- If greenfield: choose ONE structure (A, B, C, or D) from template
 - Remove all other structures and their "Structure X:" prefixes
 - Keep only selected structure with its rationale
 - Document brief rationale for selection
@@ -325,6 +347,7 @@ NO justifications for dependencies (those are in research.md).
 
 **Implementation Notes:**
 - Document critical implementation decisions, trade-offs, or considerations
+- If codebase exists: note which existing modules to reuse and which new ones to create
 - **Edge case handling:** Document approach for spec.md edge cases. If not all covered, note which require future iteration with rationale
 - **Scalability notes:** If feature may hit limits (data size, API rate, etc.), document threshold and mitigation strategy
 

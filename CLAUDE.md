@@ -4,12 +4,26 @@ Code execution rules and MVP development standards.
 
 ## Required Context
 
-Load these documents when starting work:
-- @ai-docs/PRD.md - product vision, audience, problem
-- @ai-docs/FEATURES.md - feature map, dependencies, priorities
-- @ai-docs/README.md - current implementation status
+Project context (auto-loaded via SessionStart hook, read manually if not in context):
+- ai-docs/HANDOFF.md — session continuity (goal, progress, blockers, next)
+- ai-docs/PRD.md — product vision, audience, problem
+- ai-docs/FEATURES.md — feature map, dependencies, priorities
+- ai-docs/README.md — current implementation status
 
 ## Development Rules
+
+### Execution Priority
+
+Agents execute from existing specs — they do not re-plan.
+
+- Specs, plans, and tasks exist BEFORE agents run. The planning phase is complete.
+- After loading context, produce code changes within first 3 tool calls
+- Do NOT create plan files, analysis documents, or enter plan mode during task execution
+- Do NOT re-read all project files to "understand the codebase" — read only files referenced by current task
+- TodoWrite: track progress on existing tasks only, never create new plans
+- Sequential Thinking: use for debugging and complex logic, not for upfront analysis of entire features
+- Context7: fetch docs when hitting unfamiliar API, not preemptively for all libraries
+- If task has clear requirements and single-file scope — start coding immediately
 
 ### Focus
 - Single value path: one critical journey only
@@ -141,6 +155,7 @@ ai-docs/
 ├── PRD.md                 # Product vision and scope
 ├── README.md              # Implementation status (code map)
 ├── FEATURES.md            # Feature index and dependencies
+├── HANDOFF.md             # Session continuity (goal, progress, blockers, next)
 ├── references/            # User-provided supplementary materials
 └── features/
     └── [feature-name]/
@@ -166,6 +181,12 @@ Use searchable comment prefixes in code:
 Before modifying code: grep for AICODE- prefixes
 Before debugging: check for similar AICODE-FIX in codebase
 After completing work: add AICODE-NOTE for complex logic
+
+### Context Handoff
+- Update ai-docs/HANDOFF.md after completing a TDD cycle or significant task
+- Structure: goal, progress, blockers, next steps
+- Move Current to Previous when updating (keep max 2 previous entries)
+- SessionStart hook auto-injects HANDOFF.md + PRD + FEATURES + README into context
 
 ## Output Format
 

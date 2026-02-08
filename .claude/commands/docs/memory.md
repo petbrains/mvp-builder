@@ -21,15 +21,17 @@ Generate README.md as navigation map of implemented code for AI agents.
 - README structure: Embedded in Template section below
 
 **File Structure:**
-- Input: `./ai-docs/features/[feature]/`
-  - tasks.md (completed implementation tasks)
+- Input (Feature Mode): `./ai-docs/features/[feature]/`
+- Input (Project Scan Mode): entire project source tree
 - Output: `./ai-docs/README.md`
 
 # Task
 
-Transform completed feature implementation into navigation map for AI agents.
-Updates README.md with bidirectional dependency graph showing module relationships.
-Maintains single source of truth for project structure and entry points.
+Maintain README.md as single source of truth for project structure and entry points.
+
+Two modes:
+- **Feature Mode** — after feature implementation, add feature entry and rebuild graph
+- **Project Scan Mode** — rescan entire project, capture all changes regardless of feature scope
 
 # Template
 ```markdown
@@ -53,8 +55,10 @@ Stack: [LANGUAGE] | [FRAMEWORK]
 # Rules
 
 ## Mode Detection
-- No README.md or empty → Initial Mode
-- Valid README.md exists → Update Mode
+
+1. **Argument provided** (feature path) → **Feature Mode**
+2. **No argument** → **Project Scan Mode**
+3. **No README.md or empty** → Initial (applies to both modes)
 
 ## Content Rules
 - Real file paths only
@@ -74,7 +78,9 @@ Project modules only:
 ## Dependency Graph Format
 Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 
-# Execution Flow
+# Execution Flow — Feature Mode
+
+When invoked with feature path: `/docs:memory ai-docs/features/[name]/`
 
 ## Phase 1: Load & Extract
 
@@ -90,7 +96,7 @@ Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 2. **Load tasks.md** → Verify all tasks marked `[x]`
 3. **Extract feature description** from Phase 2 section title (text after "Phase 2:" excluding priority markers)
 4. **Extract feature entry point** from first IMPL task in first GREEN Phase of Phase 2
-5. **Detect mode** per Mode Detection rules
+5. **Load existing README.md** if present
 
 ## Phase 2: Build Navigation Map
 
@@ -139,7 +145,7 @@ Bidirectional map per Template. Mark [SHARED] if 3+ incoming connections.
 ```
 README.md [Created/Updated] Successfully!
 
-Mode: [Initial/Update]
+Mode: Feature
 Feature: [feature-name]
 Total Modules: [count]
 Shared Modules: [count]
@@ -149,10 +155,104 @@ Location: ./ai-docs/README.md
 Next: /docs:feature (start new feature)
 ```
 
+# Execution Flow — Project Scan Mode
+
+When invoked without argument: `/docs:memory`
+
+Rescans entire project source tree. Rebuilds Stack, Entry, and Dependency Graph from scratch. Preserves Implemented Features from existing README.md.
+
+## Phase 1: Load Existing State
+
+### 1.1 Load README.md
+```bash
+[ -f "./ai-docs/README.md" ] && echo "Update mode" || echo "Initial mode"
+```
+
+If README.md exists:
+- **Preserve** "Implemented Features" section (feature entries are managed only by Feature Mode)
+- **Discard** Stack, Entry, Dependency Graph (will be rebuilt)
+
+If README.md does not exist → Initial mode, all sections built from scratch.
+
+### 1.2 Detect Project Source Root
+
+Identify source directories to scan:
+```bash
+# Common source roots — scan what exists
+for dir in src app lib pages components server; do
+  [ -d "./$dir" ] && echo "Source: ./$dir"
+done
+```
+
+If no standard directories found → scan from project root, excluding: node_modules, .git, .next, dist, build, ai-docs, .claude.
+
+## Phase 2: Full Project Scan
+
+### 2.1 Load Code Context
+
+**Apply Code Analyzer skill** to extract from entire project:
+- Stack (language, framework from extensions and configs)
+- Entry points (main/index/app files)
+- Module structure (all directories, all src_modules)
+- Existing markers (AICODE-NOTE for context)
+
+### 2.2 Build Dependency Graph
+
+**Apply Sequential Thinking Methodology** to process full code-analyzer output:
+- Parse all module imports across entire source tree
+- Build bidirectional dependency map (depends on + used by)
+- Mark shared modules (3+ incoming connections)
+- Detect circular dependencies
+
+**Output validation:**
+- Primary language
+- Main framework
+- Entry point
+- Complete dependency graph with bidirectional relations
+- Circular dependencies if found
+
+## Phase 3: Merge & Save
+
+### 3.1 Merge with Preserved State
+1. **Map data to template:**
+   - Stack = `[language] | [framework]` from Phase 2 scan
+   - Entry = main entry point from Phase 2 scan
+   - Features = **preserved from existing README.md** (no changes to feature list)
+   - Graph = **complete rebuilt graph** from Phase 2 scan
+
+### 3.2 Validate Output
+2. **Validate:**
+   - No placeholders remain
+   - No circular dependencies
+   - All paths in graph exist on disk
+   - All feature entry points from preserved list still exist (warn if not)
+
+### 3.3 Write and Report
+3. **Write README.md** to `./ai-docs/README.md`
+
+4. **Report:**
+```
+README.md [Created/Updated] Successfully!
+
+Mode: Project Scan
+Scanned: [directories list]
+Total Modules: [count]
+Shared Modules: [count]
+Features preserved: [count]
+Location: ./ai-docs/README.md
+
+⚠️ Stale features: [list any features whose entry points no longer exist]
+
+✅ Project map updated.
+```
+
 # Error Handling
 
 ## Critical Errors (Stop)
 - **Circular dependency**: "Error: Circular [A→B→C→A]. Fix before updating"
+- **No source files**: "Error: No source files found in project"
+
+## Feature Mode Only
 - **Invalid input**: "Error: Input must be ./ai-docs/features/[feature]/ folder"
 - **Incomplete tasks**: "Error: Feature has uncompleted tasks"
 - **Missing tasks.md**: "Error: tasks.md not found in feature folder"
@@ -160,6 +260,7 @@ Next: /docs:feature (start new feature)
 ## Warnings (Continue)
 - **Module not found**: "Warning: Cannot resolve [module] in [file]"
 - **Parse error**: "Warning: Cannot parse [file]"
+- **Stale feature entry**: "Warning: Feature [name] entry point [path] no longer exists"
 
 ## System Errors
 - **Write denied**: "Error: Cannot write README.md"
