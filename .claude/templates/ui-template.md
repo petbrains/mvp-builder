@@ -4,6 +4,7 @@
 **Design System**: [Shadcn/MUI/Ant Design/Vuetify/Flutter Material/Native/Custom]
 
 ## Screen Inventory
+**MODEL INSTRUCTION: If feature has only one screen, skip this section entirely and start directly with Component Trees. Include screen metadata in the Component Trees header instead.**
 
 ```json
 [
@@ -19,6 +20,7 @@
 ## Component Trees
 
 ### [SCREEN_NAME]
+**MODEL INSTRUCTION: For single-screen features, add entry/purpose here: Entry: [how user arrives]. Purpose: [what user accomplishes].**
 
 ```json
 {
@@ -41,9 +43,10 @@
   }
 }
 ```
-*Note: Expand tree for each screen. Include every component that becomes a file or has a test case.*
+**MODEL INSTRUCTION: Expand tree for each screen. Depth rule: include every component that becomes a file, has a test case, or has visual variants. Exclude individual icons, typography tokens, spacing values.**
 
 ## Component Catalog
+**MODEL INSTRUCTION: List ALL unique components across all screens. Even components used in one screen must appear — plan.md needs the full list for file creation.**
 
 ```json
 {
@@ -51,8 +54,8 @@
     "ds_component": "[EXACT_DS_COMPONENT_NAME]",
     "variants": ["[VARIANT_1]", "[VARIANT_2]"],
     "visual_states": {
-      "[STATE_1]": "[DESCRIPTION]",
-      "[STATE_2]": "[DESCRIPTION]"
+      "[STATE_1]": "[HOW_IT_LOOKS — not what triggers it]",
+      "[STATE_2]": "[HOW_IT_LOOKS]"
     },
     "used_in": ["[SCREEN_ID_1]", "[SCREEN_ID_2]"]
   }
@@ -62,6 +65,7 @@
 ## Layout Structure
 
 ### [SCREEN_NAME]
+**MODEL INSTRUCTION: Semantic layout only. No pixels, no CSS classes, no framework syntax. Use: vertical-stack, horizontal-split, grid-NxM.**
 
 ```json
 {
@@ -80,6 +84,7 @@
 ```
 
 ## Visual State Mapping
+**MODEL INSTRUCTION: State names MUST match ux.md States & Transitions exactly. Show HOW each state looks visually, not WHAT triggers it (that's in ux.md).**
 
 ```json
 {
@@ -132,7 +137,7 @@
 - [ ] Nested layouts where areas contain sub-layouts
 
 ### State Consistency
-- [ ] Visual states match ux.md States & Transitions
+- [ ] Visual states match ux.md States & Transitions (exact names)
 - [ ] Each state defines visible/hidden/modified components
 - [ ] No orphan components (present in tree but never visible in any state)
 

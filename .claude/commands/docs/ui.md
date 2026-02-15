@@ -1,6 +1,6 @@
 ---
 description: Generate UI specifications with component trees and design system mapping.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 ---
 
 # Instructions
@@ -16,6 +16,8 @@ Output compact, structured documents that bridge UX behavior (ux.md) and technic
 **Skills:**
 - Sequential Thinking Methodology: For component extraction, tree building, and state mapping
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
+- Context7 Documentation Retrieval: For validating DS component names against library docs
+  - Tools: `/mcp__context7__resolve-library-id`, `/mcp__context7__get-library-docs`
 
 **Template:**
 - UI: @.claude/templates/ui-template.md
@@ -59,7 +61,16 @@ Focus on what components compose each screen, how they nest, and how they map to
 
 **Keep in context throughout execution**
 
-### 0.3 Load References
+### 0.3 Check UI Applicability
+From spec.md and ux.md, determine if feature has UI components:
+- If ux.md User Flow contains only API/background/cron operations with no user-facing screens → Exit early:
+  ```
+  ⏭ Feature [feature-name] has no UI components.
+  Skipping UI specification. Proceed to /docs:plan.
+  ```
+- If mixed (UI + backend) → Generate ui.md for UI portions only
+
+### 0.4 Load References
 ```bash
 # Load feature-specific references (mockups, screenshots, wireframes)
 if [ -d "./ai-docs/features/$FEATURE/references" ]; then
@@ -74,6 +85,7 @@ if [ -d "./ai-docs/references" ]; then
 fi
 ```
 - If references contain files: Read all into context
+- Useful reference types: mockups, wireframes, screenshots, design tokens JSON, style guide PDFs
 - Keep in context throughout UI generation
 
 ## Phase 1: Design System Detection
@@ -100,10 +112,21 @@ If DS unclear:
 - Calculate DS confidence
 - Select best match or "Custom"
 
+### 1.3 Validate DS Component Library (Optional)
+If DS detected and Context7 available:
+
+**Apply Context7 Documentation Retrieval** for DS validation:
+1. RESOLVE: `/mcp__context7__resolve-library-id libraryName="[DS package name]"`
+2. SELECT: Trust score ≥7, highest snippet count
+3. FETCH: `/mcp__context7__get-library-docs` with topic "components list"
+4. Use fetched component list to verify names in Phase 2
+
+Skip this step if DS is "Custom" or "None".
+
 ```
 ✅ Feature loaded: [feature-name]
 🎨 Design System detected: [DS name]
-📐 Platform: [from ux.md]
+📱 Platform: [from ux.md]
 Generating UI specification...
 ```
 
@@ -134,6 +157,8 @@ List all distinct screens/views from ux.md flows:
 ]
 ```
 
+**Single-screen simplification:** If feature has only one screen/view, merge Screen Inventory into Component Tree header. Skip separate Screen Inventory section in output.
+
 ### 2.3 Build Component Trees
 
 **Apply Sequential Thinking Methodology** for component extraction:
@@ -159,19 +184,44 @@ For each screen, generate nested component tree:
 }
 ```
 
-**Depth rule:** Include every component that:
+**Depth rule — Include every component that:**
 - Becomes its own file/module
 - Has a test case (renders, responds to interaction, changes state)
 - Has visual variants or conditional visibility
 
-**Do NOT include:** Individual icons, typography tokens, spacing values — these are implementation details.
+**Depth rule — Do NOT include:**
+- Individual icons (implementation detail)
+- Typography tokens (implementation detail)
+- Spacing values (implementation detail)
+- Wrapper divs with no semantic meaning
+
+**Depth example:**
+```
+✅ Correct depth:
+LoginForm
+├── EmailField (has validation state, test case)
+├── PasswordField (has visibility toggle, test case)
+├── RememberMeCheckbox (has checked/unchecked, test case)
+└── SubmitButton (has disabled/loading/enabled, test case)
+
+❌ Too shallow:
+LoginForm (plan.md will have to guess internal structure)
+
+❌ Too deep:
+LoginForm
+├── EmailField
+│   ├── Label (just text)
+│   ├── InputWrapper (styling div)
+│   │   └── Input (redundant with EmailField)
+│   └── ErrorIcon (icon detail)
+```
 
 ### 2.4 Build Component Catalog
 Extract unique components across all screens:
 ```json
 {
   "ComponentName": {
-    "ds_component": "Exact DS component name",
+    "ds_component": "Exact DS component name from detected DS",
     "variants": ["variant1", "variant2"],
     "visual_states": {
       "default": "Description",
@@ -182,6 +232,13 @@ Extract unique components across all screens:
   }
 }
 ```
+
+**Rules:**
+- `ds_component` must be a real component from the detected design system
+- If DS is "Custom" — use descriptive names: `CustomTextField`, `CustomButton`
+- If Context7 DS docs loaded in Phase 1.3 — cross-check component names
+- `visual_states` complement ux.md states — show HOW state looks, not WHAT triggers it
+- Components used in only one screen still appear in catalog (plan.md needs the full list)
 
 ### 2.5 Define Layout Structure
 For each screen, define spatial arrangement semantically:
@@ -202,7 +259,11 @@ For each screen, define spatial arrangement semantically:
 }
 ```
 
-**Rule:** Semantic layout only. No pixels, no Tailwind classes, no CSS. `vertical-stack` → agent knows flex-col. `grid-2col` → agent knows grid grid-cols-2.
+**Rule:** Semantic layout only. No pixels, no Tailwind classes, no CSS.
+- `vertical-stack` → agent knows flex-col
+- `horizontal-split` → agent knows flex-row with defined ratio
+- `grid-2col` → agent knows grid grid-cols-2
+- `grid-3col` → agent knows grid grid-cols-3
 
 ### 2.6 Map Visual States
 Connect ux.md states to visual representation:
@@ -217,6 +278,8 @@ Connect ux.md states to visual representation:
   }
 }
 ```
+
+**Rule:** State names MUST match ux.md States & Transitions exactly. This is the bridge between behavior (ux.md) and visual (ui.md).
 
 ### 2.7 Responsive Adaptations
 If ux.md defines breakpoint strategy, map component changes:
@@ -236,7 +299,7 @@ If ux.md defines breakpoint strategy, map component changes:
 ### 3.1 Structure Document
 Follow template sections:
 1. Header (platform, design system)
-2. Screen Inventory
+2. Screen Inventory (skip if single-screen)
 3. Component Trees (per screen)
 4. Component Catalog (unique components)
 5. Layout Structure (per screen)
@@ -290,6 +353,7 @@ Next: /docs:plan <feature-path>
 
 - **Missing spec.md**: "Error: spec.md not found. Run /docs:feature first."
 - **Missing ux.md**: "Error: ux.md not found. Run /docs:ux first."
+- **No UI in feature**: "Feature has no UI components. Skipping ui.md. Proceed to /docs:plan."
 - **DS unclear**: "Design system not detected. Using generic component names. Specify DS in PRD.md for concrete mapping."
 - **Template missing**: "Error: UI template not found at specified path"
 - **No screens found**: "Error: No screens/views extracted from ux.md flow. Verify ux.md has User Flow diagram."
