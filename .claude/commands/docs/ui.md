@@ -176,6 +176,7 @@ For each screen, generate nested component tree:
       {
         "component": "DSComponentName",
         "props": { "variant": "value" },
+        "slot": false,
         "children": [],
         "notes": "Contextual info for implementation"
       }
@@ -183,6 +184,12 @@ For each screen, generate nested component tree:
   }
 }
 ```
+
+**Slot rule:**
+- `"slot": true` — position accepts arbitrary child content at runtime (e.g., CardBody, DialogContent, DropdownMenu items)
+- `"slot": false` (default) — fixed child structure, always renders the same components
+- Slots signal to feature-tdd agent: generate tests for rendering with different content
+- Slots signal to plan.md: component API needs `children` prop or render-prop pattern
 
 **Depth rule — Include every component that:**
 - Becomes its own file/module
@@ -328,6 +335,7 @@ Verify:
 - All interactive elements from ux.md Core Actions have components
 - All ux.md states mapped to visual representation
 - DS component names are valid for detected design system
+- Slot positions marked where components accept arbitrary children
 - JSON structures valid
 - No CSS, no pixels, no framework-specific code
 

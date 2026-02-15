@@ -30,10 +30,12 @@
       {
         "component": "[DS_COMPONENT]",
         "props": { "[PROP]": "[VALUE]" },
+        "slot": false,
         "children": [
           {
             "component": "[DS_COMPONENT]",
             "props": {},
+            "slot": false,
             "children": [],
             "notes": "[IMPLEMENTATION_CONTEXT]"
           }
@@ -43,7 +45,7 @@
   }
 }
 ```
-**MODEL INSTRUCTION: Expand tree for each screen. Depth rule: include every component that becomes a file, has a test case, or has visual variants. Exclude individual icons, typography tokens, spacing values.**
+**MODEL INSTRUCTION: Expand tree for each screen. Depth rule: include every component that becomes a file, has a test case, or has visual variants. Exclude individual icons, typography tokens, spacing values. Mark `"slot": true` for positions that accept arbitrary child content at runtime (e.g., CardBody, DialogContent, list containers). Default is `false` for fixed structure.**
 
 ## Component Catalog
 **MODEL INSTRUCTION: List ALL unique components across all screens. Even components used in one screen must appear — plan.md needs the full list for file creation.**
@@ -130,6 +132,7 @@
 - [ ] Every testable element has a component entry
 - [ ] No atomic-level noise (individual icons, spacing tokens)
 - [ ] DS component names valid for detected design system
+- [ ] Slot positions marked for components accepting arbitrary children
 
 ### Layout Completeness
 - [ ] Every screen has layout definition
