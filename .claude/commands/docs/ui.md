@@ -100,7 +100,7 @@ Else analyze keywords:
   - Vuetify: vuetify, vue + material
   - Flutter Material: flutter, material.dart
   - Native: SwiftUI, Jetpack Compose
-  - None: custom components, no library specified
+  - Custom: custom components, no library specified
 ```
 
 ### 1.2 Confirm Design System
@@ -121,7 +121,7 @@ If DS detected and Context7 available:
 3. FETCH: `/mcp__context7__get-library-docs` with topic "components list"
 4. Use fetched component list to verify names in Phase 2
 
-Skip this step if DS is "Custom" or "None".
+Skip this step if DS is "Custom".
 
 ```
 ✅ Feature loaded: [feature-name]
