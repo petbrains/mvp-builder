@@ -139,6 +139,7 @@ If no completed tasks → HALT: "No implementation found. Run feature-tdd first.
 - data-model.md → Entities, validation rules
 - setup.md → Test and Run commands
 - tasks.md → Task status + inline TDD context
+- ui.md → Component structure, DS compliance
 - validation/*.md → CHK status
 
 **Optional:**
@@ -276,6 +277,7 @@ Misalignment → BLOCKER or MAJOR.
 **Architecture:**
 - File structure matches plan.md
 - Component boundaries respected
+- Component structure matches ui.md trees
 
 Violations → MAJOR or WARN.
 

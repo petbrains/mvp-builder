@@ -14,7 +14,7 @@ Generate "Unit Tests for Requirements" — deterministic checklists that validat
 
 **Skills:**
 - Feature Analyzer: For loading complete feature context from artifacts
-  - Scans and loads: spec.md, ux.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
+  - Scans and loads: spec.md, ux.md, ui.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
 - Sequential Thinking Methodology: For structured reasoning during analysis and generation
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
@@ -42,7 +42,7 @@ Checklists test whether **requirements are well-specified**, not whether impleme
 | Domain | Primary | Secondary | Focus |
 |--------|---------|-----------|-------|
 | `requirements` | spec.md | plan.md, tasks.md | FR coverage, acceptance criteria, edge cases |
-| `ux` | ux.md | spec.md | Flows, states, accessibility, errors |
+| `ux` | ux.md | spec.md, ui.md | Flows, states, accessibility, errors |
 | `api` | contracts/, plan.md | spec.md | Endpoints, messages, schemas, auth |
 | `data` | data-model.md | spec.md | Entities, validation, states, relationships |
 
@@ -78,6 +78,8 @@ Each domain MUST include these cross-checks:
 - Are all accessibility requirements covered by TEST tasks?
 - Are all error types from Error Presentation defined in contracts/?
 - Are exit path behaviors covered by state tests in tasks.md?
+- Are all ux.md states mapped to visual representation in ui.md?
+- Do ui.md component names match plan.md code organization?
 
 **data:**
 - Do constants in data-model.md match quantified values in ux.md?
@@ -157,7 +159,7 @@ Each domain MUST include these cross-checks:
 - `validation/resolutions.md` — decisions log  
 - `tasks.md` — task updates
 
-**DO NOT propose changes to:** spec.md, ux.md, plan.md, data-model.md, contracts/, or any other artifacts. Resolutions flow INTO tasks.md only.
+**DO NOT propose changes to:** spec.md, ux.md, ui.md, plan.md, data-model.md, contracts/, or any other artifacts. Resolutions flow INTO tasks.md only.
 
 **Every resolution MUST update tasks.md.** No exceptions. Options:
 1. **NEW** — add TEST + IMPL tasks
@@ -229,7 +231,7 @@ Extract `FEATURE_PATH`.
 
 **Apply Feature Analyzer skill** to scan and load feature artifacts:
 - Validates core files exist (spec.md, ux.md, plan.md, tasks.md, data-model.md)
-- Loads all available artifacts into context
+- Loads all available artifacts into context (including ui.md)
 - Reports missing files if any
 
 If core files missing → Report error and exit.
@@ -354,7 +356,7 @@ Related: [RELATED_TASKS or "None found"]
 - Implementation decision → NEW or UPDATE
 - "Keep as-is" / "Use default" → UPDATE with confirmation
 - "Not MVP" / "Defer" → DEFERRED (tracked in Notes)
-- Never propose changes to spec.md, ux.md, plan.md, data-model.md, contracts/
+- Never propose changes to spec.md, ux.md, ui.md, plan.md, data-model.md, contracts/
 
 **Wait for user selection before showing next item.**
 

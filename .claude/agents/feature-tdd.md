@@ -86,6 +86,7 @@ Git Workflow handles secret protection automatically.
 **Do NOT load yet** — deferred to per-cycle (Phase 1.1) when Coverage references them:
 - data-model.md → loaded when cycle Coverage mentions entities or validation rules
 - ux.md → loaded when cycle Coverage references UX-XXX
+- ui.md → loaded when cycle Coverage references UI components
 - contracts/ → loaded when cycle Coverage references API contracts
 - research.md → loaded when encountering ambiguous technical decisions
 - setup.md → loaded once on first test run, then cached
@@ -131,6 +132,7 @@ For each TDD Cycle in scope:
 |-------------------|---------------|
 | Entity names, validation rules | data-model.md |
 | UX-XXX requirements | ux.md |
+| UI component names | ui.md |
 | API contracts, endpoints | contracts/ |
 | Specific technical decisions | research.md |
 
@@ -171,9 +173,11 @@ From Coverage section, determine:
 - What behavior to test (from spec.md requirements)
 - Expected inputs/outputs (from data-model.md — if loaded in 1.1)
 - Error conditions (from ux.md, spec.md edge cases — if referenced in Coverage)
+- Component structure and props (from ui.md — if loaded in 1.1)
 - State transitions (from data-model.md — if loaded in 1.1)
 - Contract compliance (from contracts/ — if loaded in 1.1)
 - Accessibility requirements (from ux.md — if loaded in 1.1)
+- Component rendering and visual states (from ui.md — if loaded in 1.1)
 
 **1.3.2 Write Test File**
 

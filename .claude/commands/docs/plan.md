@@ -9,7 +9,7 @@ Generate technical implementation plan by filling plan-template.md based on vali
 Creates minimal supporting artifacts that complement (not duplicate) existing documentation.
 
 **Tools Usage:**
-- `Read`: For loading spec.md, ux.md, and existing planning documents
+- `Read`: For loading spec.md, ux.md, ui.md, and existing planning documents
 - `Write`: For saving plan artifacts and research notes
 - `Bash`: For directory creation and file verification
 
@@ -28,7 +28,7 @@ Creates minimal supporting artifacts that complement (not duplicate) existing do
 - Features list: @ai-docs/FEATURES.md
 
 **File Structure:**
-- Input: `./ai-docs/features/[feature]/` (expects spec.md and ux.md)
+- Input: `./ai-docs/features/[feature]/` (expects spec.md, ux.md, and ui.md)
 - Output: 
   - `./ai-docs/features/[feature]/plan.md` (implementation strategy)
   - `./ai-docs/features/[feature]/research.md` (technical research and decisions)
@@ -68,6 +68,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 ## Planning Coverage Rules
 - All functional requirements from spec.md must have implementation approach
 - All UX patterns from ux.md must map to technical components
+- All UI components from ui.md must map to code organization
 - Reference existing documentation instead of duplicating
 - Reference existing code modules instead of proposing duplicates
 
@@ -90,11 +91,13 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 # Validate required inputs exist
 [ ! -f "./ai-docs/features/$FEATURE/spec.md" ] && echo "Error: spec.md not found" && exit 1
 [ ! -f "./ai-docs/features/$FEATURE/ux.md" ] && echo "Error: ux.md not found" && exit 1
+[ ! -f "./ai-docs/features/$FEATURE/ui.md" ] && echo "Error: ui.md not found" && exit 1
 ```
 
 **Load ALL source files once:**
 - Read `./ai-docs/features/[feature]/spec.md` → Extract requirements, entities (note existing Key Entities section)
 - Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns, quantified UX values for constants
+- Read `./ai-docs/features/[feature]/ui.md` → Extract component trees, DS mapping, layout structure
 - Read `./ai-docs/PRD.md` → Extract technical requirements and architecture
 - Read `./ai-docs/FEATURES.md` → Understand feature context and dependencies
 
@@ -138,9 +141,10 @@ fi
 
 ### 0.4 Execute Research & Document
 
-**Extract dependencies from spec.md and ux.md:**
+**Extract dependencies from spec.md, ux.md, and ui.md:**
 - Identify mentioned libraries, frameworks, packages
-- Note technology stack references  
+- Note technology stack references
+- Include DS library from ui.md header
 - Verify alignment with PRD architecture choices
 
 **Apply Sequential Thinking Methodology** for research analysis:
@@ -292,9 +296,10 @@ NO justifications for dependencies (those are in research.md).
 - No re-reading needed as content is already in context
 
 **Apply Sequential Thinking Methodology** for planning synthesis:
-- Synthesize sources (PRD, spec, ux, FEATURES)
+- Synthesize sources (PRD, spec, ux, ui, FEATURES)
 - Integrate research decisions from research.md
 - Incorporate entity model from data-model.md
+- Incorporate component structure from ui.md (component trees, DS mapping)
 - Include setup from setup.md and contracts from contracts/
 - If codebase exists: account for existing modules, patterns, and shared utilities (from Phase 0.2)
 - Map to plan-template sections
@@ -307,6 +312,7 @@ NO justifications for dependencies (those are in research.md).
 - Cross-check validation rules against spec.md exact phrasing
 - Verify all FR-XXX requirements have implementation approach
 - Ensure all UX-XXX requirements map to components
+- Ensure all ui.md components have code locations in code organization
 - Check entity naming consistency across all artifacts
 - Verify storage approach aligns with spec.md requirements
 - Ensure no constants are hardcoded (reference data-model.md)
@@ -327,6 +333,7 @@ NO justifications for dependencies (those are in research.md).
 
 **Implementation Mapping:**
 - How requirements → components (don't repeat requirements)
+- How ui.md component trees → code files (don't repeat component catalog)
 - How errors → handling (don't repeat error types)
 - Component names should reflect feature purpose
 
@@ -342,6 +349,7 @@ NO justifications for dependencies (those are in research.md).
 - Remove all other structures and their "Structure X:" prefixes
 - Keep only selected structure with its rationale
 - Document brief rationale for selection
+- Code organization must accommodate ui.md component tree depth and nesting
 - **Selected Structure:** [Structure letter] ([Structure name]) - [One sentence rationale specific to this feature's requirements]
   - Rationale must reference specific requirements, not generic benefits
 
@@ -365,6 +373,7 @@ Internal validation using template's Review Checklist (mental check only):
 - All referenced types defined in data-model.md
 - All thresholds have comparison operators specified
 - All constants from ux.md Quantified UX Elements included
+- All ui.md components have code locations in plan.md
 - Cross-feature dependencies properly handled
 
 **Final output:**
@@ -390,6 +399,7 @@ Next: /docs:tasks <feature-path>
 - **Validation mismatch**: "Error: Validation for [field] differs from spec.md requirements."
 - **Missing implementation**: "Error: [requirement] from spec.md not addressed in plan."
 - **UX pattern unmapped**: "Error: [pattern] from ux.md not mapped to components."
+- **UI component unmapped**: "Error: [component] from ui.md not mapped to code organization."
 - **Constant duplication**: "Error: [value] defined in multiple files. Use data-model.md as single source."
 - **Undefined type**: "Error: Type [name] referenced in [entity] but not defined in data-model.md."
 - **Missing comparison operator**: "Error: Threshold [name] missing comparison operator (< or <=) in description."
