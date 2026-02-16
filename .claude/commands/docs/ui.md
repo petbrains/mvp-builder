@@ -72,13 +72,7 @@ From spec.md and ux.md, determine if feature has UI components:
 
 ### 0.4 Load References
 ```bash
-# Load feature-specific references (mockups, screenshots, wireframes)
-if [ -d "./ai-docs/features/$FEATURE/references" ]; then
-    echo "Loading feature references..."
-    find ./ai-docs/features/$FEATURE/references -type f 2>/dev/null
-fi
-
-# Load global references (design system docs, style guides)
+# Load global references (mockups, screenshots, wireframes, design system docs, style guides)
 if [ -d "./ai-docs/references" ]; then
     echo "Loading global references..."
     find ./ai-docs/references -type f 2>/dev/null
