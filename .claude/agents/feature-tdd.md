@@ -294,7 +294,7 @@ Before: - [ ] CHK007 Is error behavior documented for timeout? [Coverage, FR-003
 After:  - [x] CHK007 Is error behavior documented for timeout? [Coverage, FR-003]
 ```
 
-Match by: CHK references FR-XXX/UX-XXX covered by this cycle's TEST tasks.
+Match by: CHK references FR-XXX/UX-XXX covered by this cycle's TEST tasks, or CHK references component names from this cycle's Coverage.
 Only mark if corresponding test passes.
 
 **1.5.4 Commit Cycle**
@@ -363,6 +363,7 @@ Add session markers to complex implementations:
 
 1. **Verify CHK requirement is satisfied:**
    - Find FR-XXX/UX-XXX referenced by CHK
+   - Find component names referenced by CHK (from ui-checklist)
    - Verify corresponding test exists and passes
    - Verify implementation matches requirement
 

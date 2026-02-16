@@ -278,6 +278,7 @@ Misalignment → BLOCKER or MAJOR.
 - File structure matches plan.md
 - Component boundaries respected
 - Component structure matches ui.md trees
+- DS components used per ui.md Component Catalog
 
 Violations → MAJOR or WARN.
 
