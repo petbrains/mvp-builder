@@ -71,11 +71,12 @@ normalize into standardized output, ask user about ambiguities, and clean up.
 - Screen names → kebab-case from frame name
 
 ## User Interaction Rules
-- Conflicts between sources → Ask user before resolving
-- Gaps in required token categories → Ask user to provide or confirm skip
-- Unknown file types → Ask user to classify
-- After collecting all questions → batch-process answers with Sequential Thinking
+- Present ONE issue at a time, wait for user response before next
+- For each issue: analyze with Sequential Thinking, generate 2-3 options with rationale
+- Always show recommended option with reasoning
+- Unknown file types → Ask user to classify before proceeding
 - Never silently skip or auto-resolve ambiguous data
+- Never present bare binary choices ([yes/no], [1/2]) — always provide analyzed options
 
 # Execution Flow
 
@@ -181,39 +182,19 @@ Cross-reference with PRD context:
 - **Tech stack match**: token framework type vs PRD tech stack → Warn
 - **Audience alignment**: enterprise PRD vs playful design → Note
 
-### 1.5 Collect & Resolve Issues
-
-**Batch all questions for user:**
-
+### 1.5 Interim Report
 ```
-Validation found issues requiring your input:
+File Validation Results:
 
-1. ⚠️ Token 'primary' has conflicting values:
-   - [source1]: #3B82F6
-   - [source2]: #2563EB
-   Which value to use? [1/2]
-
-2. ℹ️ Token 'shadow-xl' found in [source1] but not [source2].
-   Add to output? [yes/no]
-
-3. 🚨 Token 'gray-500' is 'undefined' in [source].
-   Provide value or skip? [value/skip]
-```
-
-After user responds → **Process all answers with Sequential Thinking** to build resolved token map.
-
-### 1.6 Validation Report
-```
-Validation Results:
-
-✅ Resolved: [count] tokens across [count] sources
-⚠️ User decisions applied: [count]
-🚨 Skipped (user choice): [count]
+✅ Consistent: [count] tokens across [count] sources
+⚠️ Issues found: [count] (pending resolution after Figma)
 ℹ️ Notes for style-guide: [count]
 ```
 
 If all tokens undefined with no resolvable data → recommend fixing generator and re-running.
-Otherwise proceed to normalization.
+Otherwise proceed.
+
+**All issues accumulated — resolution deferred to Phase 3.**
 
 ## Phase 2: Figma Extraction (if Figma Mode ON)
 
@@ -228,10 +209,10 @@ For each top-level frame:
 Use Figma MCP `get_screenshot` → Save to `./ai-docs/references/screens/[kebab-name].png`
 
 ### 2.3 Extract Figma Variables (Optional Enrichment)
-Use Figma MCP `get_variable_defs` → Compare with token map:
+Use Figma MCP `get_variable_defs` → Compare with token map from Phase 1:
 - Matching values → Confirmed ✅
-- Different values → Add to user questions batch
-- Figma-only tokens → Ask user: add or skip
+- Different values → **Accumulate as issue** (Figma vs file source conflict)
+- Figma-only tokens → **Accumulate as issue** (new token, user decides)
 
 ### 2.4 Extract Design Context (Optional Enrichment)
 For key frames, use Figma MCP `get_design_context` → Component structure, layout patterns.
@@ -246,16 +227,91 @@ Write to: `./ai-docs/references/screens/index.md`
 📸 Figma extraction complete
 - Screens captured: [count]
 - Variables extracted: [count]
-- New tokens from Figma: [count] (pending user review)
+- New issues from Figma: [count] (added to resolution queue)
 ```
 
-## Phase 3: Normalize & Generate
+## Phase 3: Resolve All Issues
 
-### 3.1 Normalize design-system.md
+**All issues from Phase 1 (file validation) and Phase 2 (Figma conflicts) are now collected.**
+
+### 3.1 Collect
+
+Scan accumulated issues from Phase 1 and Phase 2.
+Build list: `UNRESOLVED[] = [{id, source, marker, description}, ...]`
+
+Markers:
+- `[Conflict]` — same token, different values across sources
+- `[Undefined]` — token with undefined/empty/placeholder value
+- `[Gap]` — token exists in one source but not others
+- `[Unknown]` — unclassified file or ambiguous content
+- `[Figma-only]` — token found in Figma but no file source
+
+If none → Phase 4.
+
+### 3.2 Generate Resolution Options
+
+**Apply Sequential Thinking** for each unresolved item:
+- Analyze the conflict context (which sources, what values, PRD alignment)
+- Generate 2-3 concrete resolution options
+- Determine impact of each option on output files
+- Formulate recommended option with rationale
+
+### 3.3 Present Resolution Dialogue
+
+**CRITICAL: Process ONE item at a time. Do NOT batch multiple questions.**
+
+For each item in `UNRESOLVED[]`:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Resolution [current]/[total]
+
+[marker]
+[description]
+
+Sources:
+  [source1]: [value1]
+  [source2]: [value2]
+  [PRD context if relevant]
+
+> a) [option + rationale]
+     → Impact: [what changes in output]
+  b) [option + rationale]
+     → Impact: [what changes in output]
+  c) Skip — exclude from output
+     → Impact: token omitted from design-system.md
+
+Recommended: [a/b/c] — [brief why]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Wait for user selection before showing next item.**
+
+### 3.4 Process Resolution
+
+**Apply Sequential Thinking** for each selection:
+- Update resolved token map with chosen value
+- Record decision for style-guide.md (patches applied section)
+- If resolution affects multiple tokens (e.g., choosing a color scale) → propagate
+
+After ALL resolutions complete:
+
+```
+Resolution Complete:
+✅ Resolved: [count] items
+Decisions: [count] user choices applied
+Skipped: [count] tokens excluded
+
+Proceeding to normalization...
+```
+
+## Phase 4: Normalize & Generate
+
+### 4.1 Normalize design-system.md
 
 Load Design System Reference section from design-setup-template.md.
 
-**Input:** Resolved token map from Phase 1 + Figma enrichment from Phase 2.
+**Input:** Resolved token map from Phase 3 + Figma enrichment from Phase 2.
 
 **Fill template sections:**
 - Metadata from PRD context + token source metadata
@@ -268,7 +324,7 @@ Load Design System Reference section from design-setup-template.md.
 
 Write to: `./ai-docs/references/design-system.md`
 
-### 3.2 Normalize Token Files
+### 4.2 Normalize Token Files
 
 Based on resolved token map, update each token source that was found:
 - Fix `undefined` values with resolved values
@@ -278,7 +334,7 @@ Based on resolved token map, update each token source that was found:
 
 Write patched files back to their original locations in `./ai-docs/references/tokens/`
 
-### 3.3 Generate style-guide.md
+### 4.3 Generate style-guide.md
 
 Load Style Guide section from design-setup-template.md.
 
@@ -290,11 +346,11 @@ Load Style Guide section from design-setup-template.md.
 
 Write to: `./ai-docs/references/style-guide.md`
 
-### 3.4 Clean Up
+### 4.4 Clean Up
 
 Remove original input files that were fully consumed into normalized outputs:
 - Markdown spec files that were merged into design-system.md and style-guide.md → remove
-- Token source files are kept (updated in place in 3.2)
+- Token source files are kept (updated in place in 4.2)
 - Asset files are kept
 - `screens/` directory is kept
 
@@ -307,9 +363,9 @@ These original files were consumed into normalized outputs:
 Remove originals? [yes/no]
 ```
 
-## Phase 4: Finalize & Report
+## Phase 5: Finalize & Report
 
-### 4.1 Validate Output
+### 5.1 Validate Output
 
 Apply Review Checklist from design-setup-template.md.
 
@@ -320,7 +376,7 @@ for f in $(find ./ai-docs/references -type f 2>/dev/null); do
 done
 ```
 
-### 4.2 Final Report
+### 5.2 Final Report
 
 ```
 Design Setup Complete!
