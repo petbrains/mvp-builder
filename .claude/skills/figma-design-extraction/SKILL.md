@@ -164,13 +164,7 @@ For each screen in `SCREENS[]`, capture a screenshot. These serve as visual trut
 
 ### Where to Save
 
-The caller decides the output path. Common patterns:
-
-- **design-setup**: `ai-docs/references/figma-tokens.json` and `ai-docs/references/figma-screens.json`
-- **standalone extraction**: print to stdout or save where the user specifies
-- **validation**: hold in memory for comparison, no file needed
-
-If no path is specified by the caller, don't create files — return the data structures for the caller to use.
+The caller decides the output path — this skill extracts and structures data, it doesn't own the file layout. If no path is specified, return the data structures in-memory for the caller to place where it needs them.
 
 ### 4.1 Unified Token Map
 
