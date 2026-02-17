@@ -1,7 +1,7 @@
 ---
 name: figma-design-extraction
-description: Extract design tokens, screen structure, and visual references from Figma files using Figma MCP tools. Process PARSE → DISCOVER → EXTRACT → ORGANIZE. Use whenever a Figma URL appears in the conversation, when design-setup needs Figma enrichment, when extracting design system data (tokens, variables, colors, typography, spacing), when capturing screen screenshots, or when analyzing component structure. Also use when someone says "get from Figma", "Figma tokens", "extract design", "Figma variables", or provides any figma.com link. Covers URL parsing, page/frame discovery, variable extraction, design context fallback, screenshot capture, and token source tracking for downstream conflict resolution.
-allowed-tools: Read, Write, Bash (*), mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context
+description: Extract design tokens, screen structure, and visual references from Figma files. Use whenever a figma.com URL appears in the conversation, when someone mentions Figma tokens, variables, design system extraction, or screen captures. Also use when calling get_variable_defs, get_design_context, get_metadata, or get_screenshot — this skill defines how to use them effectively. Trigger for phrases like "get from Figma", "extract design", "Figma variables", "design tokens from Figma", "capture screens", or any figma.com/design link. Even if the user just pastes a Figma link without instructions, use this skill to parse it and decide what to extract.
+allowed-tools: Read, Write, Bash (*), mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context
 ---
 
 # Figma Design Extraction
@@ -10,7 +10,17 @@ Extract design tokens, screen structure, and visual references from Figma files.
 
 Process: **PARSE → DISCOVER → EXTRACT → ORGANIZE**
 
-The goal is to pull structured, source-tracked design data from Figma for use in design-setup pipelines, conflict resolution, and downstream code generation. Every extracted value carries its source tag so consumers know where it came from.
+The goal is to pull structured, source-tracked design data from Figma for use in design-setup pipelines, conflict resolution, and downstream code generation. Every extracted value carries its source tag — this matters because downstream consumers (like design-setup Phase 3) need to know whether a token came from an explicit Figma Variable definition or was inferred from applied styles, since that affects conflict resolution priority.
+
+## Step 0: CHECK — Verify MCP Connection
+
+Before any extraction, verify the Figma MCP server responds:
+
+```
+whoami()
+```
+
+If this fails or isn't available, warn the user and skip all Figma steps. Don't attempt tool calls that will error out — it wastes context and confuses the workflow.
 
 ## Step 1: PARSE — Get IDs from URL
 
@@ -38,13 +48,13 @@ URL: https://figma.com/design/kL9xQn2VwM8pYrTb4ZcHjF/MyApp?node-id=42-15
 | URL has `/design/`, `/file/`, `/proto/` | Parse and proceed |
 | URL has `/board/` (FigJam) | Warn: "FigJam not supported" → skip |
 | URL has `/slides/` | Warn: "Slides not supported" → skip |
-| No URL, desktop MCP connected | Tools auto-use selected node — proceed without IDs |
-| No URL, no desktop MCP | Warn: "No Figma source available" → skip |
+| No URL, MCP connected | Can still extract variables — see "No URL Available" below |
+| No URL, MCP not connected | Warn: "No Figma source available" → skip |
 | nodeId missing in URL | Fetch root pages first, then navigate |
 
-### Desktop MCP (No URL)
+### No URL Available
 
-When using `figma` MCP (remote) or `figma-desktop` MCP (local) without a URL, tools automatically target the currently selected node in the Figma desktop app. No fileKey/nodeId needed — just call tools directly.
+If there's no Figma URL but the `figma` MCP is connected (Step 0 passed), `get_variable_defs` still works — it returns all variables for the file without a specific node. You can extract tokens without screenshots or screen discovery. For screen-level extraction (screenshots, design context), a URL with a nodeId or page reference is needed.
 
 ## Step 2: DISCOVER — Map File Structure
 
@@ -91,20 +101,26 @@ Three independent extraction types. Run what the consumer needs.
 
 ### 3.1 Variables (Primary Token Source)
 
-`get_variable_defs` returns variable definitions like `{'color/primary/500': '#3B82F6'}`.
+`get_variable_defs` returns variable definitions — a flat map of paths to values.
 
-**What maps to what:**
+**Categorize by inspecting the path structure.** Figma variable paths vary wildly between teams — there's no universal naming convention. Common patterns include:
 
-| Figma Variable Path | Token Category | Example |
-|---|---|---|
-| `color/*` | colors | `color/primary/500` → `primary-500: #3B82F6` |
-| `font/*`, `text/*` | typography | `font/body/size` → `body-size: 16` |
-| `spacing/*`, `space/*` | spacing | `spacing/lg` → `lg: 24` |
-| `size/*`, `radius/*` | sizing/radius | `radius/md` → `md: 8` |
-| `shadow/*`, `effect/*` | effects | `shadow/lg` → shadow definition |
-| `breakpoint/*` | breakpoints | `breakpoint/md` → `768` |
+```
+color/primary/500          → color token
+primitives/color/blue/500  → color token
+semantic/text/primary       → color token (semantic layer)
+font/body/size             → typography token
+text/heading/weight        → typography token
+spacing/lg                 → spacing token
+space/4                    → spacing token
+radius/md                  → radius token
+shadow/card                → effect token
+breakpoint/md              → breakpoint token
+```
 
-Mark all values with `source: "figma-variables"`.
+**Categorization strategy:** Look at the value type first (hex color → colors, numeric with px/rem → typography/spacing, shadow definition → effects), then use the path as a naming hint. Don't force paths into a rigid taxonomy — let the actual data guide categorization.
+
+Mark all values with `source: "figma-variables"` — these are intentional design decisions by the designer, not just what happened to be applied to a frame. This distinction drives conflict resolution downstream: a variable definition is stronger evidence than an applied style.
 
 **When variables come back empty** — this is common. Many Figma files use local styles instead of Variables. Don't treat this as an error. Fall back to design context (3.2).
 
@@ -124,7 +140,7 @@ Mark all values with `source: "figma-variables"`.
 - Corner radius → radius tokens
 - Effects (shadows, blurs) → effect tokens
 
-Mark all values with `source: "figma-context"`.
+Mark all values with `source: "figma-context"` — these are inferred from usage, not declared as variables. They're valid design data but carry less authority in conflict resolution because a designer might have applied a one-off value to a frame without intending it as a system token.
 
 **Truncation handling** (critical for complex designs):
 1. If response is too large → call `get_metadata` first to get the node map
@@ -145,6 +161,16 @@ For each screen in `SCREENS[]`, capture a screenshot. These serve as visual trut
 - Screenshots are supplementary — extraction continues even if screenshots fail
 
 ## Step 4: ORGANIZE — Structure Results
+
+### Where to Save
+
+The caller decides the output path. Common patterns:
+
+- **design-setup**: `ai-docs/references/figma-tokens.json` and `ai-docs/references/figma-screens.json`
+- **standalone extraction**: print to stdout or save where the user specifies
+- **validation**: hold in memory for comparison, no file needed
+
+If no path is specified by the caller, don't create files — return the data structures for the caller to use.
 
 ### 4.1 Unified Token Map
 
@@ -184,20 +210,16 @@ FIGMA_SCREENS = [{
 
 ### 4.3 Extraction Summary
 
-Always output this summary so the consumer knows what was extracted:
+Output a summary after extraction so the calling command (or the user) can quickly assess what data is available without parsing the full token map. This is especially important when extraction is partial — the consumer needs to know which data sources succeeded and which gaps remain.
+
+Include these fields:
 
 ```
 Figma Extraction Summary
-━━━━━━━━━━━━━━━━━━━━━━━
-Source: [URL or "desktop selection"]
-Screens: [N] captured
-Tokens:
-  From Variables: [N] (colors: X, typography: Y, spacing: Z)
-  From Context:   [N] (colors: X, typography: Y, spacing: Z)
-  Total unique:   [N]
-Screenshots: [N] captured, [N] failed
+Source: [URL or "no URL — variables only"]
+Screens: [N] discovered, [N] with screenshots
+Tokens: [N] from Variables, [N] from Context, [N] total unique
 Warnings: [list if any]
-━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ## Workflows
@@ -210,7 +232,10 @@ The default workflow when design-setup provides a Figma URL:
 PARSE:    URL → fileKey + nodeId
 DISCOVER: get_metadata → SCREENS[]
 EXTRACT:  get_variable_defs → tokens (primary)
-          get_design_context on 2-3 sample screens → tokens (fallback)
+          get_design_context on the most visually complex screens → tokens (fallback)
+            Pick screens with the most child nodes in metadata — they tend to have
+            richer style diversity (forms, dashboards > splash screens, empty states).
+            Start with 2-3 screens; add more if token yield is sparse.
           get_screenshot for each screen → visual references
 ORGANIZE: Merge token map, build screen index, output summary
 ```
@@ -222,7 +247,7 @@ When you just need to compare Figma tokens against file-based tokens:
 ```
 PARSE:    URL → fileKey + nodeId
 EXTRACT:  get_variable_defs → tokens
-          If sparse: get_design_context on key screens → more tokens
+          If sparse (<5 tokens): get_design_context on 1-2 complex screens → more tokens
 ORGANIZE: Token map with sources for conflict resolution
 ```
 
@@ -237,19 +262,57 @@ EXTRACT:  get_screenshot for each screen
 ORGANIZE: Screen index with screenshots
 ```
 
+## Example: Full Extraction
+
+Given URL: `https://figma.com/design/kL9xQn2VwM8pYrTb4ZcHjF/MyApp?node-id=0-1`
+
+```
+Step 0: whoami() → ✓ connected as "design-team@example.com"
+
+Step 1: Parse URL
+  fileKey: kL9xQn2VwM8pYrTb4ZcHjF
+  nodeId: 0:1
+
+Step 2: get_metadata(fileKey, nodeId: "0:1")
+  → Page "Auth" has frames: Login (42:15, 375×812), Register (42:30, 375×812)
+  → Page "Main" has frames: Dashboard (50:1, 1440×900), Settings (50:20, 1440×900)
+  SCREENS = [
+    { nodeId: "42:15", slug: "login", page: "Auth" },
+    { nodeId: "42:30", slug: "register", page: "Auth" },
+    { nodeId: "50:1",  slug: "dashboard", page: "Main" },
+    { nodeId: "50:20", slug: "settings", page: "Main" }
+  ]
+
+Step 3a: get_variable_defs(fileKey)
+  → 12 variables found: color/primary/500=#3B82F6, color/neutral/100=#F5F5F5,
+    spacing/sm=8, spacing/md=16, spacing/lg=24, radius/md=8, ...
+  → All tagged source: "figma-variables"
+
+Step 3b: get_design_context(fileKey, nodeId: "50:1")  ← Dashboard has most children
+  → Found additional: font-family=Inter, heading-size=24px, body-size=14px,
+    shadow-card=0 2px 4px rgba(0,0,0,0.1)
+  → All tagged source: "figma-context"
+
+Step 3c: get_screenshot for each of 4 screens
+  → 4/4 captured
+
+Step 4: Merge → 12 variable tokens + 4 context tokens = 16 total unique
+  Summary: 4 screens, 16 tokens, 4 screenshots, 0 warnings
+```
+
 ## Error Handling
 
 Figma extraction is **enrichment, not requirement**. The pipeline continues without Figma data — it just has less information for conflict resolution.
 
 | Error | Response |
 |---|---|
-| MCP not connected | Warn → skip all Figma steps |
+| `whoami` fails (Step 0) | MCP not connected → warn user, skip all Figma steps |
 | Invalid URL format | Warn with supported formats → skip |
-| FigJam/Slides URL | Warn "not supported" → skip |
-| Empty variables | Info "using context fallback" → extract from design context |
+| FigJam/Slides URL | Warn "not supported for token extraction" → skip |
+| Empty variables | Normal — fall back to design context (3.2) |
 | Truncated response | Narrow scope → fetch children individually |
 | Screenshot timeout | Log warning → try smaller child frames → continue |
-| Permission denied | Warn "check Figma sharing" → skip |
+| Permission denied | Warn "check Figma file sharing settings" → skip |
 | All extractions fail | Warn → continue pipeline without Figma data |
 
 ## Quick Reference
