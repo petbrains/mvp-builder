@@ -44,14 +44,12 @@ normalize into standardized output, ask user about ambiguities, and clean up.
 - Metadata: PRD > JSON files > markdown (product context)
 - If conflict between sources → Ask user, then process decision with Sequential Thinking
 
-## Classification Rules
-- Classify files by CONTENT, not by name
-- JSON with color/typography/spacing keys → token source
-- CSS with custom properties (--var) → token source
-- JS/TS with theme/config object → framework config source
-- Markdown with design descriptions/rules → specification source
-- Image files → asset source
-- Unknown format → Ask user what this file contains
+## Scope Rules
+- `references/` is a shared directory — other commands may have placed files here
+- This command ONLY operates on design-related files (tokens, design specs, assets)
+- Non-design files (API specs, contracts, data models, etc.) are **ignored completely**
+- Never read, modify, move, or delete files outside this command's scope
+- When in doubt whether a file is design-related → classify as `out-of-scope` (safe default)
 
 ## Token Categories
 All token operations (classification, mapping, validation, output) use this canonical list:
@@ -76,20 +74,14 @@ Include only categories with actual data — skip empty categories entirely.
 - Patched values marked with `*` footnote
 - Do's/Don'ts go ONLY to style-guide.md, NEVER to design-system.md
 - Framework-specific columns only if framework detected in sources
-- After normalization: consumed source files are automatically removed (Phase 4.4)
-
-## Figma Mode Rules
-- Figma URL detected in `$ARGUMENTS` → Figma Mode ON (Phase 2 executes via Figma Design Extraction skill)
-- No Figma URL → Figma Mode OFF (Phase 2 skipped entirely)
-- Figma extraction failures → Handled by skill (enrichment, not requirement) → pipeline continues
-- Screen names → kebab-case slugs from skill's DISCOVER step
+- After normalization: consumed design files are reorganized (Phase 4.4)
 
 ## User Interaction Rules
 - Present ONE issue at a time, wait for user response before next
 - For each issue: analyze with Sequential Thinking, generate 2-3 options with rationale
 - Always show recommended option with reasoning
-- Unknown file types → Ask user to classify before proceeding
-- Never silently skip or auto-resolve ambiguous data
+- Ambiguous design files (`unknown`) → Ask user to classify before proceeding
+- Never silently skip or auto-resolve ambiguous **design** data
 - Never present bare binary choices ([yes/no], [1/2]) — always provide analyzed options
 
 # Execution Flow
@@ -112,11 +104,11 @@ fi
 ```
 - If directory empty or not found → Error: "No files found in ai-docs/references/. Place generator output first."
 
-**Read every file into context.**
+**List all files but do NOT read them all yet.** Read file headers/first lines to classify (Phase 0.3), then only read design-related files fully into context.
 
 ### 0.3 Classify by Content
 
-For each file found, read content and classify:
+For each file found, read enough content to classify (first 50 lines or full file if small):
 
 | Content Pattern | Classification |
 |---|---|
@@ -125,9 +117,21 @@ For each file found, read content and classify:
 | JS/TS with theme config, tailwind config, or token exports | `token-framework` |
 | Markdown with design system descriptions, rules, Do's/Don'ts | `spec-markdown` |
 | PNG/JPG/SVG image files | `asset` |
-| Anything else | `unknown` → ask user |
+| JSON with API/endpoints/routes/schemas/openapi keys | `out-of-scope` |
+| Markdown with API endpoints, data models, contracts, routes | `out-of-scope` |
+| .proto, .graphql, .sql, .prisma files | `out-of-scope` |
+| YAML with openapi/swagger/paths keys | `out-of-scope` |
+| No design-related content detected | `out-of-scope` |
+| Looks design-related but ambiguous | `unknown` → ask user |
 
 **Apply Sequential Thinking** to resolve ambiguous classifications.
+
+After classification:
+- **Read fully** into context: `token-json`, `token-css`, `token-framework`, `spec-markdown`
+- **Note but don't read**: `asset` (referenced by path only)
+- **Ask user** about: `unknown` files — may be design-related
+
+If no design-related files found → Error: "No design files found in ai-docs/references/. Found [N] files but all are outside design-setup scope (API specs, data models, etc.)."
 
 ### 0.4 Fetch Framework Documentation
 
@@ -152,8 +156,10 @@ Keep framework docs in context for:
 If no framework detected → skip.
 
 ### 0.5 Detect Figma Mode
-- If `$ARGUMENTS` contains a Figma URL (figma.com/design/, figma.com/file/, figma.com/proto/) → **Figma Mode ON**
-- Otherwise → **Figma Mode OFF**
+- If `$ARGUMENTS` contains a Figma URL (figma.com/design/, figma.com/file/, figma.com/proto/) → **Figma Mode ON** (Phase 2 executes via Figma Design Extraction skill)
+- Otherwise → **Figma Mode OFF** (Phase 2 skipped entirely)
+- Figma extraction failures → Handled by skill (enrichment, not requirement) → pipeline continues
+- Screen names → kebab-case slugs from skill's DISCOVER step
 
 ### 0.6 Discovery Report
 ```
@@ -166,6 +172,7 @@ Classified:
   Token sources (Framework): [list]
   Specifications (Markdown): [list]
   Assets: [list]
+  Out of scope: [count] files (not design-related, ignored)
   [Unknown: [list] — asking user...]
 
 Figma: [ON with URL / OFF]
@@ -294,8 +301,6 @@ If none → Phase 4.
 
 ### 3.3 Present Resolution Dialogue
 
-**CRITICAL: Process ONE item at a time. Do NOT batch multiple questions.**
-
 For each item in `UNRESOLVED[]`:
 
 ```
@@ -320,8 +325,6 @@ Sources:
 Recommended: [a/b/c] — [brief why]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
-
-**Wait for user selection before showing next item.**
 
 ### 3.4 Process Resolution
 
@@ -354,13 +357,9 @@ Load Design System Reference section from design-setup-template.md.
 
 **Fill template sections:**
 - Metadata from PRD context + token source metadata
-- Token tables from resolved values (every row MUST have value)
+- Token tables from resolved values (apply Output Rules)
 - Only include categories that have actual data (from Token Categories list)
-- Framework-specific columns only if framework config was found in sources
-- Patched tokens marked with `*` footnote
 - Components section from Figma component list or placeholder
-
-**Critical:** Do's/Don'ts and constraints go to style-guide.md, NOT here.
 
 Write to: `./ai-docs/references/design-system.md`
 
@@ -390,12 +389,14 @@ Write to: `./ai-docs/references/style-guide.md`
 
 ### 4.4 Clean Up
 
-Automatically remove original input files that were fully consumed into normalized outputs:
-- Markdown spec files merged into design-system.md and style-guide.md → remove
-- Original token source files that were moved to `tokens/` → remove from old location
-- Asset files → keep (not consumed)
-- `screens/` directory → keep
-- `design-system.md`, `style-guide.md`, `tokens/` → keep (these are outputs)
+**Remove** (consumed into normalized outputs):
+- `spec-markdown` files merged into design-system.md and style-guide.md → remove originals
+- `token-*` files that were patched and moved to `tokens/` → remove from old location
+
+**Keep** (not consumed or still needed):
+- `asset` files → untouched
+- `screens/` directory → output, keep
+- `design-system.md`, `style-guide.md`, `tokens/` → outputs, keep
 
 Record all removals for the final report.
 
@@ -438,9 +439,10 @@ Cleaned up:
 
 **Input Errors:**
 - **No reference files**: "No files found in ai-docs/references/. Place generator output first."
+- **No design files**: "No design files found in ai-docs/references/. Found [N] files but all are outside design-setup scope (API specs, data models, etc.). Place design token or spec files."
 - **No PRD**: "PRD.md not found. Generate PRD first."
 - **Invalid Figma URL**: Skill's Step 1 (PARSE) will detect unsupported formats → warns and skips.
-- **Unclassifiable files**: "Could not determine content type of [filename]. What does this file contain?"
+- **Ambiguous design files**: "File [name] looks design-related but classification is unclear. What does this file contain?"
 
 **Validation Errors:**
 - **All tokens undefined**: "All token values are undefined. Fix generator output and re-export."
