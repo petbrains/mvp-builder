@@ -56,6 +56,12 @@ Do NOT include Do's/Don'ts here — those go to Style Guide only. **
 | duration | [from JSON] |
 | easing | [from JSON] |
 
+## Breakpoints
+
+| Token | Value |
+|-------|-------|
+| [name] | [value] |
+
 ## Components
 
 | Component | DS Name | Variants | Notes |
@@ -67,8 +73,9 @@ If no Figma data: "Component list will be populated during UI specification gene
 
 **Notes:**
 - `[Framework Class]` column header adapts: "Tailwind Class" if Tailwind detected, omit column entirely if no framework
-- Patched tokens (where undefined was resolved from JSON) marked with `*` footnote
+- Patched tokens (where undefined was resolved) marked with `*` footnote
 - Every Value cell MUST be populated — never "undefined", never empty
+- Include only sections with actual data — remove empty sections entirely
 
 ---
 
@@ -106,9 +113,6 @@ Source: Generator + PRD [+ Figma]
 ### Don't
 - [From spec Don'ts]
 
-### Resolved Conflicts
-- [Any weight collisions resolved, with reasoning]
-
 ## Spacing & Layout
 - [Rules from spec]
 - [Platform-specific constraints from PRD]
@@ -120,9 +124,18 @@ Source: Generator + PRD [+ Figma]
 - [If Figma provided component context]
 - [DS-specific constraints]
 
-## Patches Applied
-- [Log of every auto-patch from Phase 3.2 for transparency]
-- [Format: "Token '[name]' in [file]: replaced undefined → [value] from JSON"]
+## Changes Applied
+
+All modifications made during normalization for full transparency.
+
+### Undefined Patches
+- [Format: "Token '[name]' in [file]: undefined → [value] from [source]"]
+
+### Conflict Resolutions
+- [Format: "Token '[name]': chose [value] ([source]) over [value] ([source]) — [reason]"]
+
+### Skipped Tokens
+- [Format: "Token '[name]': excluded by user decision"]
 ```
 
 ---
@@ -142,11 +155,12 @@ Date: [ISO date]
 
 | Screen | File | Dimensions | Notes |
 |--------|------|------------|-------|
-| [name] | [filename].png | [WxH] | [from frame annotations] |
+| [name] | screens/[slug].png | [WxH] | [from frame annotations] |
 
 ## Component Mapping
 
-Components observed in Figma frames mapped to design system:
+Components observed in Figma frames mapped to design system.
+Source: Figma Design Extraction skill (FIGMA_COMPONENTS output).
 
 | Figma Component | DS Component | Confidence |
 |-----------------|-------------|------------|
@@ -166,10 +180,12 @@ Do NOT include this checklist in any output file. **
 - [ ] No "undefined" values in any output file
 - [ ] All Value columns in tables are populated
 - [ ] Patched tokens marked with `*` footnote
+- [ ] Only categories with actual data are present (empty sections removed)
 
 ### Cross-File Consistency
 - [ ] CSS variables match JSON values (post-patch)
 - [ ] Framework config matches JSON values (post-patch, if framework present)
+- [ ] Token files moved to tokens/ directory
 - [ ] No conflicting values remain unresolved without documentation
 
 ### PRD Alignment
@@ -180,12 +196,13 @@ Do NOT include this checklist in any output file. **
 ### Style Guide Quality
 - [ ] Every rule is actionable (Do/Don't with specific values or components)
 - [ ] No vague terms without specifics: "appropriate", "suitable", "nice"
-- [ ] Patches Applied section lists all auto-fixes with before/after
+- [ ] Changes Applied section lists ALL modifications (patches, resolutions, skips)
 - [ ] Accessibility rules reference concrete contrast ratios
 
 ### Output Completeness
 - [ ] design-system.md written and follows template structure
 - [ ] style-guide.md written and follows template structure
-- [ ] Token files validated and patched where needed
+- [ ] Token files patched and moved to tokens/
 - [ ] screens/index.md written (if Figma Mode ON)
 - [ ] All screenshots saved to screens/ (if Figma Mode ON)
+- [ ] Consumed source files removed from references/

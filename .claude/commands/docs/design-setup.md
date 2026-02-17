@@ -1,5 +1,6 @@
 ---
 description: Set up and normalize design system references for the pipeline.
+argument-hint: [figma-url]
 allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context
 ---
 
@@ -52,6 +53,18 @@ normalize into standardized output, ask user about ambiguities, and clean up.
 - Image files → asset source
 - Unknown format → Ask user what this file contains
 
+## Token Categories
+All token operations (classification, mapping, validation, output) use this canonical list:
+- `color` — all color tokens (primitives, semantic, surface, etc.)
+- `typography` — font family, weight, size, line-height
+- `spacing` — margins, paddings, gaps, spacing scale
+- `border-radius` — corner radius tokens
+- `shadows` — box-shadow, drop-shadow, elevation
+- `animation` — duration, easing, transition
+- `breakpoints` — responsive breakpoints (if present)
+
+Include only categories with actual data — skip empty categories entirely.
+
 ## Validation Rules
 - `undefined` in ANY token source → 🚨 Critical
 - Value mismatch between token sources → ⚠️ Warning, ask user which value to keep
@@ -63,7 +76,7 @@ normalize into standardized output, ask user about ambiguities, and clean up.
 - Patched values marked with `*` footnote
 - Do's/Don'ts go ONLY to style-guide.md, NEVER to design-system.md
 - Framework-specific columns only if framework detected in sources
-- After normalization: remove original input files that were consumed into outputs
+- After normalization: consumed source files are automatically removed (Phase 4.4)
 
 ## Figma Mode Rules
 - Figma URL detected in `$ARGUMENTS` → Figma Mode ON (Phase 2 executes via Figma Design Extraction skill)
@@ -174,7 +187,7 @@ Validate only across sources that were actually found and classified. If only on
 From all classified token sources, build a single map:
 
 For each token found in any source:
-- Record: token name, value per source, category (color/typography/spacing/etc.)
+- Record: token name, value per source, category (from Token Categories list)
 - Flag: which sources have it, which don't
 
 ### 1.2 Detect Issues
@@ -228,15 +241,15 @@ Skip entirely if no Figma URL provided.
 - CHECK → verify MCP connection via `whoami`
 - PARSE → extract fileKey and nodeId from URL
 - DISCOVER → map file structure, build screen inventory
-- EXTRACT → variables (primary), design context (fallback), screenshots
-- ORGANIZE → unified token map with source tags, screen index
+- EXTRACT → variables (primary), design context (fallback), screenshots, components
+- ORGANIZE → unified token map with source tags, component list, screen index
 
 ### 2.1 Save Extraction Results
 
 Store skill outputs into the pipeline:
-- Screenshots → `./ai-docs/references/screens/[slug].png`
+- For each screen from skill's SCREENS[], save screenshot to `./ai-docs/references/screens/[slug].png`
 - Screen index → `./ai-docs/references/screens/index.md` (load from design-setup-template.md)
-- Token map and screen index data → hold in memory for Phase 3
+- Token map, component list, and screen index data → hold in memory for Phase 3
 
 ### 2.2 Compare with File Token Map
 
@@ -249,6 +262,7 @@ Cross-reference Figma tokens (from skill) against token map from Phase 1:
 📸 Figma extraction complete
 - Screens captured: [count]
 - Variables extracted: [count] (from figma-variables: [N], from figma-context: [N])
+- Components found: [count]
 - New issues from Figma: [count] (added to resolution queue)
 ```
 
@@ -313,7 +327,10 @@ Recommended: [a/b/c] — [brief why]
 
 **Apply Sequential Thinking** for each selection:
 - Update resolved token map with chosen value
-- Record decision for style-guide.md (patches applied section)
+- Record decision for style-guide.md (Changes Applied section):
+  - Undefined patches: `"Token '[name]' in [file]: undefined → [value] from [source]"`
+  - Conflict resolutions: `"Token '[name]': chose [value] ([source]) over [value] ([source]) — [reason]"`
+  - Skipped tokens: `"Token '[name]': excluded by user decision"`
 - If resolution affects multiple tokens (e.g., choosing a color scale) → propagate
 
 After ALL resolutions complete:
@@ -338,9 +355,10 @@ Load Design System Reference section from design-setup-template.md.
 **Fill template sections:**
 - Metadata from PRD context + token source metadata
 - Token tables from resolved values (every row MUST have value)
+- Only include categories that have actual data (from Token Categories list)
 - Framework-specific columns only if framework config was found in sources
 - Patched tokens marked with `*` footnote
-- Components section from Figma mapping or placeholder
+- Components section from Figma component list or placeholder
 
 **Critical:** Do's/Don'ts and constraints go to style-guide.md, NOT here.
 
@@ -348,14 +366,15 @@ Write to: `./ai-docs/references/design-system.md`
 
 ### 4.2 Normalize Token Files
 
-Based on resolved token map, update each token source that was found:
+Based on resolved token map, update each token source:
 - Fix `undefined` values with resolved values
 - Add missing tokens where user confirmed
 - Remove conflicting values replaced by user choice
 - Preserve file format (JSON stays JSON, CSS stays CSS, etc.)
 - Follow framework naming conventions from Context7 docs (if loaded)
 
-Write patched files back to their original locations in `./ai-docs/references/tokens/`
+Move patched token files to `./ai-docs/references/tokens/` with original filenames preserved.
+If `tokens/` directory doesn't exist, create it.
 
 ### 4.3 Generate style-guide.md
 
@@ -365,26 +384,20 @@ Load Style Guide section from design-setup-template.md.
 1. Do's/Don'ts extracted from markdown specifications
 2. PRD constraints (platform, audience, tone)
 3. Figma usage patterns (if extracted)
-4. Validation findings (collision resolutions, patches applied)
+4. All decisions recorded in Phase 3.4
 
 Write to: `./ai-docs/references/style-guide.md`
 
 ### 4.4 Clean Up
 
-Remove original input files that were fully consumed into normalized outputs:
-- Markdown spec files that were merged into design-system.md and style-guide.md → remove
-- Token source files are kept (updated in place in 4.2)
-- Asset files are kept
-- `screens/` directory is kept
+Automatically remove original input files that were fully consumed into normalized outputs:
+- Markdown spec files merged into design-system.md and style-guide.md → remove
+- Original token source files that were moved to `tokens/` → remove from old location
+- Asset files → keep (not consumed)
+- `screens/` directory → keep
+- `design-system.md`, `style-guide.md`, `tokens/` → keep (these are outputs)
 
-Before deleting, confirm with user:
-```
-These original files were consumed into normalized outputs:
-- [filename1] → merged into design-system.md + style-guide.md
-- [filename2] → merged into design-system.md
-
-Remove originals? [yes/no]
-```
+Record all removals for the final report.
 
 ## Phase 5: Finalize & Report
 
@@ -407,9 +420,10 @@ Design Setup Complete!
 Summary:
 - Design System: [name] ([UI library or "custom"])
 - Platform: [from PRD]
-- Tokens: [count] colors, [count] typography, [count] spacing
+- Tokens: [count] colors, [count] typography, [count] spacing, [count] other
 - Sources processed: [count] files ([classifications])
 - Screens: [count or "none (no Figma)"]
+- Components: [count or "none (no Figma)"]
 - User decisions applied: [count]
 - Auto-patches: [count]
 

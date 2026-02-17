@@ -8,7 +8,7 @@ allowed-tools: Read, Write, Bash (*), mcp__figma__whoami, mcp__figma__get_metada
 
 Extract design tokens, screen structure, and visual references from Figma files.
 
-Process: **PARSE → DISCOVER → EXTRACT → ORGANIZE**
+Process: **CHECK → PARSE → DISCOVER → EXTRACT → ORGANIZE**
 
 The goal is to pull structured, source-tracked design data from Figma for use in design-setup pipelines, conflict resolution, and downstream code generation. Every extracted value carries its source tag — this matters because downstream consumers (like design-setup Phase 3) need to know whether a token came from an explicit Figma Variable definition or was inferred from applied styles, since that affects conflict resolution priority.
 
@@ -113,12 +113,14 @@ font/body/size             → typography token
 text/heading/weight        → typography token
 spacing/lg                 → spacing token
 space/4                    → spacing token
-radius/md                  → radius token
-shadow/card                → effect token
-breakpoint/md              → breakpoint token
+radius/md                  → border-radius token
+shadow/card                → shadows token
+breakpoint/md              → breakpoints token
+duration/fast              → animation token
+easing/default             → animation token
 ```
 
-**Categorization strategy:** Look at the value type first (hex color → colors, numeric with px/rem → typography/spacing, shadow definition → effects), then use the path as a naming hint. Don't force paths into a rigid taxonomy — let the actual data guide categorization.
+**Categorization strategy:** Look at the value type first (hex color → color, numeric with px/rem → typography/spacing, shadow definition → shadows), then use the path as a naming hint. Don't force paths into a rigid taxonomy — let the actual data guide categorization.
 
 Mark all values with `source: "figma-variables"` — these are intentional design decisions by the designer, not just what happened to be applied to a frame. This distinction drives conflict resolution downstream: a variable definition is stronger evidence than an applied style.
 
@@ -137,8 +139,14 @@ Mark all values with `source: "figma-variables"` — these are intentional desig
 - Color fills → color tokens
 - Text styles (font family, size, weight, line-height) → typography tokens
 - Auto Layout spacing/padding → spacing tokens
-- Corner radius → radius tokens
-- Effects (shadows, blurs) → effect tokens
+- Corner radius → border-radius tokens
+- Effects (shadows, blurs) → shadows tokens
+- Transition/animation properties → animation tokens
+
+**Extract component information from:**
+- Named component instances → component name, variant properties
+- Auto Layout containers with semantic names → layout components
+- Repeated patterns across screens → shared components
 
 Mark all values with `source: "figma-context"` — these are inferred from usage, not declared as variables. They're valid design data but carry less authority in conflict resolution because a designer might have applied a one-off value to a frame without intending it as a system token.
 
@@ -150,7 +158,7 @@ Mark all values with `source: "figma-context"` — these are inferred from usage
 
 ### 3.3 Screenshots (Visual References)
 
-`get_screenshot` renders the node as an image.
+`get_screenshot` renders the node as an image. Return screenshot data for each screen — the caller specifies save paths.
 
 For each screen in `SCREENS[]`, capture a screenshot. These serve as visual truth during implementation and validation.
 
@@ -181,14 +189,37 @@ FIGMA_TOKENS = {
     "heading-weight": { value: "700", source: "figma-context" }
   },
   spacing: { ... },
-  radius: { ... },
-  effects: { ... }
+  "border-radius": { ... },
+  shadows: { ... },
+  animation: { ... },
+  breakpoints: { ... }
 }
 ```
 
 **Merge priority:** `figma-variables` wins over `figma-context` when both provide the same token. Variables are explicit declarations; context values are inferred from usage.
 
-### 4.2 Screen Index
+### 4.2 Component List
+
+Extract component information from design context responses into a structured list:
+
+```
+FIGMA_COMPONENTS = [{
+  figmaName: "Button / Primary",
+  dsName: "Button",
+  variants: ["primary", "secondary", "ghost"],
+  confidence: "high",
+  source: "figma-context"
+}]
+```
+
+**Confidence levels:**
+- `high` — named component instance with clear variant properties
+- `medium` — repeated pattern with consistent naming
+- `low` — inferred from layout structure, name is ambiguous
+
+If design context returned no component data → `FIGMA_COMPONENTS = []` (empty, not error).
+
+### 4.3 Screen Index
 
 ```
 FIGMA_SCREENS = [{
@@ -202,7 +233,7 @@ FIGMA_SCREENS = [{
 }]
 ```
 
-### 4.3 Extraction Summary
+### 4.4 Extraction Summary
 
 Output a summary after extraction so the calling command (or the user) can quickly assess what data is available without parsing the full token map. This is especially important when extraction is partial — the consumer needs to know which data sources succeeded and which gaps remain.
 
@@ -213,6 +244,7 @@ Figma Extraction Summary
 Source: [URL or "no URL — variables only"]
 Screens: [N] discovered, [N] with screenshots
 Tokens: [N] from Variables, [N] from Context, [N] total unique
+Components: [N] discovered
 Warnings: [list if any]
 ```
 
@@ -223,15 +255,16 @@ Warnings: [list if any]
 The default workflow when design-setup provides a Figma URL:
 
 ```
+CHECK:    whoami → verify connection
 PARSE:    URL → fileKey + nodeId
 DISCOVER: get_metadata → SCREENS[]
 EXTRACT:  get_variable_defs → tokens (primary)
-          get_design_context on the most visually complex screens → tokens (fallback)
+          get_design_context on the most visually complex screens → tokens (fallback) + components
             Pick screens with the most child nodes in metadata — they tend to have
             richer style diversity (forms, dashboards > splash screens, empty states).
             Start with 2-3 screens; add more if token yield is sparse.
-          get_screenshot for each screen → visual references
-ORGANIZE: Merge token map, build screen index, output summary
+          get_screenshot for each screen → visual references (caller saves to disk)
+ORGANIZE: Merge token map, build component list, build screen index, output summary
 ```
 
 ### Token-Only (validation/comparison)
@@ -239,6 +272,7 @@ ORGANIZE: Merge token map, build screen index, output summary
 When you just need to compare Figma tokens against file-based tokens:
 
 ```
+CHECK:    whoami → verify connection
 PARSE:    URL → fileKey + nodeId
 EXTRACT:  get_variable_defs → tokens
           If sparse (<5 tokens): get_design_context on 1-2 complex screens → more tokens
@@ -250,9 +284,10 @@ ORGANIZE: Token map with sources for conflict resolution
 When you need screen structure and visuals, not tokens:
 
 ```
+CHECK:    whoami → verify connection
 PARSE:    URL → fileKey + nodeId
 DISCOVER: get_metadata → SCREENS[]
-EXTRACT:  get_screenshot for each screen
+EXTRACT:  get_screenshot for each screen (caller saves to disk)
 ORGANIZE: Screen index with screenshots
 ```
 
@@ -285,13 +320,15 @@ Step 3a: get_variable_defs(fileKey)
 Step 3b: get_design_context(fileKey, nodeId: "50:1")  ← Dashboard has most children
   → Found additional: font-family=Inter, heading-size=24px, body-size=14px,
     shadow-card=0 2px 4px rgba(0,0,0,0.1)
+  → Components: Button/Primary (3 variants), Card, Input, Avatar
   → All tagged source: "figma-context"
 
 Step 3c: get_screenshot for each of 4 screens
-  → 4/4 captured
+  → 4/4 captured, returned to caller for saving
 
 Step 4: Merge → 12 variable tokens + 4 context tokens = 16 total unique
-  Summary: 4 screens, 16 tokens, 4 screenshots, 0 warnings
+  Components: 4 discovered (Button: high, Card: medium, Input: medium, Avatar: low)
+  Summary: 4 screens, 16 tokens, 4 components, 4 screenshots, 0 warnings
 ```
 
 ## Error Handling
@@ -313,6 +350,7 @@ Figma extraction is **enrichment, not requirement**. The pipeline continues with
 
 | Step | Tool | Purpose |
 |---|---|---|
+| CHECK | `whoami` | Verify MCP connection |
 | DISCOVER | `get_metadata` | File structure, pages, frames, node IDs |
 | EXTRACT tokens | `get_variable_defs` | Design Variables (primary token source) |
 | EXTRACT context | `get_design_context` | Applied styles, layout, components (fallback) |
