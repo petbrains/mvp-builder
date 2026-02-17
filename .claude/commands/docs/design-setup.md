@@ -1,6 +1,6 @@
 ---
 description: Set up and normalize design system references for the pipeline.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma-dev-mode-mcp-server__get_metadata, mcp__figma-dev-mode-mcp-server__get_screenshot, mcp__figma-dev-mode-mcp-server__get_variable_defs, mcp__figma-dev-mode-mcp-server__get_design_context
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context
 ---
 
 # Instructions
@@ -11,13 +11,14 @@ Validate, normalize, and enrich design references for the MVP Builder pipeline.
 - `Read`: For loading PRD.md and all reference files
 - `Write`: For saving normalized outputs
 - `Bash`: For file discovery and directory operations
-- Figma MCP (optional): For extracting screens, metadata, and variables from Figma
 
 **Skills:**
 - Sequential Thinking Methodology: For content classification, conflict resolution, gap analysis
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 - Context7 Documentation Retrieval: For detected framework/library token format and naming conventions
   - Tools: `/mcp__context7__resolve-library-id`, `/mcp__context7__get-library-docs`
+- Figma Design Extraction: For Figma URL parsing, token extraction, screen discovery, screenshots
+  - Tools: `/mcp__figma__whoami`, `/mcp__figma__get_metadata`, `/mcp__figma__get_screenshot`, `/mcp__figma__get_variable_defs`, `/mcp__figma__get_design_context`
 
 **Templates:**
 - Design Setup: @.claude/templates/design-setup-template.md
@@ -65,10 +66,10 @@ normalize into standardized output, ask user about ambiguities, and clean up.
 - After normalization: remove original input files that were consumed into outputs
 
 ## Figma Mode Rules
-- Figma URL detected in `$ARGUMENTS` → Figma Mode ON (Phase 2 executes)
+- Figma URL detected in `$ARGUMENTS` → Figma Mode ON (Phase 2 executes via Figma Design Extraction skill)
 - No Figma URL → Figma Mode OFF (Phase 2 skipped entirely)
-- Figma extraction failures → Warning + continue (enrichment, not requirement)
-- Screen names → kebab-case from frame name
+- Figma extraction failures → Handled by skill (enrichment, not requirement) → pipeline continues
+- Screen names → kebab-case slugs from skill's DISCOVER step
 
 ## User Interaction Rules
 - Present ONE issue at a time, wait for user response before next
@@ -223,33 +224,31 @@ Otherwise proceed.
 
 Skip entirely if no Figma URL provided.
 
-### 2.1 Extract Screen Metadata
-Use Figma MCP `get_metadata` → Frame names, IDs, hierarchy, sizes.
-Parse XML response → Build screen inventory.
+**Apply Figma Design Extraction skill** and follow its Full Extraction workflow:
+- CHECK → verify MCP connection via `whoami`
+- PARSE → extract fileKey and nodeId from URL
+- DISCOVER → map file structure, build screen inventory
+- EXTRACT → variables (primary), design context (fallback), screenshots
+- ORGANIZE → unified token map with source tags, screen index
 
-### 2.2 Extract Screenshots
-For each top-level frame:
-Use Figma MCP `get_screenshot` → Save to `./ai-docs/references/screens/[kebab-name].png`
+### 2.1 Save Extraction Results
 
-### 2.3 Extract Figma Variables (Optional Enrichment)
-Use Figma MCP `get_variable_defs` → Compare with token map from Phase 1:
+Store skill outputs into the pipeline:
+- Screenshots → `./ai-docs/references/screens/[slug].png`
+- Screen index → `./ai-docs/references/screens/index.md` (load from design-setup-template.md)
+- Token map and screen index data → hold in memory for Phase 3
+
+### 2.2 Compare with File Token Map
+
+Cross-reference Figma tokens (from skill) against token map from Phase 1:
 - Matching values → Confirmed ✅
-- Different values → **Accumulate as issue** (Figma vs file source conflict)
+- Different values → **Accumulate as issue** (Figma vs file source conflict, include `source` tag from skill)
 - Figma-only tokens → **Accumulate as issue** (new token, user decides)
-
-### 2.4 Extract Design Context (Optional Enrichment)
-For key frames, use Figma MCP `get_design_context` → Component structure, layout patterns.
-Use to enrich style-guide.md with real usage examples.
-
-### 2.5 Generate Screen Index
-Load Screen Index section from design-setup-template.md.
-Fill with extracted data.
-Write to: `./ai-docs/references/screens/index.md`
 
 ```
 📸 Figma extraction complete
 - Screens captured: [count]
-- Variables extracted: [count]
+- Variables extracted: [count] (from figma-variables: [N], from figma-context: [N])
 - New issues from Figma: [count] (added to resolution queue)
 ```
 
@@ -426,7 +425,7 @@ Cleaned up:
 **Input Errors:**
 - **No reference files**: "No files found in ai-docs/references/. Place generator output first."
 - **No PRD**: "PRD.md not found. Generate PRD first."
-- **Invalid Figma URL**: "Could not parse Figma URL. Expected: figma.com/design/... or figma.com/file/..."
+- **Invalid Figma URL**: Skill's Step 1 (PARSE) will detect unsupported formats → warns and skips.
 - **Unclassifiable files**: "Could not determine content type of [filename]. What does this file contain?"
 
 **Validation Errors:**
@@ -435,6 +434,6 @@ Cleaned up:
 - **No token sources found**: "No token data found in any file. At minimum, provide a JSON or CSS file with token values."
 
 **Runtime Errors:**
-- **Figma MCP unavailable**: "Figma MCP server not available. Run without Figma link or connect MCP first."
+- **Figma MCP unavailable**: Skill's Step 0 (whoami) will detect this → warns and skips Figma extraction. Pipeline continues.
 - **File write failed**: "Failed to write [file path]: [error]"
 - **Template not found**: "Template design-setup-template.md not found at expected path."
