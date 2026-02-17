@@ -1,6 +1,6 @@
 ---
 description: Set up and normalize design system references for the pipeline.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__figma-dev-mode-mcp-server__get_metadata, mcp__figma-dev-mode-mcp-server__get_screenshot, mcp__figma-dev-mode-mcp-server__get_variable_defs, mcp__figma-dev-mode-mcp-server__get_design_context
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma-dev-mode-mcp-server__get_metadata, mcp__figma-dev-mode-mcp-server__get_screenshot, mcp__figma-dev-mode-mcp-server__get_variable_defs, mcp__figma-dev-mode-mcp-server__get_design_context
 ---
 
 # Instructions
@@ -16,6 +16,8 @@ Validate, normalize, and enrich design references for the MVP Builder pipeline.
 **Skills:**
 - Sequential Thinking Methodology: For content classification, conflict resolution, gap analysis
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
+- Context7 Documentation Retrieval: For detected framework/library token format and naming conventions
+  - Tools: `/mcp__context7__resolve-library-id`, `/mcp__context7__get-library-docs`
 
 **Templates:**
 - Design Setup: @.claude/templates/design-setup-template.md
@@ -113,11 +115,33 @@ For each file found, read content and classify:
 
 **Apply Sequential Thinking** to resolve ambiguous classifications.
 
-### 0.4 Detect Figma Mode
+### 0.4 Fetch Framework Documentation
+
+If any files classified as `token-framework` or `token-css`:
+
+**Identify framework** from file content:
+- `tailwind.config` → Tailwind CSS
+- `theme` object with MUI patterns → Material UI
+- `chakra` theme → Chakra UI
+- CSS custom properties with known prefix → corresponding library
+- Other → extract library name from imports/comments
+
+**Apply Context7 Documentation Retrieval** for detected framework:
+- Resolve library ID (trust score ≥7 preferred)
+- Fetch documentation with topic: "design tokens theme configuration"
+- Use 10000 tokens for token-specific coverage
+
+Keep framework docs in context for:
+- Phase 1: validating token names match framework conventions
+- Phase 4: normalizing output to correct framework format
+
+If no framework detected → skip.
+
+### 0.5 Detect Figma Mode
 - If `$ARGUMENTS` contains a Figma URL (figma.com/design/, figma.com/file/, figma.com/proto/) → **Figma Mode ON**
 - Otherwise → **Figma Mode OFF**
 
-### 0.5 Discovery Report
+### 0.6 Discovery Report
 ```
 📦 Design Setup initialized
 Found: [count] files in references/
@@ -131,6 +155,7 @@ Classified:
   [Unknown: [list] — asking user...]
 
 Figma: [ON with URL / OFF]
+Framework: [name + version / none detected]
 PRD: ✅ loaded
 
 Starting validation...
@@ -309,7 +334,7 @@ Proceeding to normalization...
 
 Load Design System Reference section from design-setup-template.md.
 
-**Input:** Resolved token map from Phase 3 + Figma enrichment from Phase 2.
+**Input:** Resolved token map from Phase 3 + Figma enrichment from Phase 2 + framework docs from Phase 0.4.
 
 **Fill template sections:**
 - Metadata from PRD context + token source metadata
@@ -329,6 +354,7 @@ Based on resolved token map, update each token source that was found:
 - Add missing tokens where user confirmed
 - Remove conflicting values replaced by user choice
 - Preserve file format (JSON stays JSON, CSS stays CSS, etc.)
+- Follow framework naming conventions from Context7 docs (if loaded)
 
 Write patched files back to their original locations in `./ai-docs/references/tokens/`
 
