@@ -6,8 +6,6 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 # Instructions
 
 Validate, normalize, and enrich design references for the MVP Builder pipeline.
-Reads all generator output from `ai-docs/references/`, classifies content by type,
-resolves conflicts through user interaction, and produces standardized reference files.
 
 **Tools Usage:**
 - `Read`: For loading PRD.md and all reference files
