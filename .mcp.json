@@ -22,8 +22,9 @@
             ],
             "env": {}
         },
-        "figma-desktop": {
-            "url": "http://127.0.0.1:3845/mcp"
+        "figma": {
+            "type": "http",
+            "url": "https://mcp.figma.com/mcp"
         }
     }
 }
