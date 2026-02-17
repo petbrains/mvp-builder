@@ -5,7 +5,7 @@
 ## Design System Reference
 
 ** MODEL INSTRUCTION: Fill all sections using validated source data.
-JSON is source of truth for token values. Spec.md for descriptions.
+JSON is source of truth for token values. Markdown specifications for descriptions.
 Include only sections with actual data — remove empty sections entirely.
 Do NOT include Do's/Don'ts here — those go to Style Guide only. **
 
