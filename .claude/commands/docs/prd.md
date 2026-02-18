@@ -218,7 +218,29 @@ If modifications requested:
 - Write updated ./ai-docs/PRD.md
 - Loop until 'done'
 
-"PRD finalized! Ready for implementation. Next: /docs:feature"
+When user types 'done':
+
+```bash
+mkdir -p ./ai-docs/references
+```
+
+"PRD finalized! Ready for implementation.
+
+📂 References directory created: ai-docs/references/
+
+Place supplementary materials to enrich downstream specifications:
+- Design systems (.md) — colors, typography, spacing, components
+- Design tokens (.json, .css) — variables, values, mappings
+- Data schemas (.json, .yaml) — API structures, data models
+- Content libraries (.md) — UI texts, error messages
+- Architecture notes (.md) — technical decisions, constraints
+
+Recommendation: Keep files under 20KB for optimal context.
+Note: Text files work best. Images/PDFs have limited support in CLI.
+
+Next steps:
+- /docs:design-setup [figma-url] (optional: normalize design references)
+- /docs:feature (generate feature specifications)"
 
 # Error Handling
 
