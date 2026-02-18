@@ -97,7 +97,7 @@ Fill plan-template.md with concrete technical decisions while generating MINIMAL
 **Load ALL source files once:**
 - Read `./ai-docs/features/[feature]/spec.md` → Extract requirements, entities (note existing Key Entities section)
 - Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns, quantified UX values for constants
-- Read `./ai-docs/features/[feature]/ui.md` → Extract component trees, DS mapping, layout structure
+- Read `./ai-docs/features/[feature]/ui.md` → Extract component trees, DS mapping, layout structure, visual state mapping
 - Read `./ai-docs/PRD.md` → Extract technical requirements and architecture
 - Read `./ai-docs/FEATURES.md` → Understand feature context and dependencies
 
@@ -340,6 +340,7 @@ NO justifications for dependencies (those are in research.md).
 - Verify all FR-XXX requirements have implementation approach
 - Ensure all UX-XXX requirements map to components
 - Ensure all ui.md components have code locations in code organization
+- Ensure all ui.md slot=true components have children/slot API in code organization
 - Check entity naming consistency across all artifacts
 - Verify storage approach aligns with spec.md requirements
 - Ensure no constants are hardcoded (reference data-model.md)
@@ -364,6 +365,7 @@ NO justifications for dependencies (those are in research.md).
 - How requirements → components (don't repeat requirements)
 - How ui.md component trees → code files (don't repeat component catalog)
 - How errors → handling (don't repeat error types)
+- How ui.md slot markers → component API (slot: true → children prop or render-prop)
 - Component names should reflect feature purpose
 
 **Testing Approach:**

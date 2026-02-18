@@ -87,6 +87,7 @@ Each domain MUST include these cross-checks:
 - Are all ui.md visual states covered by corresponding ux.md flows?
 - Are all DS components from ui.md Component Catalog referenced in tasks.md?
 - Do ui.md layout structures match component boundaries in plan.md?
+- Are all ui.md slot-marked components (slot: true) designed with children/slot API in plan.md?
 
 **data:**
 - Do constants in data-model.md match quantified values in ux.md?

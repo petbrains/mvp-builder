@@ -84,6 +84,7 @@ fi
   - **style-guide.md** → layout constraints, spacing system, color usage rules
   - **Design tokens** (.json, .css) → concrete variant names, prop values for Component Catalog
   - **screens/** (screenshots, mockups) → visual reference for component tree structure
+  - **screens/index.md** → screen-to-screenshot mapping (use to match Screen Inventory with visual references)
   - **Wireframes** → screen layout and component placement guidance
 - Keep in context throughout UI generation
 - If directory empty or doesn't exist: skip silently, proceed without references

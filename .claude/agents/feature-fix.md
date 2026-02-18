@@ -68,7 +68,7 @@ Git Workflow handles secret protection automatically.
 - spec.md → Requirements, acceptance scenarios
 - plan.md → Code organization, component mapping
 - data-model.md → Entities, validation rules
-- ui.md → Component structure, DS mapping
+- ui.md → Component structure, DS mapping, visual states, slot markers
 - feedback.md → REV-XXX findings, diagnostics, fix guidance
 
 **Optional artifacts:**

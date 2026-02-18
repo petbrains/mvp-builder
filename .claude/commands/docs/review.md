@@ -279,6 +279,8 @@ Misalignment → BLOCKER or MAJOR.
 - Component boundaries respected
 - Component structure matches ui.md trees
 - DS components used per ui.md Component Catalog
+- Layout implementation follows ui.md Layout Structure
+- Slot components accept arbitrary children per ui.md slot markers
 
 Violations → MAJOR or WARN.
 

@@ -384,6 +384,7 @@ Load Style Guide section from design-setup-template.md.
 2. PRD constraints (platform, audience, tone)
 3. Figma usage patterns (if extracted)
 4. All decisions recorded in Phase 3.4
+5. Interaction patterns from markdown specifications (component behaviors, gestures, animations)
 
 Write to: `./ai-docs/references/style-guide.md`
 

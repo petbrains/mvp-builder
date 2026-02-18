@@ -178,6 +178,7 @@ From Coverage section, determine:
 - Contract compliance (from contracts/ — if loaded in 1.1)
 - Accessibility requirements (from ux.md — if loaded in 1.1)
 - Component rendering and visual states (from ui.md — if loaded in 1.1)
+- Slot content acceptance (from ui.md slot markers — if loaded in 1.1)
 
 **1.3.2 Write Test File**
 
