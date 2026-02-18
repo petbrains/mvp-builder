@@ -64,13 +64,15 @@ The old approach: separate agent for each domain. The new approach: one general 
 ```mermaid
 flowchart LR
     subgraph DEFINE ["Define"]
-        PRD["prd"] --> FEATURE["feature"]
+        PRD["prd"] --> DSETUP["design-setup"]
+        DSETUP --> FEATURE["feature"]
         FEATURE --> CLARIFY["clarify"]
     end
     
     subgraph DESIGN ["Design"]
         CLARIFY --> UX["ux"]
-        UX --> PLAN["plan"]
+        UX --> UI["ui"]
+        UI --> PLAN["plan"]
     end
     
     subgraph BUILD ["Build"]
@@ -94,11 +96,12 @@ Transform product idea into structured specifications.
 
 | Command | Output | Purpose |
 |---------|--------|---------|
-| `/docs:prd` | `PRD.md` | Product vision, audience, core problem |
+| `/docs:prd` | `PRD.md`, `references/` dir | Product vision, audience, core problem |
+| `/docs:design-setup` | `references/design-system.md`, `tokens/`, `style-guide.md` | Normalize design generator output, extract from Figma |
 | `/docs:feature` | `spec.md`, `FEATURES.md` | Feature specs with requirements (FR-XXX, UX-XXX) |
 | `/docs:clarify` | Updated `spec.md` | Resolve ambiguities through targeted questions |
 
-**After `/docs:feature`**: Add supplementary materials to `ai-docs/references/` — design systems, API schemas, content guidelines.
+**After `/docs:prd`**: Add supplementary materials to `ai-docs/references/` — design systems, tokens, schemas, API contracts, style guides, screenshots. Run `/docs:design-setup` to normalize raw generator output.
 
 ### Phase 2: Design
 
@@ -107,6 +110,7 @@ Convert specifications into technical architecture.
 | Command | Output | Purpose |
 |---------|--------|---------|
 | `/docs:ux` | `ux.md` | User flows, states, error handling, accessibility |
+| `/docs:ui` | `ui.md` | Component trees, DS mapping, layout structure |
 | `/docs:plan` | `plan.md`, `data-model.md`, `contracts/`, `setup.md` | Architecture, entities, API specs, environment |
 
 ### Phase 3: Build
@@ -193,11 +197,12 @@ ai-docs/
 ├── FEATURES.md                 # Feature index  
 ├── README.md                   # Code map (navigation for agents)
 ├── HANDOFF.md                  # Session continuity (auto-injected on start)
-├── references/                 # Your supplementary materials
+├── references/                 # Design systems, tokens, schemas, style guides, screens, API contracts
 └── features/
     └── [feature-name]/
         ├── spec.md             # Requirements (FR-XXX, UX-XXX)
         ├── ux.md               # User flows and states
+        ├── ui.md               # Component trees, DS mapping, layout
         ├── plan.md             # Architecture decisions
         ├── research.md         # Technical research and rationale
         ├── data-model.md       # Entities and validation
