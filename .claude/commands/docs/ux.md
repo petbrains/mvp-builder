@@ -9,7 +9,7 @@ Generate platform-aware UX specifications focused on interactions and behavior p
 Output compact, structured documents that complement (not duplicate) feature specifications.
 
 **Tools Usage:**
-- `Read`: For loading PRD.md and spec.md files
+- `Read`: For loading PRD.md, spec.md, and reference files
 - `Write`: For saving ux.md output
 - `Bash`: For checking file existence
 
@@ -35,10 +35,10 @@ Focus on user interactions, behavior patterns, and platform UX conventions.
 # Core Principles
 
 ## Content Rules
-- **Complement, don't duplicate** - Add UX insights, not repeat requirements
-- **Structured data** - Use JSON for all component definitions, Mermaid for flows
-- **Platform-aware** - Include only UX-relevant patterns for detected platform
-- **Template compliance** - Exclude Review Checklist from final output
+- **Complement, don't duplicate** — Add UX insights, not repeat requirements
+- **Structured data** — Use JSON for all component definitions, Mermaid for flows
+- **Platform-aware** — Include only UX-relevant patterns for detected platform
+- **Template compliance** — Exclude Review Checklist from final output
 
 # Execution Flow
 
@@ -65,7 +65,14 @@ if [ -d "./ai-docs/references" ]; then
 fi
 ```
 - If references directory contains files: Read all files into context
+- Relevant reference types for UX generation:
+  - **Content libraries** (.md) → exact error message templates, UI text patterns for Error Presentation
+  - **API contracts** (.json, .yaml) → timeout values, error codes, rate limits for Error Presentation
+  - **Style guides** (.md) → accessibility values (contrast ratios, touch target sizes), platform constraints
+  - **Design systems** (.md) → interaction patterns, component behavior conventions
+  - **Data schemas** (.json, .yaml) → data shapes informing flow diagrams and state transitions
 - Keep in context throughout UX generation
+- If directory empty or doesn't exist: skip silently, proceed without references
 
 ## Phase 1: Platform Detection
 
@@ -115,6 +122,7 @@ Create comprehensive Mermaid diagram showing complete user journey:
 - **For each exit path (Cancel, Back, Close, Abort):**
   - Document cleanup behavior (pending request handling, state reset, data persistence)
   - Specify target state after exit
+- If data schemas loaded from references: use concrete field names in flow decision points
 
 ```mermaid
 flowchart TD
@@ -153,6 +161,7 @@ For States & Transitions, define complete lifecycle states:
 ### 2.4 Quantified UX Elements
 - Any numeric value displayed to user (percentages, counts, durations, estimates) MUST have calculation formula
 - Any duration or estimate MUST define formula (will be formalized as constants in data-model.md by plan command)
+- If API contracts loaded from references: use concrete timeout values and rate limits instead of placeholders
 - Format: `[Element]: [Formula or source reference]`
 
 ### 2.5 Platform-Specific UX Patterns
@@ -164,6 +173,8 @@ Key patterns by platform:
 - **Desktop**: Window management, System integration, File operations
 - **Browser Extension**: Permissions, Context injection, Storage strategy
 
+If design system references loaded: use DS-specific interaction patterns (e.g., gesture conventions, navigation paradigms) instead of generic platform defaults.
+
 ### 2.6 Define Error Presentation
 
 **Apply Sequential Thinking Methodology** for error categorization:
@@ -171,6 +182,11 @@ Key patterns by platform:
 - Map to four error types
 - Define UI responses for each
 - Ensure all scenarios covered
+
+**Enrich from References (if loaded):**
+- Content libraries → use exact message templates instead of generic placeholders
+- API contracts → use concrete error codes, timeout values, rate limit thresholds
+- Style guides → use specific visual indicator patterns (colors, icon conventions)
 
 Define four error types (as required by template):
 ```json
@@ -194,6 +210,10 @@ Define accessibility requirements with testable criteria:
 - **Navigation**: Keyboard bindings (specific keys: Tab, Enter, Escape, Arrow keys)
 - **Visual**: Contrast ratio value, color independence method
 - **Touch Targets**: Minimum size value per platform
+
+**Enrich from References (if loaded):**
+- Style guides → use exact contrast ratio values, color palette accessibility notes
+- Design systems → use DS-specific ARIA patterns and keyboard conventions
 
 **Rule**: Each standard MUST include specific testable value or reference to external guideline. Avoid vague terms: "adequate", "sufficient", "appropriate".
 
@@ -247,7 +267,7 @@ Summary:
 - Error Types: 4 scenarios covered
 - Accessibility: Standards defined with testable values
 
-Next: /docs:plan <feature-path>
+Next: /docs:ui <feature-path>
 ```
 
 # Error Handling

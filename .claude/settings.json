@@ -39,6 +39,7 @@
       "Skill(backend-vitest)",
       "Skill(backend-zod)",
       "Skill(docker-node)",
+      "Skill(figma-design-extraction)",
       "Skill(frontend-aceternity)",
       "Skill(frontend-color-system)",
       "Skill(frontend-debug-linting)",
@@ -76,7 +77,8 @@
   "enabledMcpjsonServers": [
     "context7",
     "sequential-thinking",
-    "playwright"
+    "playwright",
+    "figma"
   ],
   "includeCoAuthoredBy": true,
   "hooks": {

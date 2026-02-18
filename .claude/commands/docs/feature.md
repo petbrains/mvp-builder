@@ -8,9 +8,9 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 Generate feature specifications from PRD or user description into structured spec files.
 
 **Tools Usage:**
-- `Read`: For loading PRD and existing FEATURES.md
+- `Read`: For loading PRD, existing FEATURES.md, and reference files
 - `Write`: For saving spec files and index
-- `Bash`: For directory creation
+- `Bash`: For directory creation and file existence checks
 
 **Skills:**
 - Sequential Thinking Methodology: For analyzing PRD structure, extracting features, validating input, and detecting conflicts
@@ -19,6 +19,9 @@ Generate feature specifications from PRD or user description into structured spe
 **Templates:**
 - Spec: @.claude/templates/spec-template.md
 - Index: @.claude/templates/features-template.md
+
+**Project context:**
+- PRD: @ai-docs/PRD.md
 
 **File Structure:**
 - Input: `./ai-docs/PRD.md` (PRD mode) or user description (User Input mode)
@@ -128,6 +131,13 @@ Wait for response before proceeding.
 - If similar features exist without Technical Context → likely not needed
 - When uncertain → ask user: "Does this feature require specific technical constraints?"
 
+## Reference Enrichment Rules
+When references are loaded (Phase 1.3), use them to produce more precise specifications:
+- References inform spec content but are NOT copied verbatim into specs
+- Data from references becomes concrete FR-XXX requirements, entity fields, and edge cases
+- If reference contradicts PRD → PRD takes priority, note discrepancy in summary
+- References fill gaps that PRD leaves abstract — field names, validation rules, API constraints
+
 # Execution Flow
 
 ## 1. Initialize
@@ -152,6 +162,25 @@ For User Input Mode:
 - Load existing epic structure
 - Parse user description
 
+**1.3 Load References**
+```bash
+# Load supplementary materials if available
+if [ -d "./ai-docs/references" ]; then
+    echo "Loading references..."
+    find ./ai-docs/references -type f 2>/dev/null
+fi
+```
+- If references directory contains files: Read all files into context
+- Relevant reference types for spec generation:
+  - **Data schemas** (.json, .yaml) → entity fields, types, relationships, validation rules
+  - **API contracts** (.json, .yaml) → integration requirements, edge cases (rate limits, auth, pagination)
+  - **Architecture notes** (.md) → technical constraints, dependencies, infrastructure limits
+  - **Design systems** (.md) → concrete UX-XXX requirements, component capabilities
+  - **Content libraries** (.md) → exact message templates for acceptance scenarios
+  - **Style guides** (.md) → platform-specific UI constraints
+- Keep in context throughout specification generation
+- If directory empty or doesn't exist: skip silently, proceed without references
+
 ## 2. Extract Features
 
 ### 2.1 PRD Mode
@@ -169,7 +198,6 @@ When processing PRD sections:
 **Create Structure:**
 ```bash
 mkdir -p ./ai-docs/features
-mkdir -p ./ai-docs/references
 ```
 
 **Generate Epic Structure:**
@@ -218,6 +246,14 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 - Critical technical limits → Technical Context > Constraints
 - Platform Strategy from UX Details → Technical Context (if affects implementation)
 
+**Enrich from References (if loaded):**
+- Data schemas → validate and expand Key Entities with concrete field names, types, and relationships
+- API contracts → add FR-XXX for integration constraints (rate limits, pagination, auth tokens)
+- Architecture notes → refine Technical Context with specific infrastructure constraints
+- Design systems → convert component capabilities into concrete UX-XXX requirements
+- Content libraries → use exact message templates in acceptance scenario Then-clauses
+- Style guides → add platform-specific constraints as UX-XXX requirements
+
 **3.A.3 Fill Template**
 - Load spec-template.md
 - Fill all sections with extracted content
@@ -252,6 +288,13 @@ mkdir -p ./ai-docs/features/[kebab-case-feature-name]
 - Stated requirements → FR-XXX/UX-XXX (apply testability rule)
 - Error conditions → Edge Cases (with FR-XXX references)
 - Data mentioned → Key Entities
+
+**Enrich from References (if loaded):**
+- Cross-check user description against available data schemas and API contracts
+- Add missing entity fields discovered in data schemas
+- Add edge cases implied by API contracts (rate limits, auth failures, pagination bounds)
+- Refine UX-XXX requirements with concrete values from design system references
+- Use content libraries for exact wording in acceptance scenario Then-clauses
 
 **3.B.3 Fill Template**
 - Load spec-template.md
@@ -343,21 +386,11 @@ Feature Generation Complete
 Summary:
 - Total Features Created: [count]
 - Epics Created: [list]
+- References Loaded: [count] files (or "No references available")
 - Location: ./ai-docs/features/
 - Index: ./ai-docs/FEATURES.md
 
 All features extracted from PRD and saved as individual specs.
-
-📁 References directory created: ai-docs/references/
-
-Place supplementary materials for /docs:ux and /docs:plan commands:
-- Design systems (.md) — colors, typography, spacing
-- Content libraries (.md) — UI texts, error messages
-- Data schemas (.json, .yaml) — API structures, data models
-- Technical decisions (.md) — architecture notes
-
-Recommendation: Keep files under 20KB for optimal context.
-Note: Text files work best. Images/PDFs have limited support in CLI.
 
 Next: /docs:ux <feature-path>
       /docs:clarify <feature-path> (optional: refine spec if ambiguities remain)
@@ -369,6 +402,7 @@ Feature Added Successfully
 
 - Feature: [feature-name]
 - Added to Epic: [epic-name] [or "New Epic Created: [epic-name]"]
+- References Used: [count] files (or "No references available")
 - Location: ./ai-docs/features/[feature-name]/spec.md
 
 FEATURES.md updated with new feature.
@@ -397,3 +431,4 @@ Next: /docs:ux <feature-path>
 - **Missing verification criteria**: "Error: FR-XXX uses 'maintain'/'preserve'/'ensure' without verification criteria"
 - **Edge case without reference**: "Error: Edge case '[description]' missing FR-XXX reference"
 - **FR without acceptance scenario**: "Error: FR-XXX has no corresponding Acceptance Scenario. Add scenario or clarify requirement scope."
+- **Reference-PRD conflict**: "Warning: Reference [file] conflicts with PRD on [topic]. PRD takes priority."

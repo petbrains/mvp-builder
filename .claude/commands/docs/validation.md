@@ -14,7 +14,7 @@ Generate "Unit Tests for Requirements" — deterministic checklists that validat
 
 **Skills:**
 - Feature Analyzer: For loading complete feature context from artifacts
-  - Scans and loads: spec.md, ux.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
+  - Scans and loads: spec.md, ux.md, ui.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
 - Sequential Thinking Methodology: For structured reasoning during analysis and generation
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
@@ -25,7 +25,7 @@ Generate "Unit Tests for Requirements" — deterministic checklists that validat
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/` (requires core artifacts)
 - Output: 
-  - `./ai-docs/features/[feature]/validation/[domain]-checklist.md` (4 files)
+  - `./ai-docs/features/[feature]/validation/[domain]-checklist.md` (5 files)
   - `./ai-docs/features/[feature]/validation/resolutions.md` (if any)
   - `./ai-docs/features/[feature]/tasks.md` (updated with resolution tasks)
 
@@ -42,7 +42,8 @@ Checklists test whether **requirements are well-specified**, not whether impleme
 | Domain | Primary | Secondary | Focus |
 |--------|---------|-----------|-------|
 | `requirements` | spec.md | plan.md, tasks.md | FR coverage, acceptance criteria, edge cases |
-| `ux` | ux.md | spec.md | Flows, states, accessibility, errors |
+| `ux` | ux.md | spec.md, ui.md | Flows, states, accessibility, errors |
+| `ui` | ui.md | ux.md, plan.md | Component trees, DS mapping, layout, visual states |
 | `api` | contracts/, plan.md | spec.md | Endpoints, messages, schemas, auth |
 | `data` | data-model.md | spec.md | Entities, validation, states, relationships |
 
@@ -60,6 +61,7 @@ Checklists test whether **requirements are well-specified**, not whether impleme
 **Per-domain categories (required):**
 - `requirements`: Completeness, Clarity, Consistency, Coverage, **Cross-Artifact**
 - `ux`: Completeness, Clarity, Coverage, Edge Case, **Cross-Artifact**
+- `ui`: Completeness, Consistency, Coverage, **Cross-Artifact**
 - `api`: Completeness, Clarity, Consistency, Coverage, **Cross-Artifact**
 - `data`: Completeness, Clarity, Consistency, Edge Case, **Cross-Artifact**
 
@@ -78,6 +80,14 @@ Each domain MUST include these cross-checks:
 - Are all accessibility requirements covered by TEST tasks?
 - Are all error types from Error Presentation defined in contracts/?
 - Are exit path behaviors covered by state tests in tasks.md?
+- Are all ux.md states mapped to visual representation in ui.md?
+
+**ui:**
+- Do all ui.md component trees map to code organization in plan.md?
+- Are all ui.md visual states covered by corresponding ux.md flows?
+- Are all DS components from ui.md Component Catalog referenced in tasks.md?
+- Do ui.md layout structures match component boundaries in plan.md?
+- Are all ui.md slot-marked components (slot: true) designed with children/slot API in plan.md?
 
 **data:**
 - Do constants in data-model.md match quantified values in ux.md?
@@ -113,7 +123,7 @@ Each domain MUST include these cross-checks:
 - [ ] CHK042 Is behavior defined when estimated time exceeds timeout? [Edge Case, Resolution: CHK042]
 ```
 
-**Numbering order:** requirements → ux → api → data (follows artifact chain: spec → ux → contracts → data-model)
+**Numbering order:** requirements → ux → ui → api → data (follows artifact chain: spec → ux → ui → contracts → data-model)
 
 **References:**
 - `[FR-XXX]`, `[UX-XXX]` — requirement IDs
@@ -157,7 +167,7 @@ Each domain MUST include these cross-checks:
 - `validation/resolutions.md` — decisions log  
 - `tasks.md` — task updates
 
-**DO NOT propose changes to:** spec.md, ux.md, plan.md, data-model.md, contracts/, or any other artifacts. Resolutions flow INTO tasks.md only.
+**DO NOT propose changes to:** spec.md, ux.md, ui.md, plan.md, data-model.md, contracts/, or any other artifacts. Resolutions flow INTO tasks.md only.
 
 **Every resolution MUST update tasks.md.** No exceptions. Options:
 1. **NEW** — add TEST + IMPL tasks
@@ -228,8 +238,8 @@ Extract `FEATURE_PATH`.
 ### 0.2 Load Feature Context
 
 **Apply Feature Analyzer skill** to scan and load feature artifacts:
-- Validates core files exist (spec.md, ux.md, plan.md, tasks.md, data-model.md)
-- Loads all available artifacts into context
+- Validates core files exist (spec.md, ux.md, ui.md, plan.md, tasks.md, data-model.md)
+- Loads all available artifacts into context (including ui.md)
 - Reports missing files if any
 
 If core files missing → Report error and exit.
@@ -262,7 +272,7 @@ For each "## Phase N:" header:
 mkdir -p $FEATURE_PATH/checklists
 ```
 
-**Generate in order:** requirements → ux → api → data (follows artifact chain)
+**Generate in order:** requirements → ux → ui → api → data (follows artifact chain)
 
 Track `LAST_CHK_NUM = 0` across all domains.
 
@@ -354,7 +364,7 @@ Related: [RELATED_TASKS or "None found"]
 - Implementation decision → NEW or UPDATE
 - "Keep as-is" / "Use default" → UPDATE with confirmation
 - "Not MVP" / "Defer" → DEFERRED (tracked in Notes)
-- Never propose changes to spec.md, ux.md, plan.md, data-model.md, contracts/
+- Never propose changes to spec.md, ux.md, ui.md, plan.md, data-model.md, contracts/
 
 **Wait for user selection before showing next item.**
 
@@ -463,6 +473,7 @@ Location: [PATH]/validation/
 Files:
 - requirements-checklist.md ([N] items)
 - ux-checklist.md ([N] items)
+- ui-checklist.md ([N] items)
 - api-checklist.md ([N] items)
 - data-checklist.md ([N] items)
 - resolutions.md ([N] decisions)

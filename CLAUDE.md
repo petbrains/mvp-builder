@@ -55,7 +55,7 @@ Maintain references when implementing: task → requirement → entity
 
 ### Specifications First
 - No spec → no task
-- Generate tasks.md from spec/ux/plan before implementation
+- Generate tasks.md from spec/ux/ui/plan before implementation
 - Lock contracts in @ai-docs/features/[name]/contracts/
 - Use Given/When/Then for acceptance criteria
 - ADR for irreversible architectural decisions
@@ -156,11 +156,12 @@ ai-docs/
 ├── README.md              # Implementation status (code map)
 ├── FEATURES.md            # Feature index and dependencies
 ├── HANDOFF.md             # Session continuity (goal, progress, blockers, next)
-├── references/            # User-provided supplementary materials
+├── references/            # Design systems, tokens, schemas, style guides, screens, API contracts, architecture notes
 └── features/
     └── [feature-name]/
         ├── spec.md        # Requirements (FR-*, UX-*), acceptance scenarios
         ├── ux.md          # Flows, error handling, states
+        ├── ui.md          # Component trees, DS mapping, layout structure
         ├── plan.md        # Technical approach, code organization
         ├── tasks.md       # TDD execution tasks
         ├── data-model.md  # Entities, constants, validation rules

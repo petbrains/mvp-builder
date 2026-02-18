@@ -8,7 +8,7 @@ allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinki
 Generate actionable tasks list organized by user story priority, enabling independent implementation and testing of each story.
 
 **Tools Usage:**
-- `Read`: For loading spec.md, ux.md, plan.md, and other planning documents
+- `Read`: For loading spec.md, ux.md, ui.md, plan.md, and other planning documents
 - `Write`: For saving generated tasks.md
 - `Bash`: For directory existence verification and prerequisites validation
 
@@ -34,6 +34,7 @@ Generate actionable tasks list organized by user story priority, enabling indepe
   - plan.md (tech stack, libraries, structure)
   - spec.md (user stories with priorities) 
   - ux.md (flows, patterns)
+  - ui.md (component trees, DS mapping)
   - data-model.md (entities)
   - contracts/ (openapi.yaml for REST API, contracts.md for messages — both optional)
   - research.md (decisions)
@@ -105,6 +106,7 @@ Each cycle within a user story must have:
    - Contracts: from contracts/ (openapi.yaml and/or contracts.md if present)
    - States: from data-model.md if applicable
    - Accessibility: from ux.md Accessibility Standards (if applicable)
+   - Components: from ui.md Component Trees
    - Include only applicable fields (skip if no relevant content exists)
 2. **RED Phase**: TEST- prefixed tasks
 3. **GREEN Phase**: IMPL- prefixed tasks
@@ -167,6 +169,7 @@ The template defines how different requirement types map to test types.
 # Note optional files availability
 [ -f "./ai-docs/features/$FEATURE/contracts/openapi.yaml" ] && echo "OpenAPI spec found"
 [ -f "./ai-docs/features/$FEATURE/contracts/contracts.md" ] && echo "Message contracts found"
+[ ! -f "./ai-docs/features/$FEATURE/ui.md" ] && echo "Error: ui.md not found. Run ui command first." && exit 1
 [ -f "./ai-docs/features/$FEATURE/research.md" ] && echo "Research notes found"
 [ -f "./ai-docs/features/$FEATURE/setup.md" ] && echo "Setup guide found"
 ```
@@ -177,6 +180,7 @@ The template defines how different requirement types map to test types.
 - Read `./ai-docs/features/[feature]/plan.md` → Extract tech stack, libraries, structure
 - Read `./ai-docs/features/[feature]/spec.md` → Extract acceptance scenarios with priorities
 - Read `./ai-docs/features/[feature]/ux.md` → Extract flows, patterns
+- Read `./ai-docs/features/[feature]/ui.md` → Extract component trees for Coverage
 - Read `./ai-docs/features/[feature]/data-model.md` → Extract entities, map to stories
 - Read `./ai-docs/features/[feature]/contracts/` → Map endpoints/messages to stories
   - openapi.yaml: REST API contracts (if present)
@@ -224,6 +228,7 @@ For each user story:
 - Identify which API endpoints can be reused vs need new implementation
 - Extract all accessibility requirements from ux.md Accessibility Standards section
 - Map each error type from ux.md Error Presentation to specific error handling components
+- Map each component from ui.md Component Trees to corresponding TDD cycles
 - Determine service layer needs
 - Note shared components that should be referenced, not duplicated
 - Group related requirements for TDD cycles
@@ -248,6 +253,7 @@ For each user story phase:
    - Coverage section listing requirements being addressed
    - RED phase: TEST- tasks testing the requirements
      - Generate separate test for each error type defined in ux.md Error Presentation section
+     - Generate rendering/interaction test for each ui.md component referenced in Coverage
      - If component exists in dependency: generate integration tests, not unit tests
      - Generate test for each state transition from data-model.md
    - GREEN phase: IMPL- tasks implementing functionality
@@ -273,6 +279,7 @@ Check:
 - Test Case Mapping from template properly applied
 - All platform-specific patterns from ux.md have corresponding tests
 - All accessibility standards from ux.md have validation tests
+- All ui.md components have at least one TEST task
 - All state transitions from data-model.md have corresponding tests
 - All constants from data-model.md are referenced in at least one task
 
@@ -283,6 +290,7 @@ Check:
 - Package names from setup.md
 - Constant names and values from data-model.md
 - Error type names from ux.md
+- Component names from ui.md
 - State names from data-model.md
 - Component paths from plan.md
 Never use placeholder values or generic descriptions.
@@ -418,5 +426,6 @@ Next: /docs:validation <feature-path>
 - **Missing state transition test**: "Error: State transition [from → to] has no corresponding TEST task"
 - **Unused constant**: "Warning: Constant [NAME] defined in data-model.md but not referenced in any task"
 - **Missing accessibility test**: "Warning: Accessibility standard [name] has no corresponding TEST task"
+- **Unmapped UI component**: "Warning: Component [name] from ui.md not referenced in any task"
 
 Report first 5 errors, then summary count if more.
