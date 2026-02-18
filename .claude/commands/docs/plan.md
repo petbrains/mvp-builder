@@ -9,7 +9,7 @@ Generate technical implementation plan by filling plan-template.md based on vali
 Creates minimal supporting artifacts that complement (not duplicate) existing documentation.
 
 **Tools Usage:**
-- `Read`: For loading spec.md, ux.md, ui.md, and existing planning documents
+- `Read`: For loading spec.md, ux.md, ui.md, reference files, and existing planning documents
 - `Write`: For saving plan artifacts and research notes
 - `Bash`: For directory creation and file verification
 
@@ -137,7 +137,15 @@ if [ -d "./ai-docs/references" ]; then
 fi
 ```
 - If references directory contains files: Read all files into context
+- Relevant reference types for implementation planning:
+  - **Data schemas** (.json, .yaml) → ready field types, relationships for data-model.md
+  - **API contracts** (.json, .yaml) → base for contracts/ generation (endpoints, payloads)
+  - **Architecture notes** (.md) → infrastructure constraints, key decisions for research.md
+  - **Design system** (.md) → component architecture, import patterns for plan.md Technical Context
+  - **Style guide** (.md) → styling approach for plan.md Technical Context
+  - **Design tokens** (.json, .css) → token import strategy for setup.md
 - Keep in context throughout planning
+- If directory empty or doesn't exist: skip silently, proceed without references
 
 ### 0.4 Execute Research & Document
 
@@ -175,6 +183,10 @@ If no external libraries identified, skip library documentation step.
 - [Verified combination]: ✔
 ```
 
+**Enrich from References (if loaded):**
+- Architecture notes → incorporate infrastructure decisions and constraints into Key Decisions
+- If architecture notes contradict PRD → note deviation with rationale in Key Decisions
+
 NO alternatives, NO lengthy explanations, NO rejected approaches.
 NO configuration details (those go in `setup.md`).
 NO implementation details (those go in `plan.md`).
@@ -192,6 +204,11 @@ NO implementation details (those go in `plan.md`).
 - Identify state transitions from ux.md flows
 - Extract validation rules from spec.md requirements
 - Extract quantified values from ux.md Quantified UX Elements for constants
+
+**Enrich from References (if loaded):**
+- Data schemas → use concrete field names, types, and relationships instead of inferring from spec.md
+- API contracts → extract request/response field types that become entity fields
+- Data schemas take precedence for field definitions; spec.md takes precedence for validation rules
 
 **Type Completeness Rule:**
 - Every type referenced in entity fields MUST be defined in data-model.md
@@ -243,6 +260,11 @@ Abstract technical specifications that apply to any implementation.
 ### 1.2 Generate API Contracts (if needed)
 **Create contracts based on feature interfaces:**
 
+**Enrich from References (if loaded):**
+- API contracts from references → use as base structure for openapi.yaml (endpoints, methods, payload shapes)
+- Data schemas → cross-check entity field names match between data-model.md and contracts
+- Do not blindly copy reference contracts — adapt to feature scope, remove irrelevant endpoints
+
 Create `./ai-docs/features/[feature]/contracts/`:
 - Write `./ai-docs/features/[feature]/contracts/openapi.yaml` - For REST API endpoints
 - Write `./ai-docs/features/[feature]/contracts/contracts.md` - For messaging, events, WebSocket, storage schemas
@@ -282,6 +304,10 @@ Feature may require BOTH files if it uses multiple interface types
 [Commands to run automated tests for TDD workflow]
 ```
 
+**Enrich from References (if loaded):**
+- Architecture notes → specific config requirements (env vars, service connections)
+- Design tokens → token import/build commands if token pipeline needed
+
 Brief setup instructions only - TDD test commands, no lengthy configs.
 NO architecture explanations (those are in plan.md).
 NO justifications for dependencies (those are in research.md).
@@ -302,6 +328,7 @@ NO justifications for dependencies (those are in research.md).
 - Incorporate component structure from ui.md (component trees, DS mapping)
 - Include setup from setup.md and contracts from contracts/
 - If codebase exists: account for existing modules, patterns, and shared utilities (from Phase 0.2)
+- If references loaded: account for design system architecture, styling approach, token strategy
 - Map to plan-template sections
 - Select optimal code organization
 - Define component architecture
@@ -328,6 +355,8 @@ NO justifications for dependencies (those are in research.md).
 - Brief bullets only
 - State what is used, not why (why is in research.md)
 - Reference specific technology decisions from research.md
+- If design system reference loaded: include DS import approach and token strategy
+- If style guide reference loaded: include styling approach
 - **Storage:** Specify primary storage + any secondary storage with clear use case separation
   - Example: "PostgreSQL for entities, Redis for cache, IndexedDB for offline support"
 
@@ -405,3 +434,4 @@ Next: /docs:tasks <feature-path>
 - **Missing comparison operator**: "Error: Threshold [name] missing comparison operator (< or <=) in description."
 - **Missing dependency definition**: "Error: Entity from [feature-name] referenced but dependency data-model.md not found and no [Dependency] interface defined."
 - **Missing quantified value**: "Warning: Quantified UX Element [name] from ux.md not included in data-model.md Constants."
+- **Reference-spec conflict**: "Warning: Reference [file] conflicts with spec.md on [topic]. Spec.md takes priority."

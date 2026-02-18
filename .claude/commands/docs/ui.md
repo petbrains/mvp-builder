@@ -65,26 +65,40 @@ Focus on what components compose each screen, how they nest, and how they map to
 From spec.md and ux.md, determine if feature has UI components:
 - If ux.md User Flow contains only API/background/cron operations with no user-facing screens → Exit early:
   ```
-  ⏭ Feature [feature-name] has no UI components.
+  ⭐ Feature [feature-name] has no UI components.
   Skipping UI specification. Proceed to /docs:plan.
   ```
 - If mixed (UI + backend) → Generate ui.md for UI portions only
 
 ### 0.4 Load References
 ```bash
-# Load global references (mockups, screenshots, wireframes, design system docs, style guides)
+# Load global references (design system docs, tokens, style guides, screens)
 if [ -d "./ai-docs/references" ]; then
     echo "Loading global references..."
     find ./ai-docs/references -type f 2>/dev/null
 fi
 ```
-- If references contain files: Read all into context
-- Useful reference types: mockups, wireframes, screenshots, design tokens JSON, style guide PDFs
+- If references directory contains files: Read all files into context
+- Relevant reference types for UI generation:
+  - **design-system.md** → ready DS component names, variant lists (can shortcut Phase 1 DS Detection)
+  - **style-guide.md** → layout constraints, spacing system, color usage rules
+  - **Design tokens** (.json, .css) → concrete variant names, prop values for Component Catalog
+  - **screens/** (screenshots, mockups) → visual reference for component tree structure
+  - **Wireframes** → screen layout and component placement guidance
 - Keep in context throughout UI generation
+- If directory empty or doesn't exist: skip silently, proceed without references
 
 ## Phase 1: Design System Detection
 
-### 1.1 Analyze Tech Stack
+### 1.1 Check References for DS
+If design-system.md loaded from references:
+- Extract DS name, component list, and variant names
+- Use as authoritative source → skip keyword analysis in 1.2
+- Proceed directly to 1.3 validation (or skip if already validated by design-setup)
+
+If no design-system.md in references → proceed with standard detection:
+
+### 1.2 Analyze Tech Stack
 ```
 PRD explicit DS → Use PRD design system
 Else analyze keywords:
@@ -97,7 +111,7 @@ Else analyze keywords:
   - Custom: custom components, no library specified
 ```
 
-### 1.2 Confirm Design System
+### 1.3 Confirm Design System
 If DS unclear:
 
 **Apply Sequential Thinking Methodology** for DS detection:
@@ -106,7 +120,7 @@ If DS unclear:
 - Calculate DS confidence
 - Select best match or "Custom"
 
-### 1.3 Validate DS Component Library (Optional)
+### 1.4 Validate DS Component Library (Optional)
 If DS detected and Context7 available:
 
 **Apply Context7 Documentation Retrieval** for DS validation:
@@ -115,7 +129,7 @@ If DS detected and Context7 available:
 3. FETCH: `/mcp__context7__get-library-docs` with topic "components list"
 4. Use fetched component list to verify names in Phase 2
 
-Skip this step if DS is "Custom".
+Skip this step if DS is "Custom" or if design-system.md from references already provides validated component list.
 
 ```
 ✅ Feature loaded: [feature-name]
@@ -160,6 +174,11 @@ List all distinct screens/views from ux.md flows:
 - Break regions into interactive/display components
 - Map each component to DS equivalent
 - Verify depth: every testable element present
+
+**Enrich from References (if loaded):**
+- design-system.md → use exact DS component names instead of guessing equivalents
+- screens/mockups → verify component tree matches visual layout from screenshots
+- Design tokens → use concrete prop values (variant names, size tokens)
 
 For each screen, generate nested component tree:
 ```json
@@ -237,7 +256,9 @@ Extract unique components across all screens:
 **Rules:**
 - `ds_component` must be a real component from the detected design system
 - If DS is "Custom" — use descriptive names: `CustomTextField`, `CustomButton`
-- If Context7 DS docs loaded in Phase 1.3 — cross-check component names
+- If Context7 DS docs loaded in Phase 1.4 — cross-check component names
+- If design-system.md loaded from references — use its component names as authoritative source
+- If design tokens loaded — populate `variants` with concrete token-based variant names
 - `visual_states` complement ux.md states — show HOW state looks, not WHAT triggers it
 - Components used in only one screen still appear in catalog (plan.md needs the full list)
 
@@ -259,6 +280,10 @@ For each screen, define spatial arrangement semantically:
   }
 }
 ```
+
+**Enrich from References (if loaded):**
+- style-guide.md → use layout constraints (max-width rules, spacing system, grid conventions)
+- screens/mockups → verify layout matches visual reference
 
 **Rule:** Semantic layout only. No pixels, no Tailwind classes, no CSS.
 - `vertical-stack` → agent knows flex-col
