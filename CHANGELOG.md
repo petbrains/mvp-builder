@@ -2,6 +2,18 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.0.4] - 2025-02-18
+
+### Added
+
+**Commands**
+- `/docs:design-setup` — normalizes raw design generator output into structured references (design-system.md, style-guide.md, tokens/). Supports Figma extraction via MCP tools (get_metadata, get_screenshot).
+- `/docs:ui` — generates UI specifications: component trees, DS mapping, layout structure, visual state mapping. Bridges ux.md behavior and plan.md implementation.
+
+**References Pipeline**
+- `ai-docs/references/` directory created by `/docs:prd`, populated by user, normalized by `/docs:design-setup`, consumed by `/docs:feature`, `/docs:ux`, `/docs:ui`, `/docs:plan`
+- Typed reference loading across all downstream commands with specific usage guidance per reference type
+
 ## [0.0.3] - 2025-02-08
 
 ### Added
@@ -72,6 +84,7 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - Skills Registry for automatic skill matching
 - Cross-platform installation scripts (bash, PowerShell)
 
+[0.0.4]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.4
 [0.0.3]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.3
 [0.0.2]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.2
 [0.0.1]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.1
