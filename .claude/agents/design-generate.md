@@ -35,8 +35,6 @@ Generate initial UI design by analyzing PRD and available references, then push 
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 - Figma Design Generate: For pushing UI as editable design layers to Figma
   - Tool: `/mcp__figma__generate_figma_design`
-- Figma MCP Verification: For checking MCP connection before generation
-  - Tool: `/mcp__figma__whoami`
 
 **Project context:**
 - PRD: @ai-docs/PRD.md
