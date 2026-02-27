@@ -1,7 +1,7 @@
 ---
 description: Set up and normalize design system references for the pipeline.
 argument-hint: [figma-url]
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context
+allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context, mcp__figma__create_design_system_rules
 ---
 
 # Instructions
@@ -279,6 +279,21 @@ Cross-reference Figma tokens (from skill) against token map from Phase 1:
 - Variables extracted: [count] (from figma-variables: [N], from figma-context: [N])
 - Components found: [count]
 - New issues from Figma: [count] (added to resolution queue)
+```
+
+### 2.3 Generate Design System Rules
+
+Call `create_design_system_rules` — generates a rule file with design-to-code context from the Figma design. No file context required by the tool.
+
+The tool saves output to `rules/` or `instructions/` path. After generation:
+1. Read the created rules file
+2. Move to `.claude/rules/design-system.md` (or project-appropriate rules path)
+3. This file is **ambient** — auto-loaded every session, agents always know design conventions without loading full references
+
+If `create_design_system_rules` fails or returns empty → warn and skip. Enrichment, not requirement.
+
+```
+🔧 Design system rules: [generated at .claude/rules/design-system.md / skipped]
 ```
 
 ## Phase 3: Resolve All Issues
