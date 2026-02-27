@@ -96,7 +96,43 @@ Verify provided URL is a Figma Design file:
 - `figma.com/slides/...` → HALT: "Only Design files supported"
 - No URL provided → HALT: "Figma URL required. Provide a Design file URL."
 
-### 0.5 Plan Generation Strategy
+### 0.5 Aesthetic Direction
+
+**Apply Sequential Thinking Methodology skill:**
+
+Before planning screens, establish a visual direction for the entire project.
+This prevents `generate_figma_design` from producing generic "AI slop" aesthetics.
+
+```
+THINK → What product type is this? (SaaS dashboard / mobile app / e-commerce / content site / internal tool)
+THINK → Who is the target audience? (developers / consumers / enterprise / creators)
+THINK → What aesthetic direction fits? (minimal / bold / playful / editorial / technical / luxury)
+THINK → Visual density: spacious / balanced / information-dense?
+THINK → Color direction: warm / cool / monochrome / vibrant / muted?
+THINK → Typography mood: clean geometric / humanist / monospaced-technical / serif-editorial?
+```
+
+**With design tokens from references:**
+Aesthetic direction is CONSTRAINED by existing tokens. Extract tone from token choices:
+- Dark primary + neon accents → bold/technical
+- Neutral palette + generous spacing → minimal/professional
+- Bright palette + rounded corners → playful/consumer
+
+**Without design tokens (PRD-only):**
+Agent makes explicit stylistic decisions and documents them.
+These become the style anchor for all screen descriptions.
+
+Output: Append to Generation Plan:
+
+```
+Aesthetic Direction:
+  Tone: [chosen direction with rationale]
+  Density: [spatial approach]
+  Palette: [color direction — specific values if tokens available]
+  Typography: [hierarchy approach — specific fonts if tokens available]
+```
+
+### 0.6 Plan Generation Strategy
 
 **Apply Sequential Thinking Methodology skill:**
 
@@ -119,6 +155,12 @@ Platform: [platform]
 Framework: [detected or "none"]
 Target: [Figma URL]
 
+Aesthetic Direction:
+  Tone: [direction]
+  Density: [approach]
+  Palette: [direction or specific values]
+  Typography: [hierarchy]
+
 Screens to generate:
   1. [name] — [layout] — [key components] ← start (most complex)
   2. [name] — [layout] — [key components]
@@ -129,7 +171,7 @@ Design foundation: [from references / PRD-only]
 
 ## Phase 1: Compose Screen Descriptions
 
-For each screen from Phase 0.5 plan:
+For each screen from Phase 0.6 plan:
 
 ### 1.1 Build Screen Specification
 
@@ -141,23 +183,74 @@ Compose a structured description:
 
 ### 1.2 Apply Design Foundation
 
-If references provided design tokens or specs:
-- Color palette → apply to backgrounds, text, accents
-- Typography → apply to headings, body, labels
-- Spacing → apply to padding, margins, gaps
+**Mode A — With design tokens (from references):**
+
+Apply the Design System Fidelity constraint: each screen description receives
+explicit instructions to stay within the token boundaries.
+
+- Color palette → map specific tokens to backgrounds, text, accents, CTAs
+- Typography → map specific font/size/weight tokens to headings, body, labels
+- Spacing → apply specific spacing scale tokens to padding, margins, gaps
 - Component styles → match detected framework patterns
 
-If no references:
-- Use sensible defaults for the product type
-- Note in handoff that tokens will be extracted post-Figma-review
+**Fidelity instruction appended to every screen description:**
+> Use ONLY the colors, typography, and spacing defined in the design system.
+> Do not introduce fonts, colors, or styles outside the provided tokens.
+> If a visual need has no matching token, use the closest available token.
+
+**Mode B — Without design tokens (PRD-only):**
+
+Agent uses the aesthetic direction from Phase 0.5 as the style anchor.
+Document explicit choices that apply to ALL screens for consistency:
+
+```
+Style Decisions (applied to all screens):
+  Font: [specific choice, e.g. "Inter for UI text, Space Grotesk for headings"]
+  Primary: [hex, e.g. "#FF6B35"]
+  Secondary: [hex]
+  Accent: [hex]
+  Background: [hex]
+  Text: [hex]
+  Spacing base: [value, e.g. "8px grid"]
+  Border radius: [value, e.g. "8px for cards, 4px for inputs"]
+```
+
+Reference these specific values in every screen description.
+Without explicit values, `generate_figma_design` will invent arbitrary,
+inconsistent styles for each screen.
 
 ### 1.3 Format Generation Prompt
 
-For each screen, prepare a clear description for `generate_figma_design`:
-- What the screen shows (purpose and content)
-- Layout structure (spatial arrangement)
-- Component list with visual details
-- Style references (tokens if available)
+For each screen, prepare a comprehensive description for `generate_figma_design`.
+Go beyond functional layout — include aesthetic dimensions that prevent generic output.
+
+**Required dimensions in every screen description:**
+
+- **Purpose & content**: What the screen shows, what user does here
+- **Layout structure**: Spatial arrangement — header, content zones, navigation
+- **Component list**: Specific elements with visual details (not just "a button")
+- **Palette application**: Which colors for which purpose on THIS screen
+  (e.g., "Primary CTA in brand orange, secondary actions in gray outline")
+- **Typography hierarchy**: How heading/body/label treatment appears on this screen
+  (e.g., "32px bold heading, 16px regular body, 12px uppercase muted labels")
+- **Spatial density**: Spacing approach for this screen's content type
+  (e.g., "Generous — 32px between sections, 16px between form fields")
+- **Mood/atmosphere**: One-line emotional anchor
+  (e.g., "Professional and trustworthy" or "Playful and energetic")
+- **Style tokens**: If tokens available — explicit token references;
+  if PRD-only — reference Phase 1.2 Mode B style decisions
+
+**Example of weak description (DO NOT):**
+> Login page with email and password form, submit button, forgot password link.
+
+**Example of strong description (DO):**
+> Login page with centered form card (max-width 400px, white background, subtle shadow).
+> Email and password inputs with light gray borders (#E5E7EB), 48px height.
+> Primary CTA "Sign In" button: full-width, brand orange (#FF6B35), white text,
+> 12px rounded corners, 48px height. "Forgot password?" link in muted gray (#9CA3AF)
+> 8px below button. Space Grotesk Bold 28px heading "Welcome back" above form.
+> Inter 14px for input labels, 16px for input text. 24px vertical spacing between
+> form fields, 32px between heading and first input. Clean, trustworthy, minimal.
 
 ## Phase 2: Generate to Figma
 
@@ -201,8 +294,13 @@ Screens generated:
   ✅ [screen-2] — [brief description]
   [⚠️ screen-3 — failed: [reason]]
 
+Aesthetic direction applied:
+  Tone: [direction]
+  Palette: [tokens used / explicit choices made]
+  Typography: [tokens used / explicit choices made]
+
 Design foundation used:
-  [Tokens from references / PRD-only — no existing tokens]
+  [Tokens from references — fidelity mode / PRD-only — explicit style decisions]
 
 Known gaps:
   [Screens mentioned in PRD but not generated]
