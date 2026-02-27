@@ -28,7 +28,6 @@ Validate, normalize, and enrich design references for the MVP Builder pipeline.
 - PRD: @ai-docs/PRD.md
 
 **File Structure:**
-- Input: `./ai-docs/references/` (any generator output files)
 - Output: `./ai-docs/references/` (standardized: design-system.md, style-guide.md, tokens/, screens/)
 
 # Task
