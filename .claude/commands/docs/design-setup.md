@@ -28,6 +28,7 @@ Validate, normalize, and enrich design references for the MVP Builder pipeline.
 - PRD: @ai-docs/PRD.md
 
 **File Structure:**
+- Input: Figma URL (optional, via invoking context or user message)
 - Output: `./ai-docs/references/` (standardized: design-system.md, style-guide.md, tokens/, screens/)
 
 # Task
