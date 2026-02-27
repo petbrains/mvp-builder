@@ -23,7 +23,7 @@ fix inconsistencies, serve locally, and capture into Figma as editable layers.
 - Sequential Thinking Methodology: For reference analysis, validation decisions
   - Tool: `mcp__sequential-thinking__sequentialthinking`
 - Figma Design Generate: For `generate_figma_design` tool usage instructions
-  - Read: `.claude/skills/figma-design-generate/SKILL.md`
+  - Tool: `mcp__figma__generate_figma_design`
 
 **Project context:**
 - PRD: `./ai-docs/PRD.md`
