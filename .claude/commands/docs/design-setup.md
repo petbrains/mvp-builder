@@ -1,7 +1,8 @@
 ---
 description: Set up and normalize design system references for the pipeline.
 argument-hint: [figma-url]
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context
+model: opus
+allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context, mcp__figma__create_design_system_rules
 ---
 
 # Instructions
@@ -15,11 +16,11 @@ Validate, normalize, and enrich design references for the MVP Builder pipeline.
 
 **Skills:**
 - Sequential Thinking Methodology: For content classification, conflict resolution, gap analysis
-  - Tool: `/mcp__sequential-thinking__sequentialthinking`
+  - Tool: `mcp__sequential-thinking__sequentialthinking`
 - Context7 Documentation Retrieval: For detected framework/library token format and naming conventions
-  - Tools: `/mcp__context7__resolve-library-id`, `/mcp__context7__get-library-docs`
+  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
 - Figma Design Extraction: For Figma URL parsing, token extraction, screen discovery, screenshots
-  - Tools: `/mcp__figma__whoami`, `/mcp__figma__get_metadata`, `/mcp__figma__get_screenshot`, `/mcp__figma__get_variable_defs`, `/mcp__figma__get_design_context`
+  - Tools: `mcp__figma__whoami`, `mcp__figma__get_metadata`, `mcp__figma__get_screenshot`, `mcp__figma__get_variable_defs`, `mcp__figma__get_design_context`
 
 **Templates:**
 - Design Setup: @.claude/templates/design-setup-template.md
@@ -28,7 +29,7 @@ Validate, normalize, and enrich design references for the MVP Builder pipeline.
 - PRD: @ai-docs/PRD.md
 
 **File Structure:**
-- Input: `./ai-docs/references/` (any generator output files)
+- Input: Figma URL (optional)
 - Output: `./ai-docs/references/` (standardized: design-system.md, style-guide.md, tokens/, screens/)
 
 # Task
@@ -39,7 +40,7 @@ normalize into standardized output, ask user about ambiguities, and clean up.
 # Rules
 
 ## Source Priority Rules
-- Token values: JSON files > Figma > markdown descriptions (always)
+- Token values: JSON files > CSS files > HTML files > Figma > markdown descriptions (always)
 - Constraints and rules: markdown descriptions > Figma > PRD (human intent prevails)
 - Metadata: PRD > JSON files > markdown (product context)
 - If conflict between sources → Ask user, then process decision with Sequential Thinking
@@ -117,6 +118,7 @@ For each file found, read enough content to classify (first 50 lines or full fil
 | JS/TS with theme config, tailwind config, or token exports | `token-framework` |
 | Markdown with design system descriptions, rules, Do's/Don'ts | `spec-markdown` |
 | PNG/JPG/SVG image files | `asset` |
+| HTML with `<style>`, CSS custom properties, inline design tokens, or style guide content | `design-html` |
 | JSON with API/endpoints/routes/schemas/openapi keys | `out-of-scope` |
 | Markdown with API endpoints, data models, contracts, routes | `out-of-scope` |
 | .proto, .graphql, .sql, .prisma files | `out-of-scope` |
@@ -127,7 +129,7 @@ For each file found, read enough content to classify (first 50 lines or full fil
 **Apply Sequential Thinking** to resolve ambiguous classifications.
 
 After classification:
-- **Read fully** into context: `token-json`, `token-css`, `token-framework`, `spec-markdown`
+- **Read fully** into context: `token-json`, `token-css`, `token-framework`, `spec-markdown`, `design-html`
 - **Note but don't read**: `asset` (referenced by path only)
 - **Ask user** about: `unknown` files — may be design-related
 
@@ -135,7 +137,7 @@ If no design-related files found → Error: "No design files found in ai-docs/re
 
 ### 0.4 Fetch Framework Documentation
 
-If any files classified as `token-framework` or `token-css`:
+If any files classified as `token-framework`, `token-css`, or `design-html`:
 
 **Identify framework** from file content:
 - `tailwind.config` → Tailwind CSS
@@ -171,6 +173,7 @@ Classified:
   Token sources (CSS): [list]
   Token sources (Framework): [list]
   Specifications (Markdown): [list]
+  Design references (HTML): [list]
   Assets: [list]
   Out of scope: [count] files (not design-related, ignored)
   [Unknown: [list] — asking user...]
@@ -196,6 +199,12 @@ From all classified token sources, build a single map:
 For each token found in any source:
 - Record: token name, value per source, category (from Token Categories list)
 - Flag: which sources have it, which don't
+
+**HTML token extraction** (`design-html` files):
+- Parse `<style>` blocks → extract CSS custom properties (`--token-name: value`)
+- Parse inline `style` attributes on token preview elements → extract computed values
+- If HTML contains structured token tables/lists → extract name-value pairs
+- Treat extracted tokens as `html` source in the unified map (priority between CSS and Figma)
 
 ### 1.2 Detect Issues
 
@@ -271,6 +280,21 @@ Cross-reference Figma tokens (from skill) against token map from Phase 1:
 - Variables extracted: [count] (from figma-variables: [N], from figma-context: [N])
 - Components found: [count]
 - New issues from Figma: [count] (added to resolution queue)
+```
+
+### 2.3 Generate Design System Rules
+
+Call `mcp__figma__create_design_system_rules` with the Figma file URL from `$ARGUMENTS`. The tool generates a rule file with design-to-code context from the Figma design. No additional file context required.
+
+The tool saves output to `rules/` or `instructions/` path. After generation:
+1. Read the created rules file
+2. Move to `.claude/rules/design-system.md` (or project-appropriate rules path)
+3. This file is **ambient** — auto-loaded every session, agents always know design conventions without loading full references
+
+If `create_design_system_rules` fails or returns empty → warn and skip. Enrichment, not requirement.
+
+```
+🔧 Design system rules: [generated at .claude/rules/design-system.md / skipped]
 ```
 
 ## Phase 3: Resolve All Issues
@@ -386,12 +410,16 @@ Load Style Guide section from design-setup-template.md.
 4. All decisions recorded in Phase 3.4
 5. Interaction patterns from markdown specifications (component behaviors, gestures, animations)
 
+**AI-actionable format:** Every rule must reference concrete token names and values from design-system.md.
+Transform human Do/Don't rules into implementation instructions with explicit token bindings.
+Example: "Do: Use primary for CTAs" → "CTA buttons: background `color-primary-600`, text `color-white`, radius `radius-md`"
+
 Write to: `./ai-docs/references/style-guide.md`
 
 ### 4.4 Clean Up
 
 **Remove** (consumed into normalized outputs):
-- `spec-markdown` files merged into design-system.md and style-guide.md → remove originals
+- `spec-markdown` and `design-html` files merged into design-system.md and style-guide.md → remove originals
 - `token-*` files that were patched and moved to `tokens/` → remove from old location
 
 **Keep** (not consumed or still needed):

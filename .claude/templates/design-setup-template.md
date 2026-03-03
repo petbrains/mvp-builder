@@ -6,6 +6,7 @@
 
 ** MODEL INSTRUCTION: Fill all sections using validated source data.
 JSON is source of truth for token values. Markdown specifications for descriptions.
+Product Context from PRD — provides layout and interaction hints for downstream agents.
 Include only sections with actual data — remove empty sections entirely.
 Do NOT include Do's/Don'ts here — those go to Style Guide only. **
 
@@ -18,6 +19,12 @@ Do NOT include Do's/Don'ts here — those go to Style Guide only. **
 - **Platform**: [from PRD]
 - **Generated**: [ISO date]
 - **Source**: Generator [+ Figma: URL]
+
+## Product Context
+- **Type**: [from PRD: SaaS dashboard / mobile app / landing page / e-commerce / ...]
+- **Primary layout**: [from sources: sidebar + content / top-nav + full-width / bottom-tabs + content / ...]
+- **Key interaction pattern**: [from PRD: form-heavy / data-display / content-consumption / CRUD / ...]
+- **Target audience**: [from PRD: enterprise users / consumers / developers / ...]
 
 ## Color Tokens
 
@@ -81,48 +88,55 @@ If no Figma data: "Component list will be populated during UI specification gene
 
 ## Style Guide
 
-** MODEL INSTRUCTION: Extract rules from spec Do's/Don'ts and PRD constraints.
-Every rule must be actionable — specific enough for an agent to follow.
-"Do: Use primary color (#3B82F6) for all CTA buttons" ✅
-"Do: Use appropriate colors" ❌ **
+** MODEL INSTRUCTION: Transform source Do's/Don'ts and PRD constraints into
+AI-actionable implementation rules. Every rule must bind to concrete token names
+from design-system.md — an agent reading this must know exactly which token to use.
+"CTA buttons: background `color-primary-600`, text `color-white`, radius `radius-md`" ✅
+"Use appropriate colors for buttons" ❌
+"Do: Use primary color for CTAs" ❌ (missing token binding) **
 
 ```markdown
 # Style Guide
 
-Design rules and constraints for implementation.
+Implementation rules for AI agents.
+Every rule references concrete tokens from design-system.md.
 Source: Generator + PRD [+ Figma]
 
 ## Design Principles
 - [From generator spec: overall approach, mood, tone]
 - [From PRD: audience-aligned constraints]
 
-## Color Rules
-### Do
-- [From spec Do's — specific, actionable]
+## Color Implementation
+- Primary actions (CTA, submit, confirm): background `[token]` ([value]), text `[token]` ([value])
+- Destructive actions (delete, remove): background `[token]` ([value])
+- Error states only: `[token]` ([value]) — never use for emphasis or decoration
+- Surface hierarchy: page `[token]`, card `[token]`, overlay `[token]`
+- [Contrast requirements: `[token-pair]` achieves [ratio]:1 WCAG [level]]
 
-### Don't
-- [From spec Don'ts — specific, actionable]
+## Typography Implementation
+- Page headings: `[token]` ([family] [weight] [size]/[lh])
+- Section headings: `[token]` ([family] [weight] [size]/[lh])
+- Body text: `[token]` ([family] [weight] [size]/[lh])
+- Captions/labels: `[token]` ([family] [weight] [size]/[lh])
+- Never combine more than [N] type roles on one screen
 
-### Accessibility
-- [Contrast requirements derived from token pairs]
-
-## Typography Rules
-### Do
-- [From spec Do's]
-
-### Don't
-- [From spec Don'ts]
-
-## Spacing & Layout
-- [Rules from spec]
+## Spacing & Layout Implementation
+- Component internal padding: `[token]` ([value])
+- Between components: `[token]` ([value])
+- Section separation: `[token]` ([value])
+- Page margins: `[token]` ([value])
 - [Platform-specific constraints from PRD]
 
-## Animation Guidelines
-- [Duration and easing rules from JSON + spec]
+## Animation Implementation
+- Micro-interactions (hover, focus): duration `[token]` ([value]), easing `[token]` ([value])
+- Page transitions: duration `[token]` ([value]), easing `[token]` ([value])
+- Loading states: [pattern from spec]
 
-## Component Usage Rules
-- [If Figma provided component context]
-- [DS-specific constraints]
+## Component Implementation
+- Buttons: radius `[token]`, padding `[spacing-x]` `[spacing-y]`, shadow `[token]` or none
+- Cards: radius `[token]`, padding `[token]`, shadow `[token]`, border `[token]` or none
+- Inputs: radius `[token]`, border `[token]`, focus ring `[token]`
+- [Additional components from Figma or DS-specific constraints]
 
 ## Changes Applied
 
@@ -184,6 +198,7 @@ Do NOT include this checklist in any output file. **
 
 ### Cross-File Consistency
 - [ ] CSS variables match JSON values (post-patch)
+- [ ] HTML-extracted tokens match JSON/CSS values (post-patch, if HTML sources present)
 - [ ] Framework config matches JSON values (post-patch, if framework present)
 - [ ] Token files moved to tokens/ directory
 - [ ] No conflicting values remain unresolved without documentation
@@ -192,12 +207,15 @@ Do NOT include this checklist in any output file. **
 - [ ] UI library matches PRD tech stack (or mismatch documented in report)
 - [ ] Platform matches PRD
 - [ ] Metadata section complete
+- [ ] Product Context section populated from PRD (type, layout, interaction pattern, audience)
 
 ### Style Guide Quality
-- [ ] Every rule is actionable (Do/Don't with specific values or components)
-- [ ] No vague terms without specifics: "appropriate", "suitable", "nice"
+- [ ] Every rule references concrete token names from design-system.md
+- [ ] Every rule includes token value in parentheses for quick reference
+- [ ] No vague terms without token bindings: "appropriate", "suitable", "primary color"
 - [ ] Changes Applied section lists ALL modifications (patches, resolutions, skips)
-- [ ] Accessibility rules reference concrete contrast ratios
+- [ ] Accessibility rules reference concrete contrast ratios with token pairs
+- [ ] Component Implementation rules cover all components listed in design-system.md
 
 ### Output Completeness
 - [ ] design-system.md written and follows template structure

@@ -2,6 +2,28 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.0.5] - 2025-03-03
+
+### Added
+
+**Agents**
+- `design-generate` — validates HTML references against design tokens and design-system.md, fixes inconsistencies, serves locally, and captures into Figma as editable layers. Completes the Figma roundtrip: design-setup extracts from Figma, design-generate pushes back.
+
+**Skills**
+- `figma-design-extraction` — extracts design tokens, screen structure, and visual references from Figma files. Source-tracked output (figma-variables vs figma-context) for downstream conflict resolution.
+- `figma-design-generate` — captures UI and sends to Figma as editable design layers using generate_figma_design MCP tool. Handles new file, existing file, and clipboard targets.
+
+**Templates**
+- `design-setup-template.md` — structured templates for design-system.md, style-guide.md, screen index, and review checklist. MODEL INSTRUCTION blocks separate fill logic from output.
+
+### Changed
+
+**Commands**
+- `/docs:design-setup` — added `model: opus`, fixed `Bash(*)` syntax, split CSS/HTML token priority into separate levels, specified `create_design_system_rules` input parameters, removed `/` prefix from MCP tool references in body
+
+**Documentation**
+- README.md: added design-generate to pipeline diagram (Figma roundtrip), Phase 1 table, and Agents section (split into Define/Build phases)
+
 ## [0.0.4] - 2025-02-18
 
 ### Added
@@ -84,6 +106,7 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - Skills Registry for automatic skill matching
 - Cross-platform installation scripts (bash, PowerShell)
 
+[0.0.5]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.5
 [0.0.4]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.4
 [0.0.3]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.3
 [0.0.2]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.2
