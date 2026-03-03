@@ -1,7 +1,8 @@
 ---
 description: Set up and normalize design system references for the pipeline.
 argument-hint: [figma-url]
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context, mcp__figma__create_design_system_rules
+model: opus
+allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context, mcp__figma__create_design_system_rules
 ---
 
 # Instructions
@@ -15,11 +16,11 @@ Validate, normalize, and enrich design references for the MVP Builder pipeline.
 
 **Skills:**
 - Sequential Thinking Methodology: For content classification, conflict resolution, gap analysis
-  - Tool: `/mcp__sequential-thinking__sequentialthinking`
+  - Tool: `mcp__sequential-thinking__sequentialthinking`
 - Context7 Documentation Retrieval: For detected framework/library token format and naming conventions
-  - Tools: `/mcp__context7__resolve-library-id`, `/mcp__context7__get-library-docs`
+  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
 - Figma Design Extraction: For Figma URL parsing, token extraction, screen discovery, screenshots
-  - Tools: `/mcp__figma__whoami`, `/mcp__figma__get_metadata`, `/mcp__figma__get_screenshot`, `/mcp__figma__get_variable_defs`, `/mcp__figma__get_design_context`
+  - Tools: `mcp__figma__whoami`, `mcp__figma__get_metadata`, `mcp__figma__get_screenshot`, `mcp__figma__get_variable_defs`, `mcp__figma__get_design_context`
 
 **Templates:**
 - Design Setup: @.claude/templates/design-setup-template.md
@@ -39,7 +40,7 @@ normalize into standardized output, ask user about ambiguities, and clean up.
 # Rules
 
 ## Source Priority Rules
-- Token values: JSON files > CSS/HTML files > Figma > markdown descriptions (always)
+- Token values: JSON files > CSS files > HTML files > Figma > markdown descriptions (always)
 - Constraints and rules: markdown descriptions > Figma > PRD (human intent prevails)
 - Metadata: PRD > JSON files > markdown (product context)
 - If conflict between sources → Ask user, then process decision with Sequential Thinking
@@ -283,7 +284,7 @@ Cross-reference Figma tokens (from skill) against token map from Phase 1:
 
 ### 2.3 Generate Design System Rules
 
-Call `create_design_system_rules` — generates a rule file with design-to-code context from the Figma design. No file context required by the tool.
+Call `mcp__figma__create_design_system_rules` with the Figma file URL from `$ARGUMENTS`. The tool generates a rule file with design-to-code context from the Figma design. No additional file context required.
 
 The tool saves output to `rules/` or `instructions/` path. After generation:
 1. Read the created rules file

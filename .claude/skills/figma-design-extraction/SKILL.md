@@ -1,7 +1,7 @@
 ---
 name: figma-design-extraction
 description: Extract design tokens, screen structure, and visual references from Figma files. Use whenever a figma.com URL appears in the conversation, when someone mentions Figma tokens, variables, design system extraction, or screen captures. Also use when calling get_variable_defs, get_design_context, get_metadata, or get_screenshot — this skill defines how to use them effectively. Trigger for phrases like "get from Figma", "extract design", "Figma variables", "design tokens from Figma", "capture screens", or any figma.com/design link. Even if the user just pastes a Figma link without instructions, use this skill to parse it and decide what to extract.
-allowed-tools: Read, Write, Bash (*), mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context
+allowed-tools: Read, Write, Bash(*), mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context
 ---
 
 # Figma Design Extraction

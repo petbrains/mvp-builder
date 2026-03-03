@@ -1,6 +1,6 @@
 ---
 name: design-generate
-description: Validate HTML references against design tokens and design-system.md, fix inconsistencies, serve locally, and capture to Figma. Use when project has PRD and design references but no Figma design yet.
+description: Validate HTML references against design tokens and design-system.md, fix inconsistencies, serve locally, and capture into a Figma file (new or existing). Use when project has PRD and HTML references ready to push to Figma.
 model: opus
 color: purple
 tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__figma__generate_figma_design, mcp__figma__whoami
@@ -9,7 +9,7 @@ skills: sequential-thinking, figma-design-generate
 
 # Design Generate Agent
 
-Validate HTML files in references against design tokens and design-system.md,
+Validate HTML files in references against design tokens and `./ai-docs/references/design-system.md`,
 fix inconsistencies, serve locally, and capture into Figma as editable layers.
 
 **Input:** Figma URL (required, from user message or invoking context)
@@ -34,7 +34,7 @@ fix inconsistencies, serve locally, and capture into Figma as editable layers.
 ## HTML Rules
 - Work directly with HTML files in `./ai-docs/references/` — no copies, no separate output directories
 - All design tokens applied via CSS custom properties — no hardcoded values
-- Minimal fixes only: align HTML with tokens and design-system.md, don't redesign
+- Minimal fixes only: align HTML with tokens and `./ai-docs/references/design-system.md`, don't redesign
 
 ## Capture Rules
 - Each screen capture requires user interaction with the capture toolbar
@@ -83,8 +83,8 @@ If empty or not found → HALT: "No files in ai-docs/references/."
 
 Read all files. Expect:
 - HTML files
-- `design-system.md` (design rules, patterns, Do's/Don'ts)
-- Token files (JSON, CSS, or framework configs with design tokens)
+- `./ai-docs/references/design-system.md` (design rules, patterns, token reference)
+- Token files in `./ai-docs/references/tokens/` (JSON, CSS, or framework configs with design tokens)
 
 If no HTML files found → HALT: "No HTML files in references."
 
@@ -108,16 +108,18 @@ Proceeding to validation...
 
 ### 1.1 Build Token Map
 
-From token files, extract all design tokens into a unified picture:
+From token files in `./ai-docs/references/tokens/`, extract all design tokens into a unified picture:
 - JSON files → color, typography, spacing values
 - CSS files → `--custom-property` declarations
 - Framework configs → theme values
 
-From `design-system.md`, extract:
+From `./ai-docs/references/design-system.md`, extract:
 - Layout rules, component patterns
 - Typography hierarchy
 - Color usage rules
-- Do's/Don'ts
+
+From `./ai-docs/references/style-guide.md` (if exists), extract:
+- Do's/Don'ts implementation rules
 
 ### 1.2 Validate HTML Against References
 
@@ -212,6 +214,8 @@ A browser window will open with the capture toolbar.
 ```
 
 Call `mcp__figma__generate_figma_design` per skill instructions.
+Prompt the tool with the existing server URL (`http://localhost:3456/[filename].html`) and the Figma file URL.
+Do NOT ask the tool to start a server — it's already running from Phase 2.1.
 
 After capture: `✅ Captured: [filename] → Figma`
 
