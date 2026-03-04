@@ -2,6 +2,34 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.0.6] - 2025-03-04
+
+### Added
+
+**Rules**
+- `git.md` — branch naming conventions, commit format, secret protection, safety guards. Replaces `git` skill.
+- `authentication.md` — auth library decisions per platform (Next.js, Express, mobile, Python, browser extensions). Replaces `backend-auth-js` and `backend-passport-js` skills.
+- `backend.md` — stack decisions for auth, ORM, validation, API layer, logging, testing + non-negotiable rules. Replaces all `backend-*` skills.
+- `frontend.md` — UI component selection, animation library decisions, asset strategy, color/typography standards, SSR rules, quality gates. Replaces all `frontend-*` skills.
+- `docker.md` — containerization standards for Node.js: multi-stage builds, docker-compose, security rules. Replaces `docker-node` skill.
+
+### Changed
+
+**Rules (CLAUDE.md)**
+- Removed `Session Continuity` section (HANDOFF.md workflow)
+- Renamed to `In-Code Documentation` — `AICODE-NOTE/TODO/FIX` prefixes retained, scoped explicitly to in-code usage
+- `Required Context` simplified — removed SessionStart hook reference
+
+**Settings**
+- `settings.json`: removed `hooks` section, added `autoMemoryEnabled: true`
+
+### Removed
+
+- `session-start.sh` — replaced by Claude Code Auto Memory
+- `HANDOFF.md` — replaced by Claude Code Auto Memory
+- `skills-registry` skill — skill routing no longer needed with rules-based approach
+- `/generate:agent` command — removed custom agent generation
+
 ## [0.0.5] - 2025-03-03
 
 ### Added
@@ -106,6 +134,7 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - Skills Registry for automatic skill matching
 - Cross-platform installation scripts (bash, PowerShell)
 
+[0.0.6]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.6
 [0.0.5]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.5
 [0.0.4]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.4
 [0.0.3]: https://github.com/petbrains/mvp-builder/releases/tag/v0.0.3
