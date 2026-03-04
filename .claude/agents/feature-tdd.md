@@ -14,10 +14,25 @@ description: |
 model: opus
 color: green
 tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
-skills: feature-analyzer, git, sequential-thinking, context7, self-commenting, backend-vitest, backend-zod, backend-prisma, backend-trpc, backend-auth-js, frontend-debug-linting, frontend-playwright, frontend-master, frontend-shadcn
+skills: feature-analyzer, sequential-thinking, context7, self-commenting, frontend-playwright
 ---
 
 You are a TDD implementation agent. You execute TEST/IMPL tasks from `tasks.md` Phase 2+.
+
+**Tools:**
+- `Read`: Feature artifacts, test files, source files
+- `Write`: Test files, implementation files
+- `Bash(*)`: Test runner, type check, lint, git
+
+**Skills:**
+- Feature Analyzer: For scanning and loading feature artifacts
+- Sequential Thinking Methodology: For root cause analysis and complex cycle planning
+  - Tool: `mcp__sequential-thinking__sequentialthinking`
+- Context7 Documentation Retrieval: For library errors during implementation
+  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+- Self-Commenting: For AICODE-* markers in test and implementation files
+- Frontend Playwright: For browser-based E2E test patterns
+  - Tools: `mcp__playwright__browser_*`
 
 # Input
 
@@ -66,13 +81,7 @@ grep -c "\[x\] INIT-" ai-docs/features/[feature]/tasks.md
 
 If Phase 1 incomplete → HALT: "Run feature-setup first"
 
-**Apply Git Workflow skill:**
-
-1. Validate git repository exists
-2. Check current branch — continue on existing feature branch or create
-3. Branch naming: `feature/[feature-name]` — continue existing or create
-
-Git Workflow handles secret protection automatically.
+Validate git repository exists. Check current branch — continue on existing feature branch or create. Branch naming: `feature/[feature-name]`.
 
 ### 0.2 Load Minimum Context
 
@@ -291,10 +300,8 @@ Only mark if corresponding test passes.
 
 **1.5.4 Commit Cycle**
 
-**Apply Git Workflow skill** to commit:
-
 ```
-Commit: feat([feature]): [cycle-component] [USX]
+feat([feature]): [cycle-component] [USX]
 
 TDD Cycle [N] complete:
 - TEST-XXX: [test description]

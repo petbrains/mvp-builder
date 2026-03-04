@@ -192,11 +192,7 @@ Files:
   ...
 ```
 
-### 2.2 Load Figma Capture Skill
-
-Read `.claude/skills/figma-design-generate/SKILL.md` for tool usage instructions.
-
-### 2.3 Capture Screens
+### 2.2 Capture Screens
 
 For each HTML file:
 
@@ -223,7 +219,7 @@ On failure: retry once, skip on second failure.
 
 Wait for confirmation before next screen.
 
-### 2.4 Stop Server
+### 2.3 Stop Server
 
 ```bash
 kill $SERVER_PID 2>/dev/null || true

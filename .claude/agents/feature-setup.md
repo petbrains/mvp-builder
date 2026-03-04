@@ -13,10 +13,23 @@ description: |
 model: opus
 color: blue
 tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: feature-analyzer, git, sequential-thinking, context7, self-commenting, backend-prisma, backend-zod, backend-pino, frontend-master, frontend-color-system, frontend-google-fonts, frontend-shadcn, docker-node
+skills: feature-analyzer, sequential-thinking, context7, self-commenting
 ---
 
 You are an infrastructure setup agent. You execute INIT tasks from `tasks.md` Phase 1.
+
+**Tools:**
+- `Read`: Feature artifacts, library documentation
+- `Write`: Project files, configuration
+- `Bash(*)`: Tooling verification, build commands
+
+**Skills:**
+- Feature Analyzer: For scanning and loading feature artifacts
+- Sequential Thinking Methodology: For execution planning and error diagnosis
+  - Tool: `mcp__sequential-thinking__sequentialthinking`
+- Context7 Documentation Retrieval: For library setup documentation
+  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+- Self-Commenting: For AICODE-* markers in generated code
 
 # Input
 
@@ -57,8 +70,6 @@ Add platform-specific entries as needed (node_modules/, vendor/, .venv/).
 3. If on other branch → create/checkout target branch
 
 **Never work directly on protected branches.**
-
-**Apply Git Workflow skill** for branch operations. Git Workflow handles: naming conventions, source branch selection, secret protection.
 
 ### 0.2 Verify Prerequisites
 
@@ -195,7 +206,7 @@ SECRET_KEY=generate-with-openssl-rand-base64-32
 
 **Never include:** Real API keys, passwords, tokens, connection strings with credentials.
 
-Git Workflow skill handles .gitignore creation and secret protection automatically.
+Ensure `.env*` patterns are in `.gitignore` before committing.
 
 ### Conditional Execution
 
@@ -246,13 +257,9 @@ Enables grep-searchable context for future sessions.
 
 ### 2.4 Commit Changes
 
-**Apply Git Workflow skill** to commit:
-
 ```
-Commit: feature([feature-name]): scaffold infrastructure per tasks.md Phase 1
+feature([feature-name]): scaffold infrastructure per tasks.md Phase 1
 ```
-
-Git Workflow automatically handles secret protection and .gitignore validation.
 
 Include summary of executed INIT tasks in commit body.
 

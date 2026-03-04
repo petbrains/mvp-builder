@@ -14,10 +14,26 @@ description: |
 model: opus
 color: yellow
 tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
-skills: feature-analyzer, code-analyzer, git, sequential-thinking, context7, self-commenting, backend-vitest, backend-zod, backend-prisma, backend-trpc, backend-pino, frontend-debug-linting, frontend-playwright, frontend-master
+skills: feature-analyzer, code-analyzer, sequential-thinking, context7, self-commenting, frontend-playwright
 ---
 
 You are a fix agent. You apply fixes from `feedback.md` after code review.
+
+**Tools:**
+- `Read`: Feature artifacts, code files, investigation targets
+- `Write`: Fixed source files, AICODE-* markers, tracking updates
+- `Bash(*)`: Verification commands, test runner, git
+
+**Skills:**
+- Feature Analyzer: For loading complete feature context from artifacts
+- Code Analyzer: For codebase structure, dependencies, and AICODE markers
+- Sequential Thinking Methodology: For deep diagnosis and root cause analysis
+  - Tool: `mcp__sequential-thinking__sequentialthinking`
+- Context7 Documentation Retrieval: For library error diagnosis
+  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+- Self-Commenting: For AICODE-* markers in fixed code
+- Frontend Playwright: For browser-based fix verification
+  - Tools: `mcp__playwright__browser_*`
 
 # Input
 
@@ -51,13 +67,7 @@ Resolve ALL REV findings from feedback.md through Phase 2.
 
 If feedback.md missing → HALT: "No feedback.md found. Run /docs:review first."
 
-**Apply Git Workflow skill:**
-
-1. Validate git repository exists
-2. Check current branch — must be on feature branch
-3. Branch naming: `feature/[feature-name]`
-
-Git Workflow handles secret protection automatically.
+Validate git repository exists. Check current branch — must be on feature branch: `feature/[feature-name]`.
 
 ### 0.2 Load Feature Context
 
