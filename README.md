@@ -49,9 +49,6 @@ FR-XXX → TEST-XXX → IMPL-XXX → CHK → REV
 **Feedback Loop**  
 Agents check their own work. Review finds issues → feedback.md captures them → fix agent resolves → review verifies. `AICODE-*` markers track what's resolved and what's still relevant. Context stays clean.
 
-**Memory System**  
-CLAUDE.md defines agent identity and rules. `/docs:memory` maintains a code map of the project — run with a feature path after implementation, or without arguments to rescan the entire codebase. `HANDOFF.md` preserves session continuity — goal, progress, blockers, next steps. SessionStart hook auto-injects project context (HANDOFF + PRD + FEATURES + README) so every new session starts informed.
-
 **Skills over Agents**  
 The old approach: separate agent for each domain. The new approach: one general agent that loads skills for the task. Add expertise by adding folders, not rewriting agents.
 
@@ -144,21 +141,6 @@ Finalize and document completed implementation.
 
 **Two modes**: with feature path — adds the feature entry and rebuilds the graph. Without arguments — full project rescan for changes made outside feature scope (refactoring, new shared modules, deleted files). Feature list is preserved, only the dependency graph is rebuilt from scratch.
 
-### Session Continuity
-
-Agent updates `ai-docs/HANDOFF.md` after completing TDD cycles or significant tasks — captures goal, progress, blockers, and next steps.
-
-On every session start, a `SessionStart` hook auto-injects project context into Claude's context window:
-
-| File | Content |
-|------|---------|
-| `HANDOFF.md` | What was happening, what's next |
-| `PRD.md` | Product vision and scope |
-| `FEATURES.md` | Feature map and priorities |
-| `README.md` | Current code map |
-
-Zero tool calls spent on loading context. New session starts informed immediately.
-
 ### Agents
 
 Specialized agents execute tasks across pipeline phases:
@@ -177,26 +159,16 @@ Specialized agents execute tasks across pipeline phases:
 | `feature-tdd` | TDD implementation | After setup, runs RED-GREEN cycles |
 | `feature-fix` | Apply review fixes | When review status = BLOCKED, fixes one error at a time |
 
-### Custom Agents
-
-Need specialized behavior for your domain?
-
-```
-/generate:agent "your task description" [feature-path]
-```
-
-Analyzes codebase, matches relevant skills, generates `.claude/agents/your-agent.md`.
-
 ### Skills System
 
-Skills are reusable capabilities that agents can load on demand. Instead of hardcoding behavior, agents match tasks to skills automatically via Skills Registry.
+Skills are reusable capabilities that agents can load on demand.
 
 Each skill contains:
 - Instructions for specific domain (analysis, documentation, git workflow)
 - Decision rules with explicit conditions
 - Tool permissions and constraints
 
-Add new expertise: create a skill folder in `.claude/skills/`, then add it to the registry table in `.claude/skills/skills-registry/SKILL.md`.
+Add new expertise: create a skill folder in `.claude/skills/`.
 
 ---
 
@@ -209,7 +181,6 @@ ai-docs/
 ├── PRD.md                      # Product vision
 ├── FEATURES.md                 # Feature index  
 ├── README.md                   # Code map (navigation for agents)
-├── HANDOFF.md                  # Session continuity (auto-injected on start)
 ├── references/                 # Design systems, tokens, schemas, style guides, screens, API contracts
 └── features/
     └── [feature-name]/

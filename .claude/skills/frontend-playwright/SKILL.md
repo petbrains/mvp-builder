@@ -4,7 +4,7 @@ description: Visual QA gate for frontend code. ALWAYS use before delivering any 
 allowed-tools: Bash (*), mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
 ---
 
-# Playwright MCP
+# Frontend Playwright
 
 Browser automation for visual verification. **Self-check UI before delivering.**
 

@@ -4,11 +4,10 @@ Code execution rules and MVP development standards.
 
 ## Required Context
 
-Project context (auto-loaded via SessionStart hook, read manually if not in context):
-- ai-docs/HANDOFF.md — session continuity (goal, progress, blockers, next)
-- ai-docs/PRD.md — product vision, audience, problem
-- ai-docs/FEATURES.md — feature map, dependencies, priorities
-- ai-docs/README.md — current implementation status
+Load these documents when starting work:
+- @ai-docs/PRD.md - product vision, audience, problem
+- @ai-docs/FEATURES.md - feature map, dependencies, priorities
+- @ai-docs/README.md - current implementation status
 
 ## Development Rules
 
@@ -155,7 +154,6 @@ ai-docs/
 ├── PRD.md                 # Product vision and scope
 ├── README.md              # Implementation status (code map)
 ├── FEATURES.md            # Feature index and dependencies
-├── HANDOFF.md             # Session continuity (goal, progress, blockers, next)
 ├── references/            # Design systems, tokens, schemas, style guides, screens, API contracts, architecture notes
 └── features/
     └── [feature-name]/
@@ -182,12 +180,6 @@ Use searchable comment prefixes in code:
 Before modifying code: grep for AICODE- prefixes
 Before debugging: check for similar AICODE-FIX in codebase
 After completing work: add AICODE-NOTE for complex logic
-
-### Context Handoff
-- Update ai-docs/HANDOFF.md after completing a TDD cycle or significant task
-- Structure: goal, progress, blockers, next steps
-- Move Current to Previous when updating (keep max 2 previous entries)
-- SessionStart hook auto-injects HANDOFF.md + PRD + FEATURES + README into context
 
 ## Output Format
 

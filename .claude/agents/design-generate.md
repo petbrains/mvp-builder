@@ -123,7 +123,7 @@ From `./ai-docs/references/style-guide.md` (if exists), extract:
 
 ### 1.2 Validate HTML Against References
 
-**Apply Sequential Thinking** for each HTML file:
+**Apply Sequential Thinking Methodology skill** for each HTML file:
 
 - Do CSS custom properties in HTML match token values?
 - Does typography follow design-system.md hierarchy?
@@ -192,11 +192,7 @@ Files:
   ...
 ```
 
-### 2.2 Load Figma Capture Skill
-
-Read `.claude/skills/figma-design-generate/SKILL.md` for tool usage instructions.
-
-### 2.3 Capture Screens
+### 2.2 Capture Screens
 
 For each HTML file:
 
@@ -213,6 +209,7 @@ A browser window will open with the capture toolbar.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+**Apply Figma Design Generate skill**
 Call `mcp__figma__generate_figma_design` per skill instructions.
 Prompt the tool with the existing server URL (`http://localhost:3456/[filename].html`) and the Figma file URL.
 Do NOT ask the tool to start a server — it's already running from Phase 2.1.
@@ -223,7 +220,7 @@ On failure: retry once, skip on second failure.
 
 Wait for confirmation before next screen.
 
-### 2.4 Stop Server
+### 2.3 Stop Server
 
 ```bash
 kill $SERVER_PID 2>/dev/null || true
