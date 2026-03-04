@@ -1,14 +1,45 @@
----
-name: git
-description: Git workflow with enforced branch naming, commit formatting, secret protection, and safety guards. Use when: creating branches, committing changes, pushing code, merging, resolving conflicts, creating PRs. Triggers: git operations, create branch, commit, push, merge, branch naming, commit message format.
-allowed-tools: Bash(git:*)
----
-
 # Git Workflow
 
 Enforces repository conventions for branches, commits, and pushes.
 
-**Conventions:** See @.claude/skills/git/references/conventions.md
+## Conventions
+
+### Branch Naming
+
+**Format:** `<prefix>/<scope>/<description>`
+
+**Prefixes:** `feature/`, `fix/`, `refactor/`, `docs/`, `chore/`, `hotfix/`, `release/`
+
+**Regex:**
+```regex
+^(feature|fix|refactor|docs|chore)/[a-z0-9._-]+/[a-z0-9._-]+|(hotfix|release)/[a-z0-9._-]+$
+```
+
+**Examples:**
+```
+feature/auth/oauth-implementation
+fix/payments/rounding-bug
+hotfix/critical-security-patch
+release/2.1.0
+```
+
+### Commit Format
+```
+[KEY-123] <type>(<scope>): <summary>
+```
+
+**Types:** `feature`, `fix`, `refactor`, `docs`, `chore`, `test`, `build`, `ci`
+
+**Rules:**
+- Summary ≤50 chars
+- Imperative mood
+
+**Examples:**
+```
+[KEY-123] feature(auth): implement OAuth 2.0 flow
+[KEY-456] fix(payments): correct VAT rounding
+refactor(api): extract validation middleware
+```
 
 ## Process
 
@@ -18,7 +49,7 @@ Enforces repository conventions for branches, commits, and pushes.
 
 ### Branch Type
 - New functionality → `feature/<scope>/<desc>`
-- Bug fix → `fix/<scope>/<desc>`  
+- Bug fix → `fix/<scope>/<desc>`
 - Refactor → `refactor/<scope>/<desc>`
 - Docs → `docs/<scope>/<desc>`
 - Maintenance → `chore/<scope>/<desc>`
@@ -37,73 +68,39 @@ Enforces repository conventions for branches, commits, and pushes.
 - hotfix → from `release/*` or `main`
 - release → from `main`
 
+### Protected Branches
+
+Never push directly: `main`, `master`, `release/*`, `hotfix/*`, `prod/*`
+
 ## Secret Protection
 
 ### Protected Patterns
 
 **Files (block commit):**
 ```
-*.env
-*.env.*
-*.pem
-*.key
-*.p12
-*.pfx
-*.crt
-credentials.*
-secrets.*
-*_secret.*
-*.keystore
+*.env, *.env.*, *.pem, *.key, *.p12, *.pfx, *.crt
+credentials.*, secrets.*, *_secret.*, *.keystore
 ```
 
-**Directories (block commit):**
-```
-.secrets/
-.credentials/
-```
+**Directories (block commit):** `.secrets/`, `.credentials/`
 
-**Allowed exceptions:**
-```
-*.env.example
-*.example
-```
+**Allowed exceptions:** `*.env.example`, `*.example`
 
 ### Pre-Commit Check
 
 Before any commit, scan staged files:
-
 ```bash
 git diff --cached --name-only
 ```
 
 If protected pattern detected:
-
-```
-⚠ Secret Protection
-
-Detected secret file staged for commit:
-  [filename]
-
-Action: Adding to .gitignore and unstaging file.
-```
-
-Then:
-1. Add pattern to .gitignore
+1. Add pattern to `.gitignore`
 2. Unstage file: `git reset HEAD [file]`
 3. Continue commit without secret
 
 ### .gitignore Management
 
-**If .gitignore doesn't exist:**
-
-```
-ℹ Creating .gitignore
-
-Project has no .gitignore. Creating with security patterns.
-```
-
-Create with standard security block:
-
+If `.gitignore` missing — create with standard security block:
 ```gitignore
 # Secrets - NEVER COMMIT
 .env
@@ -117,9 +114,7 @@ Create with standard security block:
 .credentials/
 ```
 
-**If .gitignore exists but missing pattern:**
-
-Append missing pattern to existing .gitignore.
+If `.gitignore` exists but missing pattern — append it.
 
 ## Safety Guards
 
@@ -146,11 +141,11 @@ Before commit/push:
 
 ## Interactive Mode
 
-When ambiguous, ask:
+When ambiguous:
 ```
-"Possible actions:
+Possible actions:
 1. Create branch
-2. Commit changes  
+2. Commit changes
 3. Push commits
-Which matches your intent?"
+Which matches your intent?
 ```
