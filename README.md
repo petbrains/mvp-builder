@@ -177,26 +177,16 @@ Specialized agents execute tasks across pipeline phases:
 | `feature-tdd` | TDD implementation | After setup, runs RED-GREEN cycles |
 | `feature-fix` | Apply review fixes | When review status = BLOCKED, fixes one error at a time |
 
-### Custom Agents
-
-Need specialized behavior for your domain?
-
-```
-/generate:agent "your task description" [feature-path]
-```
-
-Analyzes codebase, matches relevant skills, generates `.claude/agents/your-agent.md`.
-
 ### Skills System
 
-Skills are reusable capabilities that agents can load on demand. Instead of hardcoding behavior, agents match tasks to skills automatically via Skills Registry.
+Skills are reusable capabilities that agents can load on demand.
 
 Each skill contains:
 - Instructions for specific domain (analysis, documentation, git workflow)
 - Decision rules with explicit conditions
 - Tool permissions and constraints
 
-Add new expertise: create a skill folder in `.claude/skills/`, then add it to the registry table in `.claude/skills/skills-registry/SKILL.md`.
+Add new expertise: create a skill folder in `.claude/skills/`.
 
 ---
 

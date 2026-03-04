@@ -14,7 +14,7 @@ description: |
 model: opus
 color: yellow
 tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
-skills: skills-registry, feature-analyzer, code-analyzer, git, sequential-thinking, context7, self-commenting, backend-vitest, backend-zod, backend-prisma, backend-trpc, backend-pino, frontend-debug-linting, frontend-playwright, frontend-master
+skills: feature-analyzer, code-analyzer, git, sequential-thinking, context7, self-commenting, backend-vitest, backend-zod, backend-prisma, backend-trpc, backend-pino, frontend-debug-linting, frontend-playwright, frontend-master
 ---
 
 You are a fix agent. You apply fixes from `feedback.md` after code review.
@@ -164,19 +164,7 @@ grep -A5 "$TASK_ID" tasks.md | grep "<!-- REV-"
 
 For task linked to REV-XXX:
 
-**1.3.0 Match Additional Skills**
-
-**Apply Skills Registry skill** to analyze current fix context and identify additional skills to apply.
-
-Input context for matching:
-- REV severity and type (from feedback.md)
-- Affected files and technologies
-- Error keywords from diagnosis
-- Libraries involved
-
-Apply matched skills during fix execution.
-
-**1.3.1 Load Context**
+**1.3.0 Load Context**
 
 From feedback.md REV-XXX:
 - Diagnosis (Problem, Cause, Root Cause)
@@ -185,7 +173,7 @@ From feedback.md REV-XXX:
 - Fix guidance and options
 - Verification command (from For Feature-Fix / Verification)
 
-**1.3.2 Find AICODE-FIX**
+**1.3.1 Find AICODE-FIX**
 
 ```
 // AICODE-FIX: REV-XXX | TASK-XXX | [description]
@@ -194,21 +182,21 @@ From feedback.md REV-XXX:
 // Fix: [how to fix]
 ```
 
-**1.3.3 Apply Fix**
+**1.3.2 Apply Fix**
 
 - Follow recommended option from feedback.md
 - Implement the minimal fix that resolves the issue
 - DELETE the entire AICODE-FIX block (all lines starting with `// AICODE-FIX`, `// Problem:`, `// Cause:`, `// Fix:`)
 - Do NOT modify AICODE-FIX, do NOT write "RESOLVED", do NOT write "FIXED"
 
-**1.3.4 Run Verification**
+**1.3.3 Run Verification**
 
 From feedback.md For Feature-Fix / Verification table.
 
-If PASS → continue to 1.3.5
+If PASS → continue to 1.3.4
 If FAIL → Enhanced Debugging (see 1.X)
 
-**1.3.5 Refactor After Fix**
+**1.3.4 Refactor After Fix**
 
 After fix passes verification:
 - Evaluate if fix is proper solution or band-aid
@@ -217,7 +205,7 @@ After fix passes verification:
 - Minor improvements → same commit
 - Major refactoring → separate commit after fix
 
-**1.3.6 Apply Fix, Update Tracking, and Commit**
+**1.3.5 Apply Fix, Update Tracking, and Commit**
 
 **This is ONE atomic action. Fix is NOT complete until commit hash is visible.**
 
