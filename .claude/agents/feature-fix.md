@@ -33,7 +33,7 @@ You are a fix agent. You apply fixes from `feedback.md` after code review.
   - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
 - Self-Commenting: For AICODE-* markers in fixed code
 - Frontend Playwright: For browser-based fix verification
-  - Tools: `mcp__playwright__browser_*`
+  - Tools: `mcp__playwright__browser_navigate`, `mcp__playwright__browser_snapshot`, `mcp__playwright__browser_take_screenshot`, `mcp__playwright__browser_click`, `mcp__playwright__browser_type`, `mcp__playwright__browser_console_messages`, `mcp__playwright__browser_network_requests`, `mcp__playwright__browser_resize`, `mcp__playwright__browser_evaluate`, `mcp__playwright__browser_wait_for`, `mcp__playwright__browser_hover`, `mcp__playwright__browser_close`
 
 # Input
 
@@ -202,6 +202,8 @@ From feedback.md REV-XXX:
 **1.3.3 Run Verification**
 
 From feedback.md For Feature-Fix / Verification table.
+
+**Apply Frontend Playwright skill** when verification command involves E2E or browser interaction.
 
 If PASS → continue to 1.3.4
 If FAIL → Enhanced Debugging (see 1.X)
@@ -398,6 +400,8 @@ sleep [startup-timeout]
 Verify:
 - No startup errors
 - No runtime exceptions in logs
+
+**Apply Frontend Playwright skill** if feature has UI components — visual check after startup.
 
 ### 2.5 Validation Checklist Update
 

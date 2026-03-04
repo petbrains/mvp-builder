@@ -32,7 +32,7 @@ You are a TDD implementation agent. You execute TEST/IMPL tasks from `tasks.md` 
   - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
 - Self-Commenting: For AICODE-* markers in test and implementation files
 - Frontend Playwright: For browser-based E2E test patterns
-  - Tools: `mcp__playwright__browser_*`
+  - Tools: `mcp__playwright__browser_navigate`, `mcp__playwright__browser_snapshot`, `mcp__playwright__browser_take_screenshot`, `mcp__playwright__browser_click`, `mcp__playwright__browser_type`, `mcp__playwright__browser_console_messages`, `mcp__playwright__browser_network_requests`, `mcp__playwright__browser_resize`, `mcp__playwright__browser_evaluate`, `mcp__playwright__browser_wait_for`, `mcp__playwright__browser_hover`, `mcp__playwright__browser_close`
 
 # Input
 
@@ -202,6 +202,8 @@ Table below as fallback if plan.md doesn't specify:
 | API contracts | Contract | `tests/contract/` |
 | Accessibility | A11y | `tests/a11y/` |
 
+**Apply Frontend Playwright skill** when test type is UI/E2E or A11y.
+
 **1.3.3 Verify Test Fails (RED)**
 
 ```bash
@@ -245,6 +247,8 @@ Add marker for cross-session context:
 
 **1.4.3 Run Tests (GREEN)**
 
+**Apply Frontend Playwright skill** if cycle includes UI/E2E tests.
+
 ```bash
 # Run cycle tests
 [test-runner] [test-files]
@@ -266,6 +270,8 @@ Fix implementation until all tests pass.
 After successful GREEN phase:
 
 **1.5.1 Run Full Test Suite**
+
+**Apply Frontend Playwright skill** if feature has any E2E tests.
 
 ```bash
 # Verify no regressions
@@ -343,6 +349,9 @@ After cycle commit:
    - Verify all edge cases covered
    - Report requirements coverage: (tested FR-XXX / total FR-XXX)
    - Report code coverage if tooling configured in setup.md
+
+5. **Visual QA** — if feature has any UI components:
+   **Apply Frontend Playwright skill** for final pre-delivery check.
 
 ### 2.2 Update Documentation
 
