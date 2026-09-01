@@ -27,7 +27,7 @@ derivative artifact chain — ux.md, ui.md, plan.md, research.md, data-model.md,
 contracts/, tasks.md — as one coherent set on one shared context.
 
 **Tools:**
-- `Read`: spec.md, PRD, FEATURES, references, templates
+- `Read`: spec.md, PRD, FEATURES, references, doc-templates skill
 - `Write`: all generated artifacts
 - `Bash(*)`: git branch operations, file checks, commit
 
