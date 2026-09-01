@@ -2,6 +2,49 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.2.0] - 2026-09-01
+
+Harness Orchestration — the feature pipeline is now an agent chain. The main session is the orchestrator and validator between agents: it dispatches, validates reports, and owns the docs — it does not implement inside the pipeline.
+
+### Added
+
+**Agents**
+- `feature-docs` — generates the full derivative doc chain (ux → ui → plan + research/data-model/setup/contracts → tasks) in one pass on one shared context. Creates the `feature/[name]` branch. Decision Policy: resolves architectural questions autonomously with recommended defaults, flags uncertain ones (⚠) for orchestrator acceptance — never asks the user. Replaces `/docs:ux`, `/docs:ui`, `/docs:plan`, `/docs:tasks`.
+- `feature-memory` — converted from `/docs:memory` command. Feature Mode (add feature, rebuild graph) and Project Scan Mode (full rescan). Hard cap 1000 lines with size/quality analysis on every run.
+- `feature-review` — converted from `/docs:review` command. Same quality gate: verifies tests/build/app startup, generates `feedback.md` with REV-XXX findings.
+
+**Rules (CLAUDE.md)**
+- Harness Orchestration section — 9-step pipeline per feature (chat commands → feature-docs → acceptance → validation → setup → tdd → review ↔ fix → memory) and orchestrator duties: validate every agent report before dispatching the next; doc content edits between stages are orchestrator's job; commit discipline — every stage ends in a conscious commit, no stage dispatched over a dirty tree; loop breaker — same REV finding survives 2 review↔fix cycles → stop dispatching, finish directly in main session.
+- Decision boundary — architectural/technical questions the orchestrator decides autonomously and records as pinned; only intellectual questions (content, copy, assets, domain semantics, data governance, product policy) go to the user.
+
+### Changed
+
+**Rules (CLAUDE.md)**
+- Validation & Errors — split by decision class: block only on intellectual ambiguity; architectural questions decided autonomously with pinned rationale (was: block on "multiple valid approaches" and "architecture decisions needed").
+- Code Standards — limits relaxed: 300-500 lines/file (was 300), 80-100 lines/function (was 80).
+
+**Commands**
+- `/docs:validation` — resolutions routed by class: ARCHITECTURAL resolved autonomously (recorded in resolutions.md as `resolved: orchestrator`), only INTELLECTUAL items enter the one-at-a-time dialogue. Checklists output to `validation/` (was `checklists/`). `ui.md` optional for no-UI features — skips ui checklist and cross-checks. New Phase 5: commits the validation block on the feature branch.
+- `/docs:prd`, `/docs:feature`, `/docs:clarify` — Next-step pointers updated to the agent pipeline (`design-setup`, `feature-docs`).
+
+**Agents**
+- `feature-setup` — no longer creates the feature branch: HALTs if not on `feature/[name]` (branch is created by feature-docs). Phase 1 commit: deliberate type per git.md (`test`/`feature`/`chore`), stage only touched files.
+- `feature-tdd` — conscious commit per cycle: type `feature` (was `feat`), format per git.md, stage only cycle files. New Amended Execution protocol — unimplementable/contradictory task wording executed in amended form (scope never narrowed, every amendment reported); artifact conflicts follow the most downstream doc. New boundary: never write into another feature's folder except closure marks its tasks.md explicitly names.
+- `feature-fix` — surgical staging (never blanket `git add .`), commit format per git.md; references `feature-review` instead of `/docs:review`.
+- `design-setup` — pipeline references updated to `feature-docs`.
+
+**Settings**
+- `settings.json` — permissions expanded for autonomous pipeline: `Edit(**)`/`Write(**)` allowed with deny on `.env*`/`secrets/`; git commit/add/branch ops, `gh` CLI, node/python3, file utilities allowlisted; `git commit` and `rm -rf` removed from ask list; docs skills (`docs:prd`, `docs:feature`, `docs:clarify`, `docs:validation`) plus `code-review`, `update-config`, `run` allowlisted. Removed `DISABLE_TELEMETRY`, disabled `pr-review-toolkit` plugin.
+
+**Syntax**
+- `Bash (*)` → `Bash(*)` in frontmatter across all agents, commands, and skills.
+
+### Removed
+
+- `/docs:ux`, `/docs:ui`, `/docs:plan`, `/docs:tasks` commands — replaced by `feature-docs` agent
+- `/docs:memory` command — replaced by `feature-memory` agent
+- `/docs:review` command — replaced by `feature-review` agent
+
 ## [0.1.3] - 2026-05-28
 
 ### Added
@@ -261,6 +304,7 @@ Full consistency audit of CLAUDE.md + all rules:
 - Skills Registry for automatic skill matching
 - Cross-platform installation scripts (bash, PowerShell)
 
+[0.2.0]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.2.0
 [0.1.3]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.3
 [0.1.2]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.2
 [0.1.1]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.1

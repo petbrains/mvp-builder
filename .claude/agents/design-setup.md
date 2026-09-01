@@ -51,7 +51,7 @@ Generator output → ai-docs/references/
             ai-docs/references/style-guide.md
             ai-docs/references/screens/ (if Figma)
                         ↓
-            /docs:feature → /docs:ux → /docs:ui → /docs:plan → /docs:tasks
+            /docs:feature → feature-docs agent (ux → ui → plan → tasks)
 ```
 
 # Source Priority
@@ -422,7 +422,7 @@ Changes Applied:
 
 Quality Signals: [N] warnings from Figma extraction (if any)
 
-Next: /docs:feature or /docs:ux
+Next: /docs:feature or feature-docs agent
 ═══════════════════════════════════════════════════
 ```
 

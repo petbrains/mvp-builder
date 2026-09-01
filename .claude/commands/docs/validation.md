@@ -1,6 +1,6 @@
 ---
 description: Validate requirements and generate quality checklists for features.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Instructions
@@ -238,9 +238,11 @@ Extract `FEATURE_PATH`.
 ### 0.2 Load Feature Context
 
 **Apply Feature Analyzer skill** to scan and load feature artifacts:
-- Validates core files exist (spec.md, ux.md, ui.md, plan.md, tasks.md, data-model.md)
-- Loads all available artifacts into context (including ui.md)
-- Reports missing files if any
+- Validates core files exist (spec.md, ux.md, plan.md, tasks.md, data-model.md)
+- ui.md is required only for features with UI. If absent by design (no-UI feature — feature-docs
+  skipped it and reported so) → skip the `ui` domain checklist and every cross-check that
+  references ui.md; note the skip in the final report
+- Loads all available artifacts into context
 
 If core files missing → Report error and exit.
 
@@ -269,7 +271,7 @@ For each "## Phase N:" header:
 ## Phase 2: Generate Checklists
 
 ```bash
-mkdir -p $FEATURE_PATH/checklists
+mkdir -p $FEATURE_PATH/validation
 ```
 
 **Generate in order:** requirements → ux → ui → api → data (follows artifact chain)
@@ -326,11 +328,26 @@ Build list: `UNRESOLVED[] = [{id, domain, marker, question}, ...]`
 - Find related tasks in tasks.md
 - Formulate recommended option with rationale
 
-### 4.3 Present Resolution Dialogue
+### 4.3 Route Resolutions: Autonomous vs Dialogue
 
-**CRITICAL: Process ONE item at a time. Do NOT batch multiple questions.**
+Classify every item in `UNRESOLVED[]` before any dialogue:
 
-For each item in `UNRESOLVED[]`:
+| Class | Covers | Resolved by |
+|-------|--------|-------------|
+| ARCHITECTURAL | Tech stack, code organization, module/API shape, storage, testing strategy, tolerances, mechanisms, naming — anything a senior engineer can decide from the docs alone | Orchestrator, autonomously |
+| INTELLECTUAL | Content, copy, domain semantics, business/pedagogical meaning, asset choices, data governance, legal/product policy — anything requiring product-owner knowledge | User dialogue |
+
+**ARCHITECTURAL items: do NOT ask the user.** Technical aspects were already discussed
+at the PRD stage; re-asking them is noise. Select the recommended option from 4.2,
+record decision + rationale in resolutions.md (mark `resolved: orchestrator`), apply
+task impact per 4.4.
+
+**INTELLECTUAL items only** enter the dialogue below. If there are none, skip the
+dialogue entirely and proceed to 4.4/4.5 with the autonomous resolutions.
+
+**CRITICAL: Process ONE dialogue item at a time. Do NOT batch multiple questions.**
+
+For each INTELLECTUAL item in `UNRESOLVED[]`:
 
 **4.3.1 Find Related Tasks**
 Search tasks.md for tasks referencing same FR-XXX, UX-XXX, or component.
@@ -366,7 +383,8 @@ Related: [RELATED_TASKS or "None found"]
 - "Not MVP" / "Defer" → DEFERRED (tracked in Notes)
 - Never propose changes to spec.md, ux.md, ui.md, plan.md, data-model.md, contracts/
 
-**Wait for user selection before showing next item.**
+**Wait for user selection before showing next item** (INTELLECTUAL items only —
+ARCHITECTURAL items never reach this dialogue).
 
 ### 4.4 Process Resolution
 
@@ -462,7 +480,21 @@ If `DEFERRED[]` not empty:
 **4.5.3 Create resolutions.md**
 Write per template with task_impact for each decision.
 
-## Phase 5: Report
+## Phase 5: Commit & Report
+
+### 5.1 Commit Validation Block
+
+The validation stage is a completed block — commit it on the feature branch before
+reporting. Format per `.claude/rules/git.md`, summary ≤50 chars, imperative:
+
+```
+docs([feature]): validation checklists
+```
+
+Body: checklist/item counts, resolution split (orchestrator / user / deferred),
+tasks impact.
+
+### 5.2 Report
 
 ```
 ✅ Checklists Generated
@@ -478,7 +510,8 @@ Files:
 - data-checklist.md ([N] items)
 - resolutions.md ([N] decisions)
 
-Resolved: [N] uncertainties
+Resolved: [N] uncertainties ([N] orchestrator / [N] user / [N] deferred)
+Committed: [commit-hash]
 Tasks impact:
 - New: [N] tasks added
 - Updated: [N] tasks clarified
@@ -493,7 +526,7 @@ Next: Use feature-setup <feature-path>
 - **Missing core files**: "Error: [file] not found. Run [command] first."
 - **Anti-pattern detected**: "Error: CHK### violates anti-patterns. Regenerating..."
 - **Low traceability**: "Warning: Below 80%. Adding references..."
-- **No user response**: "Waiting for selection. Use ↑/↓ and Enter."
+- **No user response** (INTELLECTUAL item only): "Waiting for selection. Use ↑/↓ and Enter."
 - **Unresolved remaining**: "Error: [N] items unresolved. Cannot finalize."
 - **tasks.md error**: "Error: Could not update tasks.md."
 - **Phase not found**: "Error: Cannot locate Phase [N] for [USX]. Check tasks.md structure."

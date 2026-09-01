@@ -1,7 +1,7 @@
 ---
 name: code-analyzer
 description: "Comprehensive codebase analysis for building mental model of project structure, dependencies, and implementation context. Use when needing to: (1) Understand project architecture before review or documentation, (2) Find dependencies and shared modules, (3) Trace execution paths and abstraction layers for similar features, (4) Locate implementation markers (AICODE-*), (5) Prepare context for review, memory generation, or agent creation. Triggers on: analyze code, load code context, scan codebase, understand project structure, trace feature."
-allowed-tools: Read, Bash (*)
+allowed-tools: Read, Bash(*)
 ---
 
 # Code Analyzer

@@ -1,6 +1,6 @@
 ---
 description: Clarification feature specifications.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Instructions
@@ -145,7 +145,7 @@ Clarification Complete
 - Total ambiguities resolved: [count]
 - Status: SUCCESS (spec refined and ready)
 
-Next: /docs:ux <feature-path>
+Next: feature-docs agent <feature-path>
 ```
 
 # Examples

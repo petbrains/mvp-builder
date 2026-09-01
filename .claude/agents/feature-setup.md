@@ -12,7 +12,7 @@ description: |
   - "Initialize job-description-input" → scaffolds foundation per Phase 1
 model: opus
 color: blue
-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
+tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 skills: feature-analyzer, sequential-thinking, context7, self-commenting
 ---
 
@@ -61,15 +61,14 @@ Add platform-specific entries as needed (node_modules/, vendor/, .venv/).
 
 ## Phase 0: Prepare Workspace
 
-### 0.1 Ensure Feature Branch
+### 0.1 Validate Feature Branch
 
-**Target branch:** `feature/[feature-name]`
+**Expected branch:** `feature/[feature-name]` — created by the feature-docs agent.
 
-1. If on target branch → continue
-2. If on protected branch (main/master/release/*) → create target branch, switch
-3. If on other branch → create/checkout target branch
+Check current branch. If not on the expected branch → HALT:
+"Not on feature/[feature-name]. Run feature-docs agent first — it creates the branch."
 
-**Never work directly on protected branches.**
+**Never work directly on protected branches (main/master/release/*).**
 
 ### 0.2 Verify Prerequisites
 
@@ -257,11 +256,18 @@ Enables grep-searchable context for future sessions.
 
 ### 2.4 Commit Changes
 
+Phase 1 is a completed block — it ends in a conscious commit, never in a dirty tree.
+
+Format per `.claude/rules/git.md`: type chosen deliberately (`test` when the block is
+test harness/fixtures only, `feature` when production scaffolding landed, `chore` for
+pure config), scope = feature name, summary ≤50 chars, imperative. Example:
+
 ```
-feature([feature-name]): scaffold infrastructure per tasks.md Phase 1
+test([feature-name]): phase 1 infrastructure
 ```
 
-Include summary of executed INIT tasks in commit body.
+Body: INIT tasks executed/skipped and any doc gap the setup exposed. Stage only files
+this phase touched — never blanket-add unrelated changes.
 
 ## Output
 
