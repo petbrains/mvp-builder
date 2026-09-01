@@ -38,7 +38,9 @@ The fix is not better prompts. It is **Document-Driven Development** — structu
 
 **Specs that map to tests, not vibes.** Every feature is structured: `FR-XXX → TEST-XXX → IMPL-XXX → CHK → REV`. Skipping a step is detectable, not deniable.
 
-**Self-review with a fix loop.** `/docs:review` produces `feedback.md` with concrete findings. `feature-fix` resolves them one at a time. `AICODE-*` markers track what is resolved across sessions — context resets do not erase progress.
+**Orchestrated agent pipeline.** The main session dispatches specialized agents and validates every report between stages — it never implements inside the pipeline. Architectural decisions are pinned autonomously; only product questions — content, copy, domain semantics — reach you.
+
+**Self-review with a fix loop.** `feature-review` produces `feedback.md` with concrete findings. `feature-fix` resolves them one at a time. `AICODE-*` markers track what is resolved across sessions — context resets do not erase progress.
 
 **TDD enforced, not suggested.** Build phase runs RED-GREEN cycles. Tests come first, implementation follows, atomic commits keep the diff readable. The agent cannot ship a stub — the test would fail.
 
@@ -91,23 +93,22 @@ flowchart LR
     end
     
     subgraph DESIGN ["Design"]
-        CLARIFY --> UX["ux"]
-        UX --> UI["ui"]
-        UI --> PLAN["plan"]
+        CLARIFY --> DOCS["feature-docs"]
+        DOCS --> ACCEPT["acceptance"]
+        ACCEPT -.->|pinned decisions| DOCS
     end
     
     subgraph BUILD ["Build"]
-        PLAN --> TASKS["tasks"]
-        TASKS --> VAL["validation"]
+        ACCEPT --> VAL["validation"]
         VAL --> SETUP["feature-setup"]
         SETUP --> TDD["feature-tdd"]
-        TDD --> REVIEW["review"]
+        TDD --> REVIEW["feature-review"]
         REVIEW -->|BLOCKED| FIX["feature-fix"]
         FIX --> REVIEW
     end
     
     subgraph SHIP ["Ship"]
-        REVIEW -->|PASSED| MEMORY["memory"]
+        REVIEW -->|PASSED| MEMORY["feature-memory"]
     end
 ```
 
@@ -128,13 +129,13 @@ Transform product idea into structured specifications.
 
 ### Phase 2: Design
 
-Convert specifications into technical architecture.
+One agent generates the full derivative doc chain from the approved spec.
 
-| Command | Output | Purpose |
-|---------|--------|---------|
-| `/docs:ux` | `ux.md` | User flows, states, error handling, accessibility |
-| `/docs:ui` | `ui.md` | Component trees, DS mapping, layout structure |
-| `/docs:plan` | `plan.md`, `data-model.md`, `contracts/`, `setup.md` | Architecture, entities, API specs, environment |
+| Agent | Output | Purpose |
+|-------|--------|---------|
+| `feature-docs` | `ux.md`, `ui.md`, `plan.md`, `research.md`, `data-model.md`, `setup.md`, `contracts/`, `tasks.md` | Full doc chain in one pass on shared context; creates the `feature/[name]` branch |
+
+`feature-docs` makes architectural decisions autonomously (recommended defaults) and flags uncertain ones for acceptance. The orchestrator reviews the report: architectural ⚠ items it resolves and pins itself; only intellectual items — content, copy, assets, domain semantics — go to you. Overrides re-dispatch the agent with pinned decisions.
 
 ### Phase 3: Build
 
@@ -142,29 +143,28 @@ Execute implementation through TDD cycles with self-verification.
 
 | Command / Agent | Output | Purpose |
 |-----------------|--------|---------|
-| `/docs:tasks` | `tasks.md` | INIT tasks + TDD cycles (TEST-XXX → IMPL-XXX) |
-| `/docs:validation` | `validation/*.md` | Checklists with traceable checkpoints (CHK) |
+| `/docs:validation` | `validation/*.md`, `resolutions.md` | Checklists with traceable checkpoints (CHK); architectural items resolved autonomously, intellectual ones through dialogue |
 | `feature-setup` | Infrastructure code | Execute INIT tasks, scaffold project |
 | `feature-tdd` | Feature code + tests | RED-GREEN cycles, atomic commits |
-| `/docs:review` | `feedback.md` | Verify implementation, generate findings (REV-XXX) |
+| `feature-review` | `feedback.md` | Verify implementation, generate findings (REV-XXX) |
 | `feature-fix` | Fixed code | Apply fixes one error at a time |
 
-**Review Loop**: If review status is BLOCKED → `feature-fix` → `/docs:review` → repeat until PASSED.
+**Review Loop**: If review status is BLOCKED → `feature-fix` → `feature-review` → repeat until PASSED. If the same finding survives 2 cycles, the orchestrator stops dispatching and finishes the fix directly.
 
 ### Phase 4: Ship
 
 Finalize and document completed implementation.
 
-| Command | Output | Purpose |
-|---------|--------|---------|
-| `/docs:memory [feature-path]` | `ai-docs/README.md` | Add feature to code map, rebuild dependency graph |
-| `/docs:memory` | `ai-docs/README.md` | Rescan entire project, capture all changes |
+| Agent | Output | Purpose |
+|-------|--------|---------|
+| `feature-memory [feature-path]` | `ai-docs/README.md` | Add feature to code map, rebuild dependency graph |
+| `feature-memory` | `ai-docs/README.md` | Rescan entire project, capture all changes |
 
-**Two modes**: with feature path — adds the feature entry and rebuilds the graph. Without arguments — full project rescan for changes made outside feature scope (refactoring, new shared modules, deleted files). Feature list is preserved, only the dependency graph is rebuilt from scratch.
+**Two modes**: with feature path — adds the feature entry and rebuilds the graph. Without arguments — full project rescan for changes made outside feature scope (refactoring, new shared modules, deleted files). Feature list is preserved, only the dependency graph is rebuilt from scratch. The code map is hard-capped at 1000 lines — every run ends with a size check and summarizes when needed.
 
 ### Agents
 
-Specialized agents execute tasks across pipeline phases:
+Specialized agents execute tasks across pipeline phases. The main session is the orchestrator: it dispatches agents, validates every report before the next stage, and owns the docs.
 
 **Define phase:**
 
@@ -172,13 +172,26 @@ Specialized agents execute tasks across pipeline phases:
 |-------|------|-------------|
 | `design-setup` | Normalize design references, extract Figma | When user adds design references to `ai-docs/references/` or provides a Figma URL |
 
+**Design phase:**
+
+| Agent | Role | When to use |
+|-------|------|-------------|
+| `feature-docs` | Generate doc chain ux → ui → plan → tasks | After `spec.md` is approved; creates the feature branch |
+
 **Build phase:**
 
 | Agent | Role | When to use |
 |-------|------|-------------|
 | `feature-setup` | Scaffold infrastructure | After `/docs:validation`, executes INIT-XXX tasks |
 | `feature-tdd` | TDD implementation | After setup, runs RED-GREEN cycles |
+| `feature-review` | Quality gate | After TDD, verifies implementation and generates `feedback.md` |
 | `feature-fix` | Apply review fixes | When review status = BLOCKED, fixes one error at a time |
+
+**Ship phase:**
+
+| Agent | Role | When to use |
+|-------|------|-------------|
+| `feature-memory` | Maintain the code map | After review PASSED, or for a full project rescan |
 
 ### Rules & Skills
 
