@@ -1,7 +1,7 @@
 ---
 name: sequential-thinking
 description: Structured reasoning harness for problems where shallow thinking fails or hallucination is costly. Use whenever a question requires multi-step reasoning, involves competing hypotheses, has multiple interacting components, or carries irreversible consequences. Activate for debugging with unclear root causes, intermittent or multi-component issues, incident post-mortems, choosing between multiple valid approaches, architecture or design tradeoffs, causal chain analysis, high-stakes decisions, and any task where the first plausible answer is suspiciously easy. Provides reasoning modes (abductive, counterfactual, first-principles, inversion, and more), grounding techniques against confabulation, adversarial self-checks, root-cause playbooks, and automatic multi-approach synthesis (independent angles run in parallel and compared) — all through the `mcp__sequential-thinking__sequentialthinking` tool. Skip for trivial lookups, obvious fixes, and single-step questions.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Sequential Thinking

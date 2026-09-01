@@ -25,6 +25,46 @@ Agents execute from existing specs — they do not re-plan.
 - Subagents: request list of key files in return, read them after completion — don't re-scan independently
 - If task has clear requirements and single-file scope — start coding immediately
 
+### Harness Orchestration
+
+Feature implementation runs as an agent pipeline. Main session = orchestrator and validator
+between agents. It dispatches, validates reports, and owns the docs — it does not implement
+inside the pipeline.
+
+Pipeline per feature:
+1. Chat (dialogue, decisions live here): `/docs:prd` → `/docs:feature` → `/docs:clarify`
+2. `feature-docs` → creates `feature/[name]` branch, generates ux → ui → plan → tasks;
+   auto-resolves architecture per its Decision Policy, flags uncertain decisions
+3. Acceptance: orchestrator reviews report + Key Decisions; architectural/technical ⚠ items the
+   orchestrator resolves and pins itself; only intellectual items (content, copy, assets, domain
+   semantics, data governance, product policy) go to the user; overrides → re-dispatch
+   `feature-docs` with pinned decisions
+4. `/docs:validation` → architectural checklist items the orchestrator resolves itself (recorded
+   in resolutions.md); dialogue with the user only on intellectual items; orchestrator commits
+   doc edits from acceptance and validation on the feature branch
+5. `feature-setup` → validate report; if setup exposed doc gaps — fix feature docs before next step
+6. `feature-tdd` → validate completion report against tasks.md
+7. `feature-review` → read feedback.md; if findings trace to wrong/ambiguous docs — fix docs first
+8. BLOCKED → `feature-fix` → `feature-review` again; repeat until PASSED
+9. PASSED → `feature-memory` (updates the code map; README.md capped at 1000 lines)
+
+Orchestrator duties:
+- Validate every agent report before dispatching the next — spot-check key files it names, don't re-scan
+- Doc edits between stages (spec/plan/tasks/validation) are orchestrator's job, never the
+  agents' — this governs doc *content*; execution tracking (checkboxes, TDD/REV inline
+  context, closure records) belongs to the stage agents per their definitions
+- **Decision boundary**: architectural/technical questions the orchestrator decides autonomously
+  and records as pinned (technical aspects were settled at the PRD stage); only intellectual
+  questions — content, copy, assets, domain semantics, data governance, product policy — go to
+  the user
+- **Commit discipline**: every stage ends in a conscious commit per `.claude/rules/git.md` —
+  agents commit their own completed blocks (docs chain, setup phase, each TDD cycle, each REV
+  fix, review artifacts, memory update); the orchestrator commits acceptance and validation
+  doc edits. No stage is dispatched over a dirty tree; no reminder should ever be needed
+- **Loop breaker**: same REV finding survives 2 review↔fix cycles, or feature-fix escalates →
+  stop dispatching. Apply final code and doc fixes directly in main session, run Verification
+  Order, close remaining tasks/CHK yourself
+
 ### Focus
 - Single value path: one critical journey only
 - One screen = one primary action
@@ -72,7 +112,7 @@ Maintain references when implementing: task → requirement → entity
 - Product stays runnable after each change
 - Feature flags for new functionality
 - Reversibility: prefer undoable choices
-- Max 300 lines/file, 80 lines/function
+- Max 300-500 lines/file, 80-100 lines/function
 - Line length: 100-120 characters
 - No "god classes" - split by concern
 - Prefer early returns over deep nesting
@@ -149,17 +189,22 @@ Stop on first failure. Fix before proceeding.
 ## Validation & Errors
 
 **Block and request clarification when:**
-- Requirements ambiguous
-- Multiple valid approaches exist
-- Architecture decisions needed
+- Requirements ambiguous in intent or meaning (intellectual: content, copy, assets, domain
+  semantics, data governance, product policy) — never guess product-owner knowledge
 - Validation fails
+
+**Decide autonomously (do not ask) when:**
+- The question is architectural/technical: stack, structure, module shape, storage, testing
+  strategy, mechanisms, tolerances — pick the recommended option, record decision + rationale
+  as pinned, move on
 
 **When uncertain:**
 - State assumptions explicitly before implementing — don't proceed on silent guesses
-- If multiple valid interpretations exist, present them with tradeoffs — don't pick silently
+- If multiple valid interpretations exist: architectural — pick one, record it with tradeoffs
+  (pinned); intellectual — present them to the user with tradeoffs
 - If a simpler approach exists than what was requested, say so
 - Apply Sequential Thinking for complex analysis
-- If still unclear: ask user for clarification
+- If still unclear and the question is intellectual: ask user for clarification
 - Continue with confirmed parts while awaiting response
 
 **If operation fails:**
@@ -188,7 +233,7 @@ ai-docs/
         ├── setup.md       # Environment configuration
         ├── contracts/     # API specifications
         ├── validation/    # Quality checklists
-        └── feedback.md    # Review findings (regenerated each /review)
+        └── feedback.md    # Review findings (regenerated by feature-review agent)
 ```
 
 ## Session Continuity

@@ -13,7 +13,7 @@ description: |
   - "Continue cv-upload" → resumes from incomplete tasks
 model: opus
 color: green
-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
+tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
 skills: feature-analyzer, sequential-thinking, context7, self-commenting, frontend-playwright
 ---
 
@@ -46,7 +46,7 @@ Execute ALL `[ ]` tasks from tasks.md through Phase 2.
 - Agent does not classify tasks — no "optional", "minor", "non-MVP"
 - Agent does not ask to continue — execute until done or error
 - Phase 2 and CHK updates are part of task completion
-- Commit after each cycle — not batch at end
+- Commit after each cycle — a conscious commit per `.claude/rules/git.md` (see 1.5.4), not batch at end
 
 **Stop when:** All tasks `[x]`, all CHK `[x]`, git clean — OR unrecoverable error.
 
@@ -306,8 +306,13 @@ Only mark if corresponding test passes.
 
 **1.5.4 Commit Cycle**
 
+Each completed cycle is a block — it ends in a conscious commit. Format per
+`.claude/rules/git.md`: type chosen deliberately (`feature` for production code,
+`test` for test-only cycles, `fix` when the cycle repaired behaviour), summary
+≤50 chars, imperative. Stage only files this cycle touched.
+
 ```
-feat([feature]): [cycle-component] [USX]
+feature([feature]): [cycle-component] [USX]
 
 TDD Cycle [N] complete:
 - TEST-XXX: [test description]
@@ -392,7 +397,7 @@ Add session markers to complex implementations:
 If any uncommitted changes after verification:
 
 ```
-Commit: feat([feature]): complete implementation
+feature([feature]): complete implementation
 
 All TDD cycles complete:
 - User Stories: [count]
@@ -400,6 +405,8 @@ All TDD cycles complete:
 - Coverage: [percentage]%
 - Checklists: [count] CHK verified
 ```
+
+Format per `.claude/rules/git.md` — summary ≤50 chars, imperative.
 
 ## Output
 
@@ -436,7 +443,7 @@ Checklists: [validated]/[total] CHK — 100%
 
 Updated: tasks.md, validation/*.md
 
-Next: /docs:review <feature-path>
+Next: feature-review agent <feature-path>
 ```
 
 # Error Protocol
@@ -462,6 +469,18 @@ Agent does not have authority to:
 → HALT entire agent
 → Report what's missing
 → Wait for resolution before continuing
+
+## Amended Execution (not a skip)
+
+A task whose literal wording is unimplementable, self-contradictory, or contradicted by a
+binding artifact may be executed in amended form:
+
+- The requirement stays covered — an amendment never narrows scope or weakens an assertion
+- When two artifacts disagree, follow the most downstream one (tasks > plan > ui > ux > spec —
+  later artifacts encode resolved decisions) and flag the conflict for orchestrator arbitration
+- Every amendment lands in the completion report with its reason; an unreported deviation is
+  a defect
+- If the intended behavior itself is unclear — not just the wording — HALT per No Skip Policy
 
 ## RED Phase Failure
 
@@ -539,3 +558,5 @@ Likely cause: IMPL-XXX modified shared code
 ## Execution
 - Never commit with failing tests
 - Never output completion report without final commit
+- Never write into another feature's folder except closure marks on tasks this feature's
+  tasks.md explicitly names — never its code, never its doc content

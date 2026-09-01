@@ -1,6 +1,6 @@
 ---
 description: Generate MVP PRD.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Instructions
@@ -239,7 +239,7 @@ Recommendation: Keep files under 20KB for optimal context.
 Note: Text files work best. Images/PDFs have limited support in CLI.
 
 Next steps:
-- /docs:design-setup [figma-url] (optional: normalize design references)
+- design-setup agent [figma-url] (optional: normalize design references)
 - /docs:feature (generate feature specifications)"
 
 # Error Handling

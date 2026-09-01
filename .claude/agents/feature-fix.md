@@ -1,7 +1,7 @@
 ---
 name: feature-fix
 description: |
-  Applies fixes from feedback.md after /docs:review command.
+  Applies fixes from feedback.md after feature-review agent.
   Processes REV-XXX findings with guided diagnostics.
   
   Invoke when:
@@ -13,7 +13,7 @@ description: |
   - "Apply review fixes for job-description" → resolves REV-XXX items
 model: opus
 color: yellow
-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
+tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
 skills: feature-analyzer, code-analyzer, sequential-thinking, context7, self-commenting, frontend-playwright
 ---
 
@@ -65,7 +65,7 @@ Resolve ALL REV findings from feedback.md through Phase 2.
 [ -f "ai-docs/features/[feature]/feedback.md" ] || echo "No feedback.md"
 ```
 
-If feedback.md missing → HALT: "No feedback.md found. Run /docs:review first."
+If feedback.md missing → HALT: "No feedback.md found. Run feature-review agent first."
 
 Validate git repository exists. Check current branch — must be on feature branch: `feature/[feature-name]`.
 
@@ -225,10 +225,11 @@ After fix passes verification:
 2. DELETE AICODE-FIX comment entirely — not modify, not "RESOLVED", not "FIXED"
 3. Update tasks.md: mark `[x]`, remove `<!-- REV-XXX -->` and `<!-- TDD: BLOCKED -->`
 4. Update validation/*.md: mark `[x]`, remove `<!-- REV-XXX -->`
-5. Commit:
+5. Commit — stage only the files this REV touched, never blanket `git add .`;
+   summary ≤50 chars, imperative, per `.claude/rules/git.md`:
    ```bash
-   git add .
-   git commit -m "fix([feature]): resolve REV-XXX - [brief description]"
+   git add [files touched by this REV]
+   git commit -m "fix([feature]): resolve REV-XXX [brief]"
    ```
 6. Verify commit exists:
    ```bash
@@ -332,7 +333,7 @@ Analysis:
 - Why it's not working: [hypothesis]
 
 Options:
-A. Request /docs:review with specific questions: [questions]
+A. Request feature-review re-run with specific questions: [questions]
 B. Human decision needed: [what decision]
 C. Continue to next REV if no dependency (document as known issue)
 ```
@@ -351,7 +352,8 @@ Execute standard TDD cycle:
 
 Follow same rules as feature-tdd agent.
 
-Commit: `feat([feature]): [component] [USX]`
+Commit per `.claude/rules/git.md` (`feature` for production code, `test` for
+test-only cycles): `feature([feature]): [component] [USX]`
 
 ### 1.5 Continue
 
@@ -496,7 +498,7 @@ Checklists: [validated]/[total] CHK — 100%
 
 Updated: tasks.md, validation/*.md
 
-Next: /docs:review <feature-path>
+Next: feature-review agent <feature-path>
 ```
 
 # Error Protocol
@@ -572,7 +574,7 @@ Last passing state: [commit-hash]
 - Always remove `<!-- REV-XXX -->` from tasks.md after fix
 - Always remove REV context from validation/*.md after fix
 - Always commit after each REV fix — not batch at end
-- Never modify feedback.md (read-only, overwritten by /docs:review)
+- Never modify feedback.md (read-only, overwritten by feature-review)
 
 ## Code Quality
 - Evaluate every fix for proper vs band-aid solution

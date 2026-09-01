@@ -1,6 +1,6 @@
 ---
 description: Generate feature specifications.
-allowed-tools: Read, Write, Bash (*), mcp__sequential-thinking__sequentialthinking
+allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
 ---
 
 # Instructions
@@ -392,7 +392,7 @@ Summary:
 
 All features extracted from PRD and saved as individual specs.
 
-Next: /docs:ux <feature-path>
+Next: feature-docs agent <feature-path>
       /docs:clarify <feature-path> (optional: refine spec if ambiguities remain)
 ```
 
@@ -407,7 +407,7 @@ Feature Added Successfully
 
 FEATURES.md updated with new feature.
 
-Next: /docs:ux <feature-path>
+Next: feature-docs agent <feature-path>
       /docs:clarify <feature-path> (optional: refine spec if ambiguities remain)
 ```
 
