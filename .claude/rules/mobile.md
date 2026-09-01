@@ -66,25 +66,14 @@ Cross-platform rules for native mobile development. Platform-specific APIs (iOS:
 - Listen for connectivity changes — don't poll network state
 
 ### Request Limits
-- Cap concurrent network requests (default 4–6 active) — adjust based on device state
-- Reduce concurrency on cellular, low battery, or weak signal
 - Batch small requests where possible — HTTP request overhead is significant on cellular
 - Apply exponential backoff with jitter for retries — never fixed-interval retry loops
 - Never retry indefinitely — cap retries (typically 3–5) and surface failure to user
-
-### Request Prioritization
-Classify every network request by priority:
-- **User-critical** — current screen data, user-initiated actions. No deferral.
-- **UI-enhancing** — thumbnails, previews. Deferrable by seconds.
-- **Background** — analytics, prefetching, opportunistic sync. Deferrable to Wi-Fi / charging.
-
-Dispatch higher priority requests first. Pause lower priority on network pressure.
 
 ### Bandwidth Respect
 - Use modern image formats (WebP, AVIF, HEIC) where supported
 - Request appropriate resolution — never download 4K when rendering at 320px
 - Support server-side thumbnail variants — don't downscale client-side after full download
-- Enable HTTP/2 or HTTP/3 where backend supports it
 
 ## Background Execution
 
@@ -106,20 +95,10 @@ Dispatch higher priority requests first. Pause lower priority on network pressur
 
 ### Upload Strategy
 - Files ≤5 MB — single-request upload
-- Files >5 MB — chunked / resumable upload with server-side chunk assembly
+- Files >5 MB — chunked / resumable upload: session survives app restart, chunks independently retryable
 - Files >50 MB — always chunked, require Wi-Fi by default (user can override)
-- Generate client-side content hash — enable server-side deduplication and integrity verification
-- Client provides upload ID (UUID) — server maps chunks to upload session
 
-### Resumable Upload Requirements
-- Upload session survives app restart — persist session state locally
-- Each chunk is independently retryable — no coupling between chunks
-- Server acknowledges each chunk before client discards local reference
-- Finalize step performs integrity check before committing the assembled file
-
-### Image Caching (L1/L2 model)
-- **L1 (memory)** — decoded bitmaps ready for display. Sized proportional to available RAM (typical heuristic: 15–25%)
-- **L2 (disk)** — encoded bytes. Typical budget: 200–500 MB with LRU eviction
+### Image Caching
 - Cache key includes target dimensions and format — never cache original at display size
 - Downsample at decode time — never decode full resolution for thumbnail display
 - Decode on background thread — never on main thread
@@ -127,7 +106,6 @@ Dispatch higher priority requests first. Pause lower priority on network pressur
 
 ### Non-negotiables
 - Never upload or download large media without progress indication
-- Never cache encoded responses when decoded form will be reused — wastes CPU on re-decode
 - Never keep decoded bitmaps beyond display need — decoded memory dominates mobile RAM
 
 ## Permissions
@@ -152,17 +130,10 @@ Prefer OS-provided pickers that require no permission:
 - Never access protected resources on app launch or before user action
 - Never treat permission grant as permanent — check status on each access
 
-## App Integrity & Attestation
+## App Integrity
 
-### When Required
-- Backends handling payments, sensitive user data, or proprietary business logic must verify requests originate from a genuine, untampered app binary
-- Client-side anti-tamper is insufficient alone — server must validate attestation tokens
-
-### Implementation Principles
-- Use platform attestation APIs (Play Integrity API on Android, App Attest on iOS) — not third-party SDKs as sole mechanism
-- Attestation tokens are short-lived — refresh per session or per sensitive operation
 - Never ship API keys or secrets in the app binary expecting them to remain secret — treat them as public
-- Use attestation for rate limiting and abuse detection, not primary authentication
+- When the backend handles payments or sensitive data: platform attestation APIs (Play Integrity, App Attest), validated server-side
 
 ## Privacy
 
@@ -184,12 +155,13 @@ Prefer OS-provided pickers that require no permission:
 - Honor account deletion — remove all local data on sign-out for sensitive apps
 
 ### Third-Party SDKs
-- Treat every third-party SDK as a potential data exfiltration path
-- Gate each SDK behind a feature flag — must be remotely disableable without app release
-- Audit SDK network behavior — not just documented behavior, actual traffic
+- Treat every third-party SDK as a potential data exfiltration path — audit actual traffic, not just docs
 - Avoid SDKs that cannot be disabled per-user for GDPR/CCPA opt-out
 
 ## Resilience & Offline Behavior
+
+Offline-First Principle and Queue Persistence apply when the spec requires offline usage —
+don't impose them on network-only MVPs. State Restoration applies to every app.
 
 ### Offline-First Principle
 - UI reads from local database as single source of truth — never directly from network
@@ -218,9 +190,6 @@ Prefer OS-provided pickers that require no permission:
 
 ### Release Non-negotiables
 - Never ship without crash reporting + symbolication configured
-- Never ship new SDK integrations without staged rollout (typical: 1% → 10% → 50% → 100%)
-- Every user-facing feature gated behind a remote flag — instant disable capability
-- Never remove flag until feature has been at 100% for at least one release cycle
 - Assume releases are final — rollback is slow (app store review) and partial (user update behavior)
 
 ## Non-negotiable Rules

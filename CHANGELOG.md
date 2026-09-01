@@ -2,6 +2,20 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [Unreleased]
+
+### Added
+
+**Skills**
+- `doc-templates` — all 10 pipeline artifact templates packaged as a skill (`SKILL.md` index + `references/`). Replaces `.claude/templates/` as the single source of artifact structure. Wired into `feature-docs`, `feature-review`, `design-setup` agents (frontmatter `skills:` + Skills section) and `/docs:feature`, `/docs:clarify`, `/docs:validation` commands. First step of the plugin migration: the skill is a portable unit (Agent Skills standard) that moves into the plugin unchanged.
+
+### Changed
+
+**Rules — ballast trim** (91 → 84 KiB)
+- Removed content the model reproduces by default: HTTP method/status-code tables and resource-naming basics (`backend.md`), secrets-in-Dockerfile and compose/layer-order basics (`docker.md`), simplification/comments prose (`code-quality.md`), generic testing principles (`frontend.md`), VALIDATE→EXECUTE→VERIFY ceremony, branch/commit-type restatements and Interactive Mode (`git.md`), long-dead API warnings (`ios.md`)
+- Deduplicated cross-file rules to one canonical home: token lifetimes → `authentication.md`; animation rules and a11y principles → `design.md` (web mechanisms stay in `frontend.md`); tap targets → `design.md`; Verification Order → `CLAUDE.md`; secrets/comments/unit-tests-only lines out of `ios.md` Hygiene
+- Descoped over-prescription for MVP context: removed request-prioritization tiers, attestation infrastructure, staged-rollout/remote-flag choreography, cache-budget tuning and upload protocol detail (`mobile.md`); offline-first sections now conditional on the spec requiring offline; removed field-selection/embedding API features, idempotency keys scoped to irreversible mutations (`backend.md`)
+
 ## [0.2.0] - 2026-09-01
 
 Harness Orchestration — the feature pipeline is now an agent chain. The main session is the orchestrator and validator between agents: it dispatches, validates reports, and owns the docs — it does not implement inside the pipeline.

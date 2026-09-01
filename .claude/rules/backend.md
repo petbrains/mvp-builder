@@ -39,27 +39,9 @@ paths:
 ## API Design
 
 ### Resource Naming
-- URIs represent nouns (resources), never verbs (actions)
-  - ✅ `GET /users`, `POST /orders`
-  - ❌ `GET /getUsers`, `POST /createOrder`
-- Plural nouns for collections: `/users/123`, not `/user/123`
 - Hierarchy for relationships, maximum 2 levels deep
   - ✅ `GET /users/123/orders`
   - ❌ `GET /users/123/orders/456/items/789` — use `GET /orders/456/items` instead
-
-### HTTP Method Semantics
-
-| Method | Action | Safe | Idempotent | Body |
-|--------|--------|------|------------|------|
-| GET | Read | Yes | Yes | No |
-| POST | Create | No | No | Yes |
-| PUT | Replace | No | Yes | Yes |
-| PATCH | Update (partial) | No | No* | Yes |
-| DELETE | Remove | No | Yes | Optional |
-
-- Safe = never modifies server state
-- Idempotent = multiple identical requests produce same result
-- PATCH idempotency depends on payload semantics — design explicitly
 
 ### Response Envelope
 
@@ -93,23 +75,7 @@ All successful list responses use envelope structure:
 - Include `details` array for field-level validation errors
 - Never return `200 OK` for errors — use proper 4xx/5xx status codes
 - Never leak internal exceptions, stack traces, or SQL errors to clients in production
-
-### HTTP Status Codes
-
-Use standard codes for their defined purpose:
-- `200 OK` — successful GET, PUT, PATCH
-- `201 Created` — successful POST that created a resource
-- `204 No Content` — successful DELETE or operation with no response body
-- `304 Not Modified` — conditional GET when cached copy is valid
-- `400 Bad Request` — malformed request syntax
-- `401 Unauthorized` — authentication missing or invalid
-- `403 Forbidden` — authenticated but lacks permission
-- `404 Not Found` — resource does not exist
-- `409 Conflict` — request conflicts with current state (version mismatch, duplicate)
-- `422 Unprocessable Entity` — syntactically valid but semantically invalid
-- `429 Too Many Requests` — rate limit exceeded
-- `500 Internal Server Error` — unhandled server exception
-- `503 Service Unavailable` — temporary outage, overload
+- Distinguish `422` (semantically invalid) from `400` (malformed syntax); `409` for state conflicts
 
 ### Pagination
 - Cursor-based for feeds and real-time data: `?cursor=xxx&limit=20`
@@ -120,17 +86,11 @@ Use standard codes for their defined purpose:
 
 ### Idempotency
 
-All non-idempotent mutations (POST creating resources, payments, sends) must support an idempotency key:
-
-- Client generates UUID v4 per mutation
-- Sent via HTTP header: `Idempotency-Key: <uuid>`
-- Server stores `(key → response)` mapping for minimum 24 hours
-- On duplicate key: return cached response without re-executing side effects
-- Keys are scoped per endpoint + per authenticated principal
-
-Never rely on client-side retry logic for correctness — the server must be the source of truth for de-duplication.
-
-Endpoints that are naturally idempotent (PUT, DELETE, PATCH with absolute values) don't require keys but may accept them.
+Mutations with irreversible side effects (payments, sends, external actions) must support an
+idempotency key: client-generated UUID in `Idempotency-Key` header; server caches
+`(key → response)` per endpoint + principal and returns it on duplicates without re-executing.
+The server, never client retry logic, is the source of truth for de-duplication.
+Plain CRUD POSTs may skip keys until a feature's spec demands retry safety.
 
 ### Opaque Identifiers
 
@@ -147,21 +107,6 @@ Rationale:
 
 If internal integer IDs exist for database efficiency, translate at the API boundary.
 
-### Field Selection
-
-For endpoints returning rich resources, support explicit field selection to reduce over-fetching:
-- `GET /users/123?fields=id,name,email`
-- Server returns only requested fields plus always-included core fields (id, type)
-- Invalid field names return `400 Bad Request` with list of valid fields
-
-### Resource Embedding
-
-For relationships, support explicit embedding to reduce round-trips:
-- `GET /orders/123?embed=items,customer`
-- Without `embed`, return only foreign keys / IDs
-- Document which relations support embedding in OpenAPI spec
-- Cap embedding depth at 1 level — no nested embeds (`embed=items.product.variants`)
-
 ### Versioning
 - URL prefix for breaking changes: `/api/v1/`, `/api/v2/`
 - Non-breaking additions (new optional fields, new endpoints) → no version bump
@@ -176,16 +121,13 @@ For relationships, support explicit embedding to reduce round-trips:
 - Always document limits in OpenAPI spec
 
 ### Date and Time
-- All timestamps in responses use ISO 8601 with timezone: `2025-01-15T14:30:00Z`
-- Always store and return in UTC — clients handle timezone conversion
-- Never return epoch integers (`1736951400`) in public APIs
+- Never return epoch integers (`1736951400`) in public APIs — ISO 8601 UTC only
 - Never accept timezone-naive datetimes in request bodies
 
 ## Non-negotiable Rules
 
 ### Security
-- Secrets via env only — never hardcode
-- Tokens: access token ≤15min, refresh token in httpOnly cookie
+- Token lifetimes and storage: per `authentication.md`
 - Never expose internal error details to clients in production
 - API keys in `Authorization: Bearer <token>` or custom `X-API-Key` header — never in URL query parameters
 - Validate all input server-side — client validation is UX, not security

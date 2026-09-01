@@ -10,7 +10,6 @@
 ### Production
 - Always multi-stage builds: `deps` → `builder` → `runner`
 - Run as non-root user — always create and switch to unprivileged user
-- Never store secrets in Dockerfile — pass via env at runtime
 - Always add `HEALTHCHECK`
 
 ### Node.js Specific
@@ -27,11 +26,9 @@
 - Gunicorn/Uvicorn as process manager — never `python manage.py runserver` in production
 
 ### Development
-- Use `docker-compose` for local dev — never manual `docker run` chains
 - Database service must have `healthcheck` + `depends_on` with `condition: service_healthy`
 - Use service name as DB host (`postgres`, not `localhost`)
 
 ### Always
 - `.dockerignore` required — must exclude: `node_modules`, `dist`, `.env*`, `.git`, `__pycache__`, `.venv`, test files
-- Layer order: dependency files first → install → source files (cache optimization)
 - Pin base image versions in production (e.g. `node:20.11-alpine`, `python:3.12.2-slim`)

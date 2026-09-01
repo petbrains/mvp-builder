@@ -25,7 +25,6 @@ color-blue-600          →  color-primary        →  button-bg
 - Every color combination: WCAG AA contrast (4.5:1 normal text, 3:1 large text)
 - Plan dark mode from project start — never retrofit
 - Dark mode: depth from surface lightness not shadow, desaturate accents, reduce body text weight slightly
-- Semantic colors: success (green), warning (amber), error (red), info (blue)
 - Never convey information through color alone — always add icon/text
 - Theme (light/dark) derived from audience and viewing context, not default preference
 

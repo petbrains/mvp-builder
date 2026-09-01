@@ -19,37 +19,13 @@ Cross-platform standards. Platform rules (ios.md, frontend.md, backend.md) take 
 
 ## Code Simplification
 
-### Principles
-- Clarity over brevity — explicit code > clever one-liners
 - No nested ternaries — use switch/if-else for multiple conditions
-- Reduce nesting and unnecessary abstraction
-- Eliminate redundant code, consolidate related logic
-- Remove comments that describe obvious code
-- Preserve all functionality — only change how, never what
-
-### Balance
-- Don't over-simplify: don't combine too many concerns into one function
-- Don't remove helpful abstractions that improve organization
-- Don't optimize for "fewer lines" at the cost of readability
+- Simplification preserves all functionality — only change how, never what
 
 ## Comments
 
-### When Comments Add Value
-- Explaining "why" (business logic rationale, non-obvious decisions)
-- Critical assumptions and preconditions
-- Non-obvious side effects
-- Complex algorithm approach explanation
-
-### When to Remove
-- Restating what the code obviously does
-- Referencing temporary/transitional states
-- TODOs/FIXMEs that have been addressed
-- Outdated references to refactored code
-
-### Comment Quality Check
-- Every claim must match actual code (signatures, behavior, types)
-- Edge cases mentioned must actually be handled
-- Examples must match current implementation
+- Every comment claim must match actual code (signatures, behavior, types)
+- Edge cases mentioned must actually be handled; examples must match current implementation
 
 ## Type Design
 

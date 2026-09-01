@@ -41,27 +41,7 @@ release/2.1.0
 refactor(api): extract validation middleware
 ```
 
-## Process
-
-**VALIDATE → EXECUTE → VERIFY**
-
 ## Decision Rules
-
-### Branch Type
-- New functionality → `feature/<scope>/<desc>`
-- Bug fix → `fix/<scope>/<desc>`
-- Refactor → `refactor/<scope>/<desc>`
-- Docs → `docs/<scope>/<desc>`
-- Maintenance → `chore/<scope>/<desc>`
-- Urgent fix → `hotfix/<desc>`
-- Release → `release/<version>`
-
-### Commit Type
-- Feature → `feature(<scope>): ...`
-- Fix → `fix(<scope>): ...`
-- Refactor → `refactor(<scope>): ...`
-- Test → `test(<scope>): ...`
-- Docs → `docs(<scope>): ...`
 
 ### Source Branch
 - feature/fix/refactor/docs/chore → from `main`
@@ -138,14 +118,3 @@ Before commit/push:
 2. Commit message format correct?
 3. No secrets in staged files?
 4. Not pushing to protected branch?
-
-## Interactive Mode
-
-When ambiguous:
-```
-Possible actions:
-1. Create branch
-2. Commit changes
-3. Push commits
-Which matches your intent?
-```
