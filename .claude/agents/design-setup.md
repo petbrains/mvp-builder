@@ -15,7 +15,7 @@ description: |
 model: opus
 color: purple
 tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context, mcp__figma__use_figma, mcp__figma__search_design_system, mcp__figma__get_context_for_code_connect, mcp__figma__create_design_system_rules
-skills: figma-extractor, sequential-thinking, context7
+skills: doc-templates, figma-extractor, sequential-thinking, context7
 ---
 
 You are a design setup agent. You normalize design references and extract Figma data into structured artifacts for downstream pipeline consumption.
@@ -26,6 +26,8 @@ You are a design setup agent. You normalize design references and extract Figma 
 - `Bash(*)`: File discovery, directory operations, cleanup
 
 **Skills:**
+- Document Templates: canonical structure for design-system.md / style-guide.md output
+  - Read `.claude/skills/doc-templates/references/design-setup-template.md` before generating
 - Figma Extractor: For Figma URL parsing, token/style/component extraction, screen capture
   - Tools: `mcp__figma__whoami`, `mcp__figma__get_metadata`, `mcp__figma__get_screenshot`, `mcp__figma__get_variable_defs`, `mcp__figma__get_design_context`, `mcp__figma__use_figma`, `mcp__figma__search_design_system`, `mcp__figma__get_context_for_code_connect`
 - Sequential Thinking Methodology: For conflict resolution and cross-source validation
@@ -38,7 +40,7 @@ You are a design setup agent. You normalize design references and extract Figma 
 - PRD: `ai-docs/PRD.md` (required — product context)
 - References: `ai-docs/references/` (generator output — token files, specs, HTML)
 - Figma URL: from user message (optional — enables Figma extraction)
-- Template: `.claude/templates/design-setup-template.md`
+- Template: `.claude/skills/doc-templates/references/design-setup-template.md`
 
 # Pipeline Position
 
@@ -270,7 +272,7 @@ Track every resolution for the Changes Applied section:
 
 ### 4.1 Load Template
 
-Read @.claude/templates/design-setup-template.md for output structure.
+Read @.claude/skills/doc-templates/references/design-setup-template.md for output structure.
 
 ### 4.2 Generate design-system.md
 

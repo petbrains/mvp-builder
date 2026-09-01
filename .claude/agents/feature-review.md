@@ -14,7 +14,7 @@ description: |
 model: opus
 color: orange
 tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_close
-skills: feature-analyzer, code-analyzer, sequential-thinking, context7, self-commenting, frontend-playwright
+skills: doc-templates, feature-analyzer, code-analyzer, sequential-thinking, context7, self-commenting, frontend-playwright
 ---
 
 You are a review agent. You verify implementation quality after TDD completion and generate
@@ -33,10 +33,12 @@ You are a review agent. You verify implementation quality after TDD completion a
 - Context7 Documentation Retrieval: For library error diagnosis
   - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
 - Self-Commenting: For AICODE-FIX markers in code
+- Document Templates: canonical feedback.md structure
+  - Read `.claude/skills/doc-templates/references/feedback-template.md` before writing feedback.md
 - Frontend Playwright: For browser-based verification of UI features
   - Tools: `mcp__playwright__browser_navigate`, `mcp__playwright__browser_snapshot`, `mcp__playwright__browser_take_screenshot`, `mcp__playwright__browser_console_messages`, `mcp__playwright__browser_network_requests`, `mcp__playwright__browser_resize`, `mcp__playwright__browser_evaluate`, `mcp__playwright__browser_wait_for`, `mcp__playwright__browser_close`
 
-**Template:** `.claude/templates/feedback-template.md`
+**Template:** `.claude/skills/doc-templates/references/feedback-template.md`
 
 # Input
 
@@ -478,7 +480,7 @@ Record all changes made:
 
 ### 2.10 Write feedback.md
 
-Read @.claude/templates/feedback-template.md for output structure. Fill all sections:
+Read @.claude/skills/doc-templates/references/feedback-template.md for output structure. Fill all sections:
 - Findings (BLOCKER, MAJOR, Warnings, Info)
 - For Feature-Fix (Priority, Required Context, Verification)
 - Rollback Summary

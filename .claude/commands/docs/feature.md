@@ -13,12 +13,14 @@ Generate feature specifications from PRD or user description into structured spe
 - `Bash`: For directory creation and file existence checks
 
 **Skills:**
+- Document Templates: For canonical spec.md and FEATURES.md structure
+  - Templates loaded below from `.claude/skills/doc-templates/references/`
 - Sequential Thinking Methodology: For analyzing PRD structure, extracting features, validating input, and detecting conflicts
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
-**Templates:**
-- Spec: @.claude/templates/spec-template.md
-- Index: @.claude/templates/features-template.md
+**Templates (Document Templates skill):**
+- Spec: @.claude/skills/doc-templates/references/spec-template.md
+- Index: @.claude/skills/doc-templates/references/features-template.md
 
 **Project context:**
 - PRD: @ai-docs/PRD.md

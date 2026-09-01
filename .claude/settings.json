@@ -79,6 +79,7 @@
       "Bash(dirname:*)",
       "Bash(curl:*)",
       "Bash(pkill -f:*)",
+      "Skill(doc-templates)",
       "Skill(self-commenting)",
       "Skill(feature-analyzer)",
       "Skill(sequential-thinking)",

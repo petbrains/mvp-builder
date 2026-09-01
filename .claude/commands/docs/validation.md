@@ -17,10 +17,12 @@ Generate "Unit Tests for Requirements" — deterministic checklists that validat
   - Scans and loads: spec.md, ux.md, ui.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
 - Sequential Thinking Methodology: For structured reasoning during analysis and generation
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
+- Document Templates: For canonical checklist and resolutions structure
+  - Templates loaded below from `.claude/skills/doc-templates/references/`
 
-**Templates:**
-- Checklist: @.claude/templates/checklist-template.md
-- Resolutions: @.claude/templates/resolutions-template.md
+**Templates (Document Templates skill):**
+- Checklist: @.claude/skills/doc-templates/references/checklist-template.md
+- Resolutions: @.claude/skills/doc-templates/references/resolutions-template.md
 
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/` (requires core artifacts)

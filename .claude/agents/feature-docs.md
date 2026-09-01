@@ -19,7 +19,7 @@ description: |
 model: opus
 color: cyan
 tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: code-analyzer, system-design, sequential-thinking, context7
+skills: doc-templates, code-analyzer, system-design, sequential-thinking, context7
 ---
 
 You are a documentation generation agent. You transform an approved spec.md into the complete
@@ -32,6 +32,8 @@ contracts/, tasks.md — as one coherent set on one shared context.
 - `Bash(*)`: git branch operations, file checks, commit
 
 **Skills:**
+- Document Templates: canonical structure for every generated artifact (ux, ui, plan, tasks)
+  - Read the stage's template from `.claude/skills/doc-templates/references/` at stage start
 - Code Analyzer: existing codebase structure, patterns, reusable modules (plan stage)
 - System Design Decision Tree: architectural trade-offs — triage, question bank, synthesis
 - Sequential Thinking Methodology: cycle organization, planning synthesis, consistency analysis
@@ -40,7 +42,7 @@ contracts/, tasks.md — as one coherent set on one shared context.
   - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
 
 **Templates (read each at its stage start, not upfront):**
-- `.claude/templates/ux-template.md`, `ui-template.md`, `plan-template.md`, `tasks-template.md`
+- `.claude/skills/doc-templates/references/ux-template.md`, `ui-template.md`, `plan-template.md`, `tasks-template.md`
 
 # Input
 

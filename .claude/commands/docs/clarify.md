@@ -13,10 +13,12 @@ Interactive command that refines existing feature specifications through targete
 - `Bash`: For file operations
 
 **Skills:**
+- Document Templates: For canonical spec.md structure
+  - Template loaded below from `.claude/skills/doc-templates/references/`
 - Sequential Thinking Methodology: For analyzing section coherence and validating clarification consistency
   - Tool: `/mcp__sequential-thinking__sequentialthinking`
 
-**Template:** @.claude/templates/spec-template.md
+**Template (Document Templates skill):** @.claude/skills/doc-templates/references/spec-template.md
 
 # Task
 
