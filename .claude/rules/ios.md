@@ -294,7 +294,6 @@ Always use modern equivalents:
 - Respect Reduce Motion — replace motion-based animations with opacity.
 - Respect `accessibilityDifferentiateWithoutColor` — use icons/patterns/strokes beyond just color.
 - Use `accessibilityInputLabels()` for buttons with complex or live-updating labels.
-- Minimum tap target: 44×44 points.
 - `.caption2` is extremely small — generally avoid. `.caption` is borderline.
 
 ### Design & HIG
@@ -628,7 +627,6 @@ Order: assertions → `@Test` declarations → suite organization → parameteri
 - Pin certificates for connections to your own backend — `URLSessionDelegate.urlSession(_:didReceive:completionHandler:)` with explicit `SecTrustEvaluateWithError`
 - Never disable ATS globally via `NSAllowsArbitraryLoads` — use per-domain `NSExceptionDomains` with documented justification
 - Prefer Swift Concurrency: `URLSession.shared.data(for:)` / `download(for:)` / `upload(for:from:)` over closure-based APIs
-- Never use `NSURLConnection` — deprecated long ago, never in new code
 
 ## Background Tasks
 
@@ -709,7 +707,6 @@ Complement to File Storage Locations section:
 
 ### Video & Audio
 
-- `AVPlayer` for playback — never `MPMoviePlayerController` (long deprecated)
 - `AVAssetExportSession` for format/quality conversion — always run on background queue
 - `AVAssetWriter` for real-time composition and encoding
 - Preload asset metadata via `AVAsset.load(.tracks, .duration)` async (iOS 16+) before presenting playback UI
@@ -774,11 +771,8 @@ Third-party SDKs must ship their own `PrivacyInfo.xcprivacy` — audit SDK manif
 
 ## Hygiene
 
-- Never include secrets/API keys in the repository. Use Keychain or server-side proxy.
 - Auth tokens in Keychain — see Keychain & Data Protection section for accessibility class selection.
 - `PrivacyInfo.xcprivacy` required — see Privacy Manifests & Tracking section for required reason codes.
-- Code comments where logic isn't self-evident.
-- Unit tests only. Never write UI tests that run on simulator or device.
 - No third-party frameworks without asking first.
 - Feature-based folder structure.
 
@@ -794,9 +788,3 @@ Third-party SDKs must ship their own `PrivacyInfo.xcprivacy` — audit SDK manif
 - Accepted-deferred debt stays VISIBLE to lint (still reported + ticketed), never hidden (suppressed inline or buried under a raised threshold). Deferred ≠ hidden.
 - Test-fixture idioms (force-unwrap on known-valid literals, multiline test-data builders) are silenced via a subtractive nested test `.swiftlint.yml`, not by editing each site and not by relaxing the rule for production. The nested config must re-declare the inherited ruleset and only subtract — verify before/after that only the intended rules' counts drop.
 - Lint enforcement (pre-commit hook, CI gate, baseline file) is infrastructure, not a code rule — it lives in the CI config / contributing docs, not here.
-
----
-
-## Verification Order
-
-For all code changes: **build → types → lint → tests**

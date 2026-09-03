@@ -11,6 +11,10 @@ All notable changes to MVP Builder will be documented in this file. The format i
 
 ### Changed
 
+**Rules — ios.md**
+- Liquid Glass (iOS 26+) expanded from 5 lines to full guidance: placement boundaries (navigation/controls layer only), API discipline (`GlassEffectContainer`, morph transitions, button styles), color & motion on glass, Icon Composer `.icon` bundles, accessibility/performance verification
+- New Lint Discipline section — SwiftLint violation triage (fix / config / suppress-with-reason), suppression formatting gotchas (`disable:this` vs `disable:next` near doc comments, no trailing text after rule names, never autocorrect `orphaned_doc_comment`), threshold policy, subtractive test configs
+
 **Rules — ballast trim** (91 → 84 KiB)
 - Removed content the model reproduces by default: HTTP method/status-code tables and resource-naming basics (`backend.md`), secrets-in-Dockerfile and compose/layer-order basics (`docker.md`), simplification/comments prose (`code-quality.md`), generic testing principles (`frontend.md`), VALIDATE→EXECUTE→VERIFY ceremony, branch/commit-type restatements and Interactive Mode (`git.md`), long-dead API warnings (`ios.md`)
 - Deduplicated cross-file rules to one canonical home: token lifetimes → `authentication.md`; animation rules and a11y principles → `design.md` (web mechanisms stay in `frontend.md`); tap targets → `design.md`; Verification Order → `CLAUDE.md`; secrets/comments/unit-tests-only lines out of `ios.md` Hygiene
