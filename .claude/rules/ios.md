@@ -294,6 +294,7 @@ Always use modern equivalents:
 - Respect Reduce Motion — replace motion-based animations with opacity.
 - Respect `accessibilityDifferentiateWithoutColor` — use icons/patterns/strokes beyond just color.
 - Use `accessibilityInputLabels()` for buttons with complex or live-updating labels.
+- Minimum tap target: 44×44 points.
 - `.caption2` is extremely small — generally avoid. `.caption` is borderline.
 
 ### Design & HIG
@@ -338,11 +339,43 @@ Universal rules for consuming `ai-docs/references/` artifacts are in `design.md`
 
 ### Liquid Glass (iOS 26+)
 
-- Only adopt when explicitly requested.
-- `GlassEffectContainer` wraps grouped glass elements.
-- `.glassEffect()` applied after layout modifiers.
-- `.interactive()` only on user-interactable elements.
-- Always `#available(iOS 26, *)` with material-based fallback.
+#### Placement
+
+- Only adopt when explicitly requested. Glass belongs to the navigation/controls layer (bars, toolbars, floating buttons) — never to content (lists, cards, form controls, media, custom canvases). Content differentiation = fills / standard materials.
+- Never glass on glass. Never glass inside `List` / `LazyVStack` cells or anything that scrolls.
+- `.regular` by default. `.clear` only over media-rich content that tolerates a dimming layer beneath — never mix the two variants on one surface.
+- Custom bars mount as `.safeAreaBar(edge:)`, not a `ZStack` overlay. Content scrolling beneath gets `.scrollEdgeEffectStyle`.
+- Never paint system sheets (`presentationBackground`, custom blur) — detents handle opacity.
+
+#### API
+
+- Two or more sibling glass views → ONE `GlassEffectContainer(spacing:)`, spacing ≥ the inner stack's. Never nest containers.
+- `.glassEffect(_:in:)` after layout modifiers. `.interactive()` only on tappable glass, not on containers or bars.
+- Buttons: `.buttonStyle(.glass)` / `.glassProminent` (+ `.buttonBorderShape`) over label-level `glassEffect` — Button Shapes and contrast adaptations come free.
+- `glassEffectID` / `glassEffectUnion` / `glassEffectTransition` only for a real morph (same container, same namespace). Never animate glass shape parameters per frame.
+- Glass appears via `.glassEffectTransition(.materialize)`, not opacity.
+- Shapes nested in glass or sheets: `ConcentricRectangle` / `.rect(corners: .concentric)`, never a hand-picked inner radius.
+- Zoom from a glass source: `.navigationTransition(.zoom(sourceID:in:))` + `.matchedTransitionSource(id:in:)`.
+- `#available(iOS 26, *)` with a material fallback. Centralize glass in one project modifier/style set — no scattered `glassEffect` call sites.
+
+#### Color & motion
+
+- Foreground on glass = `.primary` / `.secondary` (vibrant). Never fixed colors; never `.quaternary` on thin material.
+- Tint ONE primary per surface via `.tint`. Never a solid fill on glass; never tint every control.
+- Selection on glass ≠ color alone — add a fill, outline, or `.symbolVariant(.fill)`.
+- Native `Slider` / `Toggle` / `Menu` lift into glass on their own — don't rebuild them.
+- Springs damped and interruptible; every morph gates on `\.accessibilityReduceMotion`.
+
+#### App icon
+
+- Icon Composer `.icon` bundle beside the asset catalog (≤ 4 layers; `ASSETCATALOG_COMPILER_APPICON_NAME` = its name). `.appiconset` stays only as the pre-26 fallback.
+- Layer files flat, square, full-bleed. Never bake shadow, blur, gradient, highlight, rounded corners, or small text. Default / dark / clear / tinted derive in Composer, not from separate artwork.
+
+#### Accessibility & performance
+
+- System glass adapts to Reduce Transparency / Increase Contrast / Reduce Motion by itself; custom glass must be verified under each.
+- Increase Contrast: `\.colorSchemeContrast == .increased` → visible stroke on custom glass.
+- Keep glass containers on screen to a handful (≈ 5). Profile with Instruments after adoption.
 
 ### SwiftData
 
@@ -595,6 +628,7 @@ Order: assertions → `@Test` declarations → suite organization → parameteri
 - Pin certificates for connections to your own backend — `URLSessionDelegate.urlSession(_:didReceive:completionHandler:)` with explicit `SecTrustEvaluateWithError`
 - Never disable ATS globally via `NSAllowsArbitraryLoads` — use per-domain `NSExceptionDomains` with documented justification
 - Prefer Swift Concurrency: `URLSession.shared.data(for:)` / `download(for:)` / `upload(for:from:)` over closure-based APIs
+- Never use `NSURLConnection` — deprecated long ago, never in new code
 
 ## Background Tasks
 
@@ -675,6 +709,7 @@ Complement to File Storage Locations section:
 
 ### Video & Audio
 
+- `AVPlayer` for playback — never `MPMoviePlayerController` (long deprecated)
 - `AVAssetExportSession` for format/quality conversion — always run on background queue
 - `AVAssetWriter` for real-time composition and encoding
 - Preload asset metadata via `AVAsset.load(.tracks, .duration)` async (iOS 16+) before presenting playback UI
@@ -739,7 +774,29 @@ Third-party SDKs must ship their own `PrivacyInfo.xcprivacy` — audit SDK manif
 
 ## Hygiene
 
+- Never include secrets/API keys in the repository. Use Keychain or server-side proxy.
 - Auth tokens in Keychain — see Keychain & Data Protection section for accessibility class selection.
 - `PrivacyInfo.xcprivacy` required — see Privacy Manifests & Tracking section for required reason codes.
+- Code comments where logic isn't self-evident.
+- Unit tests only. Never write UI tests that run on simulator or device.
 - No third-party frameworks without asking first.
 - Feature-based folder structure.
+
+---
+
+## Lint Discipline
+
+- Lint-clean means zero *unexplained* violations, not zero violations. Every violation ends one of three ways: **fix** (real defect or debt), **config** (the rule is mis-tuned for a whole area → change `.swiftlint.yml`, never hand-edit N sites), or **suppress-with-reason** (deliberate code → inline `swiftlint:disable:this <rule>` with a justification).
+- Suppression justification goes on its OWN line, never trailing the rule name — trailing text after the rule is parsed as bogus rule names (produces spurious `superfluous_disable_command`).
+- Near a `///` doc comment use `disable:this`, never `disable:next` — a `disable:next` line inserts itself between the doc comment and the declaration and re-orphans it (`orphaned_doc_comment`).
+- Never autocorrect `orphaned_doc_comment` — autocorrect demotes `///`→`//` and destroys the doc comment. Fix by reordering instead: `///` directly above the declaration, any `// AICODE-*` note above the `///`.
+- Threshold limits (`file_length`, `type_body_length`, etc.) are real ceilings. Do not raise a global threshold to clear cosmetic debt on a few files — that relaxes the rule for the whole repo. Such debt is fixed by a tracked refactor ticket, or a per-file suppress that references that ticket, never a repo-wide threshold bump.
+- Accepted-deferred debt stays VISIBLE to lint (still reported + ticketed), never hidden (suppressed inline or buried under a raised threshold). Deferred ≠ hidden.
+- Test-fixture idioms (force-unwrap on known-valid literals, multiline test-data builders) are silenced via a subtractive nested test `.swiftlint.yml`, not by editing each site and not by relaxing the rule for production. The nested config must re-declare the inherited ruleset and only subtract — verify before/after that only the intended rules' counts drop.
+- Lint enforcement (pre-commit hook, CI gate, baseline file) is infrastructure, not a code rule — it lives in the CI config / contributing docs, not here.
+
+---
+
+## Verification Order
+
+For all code changes: **build → types → lint → tests**
