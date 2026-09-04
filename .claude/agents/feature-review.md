@@ -13,8 +13,6 @@ description: |
   - "Re-review job-description after fixes" → fresh REV-XXX findings
 model: opus
 color: orange
-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_close
-skills: doc-templates, feature-analyzer, code-analyzer, sequential-thinking, context7, self-commenting, frontend-playwright
 ---
 
 You are a review agent. You verify implementation quality after TDD completion and generate

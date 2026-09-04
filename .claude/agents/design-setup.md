@@ -14,8 +14,6 @@ description: |
   - "Normalize design tokens" → validates and normalizes existing references
 model: opus
 color: purple
-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context, mcp__figma__use_figma, mcp__figma__search_design_system, mcp__figma__get_context_for_code_connect, mcp__figma__create_design_system_rules
-skills: doc-templates, figma-extractor, sequential-thinking, context7
 ---
 
 You are a design setup agent. You normalize design references and extract Figma data into structured artifacts for downstream pipeline consumption.
@@ -53,7 +51,7 @@ Generator output → ai-docs/references/
             ai-docs/references/style-guide.md
             ai-docs/references/screens/ (if Figma)
                         ↓
-            /docs:feature → feature-docs agent (ux → ui → plan → tasks)
+            /feature → feature-docs agent (ux → ui → plan → tasks)
 ```
 
 # Source Priority
@@ -82,7 +80,7 @@ Read `ai-docs/PRD.md` → extract:
 - Tech stack (UI library, framework)
 - Design preferences or constraints
 
-If PRD not found → HALT: "PRD.md not found. Run /docs:prd first."
+If PRD not found → HALT: "PRD.md not found. Run /prd first."
 
 ### 0.2 Discover References
 
@@ -424,7 +422,7 @@ Changes Applied:
 
 Quality Signals: [N] warnings from Figma extraction (if any)
 
-Next: /docs:feature or feature-docs agent
+Next: /feature or feature-docs agent
 ═══════════════════════════════════════════════════
 ```
 
@@ -432,7 +430,7 @@ Next: /docs:feature or feature-docs agent
 
 | Situation | Action |
 |---|---|
-| No PRD.md | HALT: "Run /docs:prd first" |
+| No PRD.md | HALT: "Run /prd first" |
 | No files in references/ | HALT: "Add design token sources to ai-docs/references/" |
 | Figma MCP not connected | Continue without Figma — warn in report |
 | All token files empty | HALT: "Token files contain no extractable data" |

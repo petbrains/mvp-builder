@@ -65,17 +65,17 @@ irm https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts
 ```
 
 This installs:
-- `.claude/` — commands, agents, skills, rules
+- `.claude/` — agents, skills, rules
 - `CLAUDE.md` — agent identity and execution rules
 - `.mcp.json` — MCP server configuration
 
 Then in Claude Code:
 
 ```
-/docs:prd
+/prd
 ```
 
-That is it. The PRD command interviews you on product, audience, and core problem, then generates `PRD.md` and a `references/` folder you can populate with design systems, schemas, and screenshots. The pipeline takes you from there.
+That is it. The PRD skill interviews you on product, audience, and core problem, then generates `PRD.md` and a `references/` folder you can populate with design systems, schemas, and screenshots. The pipeline takes you from there.
 
 ---
 
@@ -116,14 +116,14 @@ flowchart LR
 
 Transform product idea into structured specifications.
 
-| Command / Agent | Output | Purpose |
+| Skill / Agent | Output | Purpose |
 |---------|--------|---------|
-| `/docs:prd` | `PRD.md`, `references/` dir | Product vision, audience, core problem |
+| `/prd` | `PRD.md`, `references/` dir | Product vision, audience, core problem |
 | `design-setup` | `references/design-system.md`, `tokens/`, `style-guide.md` | Normalize design references, extract from Figma |
-| `/docs:feature` | `spec.md`, `FEATURES.md` | Feature specs with requirements (FR-XXX, UX-XXX) |
-| `/docs:clarify` | Updated `spec.md` | Resolve ambiguities through targeted questions |
+| `/feature` | `spec.md`, `FEATURES.md` | Feature specs with requirements (FR-XXX, UX-XXX) |
+| `/clarify` | Updated `spec.md` | Resolve ambiguities through targeted questions |
 
-**After `/docs:prd`**: Add supplementary materials to `ai-docs/references/` — design systems, tokens, schemas, API contracts, style guides, screenshots. Run `design-setup` agent to normalize raw generator output.
+**After `/prd`**: Add supplementary materials to `ai-docs/references/` — design systems, tokens, schemas, API contracts, style guides, screenshots. Run `design-setup` agent to normalize raw generator output.
 
 **Figma roundtrip** (optional): Run `design-setup [figma-url]` to extract tokens and screens from Figma. Refine in Figma, then re-run `design-setup [figma-url]` to pull changes back. Repeat until design is locked.
 
@@ -141,9 +141,9 @@ One agent generates the full derivative doc chain from the approved spec.
 
 Execute implementation through TDD cycles with self-verification.
 
-| Command / Agent | Output | Purpose |
+| Skill / Agent | Output | Purpose |
 |-----------------|--------|---------|
-| `/docs:validation` | `validation/*.md`, `resolutions.md` | Checklists with traceable checkpoints (CHK); architectural items resolved autonomously, intellectual ones through dialogue |
+| `/validation` | `validation/*.md`, `resolutions.md` | Checklists with traceable checkpoints (CHK); architectural items resolved autonomously, intellectual ones through dialogue |
 | `feature-setup` | Infrastructure code | Execute INIT tasks, scaffold project |
 | `feature-tdd` | Feature code + tests | RED-GREEN cycles, atomic commits |
 | `feature-review` | `feedback.md` | Verify implementation, generate findings (REV-XXX) |
@@ -182,7 +182,7 @@ Specialized agents execute tasks across pipeline phases. The main session is the
 
 | Agent | Role | When to use |
 |-------|------|-------------|
-| `feature-setup` | Scaffold infrastructure | After `/docs:validation`, executes INIT-XXX tasks |
+| `feature-setup` | Scaffold infrastructure | After `/validation`, executes INIT-XXX tasks |
 | `feature-tdd` | TDD implementation | After setup, runs RED-GREEN cycles |
 | `feature-review` | Quality gate | After TDD, verifies implementation and generates `feedback.md` |
 | `feature-fix` | Apply review fixes | When review status = BLOCKED, fixes one error at a time |
@@ -204,12 +204,11 @@ Specialized agents execute tasks across pipeline phases. The main session is the
 | `mobile.md` | Cross-platform native mobile | `**/*.swift`, `**/*.kt`, `**/*.dart` |
 | `ios.md` | Swift style, concurrency, SwiftUI, SwiftData | `**/*.swift`, `**/*.xcodeproj/**` |
 
-**Skills** (`.claude/skills/`) are on-demand expertise — loaded by agents when the task requires specific domain knowledge.
+**Skills** (`.claude/skills/`) come in two kinds: pipeline skills invoked directly in chat (`/prd`, `/feature`, `/clarify`, `/validation`) that drive the dialogue stages, and domain skills loaded on demand by agents when the task requires specific expertise.
 
 Each skill contains:
-- Instructions for a specific domain (analysis, documentation, git workflow)
+- Instructions for a specific domain (analysis, documentation, pipeline stage)
 - Decision rules with explicit conditions
-- Tool permissions and constraints
 
 Add new standards: create a rule file in `.claude/rules/`.  
 Add new expertise: create a skill folder in `.claude/skills/`.

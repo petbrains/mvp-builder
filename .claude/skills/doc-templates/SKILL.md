@@ -23,14 +23,14 @@ renamed section breaks the chain, not just the style.
 
 | Template | Produces | Primary consumer |
 |----------|----------|------------------|
-| `references/spec-template.md` | `ai-docs/features/[name]/spec.md` | `/docs:feature`, `/docs:clarify` |
-| `references/features-template.md` | `ai-docs/FEATURES.md` | `/docs:feature` |
+| `references/spec-template.md` | `ai-docs/features/[name]/spec.md` | `/feature`, `/clarify` |
+| `references/features-template.md` | `ai-docs/FEATURES.md` | `/feature` |
 | `references/ux-template.md` | `ai-docs/features/[name]/ux.md` | feature-docs agent |
 | `references/ui-template.md` | `ai-docs/features/[name]/ui.md` | feature-docs agent |
 | `references/plan-template.md` | `ai-docs/features/[name]/plan.md` | feature-docs agent |
 | `references/tasks-template.md` | `ai-docs/features/[name]/tasks.md` | feature-docs agent |
-| `references/checklist-template.md` | `ai-docs/features/[name]/validation/[domain]-checklist.md` | `/docs:validation` |
-| `references/resolutions-template.md` | `ai-docs/features/[name]/validation/resolutions.md` | `/docs:validation` |
+| `references/checklist-template.md` | `ai-docs/features/[name]/validation/[domain]-checklist.md` | `/validation` |
+| `references/resolutions-template.md` | `ai-docs/features/[name]/validation/resolutions.md` | `/validation` |
 | `references/feedback-template.md` | `ai-docs/features/[name]/feedback.md` | feature-review agent |
 | `references/design-setup-template.md` | `ai-docs/references/design-system.md`, `style-guide.md` | design-setup agent |
 

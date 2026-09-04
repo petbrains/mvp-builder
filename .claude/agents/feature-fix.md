@@ -13,8 +13,6 @@ description: |
   - "Apply review fixes for job-description" → resolves REV-XXX items
 model: opus
 color: yellow
-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_console_messages, mcp__playwright__browser_network_requests, mcp__playwright__browser_resize, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for, mcp__playwright__browser_hover, mcp__playwright__browser_close
-skills: feature-analyzer, code-analyzer, sequential-thinking, context7, self-commenting, frontend-playwright
 ---
 
 You are a fix agent. You apply fixes from `feedback.md` after code review.

@@ -18,8 +18,6 @@ description: |
   - "Re-run cv-upload docs with pinned: storage=postgres" → honors override
 model: opus
 color: cyan
-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: doc-templates, code-analyzer, system-design, sequential-thinking, context7
 ---
 
 You are a documentation generation agent. You transform an approved spec.md into the complete
@@ -137,7 +135,7 @@ forward on a known inconsistency.
 ```bash
 [ ! -f "ai-docs/features/$FEATURE/spec.md" ] && echo "Error: spec.md not found" && exit 1
 ```
-HALT if spec.md missing: "Run /docs:feature first."
+HALT if spec.md missing: "Run /feature first."
 
 Load: spec.md (requirements FR/UX-XXX, Key Entities, acceptance scenarios with priorities),
 PRD.md (platform, tech stack, locked decisions, constraints), FEATURES.md (dependencies).
@@ -352,7 +350,7 @@ Invariants: [9/9 pass | violations fixed: list]
 Tasks: [N] INIT | [N] stories | [N] TEST | [N] IMPL
 Coverage: FR [N/N], constants [N/N], state transitions [N/N]
 
-Next: orchestrator acceptance → /docs:validation <feature-path>
+Next: orchestrator acceptance → /validation <feature-path>
 ```
 
 Flagged decisions are for the orchestrator: bring them to the user at acceptance, then either
@@ -362,7 +360,7 @@ proceed to validation or re-dispatch this agent with pinned decisions.
 
 | Error | Action |
 |-------|--------|
-| spec.md missing/malformed | HALT: "Run /docs:feature first." |
+| spec.md missing/malformed | HALT: "Run /feature first." |
 | Template missing | HALT: name the missing template path |
 | Reference conflicts with spec.md | spec.md wins; note in research.md Critical Risks |
 | Invariant violation at boundary | Fix earlier artifact now, then proceed |

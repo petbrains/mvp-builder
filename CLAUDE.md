@@ -27,19 +27,21 @@ Agents execute from existing specs — they do not re-plan.
 
 ### Harness Orchestration
 
-Feature implementation runs as an agent pipeline. Main session = orchestrator and validator
-between agents. It dispatches, validates reports, and owns the docs — it does not implement
-inside the pipeline.
+Feature implementation runs as an agent pipeline driven from the main chat. Dialogue stages
+are skills executed in the main session (`/prd`, `/feature`, `/clarify`, `/validation`);
+implementation stages are dispatched to agents. Main session = orchestrator and validator
+between agents. It runs the dialogue skills, dispatches agents, validates reports, and owns
+the docs — it does not implement inside the pipeline.
 
 Pipeline per feature:
-1. Chat (dialogue, decisions live here): `/docs:prd` → `/docs:feature` → `/docs:clarify`
+1. Chat (dialogue, decisions live here): `/prd` → `/feature` → `/clarify`
 2. `feature-docs` → creates `feature/[name]` branch, generates ux → ui → plan → tasks;
    auto-resolves architecture per its Decision Policy, flags uncertain decisions
 3. Acceptance: orchestrator reviews report + Key Decisions; architectural/technical ⚠ items the
    orchestrator resolves and pins itself; only intellectual items (content, copy, assets, domain
    semantics, data governance, product policy) go to the user; overrides → re-dispatch
    `feature-docs` with pinned decisions
-4. `/docs:validation` → architectural checklist items the orchestrator resolves itself (recorded
+4. `/validation` → architectural checklist items the orchestrator resolves itself (recorded
    in resolutions.md); dialogue with the user only on intellectual items; orchestrator commits
    doc edits from acceptance and validation on the feature branch
 5. `feature-setup` → validate report; if setup exposed doc gaps — fix feature docs before next step

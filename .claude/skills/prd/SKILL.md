@@ -1,6 +1,6 @@
 ---
-description: Generate MVP PRD.
-allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
+name: prd
+description: Generate MVP Product Requirements Document through interactive dialogue with incremental validation and saving. Use when the user wants to start a new product, create a PRD, define product vision and scope, or kick off the MVP Builder pipeline.
 ---
 
 # Instructions
@@ -240,7 +240,7 @@ Note: Text files work best. Images/PDFs have limited support in CLI.
 
 Next steps:
 - design-setup agent [figma-url] (optional: normalize design references)
-- /docs:feature (generate feature specifications)"
+- /feature (generate feature specifications)"
 
 # Error Handling
 

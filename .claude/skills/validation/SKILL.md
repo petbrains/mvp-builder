@@ -1,11 +1,14 @@
 ---
-description: Validate requirements and generate quality checklists for features.
-allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
+name: validation
+description: Validate requirement quality and generate deterministic checklists (CHK###) for a feature. Use after the doc chain is accepted and before feature-setup — produces validation/*.md checklists, resolutions.md, and resolution tasks in tasks.md.
+argument-hint: [feature-path]
 ---
 
 # Instructions
 
 Generate "Unit Tests for Requirements" — deterministic checklists that validate requirement quality.
+
+**Input:** `$ARGUMENTS` — feature path (e.g. `ai-docs/features/cv-upload`). If empty, ask the user which feature to validate.
 
 **Tools Usage:**
 - `Read`: For loading feature artifacts
@@ -164,7 +167,7 @@ Each domain MUST include these cross-checks:
 
 ## Resolution Task Rules
 
-**Scope:** Checklist command modifies ONLY:
+**Scope:** Validation skill modifies ONLY:
 - `validation/*.md` — checklist files
 - `validation/resolutions.md` — decisions log  
 - `tasks.md` — task updates
@@ -235,7 +238,7 @@ Notes section:
 ## Phase 0: Validation
 
 ### 0.1 Parse Input
-Extract `FEATURE_PATH`.
+Extract `FEATURE_PATH` from `$ARGUMENTS`.
 
 ### 0.2 Load Feature Context
 
@@ -524,7 +527,7 @@ Next: Use feature-setup <feature-path>
 
 # Error Handling
 
-- **Missing feature path**: "Error: Feature path required. Usage: /checklist [feature-path]"
+- **Missing feature path**: "Error: Feature path required. Usage: /validation [feature-path]"
 - **Missing core files**: "Error: [file] not found. Run [command] first."
 - **Anti-pattern detected**: "Error: CHK### violates anti-patterns. Regenerating..."
 - **Low traceability**: "Warning: Below 80%. Adding references..."

@@ -28,6 +28,14 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - Harness-specific names generalized: `TodoWrite` → "Task tracking (TODO)", Plan Mode → Planning; Required Context `@`-imports → plain read instructions
 - README: rules table reduced to the four path-scoped rules (`mobile.md` added — was missing); universal standards noted as living in `CLAUDE.md`
 
+**Structural optimization** (plugin migration, stage 2)
+- Commands converted to skills: `/docs:prd` → `/prd`, `/docs:feature` → `/feature`, `/docs:clarify` → `/clarify`, `/docs:validation` → `/validation` — now `.claude/skills/{prd,feature,clarify,validation}/SKILL.md` with `argument-hint` and `$ARGUMENTS` input parsing where the command took a path/description. `.claude/commands/` removed. Bodies unchanged apart from input handling and next-step pointers
+- Agents: `tools:` and `skills:` frontmatter removed from all 7 agents — agents inherit the full tool pool (a partial `tools:` list acts as an allowlist and would block MCP tools), and bodies already instruct which skills to load. Frontmatter keeps the Codex-shared core: `name`, `description`, `model`, `color`
+- New skills carry no `allowed-tools` — they run in the main session and inherit its permissions (same rationale as the agent trim; removes the last `mcp__` scoped-name literals from pipeline frontmatter)
+- `settings.json` — `Skill(docs:*)` permissions replaced with `Skill(prd)`, `Skill(feature)`, `Skill(clarify)`, `Skill(validation)`
+- `CLAUDE.md` Harness Orchestration — pipeline names updated; dialogue stages documented as skills executed in the main session, which now orchestrates everything (skills + agent dispatch)
+- `doc-templates` SKILL.md consumer column and README updated to the new skill names
+
 ## [0.2.0] - 2026-09-01
 
 Harness Orchestration — the feature pipeline is now an agent chain. The main session is the orchestrator and validator between agents: it dispatches, validates reports, and owns the docs — it does not implement inside the pipeline.

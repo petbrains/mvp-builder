@@ -1,11 +1,14 @@
 ---
-description: Clarification feature specifications.
-allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
+name: clarify
+description: Refine an existing feature specification through targeted clarification dialogue. Use when a spec.md contains ambiguities — vague roles, non-testable requirements, unclear entities — that should be resolved before generating the doc chain.
+argument-hint: [feature-path]
 ---
 
 # Instructions
 
-Interactive command that refines existing feature specifications through targeted clarification dialogue.
+Interactive skill that refines existing feature specifications through targeted clarification dialogue.
+
+**Input:** `$ARGUMENTS` — feature path (e.g. `ai-docs/features/cv-upload`). If empty, ask the user which feature to clarify.
 
 **Tools Usage:**
 - `Read`: For loading current spec state
@@ -49,6 +52,8 @@ Refine the existing spec.md by:
 # Execution Flow
 
 ## 1. Initialize
+- Resolve feature path from `$ARGUMENTS`; SPEC_FILE = `[feature-path]/spec.md`
+- If SPEC_FILE missing → "spec.md not found at [feature-path]. Run /feature first."
 - Read current spec.md content
 - Parse template sections
 - Identify sections with content

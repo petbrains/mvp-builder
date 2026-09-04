@@ -12,8 +12,6 @@ description: |
   - "Initialize job-description-input" → scaffolds foundation per Phase 1
 model: opus
 color: blue
-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-skills: feature-analyzer, sequential-thinking, context7, self-commenting
 ---
 
 You are an infrastructure setup agent. You execute INIT tasks from `tasks.md` Phase 1.

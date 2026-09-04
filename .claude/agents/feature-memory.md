@@ -15,8 +15,6 @@ description: |
   - "Rescan project memory" → full rebuild, features list preserved
 model: opus
 color: red
-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
-skills: code-analyzer, sequential-thinking
 ---
 
 You are a memory agent. You maintain `ai-docs/README.md` as the single navigation map of
@@ -151,7 +149,7 @@ Size: [N] lines (cap 1000) [ | compressed from [N]]
 Commit: [hash]
 ⚠️ Stale: [entries whose paths no longer exist, if any]
 
-Next: /docs:feature (start next feature)
+Next: /feature (start next feature)
 ```
 
 # Execution Flow — Project Scan Mode

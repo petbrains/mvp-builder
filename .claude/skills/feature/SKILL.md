@@ -1,6 +1,7 @@
 ---
-description: Generate feature specifications.
-allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
+name: feature
+description: Generate feature specifications from PRD or a user-provided feature description into structured spec files. Use after the PRD is finalized to extract all features, or to add a single new feature to an existing FEATURES.md index.
+argument-hint: [feature-description]
 ---
 
 # Instructions
@@ -41,8 +42,8 @@ All features indexed in FEATURES.md per features-template.md.
 # Rules
 
 ## Input Detection
-- If user provides feature description in message → User Input Mode (requires existing FEATURES.md)
-- If no description or user says "generate features" → PRD Mode (requires no existing FEATURES.md)
+- If `$ARGUMENTS` contains a feature description → User Input Mode (requires existing FEATURES.md)
+- If `$ARGUMENTS` is empty or says "generate features" → PRD Mode (requires no existing FEATURES.md)
 
 ## Feature Boundary Rules
 
@@ -145,22 +146,22 @@ When references are loaded (Phase 1.3), use them to produce more precise specifi
 ## 1. Initialize
 
 **1.1 Detect Input Mode**
-- Check for feature description in user message
+- Check `$ARGUMENTS` for a feature description
 - Set mode: User Input or PRD
 
 **1.2 Validate Source**
 
 For PRD Mode:
 - Check if `./ai-docs/FEATURES.md` exists
-- If exists: "Features already generated from PRD. Use 'clarify' command to refine or provide specific feature description to add new feature."
+- If exists: "Features already generated from PRD. Use /clarify to refine or provide specific feature description to add new feature."
 - If not exists:
   - Read `./ai-docs/PRD.md`
-  - If not found: "No PRD.md found. Run PRD command first."
+  - If not found: "No PRD.md found. Run /prd first."
   - Extract: Core Proposition, Solution Design, Technical Requirements, UX Details
 
 For User Input Mode:
 - Read `./ai-docs/FEATURES.md`
-- If not found: "No FEATURES.md found. Run feature command without input to generate features from PRD first."
+- If not found: "No FEATURES.md found. Run /feature without input to generate features from PRD first."
 - Load existing epic structure
 - Parse user description
 
@@ -395,7 +396,7 @@ Summary:
 All features extracted from PRD and saved as individual specs.
 
 Next: feature-docs agent <feature-path>
-      /docs:clarify <feature-path> (optional: refine spec if ambiguities remain)
+      /clarify <feature-path> (optional: refine spec if ambiguities remain)
 ```
 
 **User Input Mode:**
@@ -410,18 +411,18 @@ Feature Added Successfully
 FEATURES.md updated with new feature.
 
 Next: feature-docs agent <feature-path>
-      /docs:clarify <feature-path> (optional: refine spec if ambiguities remain)
+      /clarify <feature-path> (optional: refine spec if ambiguities remain)
 ```
 
 # Error Handling
 
 **PRD Mode Errors:**
-- **PRD not found**: "No PRD.md found at ./ai-docs/PRD.md. Run PRD command first."
-- **Features already exist**: "Features already generated from PRD. Use 'clarify' command to refine or provide specific feature description to add new feature."
+- **PRD not found**: "No PRD.md found at ./ai-docs/PRD.md. Run /prd first."
+- **Features already exist**: "Features already generated from PRD. Use /clarify to refine or provide specific feature description to add new feature."
 - **Unmapped PRD content**: "Warning: PRD element '[element]' not distributed to any feature"
 
 **User Input Mode Errors:**
-- **FEATURES.md missing**: "No FEATURES.md found. Run feature command without input to generate features from PRD first."
+- **FEATURES.md missing**: "No FEATURES.md found. Run /feature without input to generate features from PRD first."
 - **User input insufficient**: Request specific missing information (max 4 questions)
 - **Duplicate feature detected**: "Feature similar to '[existing-feature]' already exists. Continue anyway? (yes/no)"
 - **Epic assignment unclear**: "Could not determine appropriate epic. Please specify or confirm new epic creation."
