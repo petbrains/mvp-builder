@@ -195,17 +195,13 @@ Specialized agents execute tasks across pipeline phases. The main session is the
 
 ### Rules & Skills
 
-**Rules** (`.claude/rules/`) are always-loaded standards — loaded automatically like `CLAUDE.md`. Platform-specific rules use `paths` frontmatter to load only when working with matching files.
+**Rules** (`.claude/rules/`) are platform standards scoped by `paths` frontmatter — each loads only when working with matching files. Universal standards (git workflow, authentication, docker, design, code quality) live in `CLAUDE.md` and are always loaded.
 
 | Rule | Scope | Paths |
 |------|-------|-------|
-| `git.md` | Branch naming, commits, secret protection | Always |
-| `authentication.md` | Auth library decisions per platform | Always |
-| `backend.md` | ORM, validation, API design, logging | `**/prisma/**`, `**/api/**`, `**/*.py` |
 | `frontend.md` | Next.js, Tailwind, testing, SSR | `**/*.tsx`, `**/*.jsx`, `**/*.css` |
-| `design.md` | Color, typography, animation, accessibility | Always |
-| `docker.md` | Multi-stage builds, dev compose | Always |
-| `code-quality.md` | Error handling, type design, simplification | Always |
+| `backend.md` | ORM, validation, API design, logging | `**/prisma/**`, `**/api/**`, `**/*.py` |
+| `mobile.md` | Cross-platform native mobile | `**/*.swift`, `**/*.kt`, `**/*.dart` |
 | `ios.md` | Swift style, concurrency, SwiftUI, SwiftData | `**/*.swift`, `**/*.xcodeproj/**` |
 
 **Skills** (`.claude/skills/`) are on-demand expertise — loaded by agents when the task requires specific domain knowledge.

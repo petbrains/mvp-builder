@@ -20,6 +20,14 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - Deduplicated cross-file rules to one canonical home: token lifetimes → `authentication.md`; animation rules and a11y principles → `design.md` (web mechanisms stay in `frontend.md`); tap targets → `design.md`; Verification Order → `CLAUDE.md`; secrets/comments/unit-tests-only lines out of `ios.md` Hygiene
 - Descoped over-prescription for MVP context: removed request-prioritization tiers, attestation infrastructure, staged-rollout/remote-flag choreography, cache-budget tuning and upload protocol detail (`mobile.md`); offline-first sections now conditional on the spec requiring offline; removed field-selection/embedding API features, idempotency keys scoped to irreversible mutations (`backend.md`)
 
+**Content universalization** (plugin migration, stage 1)
+- Pathless rules merged into `CLAUDE.md`: `git.md` → Git Workflow section (verbatim); `authentication.md` → Authentication ("secrets via env" dropped as duplicate; two Next.js-specific lines moved to `frontend.md`); `docker.md` → Docker (compressed to pins and decisions); `design.md` → Design Standards (decision tables, hard rules, Pipeline Artifacts Consumption kept; rationale prose dropped); `code-quality.md` dissolved into Error Handling, Simplification, Code Standards plus new Type Design block. `.claude/rules/` now holds only the four path-scoped platform rules (`frontend`, `backend`, `mobile`, `ios`)
+- Path references universalized: `.claude/rules/git.md` mentions (10 sites across agents, commands, CLAUDE.md) → "per Git Workflow conventions"; rule cross-references (`design.md`, `authentication.md`) → named sections ("Design Standards (project instructions)")
+- Template references: `@`-includes and `.claude/skills/doc-templates/...` paths in commands and agents → read instructions against the doc-templates skill (`references/<name>.md` from the doc-templates skill)
+- MCP tool literals (`mcp__server__tool`) removed from agent and command bodies → neutral names ("the sequential-thinking MCP tool", "context7 `resolve-library-id`"); frontmatter `tools:`/`allowed-tools:` untouched (stage 2 scope)
+- Harness-specific names generalized: `TodoWrite` → "Task tracking (TODO)", Plan Mode → Planning; Required Context `@`-imports → plain read instructions
+- README: rules table reduced to the four path-scoped rules (`mobile.md` added — was missing); universal standards noted as living in `CLAUDE.md`
+
 ## [0.2.0] - 2026-09-01
 
 Harness Orchestration — the feature pipeline is now an agent chain. The main session is the orchestrator and validator between agents: it dispatches, validates reports, and owns the docs — it does not implement inside the pipeline.
