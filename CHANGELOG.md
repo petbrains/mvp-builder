@@ -35,6 +35,7 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - `settings.json` — `Skill(docs:*)` permissions replaced with `Skill(prd)`, `Skill(feature)`, `Skill(clarify)`, `Skill(validation)`; stale `Skill(figma-design-extraction)`/`Skill(figma-design-generate)` (skill renamed to `figma-extractor` in 0.1.x) replaced with `Skill(figma-extractor)` and missing `Skill(system-design)` added — with `skills:` preload gone, agents load skills only via the Skill tool, so these gaps would have blocked design-setup and feature-docs
 - `CLAUDE.md` Harness Orchestration — pipeline names updated; dialogue stages documented as skills executed in the main session, which now orchestrates everything (skills + agent dispatch)
 - `doc-templates` SKILL.md consumer column and README updated to the new skill names
+- Domain skills universalized to match: `allowed-tools` frontmatter removed from all 9 skills that carried it (full tool-pool inheritance, same rationale as the agent trim); last `mcp__` scoped-name literals neutralized in skill bodies — `context7` SKILL.md tool references → `context7 resolve-library-id` / `context7 get-library-docs` phrasing, `sequential-thinking` SKILL.md → "the sequential-thinking MCP tool". Repo now contains zero `mcp__` literals outside `.mcp.json`
 
 ## [0.2.0] - 2026-09-01
 

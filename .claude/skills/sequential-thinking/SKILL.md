@@ -1,12 +1,11 @@
 ---
 name: sequential-thinking
-description: Structured reasoning harness for problems where shallow thinking fails or hallucination is costly. Use whenever a question requires multi-step reasoning, involves competing hypotheses, has multiple interacting components, or carries irreversible consequences. Activate for debugging with unclear root causes, intermittent or multi-component issues, incident post-mortems, choosing between multiple valid approaches, architecture or design tradeoffs, causal chain analysis, high-stakes decisions, and any task where the first plausible answer is suspiciously easy. Provides reasoning modes (abductive, counterfactual, first-principles, inversion, and more), grounding techniques against confabulation, adversarial self-checks, root-cause playbooks, and automatic multi-approach synthesis (independent angles run in parallel and compared) — all through the `mcp__sequential-thinking__sequentialthinking` tool. Skip for trivial lookups, obvious fixes, and single-step questions.
-allowed-tools: Read, Write, Bash(*), mcp__sequential-thinking__sequentialthinking
+description: Structured reasoning harness for problems where shallow thinking fails or hallucination is costly. Use whenever a question requires multi-step reasoning, involves competing hypotheses, has multiple interacting components, or carries irreversible consequences. Activate for debugging with unclear root causes, intermittent or multi-component issues, incident post-mortems, choosing between multiple valid approaches, architecture or design tradeoffs, causal chain analysis, high-stakes decisions, and any task where the first plausible answer is suspiciously easy. Provides reasoning modes (abductive, counterfactual, first-principles, inversion, and more), grounding techniques against confabulation, adversarial self-checks, root-cause playbooks, and automatic multi-approach synthesis (independent angles run in parallel and compared) — all through the sequential-thinking MCP tool. Skip for trivial lookups, obvious fixes, and single-step questions.
 ---
 
 # Sequential Thinking
 
-A reasoning harness around the `mcp__sequential-thinking__sequentialthinking` tool. The MCP tool provides persistence, revision, and branching for thoughts; this skill provides the *discipline* for using it well — when to invoke it, how to structure each thought, which reasoning mode fits which problem, how to ground claims against hallucination, when to challenge yourself adversarially, and when to stop.
+A reasoning harness around the sequential-thinking MCP tool. The MCP tool provides persistence, revision, and branching for thoughts; this skill provides the *discipline* for using it well — when to invoke it, how to structure each thought, which reasoning mode fits which problem, how to ground claims against hallucination, when to challenge yourself adversarially, and when to stop.
 
 The core insight: smart reasoning isn't about thinking harder. It's about thinking with the right mode for the situation, anchoring claims to evidence, and knowing when one approach isn't enough.
 
@@ -74,7 +73,7 @@ When **multi-approach and adversarial both produce signals**, treat them as inde
 
 ## Core loop
 
-Once the skill is activated, every substantive reasoning step in the chain goes through the `mcp__sequential-thinking__sequentialthinking` tool. Internal multi-step reasoning that bypasses the tool inside an activated chain loses persistence, revision, and branching — defeating the point of the harness. The gating decisions above (whether to activate, what domain you're in) happen before the harness engages; those don't need the tool. Once you're inside, if a thought is worth having, it's worth recording.
+Once the skill is activated, every substantive reasoning step in the chain goes through the sequential-thinking MCP tool. Internal multi-step reasoning that bypasses the tool inside an activated chain loses persistence, revision, and branching — defeating the point of the harness. The gating decisions above (whether to activate, what domain you're in) happen before the harness engages; those don't need the tool. Once you're inside, if a thought is worth having, it's worth recording.
 
 For each thought, structure it around four elements:
 

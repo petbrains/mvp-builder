@@ -1,7 +1,6 @@
 ---
 name: system-design
 description: Decision-tree framework for architectural trade-offs during implementation planning. Classifies the subject into categories (data-heavy, real-time, offline-critical, media-heavy, integration-heavy, frequent UI iteration), loads the minimum relevant references, supplies a question bank with opinionated defaults for caller-driven dialogue, and returns structured decisions (Architectural Decisions, Required Behaviors). Use whenever architectural choices must be committed to a document — protocol selection, pagination or caching strategy, offline sync approach, real-time transport, media upload strategy. Produces decisions, not implementation rules. Implementation details belong in code-level rules files.
-allowed-tools: Read
 ---
 
 # System Design Decision Tree

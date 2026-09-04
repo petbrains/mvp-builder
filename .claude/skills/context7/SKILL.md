@@ -1,16 +1,15 @@
 ---
 name: context7
 description: Up-to-date library documentation retrieval using Context7 MCP tools. Process THINK → RESOLVE → FETCH → APPLY. Use when fetching library docs, resolving package names to IDs, getting implementation guides, exploring API references. Provides package resolution strategy, trust score evaluation, token scaling (3K-20K), topic selection patterns.
-allowed-tools: Read, Write, Bash(*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 ---
 
 # Context7 Documentation Retrieval
 
-Framework for using `/mcp__context7__resolve-library-id` and `/mcp__context7__get-library-docs` tools effectively.
+Framework for using `context7 resolve-library-id` and `context7 get-library-docs` tools effectively.
 
 Process: **THINK → RESOLVE → FETCH → APPLY**
 
-## Command: `/mcp__context7__resolve-library-id`
+## Tool: `context7 resolve-library-id`
 
 Resolves a package name to a Context7-compatible library ID.
 
@@ -53,7 +52,7 @@ Priority order:
 "mongodb" → /mongodb/docs (trust: 9.8)
 ```
 
-## Command: `/mcp__context7__get-library-docs`
+## Tool: `context7 get-library-docs`
 
 Fetches documentation using exact Context7-compatible library ID.
 
@@ -79,23 +78,23 @@ Be specific with multi-word topics:
 ### React Implementation
 ```
 THINK: Need React infinite scroll docs
-RESOLVE: /mcp__context7__resolve-library-id libraryName="react"
+RESOLVE: context7 resolve-library-id libraryName="react"
 SELECT: /reactjs/react.dev (trust: 10)
-FETCH: /mcp__context7__get-library-docs context7CompatibleLibraryID="/reactjs/react.dev" topic="infinite scroll virtualization" tokens=12000
+FETCH: context7 get-library-docs context7CompatibleLibraryID="/reactjs/react.dev" topic="infinite scroll virtualization" tokens=12000
 ```
 
 ### Next.js Debugging
 ```
 THINK: Debug hydration errors
-RESOLVE: /mcp__context7__resolve-library-id libraryName="next.js"
+RESOLVE: context7 resolve-library-id libraryName="next.js"
 SELECT: /vercel/next.js (trust: 9.5)
-FETCH: /mcp__context7__get-library-docs context7CompatibleLibraryID="/vercel/next.js" topic="hydration errors debugging SSR" tokens=15000
+FETCH: context7 get-library-docs context7CompatibleLibraryID="/vercel/next.js" topic="hydration errors debugging SSR" tokens=15000
 ```
 
 ### Direct ID Usage
 ```
 THINK: User provided /mongodb/docs
-FETCH: /mcp__context7__get-library-docs context7CompatibleLibraryID="/mongodb/docs" topic="aggregation pipeline" tokens=15000
+FETCH: context7 get-library-docs context7CompatibleLibraryID="/mongodb/docs" topic="aggregation pipeline" tokens=15000
 ```
 
 ## Error Handling
@@ -117,7 +116,7 @@ FETCH: /mcp__context7__get-library-docs context7CompatibleLibraryID="/mongodb/do
 ## Quick Reference
 
 1. **THINK:** What library and documentation needed?
-2. **RESOLVE:** `/mcp__context7__resolve-library-id libraryName="[package]"`
+2. **RESOLVE:** `context7 resolve-library-id libraryName="[package]"`
 3. **SELECT:** Based on trust, snippets, relevance
-4. **FETCH:** `/mcp__context7__get-library-docs context7CompatibleLibraryID="[id]" topic="[specific]" tokens="[appropriate]"`
+4. **FETCH:** `context7 get-library-docs context7CompatibleLibraryID="[id]" topic="[specific]" tokens="[appropriate]"`
 5. **APPLY:** Use documentation to answer question

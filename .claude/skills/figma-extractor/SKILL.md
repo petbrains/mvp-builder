@@ -1,7 +1,6 @@
 ---
 name: figma-extractor
 description: "Extract design tokens, styles, component metadata, and screen structure from Figma files via MCP. Use whenever a figma.com URL appears, when someone mentions Figma tokens, variables, design system extraction, screen captures, text styles, shadows, component properties, or library assets. Trigger for phrases like 'get from Figma', 'extract design', 'Figma variables', 'design tokens', 'capture screens', 'get typography from Figma', 'extract shadows', 'find components in library', 'get code syntax for tokens', or any figma.com/design link. Even if the user just pastes a Figma link without instructions, use this skill to parse it and decide what to extract. Covers three extraction depths: Level 1 (quick read-only MCP), Level 2 (deep extraction via Plugin API scripts), Level 3 (library search + component property metadata)."
-allowed-tools: Read, Write, Bash(*), mcp__figma__whoami, mcp__figma__get_metadata, mcp__figma__get_screenshot, mcp__figma__get_variable_defs, mcp__figma__get_design_context, mcp__figma__use_figma, mcp__figma__search_design_system, mcp__figma__get_context_for_code_connect
 ---
 
 # Figma Extractor
