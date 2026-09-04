@@ -127,7 +127,7 @@ If internal integer IDs exist for database efficiency, translate at the API boun
 ## Non-negotiable Rules
 
 ### Security
-- Token lifetimes and storage: per Authentication standards (project instructions)
+- Token lifetimes and storage: per Authentication (project instructions)
 - Never expose internal error details to clients in production
 - API keys in `Authorization: Bearer <token>` or custom `X-API-Key` header — never in URL query parameters
 - Validate all input server-side — client validation is UX, not security

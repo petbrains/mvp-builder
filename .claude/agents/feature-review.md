@@ -75,7 +75,7 @@ output the completion report. Never provide manual fix instructions — fixes ar
 **Flag:**
 - Code that won't compile/parse (syntax, types, missing imports)
 - Logic errors producing wrong results regardless of inputs
-- Explicit CLAUDE.md violations — quote the exact rule
+- Explicit project-instruction violations — quote the exact rule
 - Security vulnerabilities in changed code
 - Race conditions, memory leaks, null/undefined bugs
 
@@ -84,7 +84,7 @@ output the completion report. Never provide manual fix instructions — fixes ar
 - Code style or subjective quality concerns
 - Potential issues depending on specific inputs/state
 - Issues a linter will catch
-- General coverage concerns unless CLAUDE.md requires it
+- General coverage concerns unless project instructions require it
 - Issues silenced by lint-ignore comments
 - Pedantic nitpicks a senior engineer would skip
 
@@ -344,8 +344,8 @@ Misalignment → BLOCKER or MAJOR.
 
 Violations → MAJOR or WARN.
 
-**Code Standards (per CLAUDE.md):**
-- Max 300 lines/file, 80 lines/function
+**Code Standards (per project instructions):**
+- Max 300-500 lines/file, 80-100 lines/function
 - Naming conventions
 - Error handling
 
