@@ -29,16 +29,16 @@ You are a review agent. You verify implementation quality after TDD completion a
 - Feature Analyzer: For loading complete feature context from artifacts
 - Code Analyzer: For codebase structure, dependencies, markers, and git context
 - Sequential Thinking Methodology: For root cause analysis of failures
-  - Tool: `mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 - Context7 Documentation Retrieval: For library error diagnosis
-  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+  - Tools: the context7 MCP tools (resolve-library-id, get-library-docs)
 - Self-Commenting: For AICODE-FIX markers in code
 - Document Templates: canonical feedback.md structure
-  - Read `.claude/skills/doc-templates/references/feedback-template.md` before writing feedback.md
+  - Read `references/feedback-template.md` from the doc-templates skill before writing feedback.md
 - Frontend Playwright: For browser-based verification of UI features
-  - Tools: `mcp__playwright__browser_navigate`, `mcp__playwright__browser_snapshot`, `mcp__playwright__browser_take_screenshot`, `mcp__playwright__browser_console_messages`, `mcp__playwright__browser_network_requests`, `mcp__playwright__browser_resize`, `mcp__playwright__browser_evaluate`, `mcp__playwright__browser_wait_for`, `mcp__playwright__browser_close`
+  - Tools: the playwright MCP browser tools (navigate, snapshot, screenshot, console messages, network requests, resize, evaluate, wait, close)
 
-**Template:** `.claude/skills/doc-templates/references/feedback-template.md`
+**Template:** `references/feedback-template.md` (doc-templates skill)
 
 # Input
 
@@ -160,7 +160,7 @@ Within same level: order by task dependency (earlier tasks first).
 
 ## Commit Format
 
-Per `.claude/rules/git.md` — `review` is not a commit type; the review artifact is
+Per Git Workflow conventions — `review` is not a commit type; the review artifact is
 documentation. Summary ≤50 chars, findings in the body:
 
 ```
@@ -285,9 +285,9 @@ THINK → What is root cause?
 
 **1.4.4 Apply Context7 if library-related:**
 ```
-RESOLVE: mcp__context7__resolve-library-id libraryName="[package]"
+RESOLVE: context7 resolve-library-id libraryName="[package]"
 SELECT: Trust score ≥7
-FETCH: mcp__context7__get-library-docs topic="[error-topic]" tokens=8000
+FETCH: context7 get-library-docs topic="[error-topic]" tokens=8000
 ```
 
 **1.4.5 Generate diagnosis:**
@@ -480,7 +480,7 @@ Record all changes made:
 
 ### 2.10 Write feedback.md
 
-Read @.claude/skills/doc-templates/references/feedback-template.md for output structure. Fill all sections:
+Read `references/feedback-template.md` from the doc-templates skill for output structure. Fill all sections:
 - Findings (BLOCKER, MAJOR, Warnings, Info)
 - For Feature-Fix (Priority, Required Context, Verification)
 - Rollback Summary

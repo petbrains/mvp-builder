@@ -316,7 +316,7 @@ Always use modern equivalents:
 
 ### Design System References
 
-Universal rules for consuming `ai-docs/references/` artifacts are in `design.md`. This section covers iOS-specific token mapping.
+Universal rules for consuming `ai-docs/references/` artifacts are in Design Standards (project instructions). This section covers iOS-specific token mapping.
 
 **Colors:** Map tokens to Asset Catalog named colors with Any/Dark appearances — not code-based `colorScheme` switching. Never inline `Color(hex:)` — always reference project token (`Color.primaryText`, `Color("primary500")`). If project already has a color system, map by matching values first, then semantic names.
 

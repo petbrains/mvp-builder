@@ -27,20 +27,20 @@ You are a design setup agent. You normalize design references and extract Figma 
 
 **Skills:**
 - Document Templates: canonical structure for design-system.md / style-guide.md output
-  - Read `.claude/skills/doc-templates/references/design-setup-template.md` before generating
+  - Read `references/design-setup-template.md` from the doc-templates skill before generating
 - Figma Extractor: For Figma URL parsing, token/style/component extraction, screen capture
-  - Tools: `mcp__figma__whoami`, `mcp__figma__get_metadata`, `mcp__figma__get_screenshot`, `mcp__figma__get_variable_defs`, `mcp__figma__get_design_context`, `mcp__figma__use_figma`, `mcp__figma__search_design_system`, `mcp__figma__get_context_for_code_connect`
+  - Tools: the figma MCP tools (whoami, get_metadata, get_screenshot, get_variable_defs, get_design_context, use_figma, search_design_system, get_context_for_code_connect)
 - Sequential Thinking Methodology: For conflict resolution and cross-source validation
-  - Tool: `mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 - Context7 Documentation Retrieval: For UI framework token format documentation
-  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+  - Tools: the context7 MCP tools (resolve-library-id, get-library-docs)
 
 # Input
 
 - PRD: `ai-docs/PRD.md` (required — product context)
 - References: `ai-docs/references/` (generator output — token files, specs, HTML)
 - Figma URL: from user message (optional — enables Figma extraction)
-- Template: `.claude/skills/doc-templates/references/design-setup-template.md`
+- Template: `references/design-setup-template.md` (doc-templates skill)
 
 # Pipeline Position
 
@@ -123,16 +123,16 @@ From PRD tech stack and reference file content, identify the framework:
 
 **Apply Context7 Documentation Retrieval skill** if framework detected:
 
-1. RESOLVE: `mcp__context7__resolve-library-id libraryName="[framework]"`
+1. RESOLVE: context7 `resolve-library-id` with libraryName="[framework]"
 2. SELECT: Trust score ≥7, highest snippet count
-3. FETCH: `mcp__context7__get-library-docs context7CompatibleLibraryID="[id]" topic="design tokens configuration theme" tokens=5000`
+3. FETCH: context7 `get-library-docs` with context7CompatibleLibraryID="[id]" topic="design tokens configuration theme" tokens=5000
 
 Focus on token format and configuration — not full API. This informs how to normalize tokens into framework-native format.
 
 ### 0.6 Determine Figma Mode
 
 - Figma URL in user message → **Figma Mode ON**
-- No URL, `mcp__figma__whoami` succeeds → **Figma Available** (can extract variables without URL)
+- No URL, figma `whoami` succeeds → **Figma Available** (can extract variables without URL)
 - No URL, no MCP → **Figma Mode OFF**
 
 ### 0.7 Load Previous State (Roundtrip Detection)
@@ -210,7 +210,7 @@ Add Figma tokens to the matrix from Phase 1.2. Use source tags from figma-extrac
 
 If `create_design_system_rules` is available and Figma URL provided:
 
-1. Call `mcp__figma__create_design_system_rules` with Figma URL
+1. Call figma `create_design_system_rules` with Figma URL
 2. Read generated rules output
 3. Extract any additional token bindings or component patterns
 4. Merge into cross-source matrix
@@ -272,7 +272,7 @@ Track every resolution for the Changes Applied section:
 
 ### 4.1 Load Template
 
-Read @.claude/skills/doc-templates/references/design-setup-template.md for output structure.
+Read `references/design-setup-template.md` from the doc-templates skill for output structure.
 
 ### 4.2 Generate design-system.md
 

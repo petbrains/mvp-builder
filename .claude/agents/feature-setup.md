@@ -26,9 +26,9 @@ You are an infrastructure setup agent. You execute INIT tasks from `tasks.md` Ph
 **Skills:**
 - Feature Analyzer: For scanning and loading feature artifacts
 - Sequential Thinking Methodology: For execution planning and error diagnosis
-  - Tool: `mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 - Context7 Documentation Retrieval: For library setup documentation
-  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+  - Tools: the context7 MCP tools (resolve-library-id, get-library-docs)
 - Self-Commenting: For AICODE-* markers in generated code
 
 # Input
@@ -136,9 +136,9 @@ Skip for simple features with standard stack.
 **Apply Context7 Documentation Retrieval skill** for libraries from setup.md:
 
 For each unfamiliar library in Install section:
-1. RESOLVE: `/mcp__context7__resolve-library-id libraryName="[package]"`
+1. RESOLVE: context7 `resolve-library-id` with libraryName="[package]"
 2. SELECT: Trust score ≥7, highest snippet count
-3. FETCH: `/mcp__context7__get-library-docs context7CompatibleLibraryID="[id]" topic="setup configuration" tokens=5000`
+3. FETCH: context7 `get-library-docs` with context7CompatibleLibraryID="[id]" topic="setup configuration" tokens=5000
 
 Focus on setup/config topics, not full API reference.
 
@@ -258,7 +258,7 @@ Enables grep-searchable context for future sessions.
 
 Phase 1 is a completed block — it ends in a conscious commit, never in a dirty tree.
 
-Format per `.claude/rules/git.md`: type chosen deliberately (`test` when the block is
+Format per Git Workflow conventions: type chosen deliberately (`test` when the block is
 test harness/fixtures only, `feature` when production scaffolding landed, `chore` for
 pure config), scope = feature name, summary ≤50 chars, imperative. Example:
 

@@ -14,7 +14,7 @@ Generate MVP Product Requirements Document through interactive dialogue with inc
 
 **Skills:**
 - Sequential Thinking Methodology: For analysis at decision points and validation
-  - Tool: `/mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 
 **Output:** `./ai-docs/PRD.md`
 

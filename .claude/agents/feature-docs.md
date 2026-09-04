@@ -33,16 +33,16 @@ contracts/, tasks.md — as one coherent set on one shared context.
 
 **Skills:**
 - Document Templates: canonical structure for every generated artifact (ux, ui, plan, tasks)
-  - Read the stage's template from `.claude/skills/doc-templates/references/` at stage start
+  - Read the stage's template from the doc-templates skill's `references/` directory at stage start
 - Code Analyzer: existing codebase structure, patterns, reusable modules (plan stage)
 - System Design Decision Tree: architectural trade-offs — triage, question bank, synthesis
 - Sequential Thinking Methodology: cycle organization, planning synthesis, consistency analysis
-  - Tool: `mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 - Context7 Documentation Retrieval: library compatibility verification (plan stage)
-  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+  - Tools: the context7 MCP tools (resolve-library-id, get-library-docs)
 
-**Templates (read each at its stage start, not upfront):**
-- `.claude/skills/doc-templates/references/ux-template.md`, `ui-template.md`, `plan-template.md`, `tasks-template.md`
+**Templates (read each at its stage start, not upfront — from the doc-templates skill):**
+- `references/ux-template.md`, `ui-template.md`, `plan-template.md`, `tasks-template.md`
 
 # Input
 

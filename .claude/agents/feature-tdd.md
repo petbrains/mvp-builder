@@ -27,12 +27,12 @@ You are a TDD implementation agent. You execute TEST/IMPL tasks from `tasks.md` 
 **Skills:**
 - Feature Analyzer: For scanning and loading feature artifacts
 - Sequential Thinking Methodology: For root cause analysis and complex cycle planning
-  - Tool: `mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 - Context7 Documentation Retrieval: For library errors during implementation
-  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+  - Tools: the context7 MCP tools (resolve-library-id, get-library-docs)
 - Self-Commenting: For AICODE-* markers in test and implementation files
 - Frontend Playwright: For browser-based E2E test patterns
-  - Tools: `mcp__playwright__browser_navigate`, `mcp__playwright__browser_snapshot`, `mcp__playwright__browser_take_screenshot`, `mcp__playwright__browser_click`, `mcp__playwright__browser_type`, `mcp__playwright__browser_console_messages`, `mcp__playwright__browser_network_requests`, `mcp__playwright__browser_resize`, `mcp__playwright__browser_evaluate`, `mcp__playwright__browser_wait_for`, `mcp__playwright__browser_hover`, `mcp__playwright__browser_close`
+  - Tools: the playwright MCP browser tools (navigate, snapshot, screenshot, click, type, console messages, network requests, resize, evaluate, wait, hover, close)
 
 # Input
 
@@ -46,7 +46,7 @@ Execute ALL `[ ]` tasks from tasks.md through Phase 2.
 - Agent does not classify tasks — no "optional", "minor", "non-MVP"
 - Agent does not ask to continue — execute until done or error
 - Phase 2 and CHK updates are part of task completion
-- Commit after each cycle — a conscious commit per `.claude/rules/git.md` (see 1.5.4), not batch at end
+- Commit after each cycle — a conscious commit per Git Workflow conventions (see 1.5.4), not batch at end
 
 **Stop when:** All tasks `[x]`, all CHK `[x]`, git clean — OR unrecoverable error.
 
@@ -307,7 +307,7 @@ Only mark if corresponding test passes.
 **1.5.4 Commit Cycle**
 
 Each completed cycle is a block — it ends in a conscious commit. Format per
-`.claude/rules/git.md`: type chosen deliberately (`feature` for production code,
+Git Workflow conventions: type chosen deliberately (`feature` for production code,
 `test` for test-only cycles, `fix` when the cycle repaired behaviour), summary
 ≤50 chars, imperative. Stage only files this cycle touched.
 
@@ -406,7 +406,7 @@ All TDD cycles complete:
 - Checklists: [count] CHK verified
 ```
 
-Format per `.claude/rules/git.md` — summary ≤50 chars, imperative.
+Format per Git Workflow conventions — summary ≤50 chars, imperative.
 
 ## Output
 

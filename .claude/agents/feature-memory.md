@@ -31,7 +31,7 @@ rescanning the tree.
 **Skills:**
 - Code Analyzer: codebase structure, dependencies, markers, git context
 - Sequential Thinking Methodology: dependency graph construction, summarization decisions
-  - Tool: `mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 
 # Input
 
@@ -133,7 +133,7 @@ wc -l ai-docs/README.md
 - Record before/after line counts for the report
 
 ### 3.3 Write, Commit & Report
-Write `ai-docs/README.md`, then commit it — this stage's block, per `.claude/rules/git.md`
+Write `ai-docs/README.md`, then commit it — this stage's block, per Git Workflow conventions
 (summary ≤50 chars, imperative):
 
 ```bash

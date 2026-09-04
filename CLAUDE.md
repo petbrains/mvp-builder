@@ -4,10 +4,10 @@ Code execution rules and MVP development standards.
 
 ## Required Context
 
-Load these documents when starting work:
-- @ai-docs/PRD.md - product vision, audience, problem
-- @ai-docs/FEATURES.md - feature map, dependencies, priorities
-- @ai-docs/README.md - current implementation status
+Read these documents at session start (when they exist):
+- `ai-docs/PRD.md` — product vision, audience, problem
+- `ai-docs/FEATURES.md` — feature map, dependencies, priorities
+- `ai-docs/README.md` — current implementation status
 
 ## Development Rules
 
@@ -17,9 +17,9 @@ Agents execute from existing specs — they do not re-plan.
 
 - Specs, plans, and tasks exist BEFORE agents run. The planning phase is complete.
 - After loading context, produce code changes within first 3 tool calls
-- Do NOT create plan files, analysis documents, or enter plan mode during task execution
+- Do NOT create plan files, analysis documents, or enter planning mode during task execution
 - Do NOT re-read all project files to "understand the codebase" — read only files referenced by current task
-- TodoWrite: track progress on existing tasks only, never create new plans
+- Task tracking (TODO): track progress on existing tasks only, never create new plans
 - Sequential Thinking: use for debugging and complex logic, not for upfront analysis of entire features
 - Context7: fetch docs when hitting unfamiliar API, not preemptively for all libraries
 - Subagents: request list of key files in return, read them after completion — don't re-scan independently
@@ -57,10 +57,10 @@ Orchestrator duties:
   and records as pinned (technical aspects were settled at the PRD stage); only intellectual
   questions — content, copy, assets, domain semantics, data governance, product policy — go to
   the user
-- **Commit discipline**: every stage ends in a conscious commit per `.claude/rules/git.md` —
-  agents commit their own completed blocks (docs chain, setup phase, each TDD cycle, each REV
-  fix, review artifacts, memory update); the orchestrator commits acceptance and validation
-  doc edits. No stage is dispatched over a dirty tree; no reminder should ever be needed
+- **Commit discipline**: every stage ends in a conscious commit per Git Workflow conventions
+  (below) — agents commit their own completed blocks (docs chain, setup phase, each TDD cycle,
+  each REV fix, review artifacts, memory update); the orchestrator commits acceptance and
+  validation doc edits. No stage is dispatched over a dirty tree; no reminder should ever be needed
 - **Loop breaker**: same REV finding survives 2 review↔fix cycles, or feature-fix escalates →
   stop dispatching. Apply final code and doc fixes directly in main session, run Verification
   Order, close remaining tasks/CHK yourself
@@ -103,7 +103,7 @@ Maintain references when implementing: task → requirement → entity
 ### Specifications First
 - No spec → no task
 - Generate tasks.md from spec/ux/ui/plan before implementation
-- Lock contracts in @ai-docs/features/[name]/contracts/
+- Lock contracts in `ai-docs/features/[name]/contracts/`
 - Use Given/When/Then for acceptance criteria
 - ADR for irreversible architectural decisions
 
@@ -117,7 +117,16 @@ Maintain references when implementing: task → requirement → entity
 - No "god classes" - split by concern
 - Prefer early returns over deep nesting
 - Comments explain WHY, not WHAT
+- Comment claims must match actual code (signatures, behavior, types); edge cases mentioned must actually be handled
 - Must pass lint/type-check before done
+
+### Type Design
+- Make illegal states unrepresentable; validate invariants at construction time
+- Prefer compile-time guarantees over runtime checks
+- Immutability simplifies invariant maintenance
+- Anti-patterns: anemic domain models with no behavior, types exposing mutable internals,
+  invariants enforced only through documentation, external code responsible for maintaining
+  type invariants, missing validation at construction boundaries
 
 ### Surgical Changes
 - Every changed line must trace to the current task — no drive-by improvements
@@ -143,8 +152,13 @@ Stop on first failure. Fix before proceeding.
 - Semantic folder structure matching mental model
 
 ### Error Handling
-- Comprehensive errors with actionable messages
-- Never fail silently
+- Every user-facing error actionable: what went wrong + what to do; non-technical language for
+  users, technical details (operation, file, IDs) for developers
+- Never fail silently: empty catch blocks forbidden — always log or rethrow; never silently
+  return null/undefined/default on error without logging
+- Catch blocks specific to expected error types — broad catches hide unrelated errors
+- Fallback behavior explicit and justified — never mask the real problem
+- Mock/fake implementations belong only in tests, never as production fallbacks
 - Never expose secrets/tokens/keys
 - Use `.env.example` with placeholders
 - Default to least-privilege permissions
@@ -162,6 +176,8 @@ Stop on first failure. Fix before proceeding.
 - No abstractions for single-use code
 - No "flexibility" or "configurability" that wasn't requested
 - No error handling for impossible scenarios
+- No nested ternaries — use switch/if-else for multiple conditions
+- Simplification preserves all functionality — only change how, never what
 - If 200 lines could be 50 — rewrite before committing
 - Question unexpected changes before applying
 - Litmus test: would a senior engineer call this overcomplicated? If yes — simplify
@@ -213,6 +229,338 @@ Stop on first failure. Fix before proceeding.
 3. Provide error context
 4. Ask how to proceed
 
+## Git Workflow
+
+Enforces repository conventions for branches, commits, and pushes.
+
+### Conventions
+
+#### Branch Naming
+
+**Format:** `<prefix>/<scope>/<description>`
+
+**Prefixes:** `feature/`, `fix/`, `refactor/`, `docs/`, `chore/`, `hotfix/`, `release/`
+
+**Regex:**
+```regex
+^(feature|fix|refactor|docs|chore)/[a-z0-9._-]+/[a-z0-9._-]+|(hotfix|release)/[a-z0-9._-]+$
+```
+
+**Examples:**
+```
+feature/auth/oauth-implementation
+fix/payments/rounding-bug
+hotfix/critical-security-patch
+release/2.1.0
+```
+
+#### Commit Format
+```
+[KEY-123] <type>(<scope>): <summary>
+```
+
+**Types:** `feature`, `fix`, `refactor`, `docs`, `chore`, `test`, `build`, `ci`
+
+**Rules:**
+- Summary ≤50 chars
+- Imperative mood
+
+**Examples:**
+```
+[KEY-123] feature(auth): implement OAuth 2.0 flow
+[KEY-456] fix(payments): correct VAT rounding
+refactor(api): extract validation middleware
+```
+
+### Decision Rules
+
+#### Source Branch
+- feature/fix/refactor/docs/chore → from `main`
+- hotfix → from `release/*` or `main`
+- release → from `main`
+
+#### Protected Branches
+
+Never push directly: `main`, `master`, `release/*`, `hotfix/*`, `prod/*`
+
+### Secret Protection
+
+#### Protected Patterns
+
+**Files (block commit):**
+```
+*.env, *.env.*, *.pem, *.key, *.p12, *.pfx, *.crt
+credentials.*, secrets.*, *_secret.*, *.keystore
+```
+
+**Directories (block commit):** `.secrets/`, `.credentials/`
+
+**Allowed exceptions:** `*.env.example`, `*.example`
+
+#### Pre-Commit Check
+
+Before any commit, scan staged files:
+```bash
+git diff --cached --name-only
+```
+
+If protected pattern detected:
+1. Add pattern to `.gitignore`
+2. Unstage file: `git reset HEAD [file]`
+3. Continue commit without secret
+
+#### .gitignore Management
+
+If `.gitignore` missing — create with standard security block:
+```gitignore
+# Secrets - NEVER COMMIT
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.secret
+.secrets/
+.credentials/
+```
+
+If `.gitignore` exists but missing pattern — append it.
+
+### Safety Guards
+
+#### Block Operations
+
+| Trigger | Action |
+|---------|--------|
+| Push to `main`/`master`/`release/*`/`prod/*` | Block → suggest PR |
+| Force-push on shared branch | Block |
+| Amend after push | Block → suggest new commit |
+| Secret file in staged changes | Block → update .gitignore |
+| Binary >100MB | Block |
+
+#### Warn Only
+- Binary >10MB
+
+### Validation
+
+Before commit/push:
+1. Branch name matches convention?
+2. Commit message format correct?
+3. No secrets in staged files?
+4. Not pushing to protected branch?
+
+## Authentication
+
+### By Platform
+
+| Platform | Library |
+|----------|---------|
+| Next.js App Router | Auth.js v5 (`next-auth@beta`) + `@auth/prisma-adapter` |
+| Express / Node API | Passport.js + JWT strategy |
+| React Native / Expo | Expo Auth Session |
+| iOS (Swift) | Sign in with Apple + Keychain for token storage |
+| Android (Kotlin) | Google Identity Services + EncryptedSharedPreferences |
+| Flutter | firebase_auth or flutter_appauth + flutter_secure_storage |
+| Browser Extension | OAuth 2.0 via `chrome.identity` / `browser.identity` + `chrome.storage.session` |
+| Python (FastAPI) | fastapi-users + python-jose + passlib |
+| Python (Django) | django-allauth + djangorestframework-simplejwt |
+
+### Non-negotiable Rules
+
+- Never store sensitive data in JWT payload (it's readable)
+- Credentials-based auth requires password hashing (`argon2` or `bcrypt`), on server only — never client-side
+- Tokens: access token ≤15min, refresh token in httpOnly cookie
+- Mobile: always use platform secure storage — never plain AsyncStorage or localStorage
+- Browser extensions: never `localStorage` for tokens — use `chrome.storage.session`
+- Session strategy: `jwt` for serverless, `database` when sessions must be revocable
+
+## Docker
+
+Use for: cloud deployment, CI/CD, team dev-environment consistency, Kubernetes, local DB/Redis
+isolation. Skip for: serverless deployments, simple scripts, early prototyping.
+
+- Production: multi-stage builds (`deps` → `builder` → `runner`), non-root user, `HEALTHCHECK`
+- Node.js: base `node:20-alpine`; `npm ci --only=production` in production stage;
+  `prisma migrate deploy` in CMD, not during build
+- Python: base `python:3.12-slim`; multi-stage — runner copies only site-packages;
+  `pip install --no-cache-dir` in builder; Poetry → `poetry export -f requirements.txt` +
+  pip in runner (no Poetry in production image); Django `collectstatic --noinput` in builder,
+  not at runtime; Gunicorn/Uvicorn as process manager — never `runserver` in production
+- Dev compose: DB service with `healthcheck` + `depends_on` with `condition: service_healthy`;
+  service name as DB host (`postgres`, not `localhost`)
+- `.dockerignore` required — exclude `node_modules`, `dist`, `.env*`, `.git`, `__pycache__`,
+  `.venv`, test files
+- Pin base image versions in production (`node:20.11-alpine`, `python:3.12.2-slim`) — never `latest`
+
+## Design Standards
+
+### Token Architecture
+
+Three-layer system — never skip layers:
+
+```
+Primitive (raw values)  →  Semantic (purpose)  →  Component (specific)
+color-blue-600          →  color-primary        →  button-bg
+```
+
+- Never use raw color values in components — always reference semantic or component tokens
+- Semantic layer enables theme switching (light/dark)
+- Name tokens semantically (`space-sm`, `color-primary`), not by value (`spacing-8`, `blue-500`)
+
+### Color System
+
+- Use perceptually uniform color spaces (OKLCH preferred)
+- Reduce saturation as you approach white or black; tint neutrals toward brand hue
+- Never use pure black or pure white — always tint
+- Never use gray text on colored backgrounds — use a darker shade of the background color
+- 60-30-10 rule by visual weight: 60% neutral/surface, 30% secondary, 10% accent — keep accents rare
+- Every color combination: WCAG AA contrast (4.5:1 normal text, 3:1 large text)
+- Plan dark mode from project start — never retrofit; depth from surface lightness not shadow,
+  desaturate accents, reduce body text weight slightly
+- Never convey information through color alone — always add icon/text
+- Theme (light/dark) derived from audience and viewing context, not default preference
+
+### Typography
+
+| Project Type | Heading | Body |
+|--------------|---------|------|
+| Modern SaaS | Plus Jakarta Sans | Inter |
+| Corporate | Source Sans 3 | Source Serif 4 |
+| Editorial | Playfair Display | Lora |
+| Dev Tools | Geist | Inter |
+
+- Load fonts efficiently — never block rendering; base 16px minimum on mobile
+- Relative units for font sizes — respect user system settings; never disable user zoom/text scaling
+- Line height 1.5–1.6 for body; +0.05–0.1 for light-on-dark text; max line length 65–75 characters
+- Fewer sizes with more contrast — at least 1.25 ratio between scale steps
+- Fluid sizing for marketing headings; fixed scale for app UI
+- Max 2 typefaces per page — single family with weight variation often suffices
+- Tabular/monospaced figures for data tables and aligned numbers
+
+### UI Components (Web)
+
+| Need | Library |
+|------|---------|
+| Forms, dialogs, tables, base UI | shadcn/ui |
+| SaaS polish — tickers, marquees | Magic UI |
+| Dramatic hero effects — spotlight, 3D | Aceternity UI |
+
+### Animations
+
+| Need | Library |
+|------|---------|
+| Plays/loops — loaders, feedback | Lottie |
+| Reacts to input, has states | Rive |
+| Hero backgrounds, entrance effects | Aceternity / Framer Motion |
+
+Timing:
+
+| Duration | Use |
+|----------|-----|
+| 100–150ms | Instant feedback (button press, toggle) |
+| 200–300ms | State changes (hover, menu, tooltip) |
+| 300–500ms | Layout changes (accordion, modal, drawer) |
+| 500–800ms | Entrance animations (page load, hero) |
+
+Easing:
+- Custom exponential curves — never platform default linear/ease, never bounce or elastic
+- Deceleration curve for entering, acceleration for exiting, symmetric for state toggles
+
+Rules:
+- Only animate transform and opacity — never layout properties (width, height, position)
+- Never animate from scale(0) — start from ~scale(0.95) + transparent; exit ~75% of enter duration
+- Stagger list items by 30–50ms; cap total stagger time
+- Animations must be interruptible — never block user input
+- Respect reduced motion preferences — keep functional animations, remove spatial motion
+- Pause animations when not in viewport; no animation for high-frequency actions (100+/day)
+- Popovers/popups scale from trigger; modals scale from center
+
+### Assets — Free First
+
+| Asset | Source |
+|-------|--------|
+| Icons | Iconify / Lucide |
+| Avatars | DiceBear, Boring Avatars |
+| Photos | Unsplash, Picsum |
+| Illustrations | unDraw, Storyset |
+| Backgrounds | Haikei, Hero Patterns |
+
+AI generation only when custom branded asset needed and no free alternative exists.
+Never use emojis as structural icons — always vector icons.
+
+### Pipeline Artifacts Consumption
+
+When `ai-docs/references/` contains generated artifacts (`design-system.md`, `style-guide.md`,
+`screens/`), these are the source of truth for implementation. Platform-specific mapping rules
+live in the platform rules (web/iOS) — loaded when present.
+
+Token mapping:
+- If design-system.md provides `codeSyntax` for a token — use that exact name in code.
+  Auto-generated codeSyntax (marked `†`) should be verified against project conventions.
+- Map tokens to platform abstractions (CSS variables, Asset Catalog, enums) — never inline raw
+  values that exist as tokens.
+- Tokens ordered by `usageCount`: high-frequency tokens are core to the design — prioritize
+  their adoption in shared components.
+- Tokens with quality warnings (hardcoded colors, orphan variables) may need designer review
+  before adoption.
+
+Style guide:
+- Token bindings in style-guide.md are concrete instructions — apply exactly, not as suggestions.
+- `usedIn` data confirms where tokens are actually applied — use for verification, not to limit scope.
+
+Screen references:
+- Screenshots in `screens/` are visual truth for validation during implementation.
+- Skip system-provided elements visible in screenshots — rendered by the platform, not
+  implemented by code (keyboard, status bar, home indicator; browser chrome, scrollbar).
+
+Components:
+- Before creating new components, check existing codebase for matching views. Reuse over recreation.
+- Design-system.md `propertyClassification` guides implementation pattern:
+  - `state` (Default/Pressed/Disabled) → platform system state mechanisms before custom enums
+  - `size` (Small/Medium/Large) → platform size APIs or custom enum
+  - `style` (Primary/Secondary) → single component with parameter when differences are cosmetic,
+    separate components when structure differs
+  - `content` toggles (HasIcon, ShowBadge) → optional parameters
+- Figma design context from MCP is a specification, not code to port. Read design properties and
+  build native platform code — never translate framework-specific output literally.
+
+### Accessibility
+- All interactive elements reachable by keyboard/assistive tech
+- Focus states always visible — never remove without replacement
+- Decorative elements hidden from assistive tech; labels on all icon-only buttons
+- Touch targets: min 44×44pt (iOS) / 48×48dp (Android); min 8px gap between targets
+- Hover effects gated behind pointer capability detection — touch users can't hover
+
+### Spacing & Layout
+- 4pt spacing base: 4, 8, 12, 16, 24, 32, 48, 64, 96
+- Vary spacing for hierarchy — not everything gets the same padding
+- Mobile-first, then scale up; no horizontal scroll on mobile
+- Avoid fixed viewport height on mobile — use dynamic values
+- Respect platform safe areas (notch, home indicator, status bar)
+- z-index: semantic scale (dropdown → sticky → modal-backdrop → modal → toast → tooltip)
+- Not everything needs a card — spacing and alignment create grouping; never nest cards in cards
+
+### Forms
+- Visible label per input — never placeholder-only
+- Error below related field with clear cause + fix
+- Validate on blur, not keystroke; required fields marked visually
+- Loading → success/error state on submit
+- Prefer undo over confirmation dialogs for non-destructive actions
+- Platform-appropriate input types for correct keyboard
+
+### Navigation
+- Bottom nav max 5 items with labels + icons
+- Back navigation must be predictable and preserve state
+- All key screens reachable via deep link
+- One primary CTA per screen — secondary visually subordinate
+
+### Quality Gate
+- Lint: 0 errors; type check: 0 errors
+- No runtime errors in console/logs; no failed network requests
+- Mobile viewport works
+- Verify both light and dark themes before delivery
+
 ## AI Documentation Structure
 
 ```
@@ -253,7 +601,7 @@ After completing work: add AICODE-NOTE for complex logic
 - List created/modified files with full paths
 - End with clear next action
 
-## Plan Mode
+## Planning
 
 - Make the plan extremely concise. Sacrifice grammar for the sake of concision.
 - At the end of each plan, give me a list of unresolved questions to answer, if any.

@@ -16,13 +16,13 @@ Generate "Unit Tests for Requirements" — deterministic checklists that validat
 - Feature Analyzer: For loading complete feature context from artifacts
   - Scans and loads: spec.md, ux.md, ui.md, plan.md, tasks.md, data-model.md, contracts/, research.md, setup.md
 - Sequential Thinking Methodology: For structured reasoning during analysis and generation
-  - Tool: `/mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 - Document Templates: For canonical checklist and resolutions structure
-  - Templates loaded below from `.claude/skills/doc-templates/references/`
+  - Read templates from the doc-templates skill before generating
 
-**Templates (Document Templates skill):**
-- Checklist: @.claude/skills/doc-templates/references/checklist-template.md
-- Resolutions: @.claude/skills/doc-templates/references/resolutions-template.md
+**Templates (doc-templates skill — read before generating each artifact):**
+- Checklist: `references/checklist-template.md`
+- Resolutions: `references/resolutions-template.md`
 
 **File Structure:**
 - Input: `./ai-docs/features/[feature]/` (requires core artifacts)
@@ -487,7 +487,7 @@ Write per template with task_impact for each decision.
 ### 5.1 Commit Validation Block
 
 The validation stage is a completed block — commit it on the feature branch before
-reporting. Format per `.claude/rules/git.md`, summary ≤50 chars, imperative:
+reporting. Format per Git Workflow conventions, summary ≤50 chars, imperative:
 
 ```
 docs([feature]): validation checklists

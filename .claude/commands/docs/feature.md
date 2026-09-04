@@ -14,16 +14,16 @@ Generate feature specifications from PRD or user description into structured spe
 
 **Skills:**
 - Document Templates: For canonical spec.md and FEATURES.md structure
-  - Templates loaded below from `.claude/skills/doc-templates/references/`
+  - Read templates from the doc-templates skill before generating
 - Sequential Thinking Methodology: For analyzing PRD structure, extracting features, validating input, and detecting conflicts
-  - Tool: `/mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 
-**Templates (Document Templates skill):**
-- Spec: @.claude/skills/doc-templates/references/spec-template.md
-- Index: @.claude/skills/doc-templates/references/features-template.md
+**Templates (doc-templates skill — read before generating each artifact):**
+- Spec: `references/spec-template.md`
+- Index: `references/features-template.md`
 
 **Project context:**
-- PRD: @ai-docs/PRD.md
+- PRD: read `ai-docs/PRD.md`
 
 **File Structure:**
 - Input: `./ai-docs/PRD.md` (PRD mode) or user description (User Input mode)

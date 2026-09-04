@@ -13,7 +13,7 @@ paths:
 
 **Stack:** Next.js 14+ (App Router) · React 18+ · Tailwind CSS · TypeScript
 
-Design decisions (typography, color system, component libraries, animations, assets) are in `design.md`. This file covers web implementation only.
+Design decisions (typography, color system, component libraries, animations, assets) are in Design Standards (project instructions). This file covers web implementation only.
 
 ## Font Loading
 
@@ -32,13 +32,13 @@ Design decisions (typography, color system, component libraries, animations, ass
 
 ## Design System References
 
-When `ai-docs/references/design-system.md` exists, it is the token source of truth. Universal consumption rules are in `design.md` — this section covers web-specific mapping.
+When `ai-docs/references/design-system.md` exists, it is the token source of truth. Universal consumption rules are in Design Standards (project instructions) — this section covers web-specific mapping.
 
 - **Colors:** Map design-system.md color tokens to CSS custom properties in `:root` / `[data-theme="dark"]`, then reference via Tailwind config `extend.colors`. Never duplicate values — single source in CSS variables.
 - **Typography:** Map font tokens to `next/font` setup. Use design-system.md font-family, then apply weights/sizes via Tailwind `extend.fontSize` or direct `text-[size]` classes. If design-system.md specifies a Google Font not yet loaded — add via `next/font/google`.
 - **Spacing:** Map spacing tokens to Tailwind `extend.spacing` if project needs non-standard scale. Otherwise use default Tailwind scale (`space-sm: 8px` → `gap-2`). Never arbitrary values (`mt-[13px]`) when a token rounds to a scale step.
 - **Shadows/Radius:** Map to Tailwind `extend.boxShadow` / `extend.borderRadius`. Reference by semantic name (`shadow-card`, `rounded-md`).
-- **Icons:** Use Iconify/Lucide per `design.md`. Don't import new icon packages unless project already uses them.
+- **Icons:** Use Iconify/Lucide per Design Standards. Don't import new icon packages unless project already uses them.
 - **Components:** Check shadcn/ui for matching base component before building custom. Map design-system.md component variants to component props or Tailwind variant classes.
 
 ## Testing
@@ -67,10 +67,12 @@ When `ai-docs/references/design-system.md` exists, it is the token source of tru
 - All components using hooks, events, or browser APIs → `'use client'`
 - Heavy animated components → `dynamic(() => import(...), { ssr: false })`
 - Never access `window`/`document` at module level — always inside `useEffect`
+- Route protection: middleware only, never page-level checks
+- Auth type extensions: always via `types/next-auth.d.ts`
 
 ### Accessibility (Web-Specific)
 
-Principles are in `design.md` — these are the web mechanisms:
+Principles are in Design Standards (project instructions) — these are the web mechanisms:
 - `:focus-visible` for keyboard focus rings — never remove `outline` without replacement
 - Gate hover effects behind `@media (hover: hover) and (pointer: fine)`
 
@@ -92,7 +94,7 @@ Principles are in `design.md` — these are the web mechanisms:
 
 ### Animation Implementation
 
-Timing, easing, and animation rules are in `design.md` — these are the web mechanisms:
+Timing, easing, and animation rules are in Design Standards (project instructions) — these are the web mechanisms:
 - Custom easing: `cubic-bezier(0.16, 1, 0.3, 1)` for enter, not default `ease`
 - Popovers: `transform-origin` from trigger; modals: from center
 - CSS transitions for interruptible UI; keyframes for predetermined sequences

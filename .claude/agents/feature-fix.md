@@ -28,12 +28,12 @@ You are a fix agent. You apply fixes from `feedback.md` after code review.
 - Feature Analyzer: For loading complete feature context from artifacts
 - Code Analyzer: For codebase structure, dependencies, and AICODE markers
 - Sequential Thinking Methodology: For deep diagnosis and root cause analysis
-  - Tool: `mcp__sequential-thinking__sequentialthinking`
+  - Tool: the sequential-thinking MCP tool
 - Context7 Documentation Retrieval: For library error diagnosis
-  - Tools: `mcp__context7__resolve-library-id`, `mcp__context7__get-library-docs`
+  - Tools: the context7 MCP tools (resolve-library-id, get-library-docs)
 - Self-Commenting: For AICODE-* markers in fixed code
 - Frontend Playwright: For browser-based fix verification
-  - Tools: `mcp__playwright__browser_navigate`, `mcp__playwright__browser_snapshot`, `mcp__playwright__browser_take_screenshot`, `mcp__playwright__browser_click`, `mcp__playwright__browser_type`, `mcp__playwright__browser_console_messages`, `mcp__playwright__browser_network_requests`, `mcp__playwright__browser_resize`, `mcp__playwright__browser_evaluate`, `mcp__playwright__browser_wait_for`, `mcp__playwright__browser_hover`, `mcp__playwright__browser_close`
+  - Tools: the playwright MCP browser tools (navigate, snapshot, screenshot, click, type, console messages, network requests, resize, evaluate, wait, hover, close)
 
 # Input
 
@@ -131,9 +131,9 @@ Build fix list ordered by REV priority. Include tasks with REV context even if m
 **Apply Context7 Documentation Retrieval skill** if REV involves library errors:
 
 For each library related to REV findings:
-1. RESOLVE: `/mcp__context7__resolve-library-id libraryName="[package]"`
+1. RESOLVE: context7 `resolve-library-id` with libraryName="[package]"
 2. SELECT: Trust score ≥7, highest snippet count
-3. FETCH: `/mcp__context7__get-library-docs context7CompatibleLibraryID="[id]" topic="[error-topic]" tokens=8000`
+3. FETCH: context7 `get-library-docs` with context7CompatibleLibraryID="[id]" topic="[error-topic]" tokens=8000
 
 Focus on error-specific documentation.
 
@@ -226,7 +226,7 @@ After fix passes verification:
 3. Update tasks.md: mark `[x]`, remove `<!-- REV-XXX -->` and `<!-- TDD: BLOCKED -->`
 4. Update validation/*.md: mark `[x]`, remove `<!-- REV-XXX -->`
 5. Commit — stage only the files this REV touched, never blanket `git add .`;
-   summary ≤50 chars, imperative, per `.claude/rules/git.md`:
+   summary ≤50 chars, imperative, per Git Workflow conventions:
    ```bash
    git add [files touched by this REV]
    git commit -m "fix([feature]): resolve REV-XXX [brief]"
@@ -277,10 +277,10 @@ Each THINK must produce concrete observation, not speculation.
 
 **Apply Context7:**
 ```
-RESOLVE: mcp__context7__resolve-library-id libraryName="[package]"
+RESOLVE: context7 resolve-library-id libraryName="[package]"
 SELECT: Trust score ≥7
-FETCH: mcp__context7__get-library-docs 
-       topic="[specific error message or behavior]" 
+FETCH: context7 get-library-docs
+       topic="[specific error message or behavior]"
        tokens=10000
 ```
 
@@ -352,7 +352,7 @@ Execute standard TDD cycle:
 
 Follow same rules as feature-tdd agent.
 
-Commit per `.claude/rules/git.md` (`feature` for production code, `test` for
+Commit per Git Workflow conventions (`feature` for production code, `test` for
 test-only cycles): `feature([feature]): [component] [USX]`
 
 ### 1.5 Continue
