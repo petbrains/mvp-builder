@@ -528,7 +528,7 @@ Next: Use feature-setup <feature-path>
 # Error Handling
 
 - **Missing feature path**: "Error: Feature path required. Usage: /validation [feature-path]"
-- **Missing core files**: "Error: [file] not found. Run [command] first."
+- **Missing core files**: "Error: [file] not found. Run [producing stage] first."
 - **Anti-pattern detected**: "Error: CHK### violates anti-patterns. Regenerating..."
 - **Low traceability**: "Warning: Below 80%. Adding references..."
 - **No user response** (INTELLECTUAL item only): "Waiting for selection. Use ↑/↓ and Enter."

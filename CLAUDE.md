@@ -41,7 +41,8 @@ Pipeline per feature:
    orchestrator resolves and pins itself; only intellectual items (content, copy, assets, domain
    semantics, data governance, product policy) go to the user; overrides → re-dispatch
    `feature-docs` with pinned decisions
-4. `/validation` → architectural checklist items the orchestrator resolves itself (recorded
+4. `/validation` (orchestrator invokes the skill itself as a pipeline step) → architectural
+   checklist items the orchestrator resolves itself (recorded
    in resolutions.md); dialogue with the user only on intellectual items; orchestrator commits
    doc edits from acceptance and validation on the feature branch
 5. `feature-setup` → validate report; if setup exposed doc gaps — fix feature docs before next step
