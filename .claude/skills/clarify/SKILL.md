@@ -1,7 +1,7 @@
 ---
 name: clarify
 description: Refine an existing feature specification through targeted clarification dialogue. Use when a spec.md contains ambiguities — vague roles, non-testable requirements, unclear entities — that should be resolved before generating the doc chain.
-argument-hint: [feature-path]
+argument-hint: "[feature-path]"
 ---
 
 # Instructions

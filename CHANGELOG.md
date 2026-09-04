@@ -36,6 +36,8 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - `CLAUDE.md` Harness Orchestration — pipeline names updated; dialogue stages documented as skills executed in the main session, which now orchestrates everything (skills + agent dispatch)
 - `doc-templates` SKILL.md consumer column and README updated to the new skill names
 - Domain skills universalized to match: `allowed-tools` frontmatter removed from all 9 skills that carried it (full tool-pool inheritance, same rationale as the agent trim); last `mcp__` scoped-name literals neutralized in skill bodies — `context7` SKILL.md tool references → `context7 resolve-library-id` / `context7 get-library-docs` phrasing, `sequential-thinking` SKILL.md → "the sequential-thinking MCP tool". Repo now contains zero `mcp__` literals outside `.mcp.json`
+- Frontmatter made strict-YAML valid: `argument-hint` values quoted in the three new skills (`[feature-path]` unquoted parses as a YAML array), unquoted `description` values containing `: ` quoted in `doc-templates`, `feature-analyzer`, `frontend-playwright`, `self-commenting` — Claude Code's lenient parser accepted them, a strict parser (Codex) would not
+- Git Workflow Branch Naming: scope segment now optional (`<prefix>/<description>` or `<prefix>/<scope>/<description>`) — resolves the contradiction with pipeline branches (`feature/[name]`, single segment) that the old two-segment regex rejected; regex alternation also properly anchored
 
 ## [0.2.0] - 2026-09-01
 

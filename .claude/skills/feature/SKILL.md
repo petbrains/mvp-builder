@@ -1,7 +1,7 @@
 ---
 name: feature
 description: Generate feature specifications from PRD or a user-provided feature description into structured spec files. Use after the PRD is finalized to extract all features, or to add a single new feature to an existing FEATURES.md index.
-argument-hint: [feature-description]
+argument-hint: "[feature-description]"
 ---
 
 # Instructions

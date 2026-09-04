@@ -240,17 +240,19 @@ Enforces repository conventions for branches, commits, and pushes.
 
 #### Branch Naming
 
-**Format:** `<prefix>/<scope>/<description>`
+**Format:** `<prefix>/<description>` or `<prefix>/<scope>/<description>` (scope optional —
+pipeline branches use `feature/[name]`)
 
 **Prefixes:** `feature/`, `fix/`, `refactor/`, `docs/`, `chore/`, `hotfix/`, `release/`
 
 **Regex:**
 ```regex
-^(feature|fix|refactor|docs|chore)/[a-z0-9._-]+/[a-z0-9._-]+|(hotfix|release)/[a-z0-9._-]+$
+^(feature|fix|refactor|docs|chore)/[a-z0-9._-]+(/[a-z0-9._-]+)?$|^(hotfix|release)/[a-z0-9._-]+$
 ```
 
 **Examples:**
 ```
+feature/cv-upload
 feature/auth/oauth-implementation
 fix/payments/rounding-bug
 hotfix/critical-security-patch

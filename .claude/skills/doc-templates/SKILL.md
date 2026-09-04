@@ -1,6 +1,6 @@
 ---
 name: doc-templates
-description: Canonical templates for every MVP Builder pipeline artifact. Use whenever generating, regenerating, or restructuring any ai-docs artifact — spec.md, FEATURES.md, ux.md, ui.md, plan.md, tasks.md, validation checklists, resolutions.md, feedback.md, design-system.md — so the exact section structure downstream agents parse is preserved. Triggers on: generate spec, create feature docs, write tasks, validation checklist, review feedback, design setup, artifact template.
+description: "Canonical templates for every MVP Builder pipeline artifact. Use whenever generating, regenerating, or restructuring any ai-docs artifact — spec.md, FEATURES.md, ux.md, ui.md, plan.md, tasks.md, validation checklists, resolutions.md, feedback.md, design-system.md — so the exact section structure downstream agents parse is preserved. Triggers on: generate spec, create feature docs, write tasks, validation checklist, review feedback, design setup, artifact template."
 ---
 
 # Document Templates

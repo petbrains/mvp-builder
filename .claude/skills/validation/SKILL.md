@@ -1,7 +1,7 @@
 ---
 name: validation
 description: Validate requirement quality and generate deterministic checklists (CHK###) for a feature. Use after the doc chain is accepted and before feature-setup — produces validation/*.md checklists, resolutions.md, and resolution tasks in tasks.md.
-argument-hint: [feature-path]
+argument-hint: "[feature-path]"
 ---
 
 # Instructions

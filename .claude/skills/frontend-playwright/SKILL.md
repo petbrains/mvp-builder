@@ -1,6 +1,6 @@
 ---
 name: frontend-playwright
-description: Visual QA gate for frontend code. ALWAYS use before delivering any UI changes - navigate, screenshot, verify console is error-free. Use for: responsive testing across viewports, form/interaction testing, debugging hydration and render issues. Catches visual bugs before users see them.
+description: "Visual QA gate for frontend code. ALWAYS use before delivering any UI changes - navigate, screenshot, verify console is error-free. Use for: responsive testing across viewports, form/interaction testing, debugging hydration and render issues. Catches visual bugs before users see them."
 ---
 
 # Frontend Playwright
