@@ -2,11 +2,15 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
-## [Unreleased]
+## [0.3.0] - 2026-09-06
+
+Plugin release for both platforms. MVP Builder now installs as a plugin on Claude Code (`/plugin marketplace add app-builders-club/mvp-builder`) and Codex (`codex plugin marketplace add app-builders-club/mvp-builder`), with a `mvp-builder-init` skill that materializes the per-project scaffold on either platform. All content is platform-universal.
+
+**Breaking**: `/docs:prd`, `/docs:feature`, `/docs:clarify`, `/docs:validation` commands are now the `/prd`, `/feature`, `/clarify`, `/validation` skills; the installation layout changed. Running `mvp-builder-init` (or `scripts/install.sh`) over a 0.2.x install migrates automatically: old files are backed up to `.mvp-builder-backup-<timestamp>/`.
 
 ### Added
 
-**Codex support** (plugin migration, stage 4) — verified against the OpenAI plugin docs and a live `codex-cli 0.145.0` install
+**Codex support** (plugin migration, stage 4) — verified against the OpenAI plugin docs and a live `codex-cli 0.145.0` install: plugin install, skills (incl. cross-skill `references/` reads and `$ARGUMENTS`), AGENTS.md loading, and subagent spawn from `.codex/agents/` all pass headless runtime probes
 - `.codex-plugin/plugin.json` — Codex manifest (mirror of the Claude one plus `skills`/`mcpServers` pointers); `.agents/plugins/marketplace.json` — new-standard marketplace manifest (Codex prefers it over the legacy `.claude-plugin` one, which also worked as-is)
 - `scaffold/codex/agents/*.toml` — 7 subagent wrappers for `.codex/agents/`: spawn-oriented `description`, `developer_instructions` delegate to the co-installed `agents/*.md` role file, so behavior keeps a single source on both platforms; no `model` pinned (inherits the parent session)
 - `install.sh`/`install.ps1` `--platform codex` — installs `AGENTS.md` + `.codex/agents/` (7 md + 7 toml) under the same manifest/scenario machinery; prints the `multi_agent = true` enablement note and plugin install commands
@@ -18,14 +22,6 @@ All notable changes to MVP Builder will be documented in this file. The format i
 **Known gaps on Codex**
 - `figma` MCP server (HTTP transport) is not loaded by Codex; `design-setup` degrades gracefully without Figma by design
 - Rule loading is instruction-driven (model reads on match), not harness-guaranteed as on Claude
-
-## [0.3.0] - 2026-09-06
-
-Plugin release. MVP Builder now installs as a Claude Code plugin (`/plugin marketplace add app-builders-club/mvp-builder`), with a `/mvp-builder-init` skill that materializes the per-project scaffold. All content is platform-universal, prepared for the Codex port.
-
-**Breaking**: `/docs:prd`, `/docs:feature`, `/docs:clarify`, `/docs:validation` commands are now the `/prd`, `/feature`, `/clarify`, `/validation` skills; the installation layout changed. Running `/mvp-builder-init` (or `scripts/install.sh`) over a 0.2.x install migrates automatically: old files are backed up to `.mvp-builder-backup-<timestamp>/`.
-
-### Added
 
 **Plugin packaging** (stage 3)
 - `.claude-plugin/plugin.json` (v0.3.0) and `marketplace.json` (`source: "./"`) — the repo root is the plugin; agents, skills, and `.mcp.json` ship with it. `claude plugin validate` passes
