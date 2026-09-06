@@ -160,7 +160,7 @@ note's subject still exists (remove dead ones, flag doubtful ones in the report)
 
 1. Load existing README.md (Initial mode if absent)
 2. Detect source roots (`src app lib pages components server`; else project root excluding
-   node_modules, .git, dist, build, ai-docs, .claude)
+   node_modules, .git, dist, build, ai-docs, .claude, .codex)
 3. **Apply Code Analyzer + Sequential Thinking** over the full tree → rebuilt graph
 4. Merge: rebuilt Stack/Entry/Graph + preserved Features + verified Notes
 5. → Phase 3: Finalize (validation, size analysis, write, report)

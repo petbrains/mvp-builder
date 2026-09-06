@@ -115,6 +115,7 @@ if [ "$PLATFORM" = "claude" ]; then
         done < <(find "$SRC_ROOT/skills" -type f | sort)
     fi
 else
+    [ "$STANDALONE" = "1" ] && echo "ℹ️  --standalone has no effect with --platform codex yet (agents/skills wiring lands in a later release)"
     add_pair "$SRC_ROOT/scaffold/INSTRUCTIONS.md" "AGENTS.md"
 fi
 

@@ -85,7 +85,21 @@
       "Skill(mvp-builder:context7)",
       "Skill(mvp-builder:self-commenting)",
       "Skill(mvp-builder:frontend-playwright)",
-      "Skill(mvp-builder:figma-extractor)"
+      "Skill(mvp-builder:figma-extractor)",
+      "Skill(prd)",
+      "Skill(feature)",
+      "Skill(clarify)",
+      "Skill(validation)",
+      "Skill(mvp-builder-init)",
+      "Skill(doc-templates)",
+      "Skill(feature-analyzer)",
+      "Skill(code-analyzer)",
+      "Skill(system-design)",
+      "Skill(sequential-thinking)",
+      "Skill(context7)",
+      "Skill(self-commenting)",
+      "Skill(frontend-playwright)",
+      "Skill(figma-extractor)"
     ],
     "deny": [
       "Read(./.env)",
