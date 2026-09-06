@@ -39,6 +39,10 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - Frontmatter made strict-YAML valid: `argument-hint` values quoted in the three new skills (`[feature-path]` unquoted parses as a YAML array), unquoted `description` values containing `: ` quoted in `doc-templates`, `feature-analyzer`, `frontend-playwright`, `self-commenting` — Claude Code's lenient parser accepted them, a strict parser (Codex) would not
 - Git Workflow Branch Naming: scope segment now optional (`<prefix>/<description>` or `<prefix>/<scope>/<description>`) — resolves the contradiction with pipeline branches (`feature/[name]`, single segment) that the old two-segment regex rejected; regex alternation also properly anchored
 
+### Removed
+
+- `xcode` skill and `xcode` MCP server (`xcrun mcpbridge`) — extracted to a separate plugin. The skill was fully self-contained (zero references from agents, pipeline skills, or docs) and the server is macOS-only; with both gone the remaining four MCP servers (context7, sequential-thinking, playwright, figma) are universal, so `.mcp.json` can ship with the plugin unconditionally. Platform code standards (`ios.md`, `mobile.md` rules) stay — only tooling moved.
+
 ## [0.2.0] - 2026-09-01
 
 Harness Orchestration — the feature pipeline is now an agent chain. The main session is the orchestrator and validator between agents: it dispatches, validates reports, and owns the docs — it does not implement inside the pipeline.

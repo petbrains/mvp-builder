@@ -88,7 +88,6 @@
       "Skill(figma-extractor)",
       "Skill(system-design)",
       "Skill(frontend-playwright)",
-      "Skill(xcode)",
       "Skill(prd)",
       "Skill(feature)",
       "Skill(clarify)",
@@ -122,8 +121,7 @@
     "context7",
     "sequential-thinking",
     "playwright",
-    "figma",
-    "xcode"
+    "figma"
   ],
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,
