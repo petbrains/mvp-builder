@@ -2,6 +2,22 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [Unreleased]
+
+### Added
+
+**Codex support** (plugin migration, stage 4) — verified against the OpenAI plugin docs and a live `codex-cli 0.145.0` install
+- `.codex-plugin/plugin.json` — Codex manifest (mirror of the Claude one plus `skills`/`mcpServers` pointers); `.agents/plugins/marketplace.json` — new-standard marketplace manifest (Codex prefers it over the legacy `.claude-plugin` one, which also worked as-is)
+- `scaffold/codex/agents/*.toml` — 7 subagent wrappers for `.codex/agents/`: spawn-oriented `description`, `developer_instructions` delegate to the co-installed `agents/*.md` role file, so behavior keeps a single source on both platforms; no `model` pinned (inherits the parent session)
+- `install.sh`/`install.ps1` `--platform codex` — installs `AGENTS.md` + `.codex/agents/` (7 md + 7 toml) under the same manifest/scenario machinery; prints the `multi_agent = true` enablement note and plugin install commands
+- `mvp-builder-init` — platform-aware: detects Claude vs Codex, runs the installer with the matching `--platform`; next-steps neutralized
+- Verified live: `codex plugin marketplace add` + `codex plugin add mvp-builder@mvp-builder` install the plugin as-is; skills ship unchanged (same `skills/<name>/SKILL.md` layout); Codex parses the Claude-wrapped `.mcp.json` — stdio servers (context7, sequential-thinking, playwright) load, the `figma` HTTP server is skipped
+- `.gitignore` — `/AGENTS.md` and `.codex/` are local dev-session files, same policy as `CLAUDE.md`/`.claude/`
+
+**Known gaps on Codex**
+- Path-scoped rules have no Codex mechanism — platform standards (`frontend`/`backend`/`mobile`/`ios`) do not load there; candidate v2: nested per-directory `AGENTS.md`
+- `figma` MCP server (HTTP transport) is not loaded by Codex; `design-setup` degrades gracefully without Figma by design
+
 ## [0.3.0] - 2026-09-06
 
 Plugin release. MVP Builder now installs as a Claude Code plugin (`/plugin marketplace add app-builders-club/mvp-builder`), with a `/mvp-builder-init` skill that materializes the per-project scaffold. All content is platform-universal, prepared for the Codex port.

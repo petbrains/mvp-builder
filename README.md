@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Build MVPs with AI — without the half-built mess.</strong><br>
-  Document-Driven Development for Claude Code: specs before code, TDD enforced, self-review catches stubs.
+  Document-Driven Development for Claude Code and Codex: specs before code, TDD enforced, self-review catches stubs.
 </p>
 
 <p align="center">
@@ -73,9 +73,22 @@ This materializes the scaffold: `CLAUDE.md` (execution rules), path-scoped rules
 
 That is it. The PRD skill interviews you on product, audience, and core problem, then generates `PRD.md` and a `references/` folder you can populate with design systems, schemas, and screenshots. The pipeline takes you from there.
 
+### Codex CLI
+
+Same plugin, same flow:
+
+```
+codex plugin marketplace add app-builders-club/mvp-builder
+codex plugin add mvp-builder@mvp-builder
+```
+
+Then in your project directory ask for the `mvp-builder-init` skill — it installs `AGENTS.md` (execution rules) and subagent definitions in `.codex/agents/`. Enable subagents once: `multi_agent = true` under `[features]` in `~/.codex/config.toml`, then restart the session.
+
+> Note: the `figma` MCP server is Claude-only for now (HTTP transport); `context7`, `sequential-thinking`, and `playwright` load on both platforms. Path-scoped rules (`frontend`/`backend`/`mobile`/`ios`) are a Claude mechanism and do not load on Codex yet.
+
 ### Without the plugin
 
-The standalone installer copies everything — agents, skills, scaffold, MCP configuration — into `.claude/` directly:
+The standalone installer copies everything — agents, skills, scaffold, MCP configuration — into `.claude/` directly (Claude only):
 
 **macOS, Linux, WSL:**
 
