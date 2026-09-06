@@ -44,12 +44,12 @@ if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "..\scaffold"))) {
 } else {
     $TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("mvp-builder-" + [guid]::NewGuid())
     New-Item -ItemType Directory -Path $TempDir | Out-Null
-    $Version = "main"
-    $Url = "https://github.com/$Repo/archive/refs/heads/main.zip"
     try {
         $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest" -Headers @{ "User-Agent" = "mvp-builder" }
-        if ($Release.zipball_url) { $Version = $Release.tag_name; $Url = $Release.zipball_url }
-    } catch {}
+    } catch { throw "No published release found for $Repo — cannot install." }
+    if (-not $Release.zipball_url) { throw "No published release found for $Repo — cannot install." }
+    $Version = $Release.tag_name
+    $Url = $Release.zipball_url
     Write-Host "📦 Source: download ($Version)"
     $Zip = Join-Path $TempDir "repo.zip"
     Invoke-WebRequest -Uri $Url -OutFile $Zip -Headers @{ "User-Agent" = "mvp-builder" }

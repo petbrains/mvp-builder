@@ -84,13 +84,12 @@ else
     done
     TEMP_DIR=$(mktemp -d); CLEANUP="$CLEANUP $TEMP_DIR"
     RELEASE_INFO=$(curl -fsSL -H "User-Agent: mvp-builder" "https://api.github.com/repos/$REPO/releases/latest" 2>/dev/null || echo "")
-    if echo "$RELEASE_INFO" | grep -q '"zipball_url"'; then
-        VERSION=$(echo "$RELEASE_INFO" | grep '"tag_name"' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
-        DOWNLOAD_URL=$(echo "$RELEASE_INFO" | grep '"zipball_url"' | sed -E 's/.*"zipball_url": *"([^"]+)".*/\1/')
-    else
-        VERSION="main"
-        DOWNLOAD_URL="https://github.com/$REPO/archive/refs/heads/main.zip"
+    if ! echo "$RELEASE_INFO" | grep -q '"zipball_url"'; then
+        echo "❌ No published release found for $REPO — cannot install."
+        exit 1
     fi
+    VERSION=$(echo "$RELEASE_INFO" | grep '"tag_name"' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
+    DOWNLOAD_URL=$(echo "$RELEASE_INFO" | grep '"zipball_url"' | sed -E 's/.*"zipball_url": *"([^"]+)".*/\1/')
     echo "📦 Source: download ($VERSION)"
     curl -fsSL -H "User-Agent: mvp-builder" "$DOWNLOAD_URL" -o "$TEMP_DIR/repo.zip"
     unzip -q "$TEMP_DIR/repo.zip" -d "$TEMP_DIR"
