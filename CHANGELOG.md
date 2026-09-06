@@ -372,7 +372,8 @@ Full consistency audit of CLAUDE.md + all rules:
 - Skills Registry for automatic skill matching
 - Cross-platform installation scripts (bash, PowerShell)
 
-[0.2.0]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.2.0
+[0.3.0]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.3.0
+[0.2.0]: https://github.com/app-builders-club/mvp-builder/releases/tag/0.2.0
 [0.1.3]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.3
 [0.1.2]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.2
 [0.1.1]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.1
