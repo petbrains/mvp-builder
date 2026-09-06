@@ -1,0 +1,8 @@
+name = "feature-fix"
+description = "Applies fixes from feedback.md one REV finding at a time with guided diagnostics. Spawn when review status is BLOCKED."
+
+developer_instructions = """
+Read the file .codex/agents/feature-fix.md in the project and follow it exactly as your
+complete role definition. It defines your process, decision rules, outputs, and
+the report format you must return.
+"""

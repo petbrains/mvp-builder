@@ -26,7 +26,11 @@ and wait for the answer. Default to `all` only if the user says they don't care.
 
 # Execution
 
-1. Locate the installer inside the installed plugin. This skill's **base directory** (announced
+1. Determine `[platform]` from which agent you are: running as Claude Code → `claude`
+   (installs `CLAUDE.md`, `.claude/rules/`, `.claude/settings.json`); running as Codex →
+   `codex` (installs `AGENTS.md` and subagent definitions in `.codex/agents/`).
+
+2. Locate the installer inside the installed plugin. This skill's **base directory** (announced
    when the skill is invoked) is `<plugin-root>/skills/mvp-builder-init`, so the installer is
    two levels up:
 
@@ -34,10 +38,10 @@ and wait for the answer. Default to `all` only if the user says they don't care.
 test -f "<this skill's base directory>/../../scripts/install.sh" && echo found
 ```
 
-2. If found, run it:
+3. If found, run it:
 
 ```bash
-bash "<this skill's base directory>/../../scripts/install.sh" --platform claude --rules [preset] --yes
+bash "<this skill's base directory>/../../scripts/install.sh" --platform [platform] --rules [preset] --yes
 ```
 
    If NOT found (unexpected plugin layout), fall back to fetching the installer from the
@@ -45,7 +49,7 @@ bash "<this skill's base directory>/../../scripts/install.sh" --platform claude 
    plugin:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.sh | bash -s -- --platform claude --rules [preset] --yes
+curl -fsSL https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.sh | bash -s -- --platform [platform] --rules [preset] --yes
 ```
 
 The script handles all three scenarios itself:
@@ -56,15 +60,18 @@ The script handles all three scenarios itself:
   without a manifest) — backs everything up to `.mvp-builder-backup-<timestamp>/`, removes
   superseded files, then performs a clean install
 
-3. Relay the script's report to the user verbatim — installed files, kept files, `.new`
+4. Relay the script's report to the user verbatim — installed files, kept files, `.new`
    files, backup location.
 
-4. If any `<file>.new` files were created, tell the user to diff and merge them manually —
+5. If any `<file>.new` files were created, tell the user to diff and merge them manually —
    never merge automatically.
 
-5. Finish with next steps:
-   - Restart the session so the new `CLAUDE.md` and rules load
-   - Then: `/prd` to define the product (or `/feature` if `ai-docs/PRD.md` already exists)
+6. Finish with next steps:
+   - Restart the session so the new project instructions load (`CLAUDE.md` / `AGENTS.md`)
+   - On Codex: enable subagents first — `multi_agent = true` under `[features]` in
+     `~/.codex/config.toml`
+   - Then invoke the `prd` skill to define the product (or `feature` if `ai-docs/PRD.md`
+     already exists)
 
 # Error Handling
 

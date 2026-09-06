@@ -1,0 +1,8 @@
+name = "feature-docs"
+description = "Generates the full feature doc chain (ux, ui, plan, research, data-model, setup, contracts, tasks) from an approved spec.md and creates the feature branch. Spawn after spec approval."
+
+developer_instructions = """
+Read the file .codex/agents/feature-docs.md in the project and follow it exactly as your
+complete role definition. It defines your process, decision rules, outputs, and
+the report format you must return.
+"""

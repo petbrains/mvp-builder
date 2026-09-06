@@ -77,7 +77,14 @@ if ($Platform -eq "claude") {
         }
     }
 } else {
+    if ($Standalone) { Write-Host "ℹ️  -Standalone is Claude-only; on Codex the plugin provides skills and MCP servers" }
     $Pairs += @{ Src = "$SrcRoot\scaffold\INSTRUCTIONS.md"; Dst = "AGENTS.md" }
+    foreach ($f in (Get-ChildItem "$SrcRoot\agents" -Filter *.md -File | Sort-Object Name)) {
+        $Pairs += @{ Src = $f.FullName; Dst = ".codex\agents\$($f.Name)" }
+    }
+    foreach ($f in (Get-ChildItem "$SrcRoot\scaffold\codex\agents" -Filter *.toml -File | Sort-Object Name)) {
+        $Pairs += @{ Src = $f.FullName; Dst = ".codex\agents\$($f.Name)" }
+    }
 }
 
 # --- Detect scenario ---
@@ -169,7 +176,14 @@ if ($Platform -eq "claude") {
     Write-Host "   1. Restart the Claude Code session (loads CLAUDE.md and rules)"
     Write-Host "   2. /prd — define your product"
 } else {
-    Write-Host "AGENTS.md installed. Codex agents/skills wiring lands in a later release."
+    Write-Host "Requires the mvp-builder plugin (skills, MCP servers):"
+    Write-Host "   codex plugin marketplace add $Repo"
+    Write-Host "   codex plugin add mvp-builder@mvp-builder"
+    Write-Host ""
+    Write-Host "Next steps:"
+    Write-Host "   1. Enable subagents: multi_agent = true under [features] in ~/.codex/config.toml"
+    Write-Host "   2. Restart the Codex session (loads AGENTS.md and .codex/agents/)"
+    Write-Host "   3. Kick off with the prd skill: {@prd} (or just ask to create a PRD)"
 }
 if ($Kept -gt 0) { Write-Host ""; Write-Host "⚠️  $Kept modified file(s) kept — review the *.new versions and merge manually." }
 Write-Host ""

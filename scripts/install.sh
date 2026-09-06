@@ -115,8 +115,14 @@ if [ "$PLATFORM" = "claude" ]; then
         done < <(find "$SRC_ROOT/skills" -type f | sort)
     fi
 else
-    [ "$STANDALONE" = "1" ] && echo "ℹ️  --standalone has no effect with --platform codex yet (agents/skills wiring lands in a later release)"
+    [ "$STANDALONE" = "1" ] && echo "ℹ️  --standalone is Claude-only; on Codex the plugin provides skills and MCP servers"
     add_pair "$SRC_ROOT/scaffold/INSTRUCTIONS.md" "AGENTS.md"
+    while IFS= read -r f; do
+        add_pair "$f" ".codex/agents/$(basename "$f")"
+    done < <(find "$SRC_ROOT/agents" -type f -name "*.md" | sort)
+    while IFS= read -r f; do
+        add_pair "$f" ".codex/agents/$(basename "$f")"
+    done < <(find "$SRC_ROOT/scaffold/codex/agents" -type f -name "*.toml" | sort)
 fi
 
 # --- Detect scenario ---
@@ -212,7 +218,14 @@ if [ "$PLATFORM" = "claude" ]; then
     echo "   1. Restart the Claude Code session (loads CLAUDE.md and rules)"
     echo "   2. /prd — define your product"
 else
-    echo "AGENTS.md installed. Codex agents/skills wiring lands in a later release."
+    echo "Requires the mvp-builder plugin (skills, MCP servers):"
+    echo "   codex plugin marketplace add $REPO"
+    echo "   codex plugin add mvp-builder@mvp-builder"
+    echo ""
+    echo "Next steps:"
+    echo "   1. Enable subagents: multi_agent = true under [features] in ~/.codex/config.toml"
+    echo "   2. Restart the Codex session (loads AGENTS.md and .codex/agents/)"
+    echo "   3. Kick off with the prd skill: {@prd} (or just ask to create a PRD)"
 fi
 [ "$KEPT" -gt 0 ] && echo "" && echo "⚠️  $KEPT modified file(s) kept — review the *.new versions and merge manually."
 echo ""

@@ -1,0 +1,8 @@
+name = "feature-review"
+description = "Quality gate: verifies tests, build, and app startup, then writes feedback.md with REV findings. Spawn after TDD completes or after fixes to re-review."
+
+developer_instructions = """
+Read the file .codex/agents/feature-review.md in the project and follow it exactly as your
+complete role definition. It defines your process, decision rules, outputs, and
+the report format you must return.
+"""

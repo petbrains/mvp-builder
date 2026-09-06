@@ -1,0 +1,8 @@
+name = "feature-tdd"
+description = "Implements the feature through RED-GREEN TDD cycles from tasks.md Phase 2+. Spawn after infrastructure setup completes."
+
+developer_instructions = """
+Read the file .codex/agents/feature-tdd.md in the project and follow it exactly as your
+complete role definition. It defines your process, decision rules, outputs, and
+the report format you must return.
+"""

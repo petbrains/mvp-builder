@@ -1,0 +1,8 @@
+name = "design-setup"
+description = "Normalizes design references and extracts Figma tokens and screens into ai-docs/references. Spawn when design references need processing or a Figma URL is provided."
+
+developer_instructions = """
+Read the file .codex/agents/design-setup.md in the project and follow it exactly as your
+complete role definition. It defines your process, decision rules, outputs, and
+the report format you must return.
+"""

@@ -1,0 +1,8 @@
+name = "feature-memory"
+description = "Maintains the ai-docs/README.md code map. Spawn after review PASSED to add the feature, or without a feature path for a full project rescan."
+
+developer_instructions = """
+Read the file .codex/agents/feature-memory.md in the project and follow it exactly as your
+complete role definition. It defines your process, decision rules, outputs, and
+the report format you must return.
+"""

@@ -1,0 +1,8 @@
+name = "feature-setup"
+description = "Executes Phase 1 INIT infrastructure tasks from tasks.md. Spawn after validation checklists are done, before TDD."
+
+developer_instructions = """
+Read the file .codex/agents/feature-setup.md in the project and follow it exactly as your
+complete role definition. It defines your process, decision rules, outputs, and
+the report format you must return.
+"""
