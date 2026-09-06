@@ -4,15 +4,15 @@ All notable changes to MVP Builder will be documented in this file. The format i
 
 ## [0.3.0] - 2026-09-06
 
-Plugin release. MVP Builder now installs as a Claude Code plugin (`/plugin marketplace add app-builders-club/mvp-builder`), with a `/mvp-init` skill that materializes the per-project scaffold. All content is platform-universal, prepared for the Codex port.
+Plugin release. MVP Builder now installs as a Claude Code plugin (`/plugin marketplace add app-builders-club/mvp-builder`), with a `/mvp-builder-init` skill that materializes the per-project scaffold. All content is platform-universal, prepared for the Codex port.
 
-**Breaking**: `/docs:prd`, `/docs:feature`, `/docs:clarify`, `/docs:validation` commands are now the `/prd`, `/feature`, `/clarify`, `/validation` skills; the installation layout changed. Running `/mvp-init` (or `scripts/install.sh`) over a 0.2.x install migrates automatically: old files are backed up to `.mvp-builder-backup-<timestamp>/`.
+**Breaking**: `/docs:prd`, `/docs:feature`, `/docs:clarify`, `/docs:validation` commands are now the `/prd`, `/feature`, `/clarify`, `/validation` skills; the installation layout changed. Running `/mvp-builder-init` (or `scripts/install.sh`) over a 0.2.x install migrates automatically: old files are backed up to `.mvp-builder-backup-<timestamp>/`.
 
 ### Added
 
 **Plugin packaging** (stage 3)
 - `.claude-plugin/plugin.json` (v0.3.0) and `marketplace.json` (`source: "./"`) — the repo root is the plugin; agents, skills, and `.mcp.json` ship with it. `claude plugin validate` passes
-- `mvp-init` skill — user-invoked only (`disable-model-invocation`); asks the platform preset (web / mobile / all), runs the installer from the plugin directory, relays clean/upgrade/legacy results. Named `mvp-init` to avoid colliding with the built-in `/init`
+- `mvp-builder-init` skill — user-invoked only (`disable-model-invocation`); asks the platform preset (web / mobile / all), runs the installer from the plugin directory, relays clean/upgrade/legacy results. Named `mvp-builder-init` to avoid colliding with the built-in `/init`
 - `scaffold/` — the per-project payload a plugin cannot carry: `INSTRUCTIONS.md` (ex-`CLAUDE.md`, header neutralized; installed as `CLAUDE.md` on Claude, `AGENTS.md` on Codex), the four path-scoped rules, curated `settings.json` (pipeline permissions with plugin-scoped `Skill(mvp-builder:*)` entries, no dev settings)
 - Installers rewritten (`install.sh` + `install.ps1`): `--platform claude|codex`, `--rules web|mobile|all`, `--standalone` (full no-plugin copy of agents+skills+scaffold+`.mcp.json`), `--yes`; sha256 manifest (`.mvp-builder-manifest`) drives three scenarios — clean (overwrite confirmation), upgrade (user-modified files kept, new version as `<file>.new`; the manifest records only what the installer wrote), legacy (backup + migration). `install.ps1` recreated — the old file had a trailing space in its filename, so the documented download URL returned 404
 
@@ -50,7 +50,7 @@ Plugin release. MVP Builder now installs as a Claude Code plugin (`/plugin marke
 
 **Repository restructure** (plugin migration, stage 3)
 - `.claude/agents/` → `agents/`, `.claude/skills/` → `skills/` (plugin components at repo root), `.claude/rules/` → `scaffold/rules/`, `CLAUDE.md` → `scaffold/INSTRUCTIONS.md`, `settings.json` curated into `scaffold/settings.json`; dev-session files (`CLAUDE.md`, `.claude/`) are local-only now — gitignored, the repo ships only the product
-- README Quickstart rewritten: two-step plugin install + `/mvp-init`, standalone installer section, upgrade/migration section
+- README Quickstart rewritten: two-step plugin install + `/mvp-builder-init`, standalone installer section, upgrade/migration section
 - Git Workflow Branch Naming: scope segment now optional (`<prefix>/<description>` or `<prefix>/<scope>/<description>`) — resolves the contradiction with pipeline branches (`feature/[name]`, single segment) that the old two-segment regex rejected; regex alternation also properly anchored
 
 ### Removed

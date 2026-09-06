@@ -1,5 +1,5 @@
 ---
-name: mvp-init
+name: mvp-builder-init
 description: Initialize a project for the MVP Builder pipeline. Copies the scaffold into the current project — project instructions (CLAUDE.md), path-scoped platform rules, and curated permissions. Run once per project after installing the mvp-builder plugin; also handles upgrades and migration from pre-plugin installs.
 disable-model-invocation: true
 argument-hint: "[web|mobile|all]"
@@ -26,10 +26,26 @@ and wait for the answer. Default to `all` only if the user says they don't care.
 
 # Execution
 
-1. Run the installer from the plugin directory:
+1. Locate the installer inside the installed plugin. This skill's **base directory** (announced
+   when the skill is invoked) is `<plugin-root>/skills/mvp-builder-init`, so the installer is
+   two levels up:
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/install.sh" --platform claude --rules [preset] --yes
+test -f "<this skill's base directory>/../../scripts/install.sh" && echo found
+```
+
+2. If found, run it:
+
+```bash
+bash "<this skill's base directory>/../../scripts/install.sh" --platform claude --rules [preset] --yes
+```
+
+   If NOT found (unexpected plugin layout), fall back to fetching the installer from the
+   repository — note this pulls the latest release, which may be newer than the installed
+   plugin:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.sh | bash -s -- --platform claude --rules [preset] --yes
 ```
 
 The script handles all three scenarios itself:
@@ -40,19 +56,19 @@ The script handles all three scenarios itself:
   without a manifest) — backs everything up to `.mvp-builder-backup-<timestamp>/`, removes
   superseded files, then performs a clean install
 
-2. Relay the script's report to the user verbatim — installed files, kept files, `.new`
+3. Relay the script's report to the user verbatim — installed files, kept files, `.new`
    files, backup location.
 
-3. If any `<file>.new` files were created, tell the user to diff and merge them manually —
+4. If any `<file>.new` files were created, tell the user to diff and merge them manually —
    never merge automatically.
 
-4. Finish with next steps:
+5. Finish with next steps:
    - Restart the session so the new `CLAUDE.md` and rules load
    - Then: `/prd` to define the product (or `/feature` if `ai-docs/PRD.md` already exists)
 
 # Error Handling
 
-- **Script not found**: report the path checked — the plugin installation is likely broken;
-  suggest reinstalling the plugin
+- **Installer missing at both locations**: report both paths/URLs tried; the plugin
+  installation is likely broken — suggest reinstalling the plugin
 - **Non-zero exit**: relay the script's error output verbatim; make no partial fixes
 - **User declines migration prompt relayed by script**: stop; nothing was modified

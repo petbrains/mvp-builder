@@ -62,7 +62,7 @@ This ships the pipeline itself: agents, skills, and MCP server configuration.
 **2. Initialize your project** — in your project directory:
 
 ```
-/mvp-init
+/mvp-builder-init
 ```
 
 This materializes the scaffold: `CLAUDE.md` (execution rules), path-scoped rules in `.claude/rules/`, and curated permissions in `.claude/settings.json`. Restart the session, then:
@@ -91,7 +91,7 @@ irm https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts
 
 ### Upgrading and migrating
 
-Run `/mvp-init` (or the installer) again at any time:
+Run `/mvp-builder-init` (or the installer) again at any time:
 
 - Files you have **not** modified are updated in place
 - Files you **have** modified are kept — the new version lands alongside as `<file>.new` for manual merge

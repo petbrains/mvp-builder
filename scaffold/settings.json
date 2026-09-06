@@ -76,7 +76,7 @@
       "Skill(mvp-builder:feature)",
       "Skill(mvp-builder:clarify)",
       "Skill(mvp-builder:validation)",
-      "Skill(mvp-builder:mvp-init)",
+      "Skill(mvp-builder:mvp-builder-init)",
       "Skill(mvp-builder:doc-templates)",
       "Skill(mvp-builder:feature-analyzer)",
       "Skill(mvp-builder:code-analyzer)",

@@ -1,7 +1,7 @@
 {
   "name": "mvp-builder",
   "version": "0.3.0",
-  "description": "Document-Driven Development pipeline for Claude Code: specs before code, TDD enforced, self-review with a fix loop. Run /mvp-init in your project after installing.",
+  "description": "Document-Driven Development pipeline for Claude Code: specs before code, TDD enforced, self-review with a fix loop. Run /mvp-builder-init in your project after installing.",
   "author": {
     "name": "App Builders Club",
     "url": "https://app-builders.club"
