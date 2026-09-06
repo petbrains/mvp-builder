@@ -28,7 +28,8 @@ and wait for the answer. Default to `all` only if the user says they don't care.
 
 1. Determine `[platform]` from which agent you are: running as Claude Code → `claude`
    (installs `CLAUDE.md`, `.claude/rules/`, `.claude/settings.json`); running as Codex →
-   `codex` (installs `AGENTS.md` and subagent definitions in `.codex/agents/`).
+   `codex` (installs `AGENTS.md` with a Platform Rules section, rules in `.codex/rules/`,
+   and subagent definitions in `.codex/agents/`).
 
 2. Locate the installer inside the installed plugin. This skill's **base directory** (announced
    when the skill is invoked) is `<plugin-root>/skills/mvp-builder-init`, so the installer is

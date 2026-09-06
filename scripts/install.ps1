@@ -78,7 +78,24 @@ if ($Platform -eq "claude") {
     }
 } else {
     if ($Standalone) { Write-Host "ℹ️  -Standalone is Claude-only; on Codex the plugin provides skills and MCP servers" }
-    $Pairs += @{ Src = "$SrcRoot\scaffold\INSTRUCTIONS.md"; Dst = "AGENTS.md" }
+    # AGENTS.md = INSTRUCTIONS.md + a Platform Rules section referencing the installed rules
+    $AgentsGen = Join-Path ([System.IO.Path]::GetTempPath()) ("mvp-agents-" + [guid]::NewGuid() + ".md")
+    Copy-Item "$SrcRoot\scaffold\INSTRUCTIONS.md" $AgentsGen
+    $RuleLines = @{
+        frontend = '- `*.tsx`, `*.jsx`, `*.css` → read `.codex/rules/frontend.md`'
+        backend  = '- `prisma/`, `server/`, `api/`, `*.py` → read `.codex/rules/backend.md`'
+        mobile   = '- `*.swift`, `*.kt`, `*.dart` (cross-platform mobile) → read `.codex/rules/mobile.md`'
+        ios      = '- `*.swift`, `*.xcodeproj` (iOS specifics) → read `.codex/rules/ios.md`'
+    }
+    $Block = @("", "## Platform Rules", "",
+        'Path-scoped standards live in `.codex/rules/`. Before working with matching files,',
+        "read the corresponding rule first:", "")
+    foreach ($r in $RuleFiles) { $Block += $RuleLines[$r] }
+    Add-Content -Path $AgentsGen -Value $Block
+    $Pairs += @{ Src = $AgentsGen; Dst = "AGENTS.md" }
+    foreach ($r in $RuleFiles) {
+        $Pairs += @{ Src = "$SrcRoot\scaffold\rules\$r.md"; Dst = ".codex\rules\$r.md" }
+    }
     foreach ($f in (Get-ChildItem "$SrcRoot\agents" -Filter *.md -File | Sort-Object Name)) {
         $Pairs += @{ Src = $f.FullName; Dst = ".codex\agents\$($f.Name)" }
     }

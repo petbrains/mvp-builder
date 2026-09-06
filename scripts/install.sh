@@ -68,6 +68,9 @@ confirm() {
     [[ $REPLY =~ ^[Yy]$ ]]
 }
 
+CLEANUP=""
+trap '[ -n "$CLEANUP" ] && rm -rf $CLEANUP' EXIT
+
 # --- Resolve source: sibling scaffold/ (cloned repo / plugin dir) or download ---
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" 2>/dev/null && pwd || echo "")"
@@ -79,7 +82,7 @@ else
     for cmd in curl unzip; do
         command -v "$cmd" >/dev/null 2>&1 || { echo "❌ Required: $cmd"; exit 1; }
     done
-    TEMP_DIR=$(mktemp -d); trap 'rm -rf "$TEMP_DIR"' EXIT
+    TEMP_DIR=$(mktemp -d); CLEANUP="$CLEANUP $TEMP_DIR"
     RELEASE_INFO=$(curl -fsSL -H "User-Agent: mvp-builder" "https://api.github.com/repos/$REPO/releases/latest" 2>/dev/null || echo "")
     if echo "$RELEASE_INFO" | grep -q '"zipball_url"'; then
         VERSION=$(echo "$RELEASE_INFO" | grep '"tag_name"' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
@@ -116,7 +119,30 @@ if [ "$PLATFORM" = "claude" ]; then
     fi
 else
     [ "$STANDALONE" = "1" ] && echo "ℹ️  --standalone is Claude-only; on Codex the plugin provides skills and MCP servers"
-    add_pair "$SRC_ROOT/scaffold/INSTRUCTIONS.md" "AGENTS.md"
+    # AGENTS.md = INSTRUCTIONS.md + a Platform Rules section referencing the installed rules
+    # (Codex has no path-scoped auto-loading; a read-on-match instruction is the analog)
+    AGENTS_GEN=$(mktemp); CLEANUP="$CLEANUP $AGENTS_GEN"
+    cp "$SRC_ROOT/scaffold/INSTRUCTIONS.md" "$AGENTS_GEN"
+    {
+        echo ""
+        echo "## Platform Rules"
+        echo ""
+        echo "Path-scoped standards live in \`.codex/rules/\`. Before working with matching files,"
+        echo "read the corresponding rule first:"
+        echo ""
+        for r in $RULE_FILES; do
+            case "$r" in
+                frontend) echo "- \`*.tsx\`, \`*.jsx\`, \`*.css\` → read \`.codex/rules/frontend.md\`" ;;
+                backend)  echo "- \`prisma/\`, \`server/\`, \`api/\`, \`*.py\` → read \`.codex/rules/backend.md\`" ;;
+                mobile)   echo "- \`*.swift\`, \`*.kt\`, \`*.dart\` (cross-platform mobile) → read \`.codex/rules/mobile.md\`" ;;
+                ios)      echo "- \`*.swift\`, \`*.xcodeproj\` (iOS specifics) → read \`.codex/rules/ios.md\`" ;;
+            esac
+        done
+    } >> "$AGENTS_GEN"
+    add_pair "$AGENTS_GEN" "AGENTS.md"
+    for r in $RULE_FILES; do
+        add_pair "$SRC_ROOT/scaffold/rules/$r.md" ".codex/rules/$r.md"
+    done
     while IFS= read -r f; do
         add_pair "$f" ".codex/agents/$(basename "$f")"
     done < <(find "$SRC_ROOT/agents" -type f -name "*.md" | sort)

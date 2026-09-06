@@ -12,11 +12,12 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - `install.sh`/`install.ps1` `--platform codex` — installs `AGENTS.md` + `.codex/agents/` (7 md + 7 toml) under the same manifest/scenario machinery; prints the `multi_agent = true` enablement note and plugin install commands
 - `mvp-builder-init` — platform-aware: detects Claude vs Codex, runs the installer with the matching `--platform`; next-steps neutralized
 - Verified live: `codex plugin marketplace add` + `codex plugin add mvp-builder@mvp-builder` install the plugin as-is; skills ship unchanged (same `skills/<name>/SKILL.md` layout); Codex parses the Claude-wrapped `.mcp.json` — stdio servers (context7, sequential-thinking, playwright) load, the `figma` HTTP server is skipped
+- Platform rules on Codex: `--platform codex` installs the rules preset into `.codex/rules/` and generates `AGENTS.md` as `INSTRUCTIONS.md` + a "Platform Rules" section with read-on-match instructions (`*.tsx` → read `.codex/rules/frontend.md`, …) — Codex has no path-scoped auto-loading, so the read-instruction pattern (same as Required Context since stage 1) is the analog; rules content does not count against the AGENTS.md size budget
 - `.gitignore` — `/AGENTS.md` and `.codex/` are local dev-session files, same policy as `CLAUDE.md`/`.claude/`
 
 **Known gaps on Codex**
-- Path-scoped rules have no Codex mechanism — platform standards (`frontend`/`backend`/`mobile`/`ios`) do not load there; candidate v2: nested per-directory `AGENTS.md`
 - `figma` MCP server (HTTP transport) is not loaded by Codex; `design-setup` degrades gracefully without Figma by design
+- Rule loading is instruction-driven (model reads on match), not harness-guaranteed as on Claude
 
 ## [0.3.0] - 2026-09-06
 
