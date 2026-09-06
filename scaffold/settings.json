@@ -1,13 +1,6 @@
 {
   "env": {
-    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
-    "ENABLE_TOOL_SEARCH": "true",
-    "BASH_MAX_OUTPUT_LENGTH": "150000",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
-    "CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS": "100000",
-    "DISABLE_ERROR_REPORTING": "1",
-    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "ENABLE_LSP_TOOL": "1"
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
   },
   "attribution": {
     "commit": "",
@@ -17,8 +10,15 @@
     "allow": [
       "Edit(**)",
       "Write(**)",
+      "Agent",
+      "Task",
       "Bash(npm run:*)",
+      "Bash(npm ci:*)",
+      "Bash(npm test:*)",
       "Bash(npx:*)",
+      "Bash(pnpm:*)",
+      "Bash(yarn:*)",
+      "Bash(bun:*)",
       "Bash(node:*)",
       "Bash(python3:*)",
       "Bash(git log:*)",
@@ -29,14 +29,15 @@
       "Bash(git commit:*)",
       "Bash(git add:*)",
       "Bash(git rm:*)",
-      "Bash(git mv:*)",
       "Bash(git checkout -b:*)",
       "Bash(git switch:*)",
       "Bash(git fetch:*)",
       "Bash(git ls-files:*)",
+      "Bash(git check-ignore:*)",
       "Bash(git rev-parse:*)",
-      "Bash(git tag:*)",
+      "Bash(git blame:*)",
       "Bash(gh pr:*)",
+      "Bash(gh run:*)",
       "Bash(gh repo view:*)",
       "Bash(mkdir:*)",
       "Bash(cat:*)",
@@ -46,6 +47,7 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(wc:*)",
+      "Bash(tree:*)",
       "Bash(sed:*)",
       "Bash(awk:*)",
       "Bash(echo:*)",
@@ -65,14 +67,25 @@
       "Bash(mv:*)",
       "Bash(cp:*)",
       "Bash(rm:*)",
-      "Bash(chmod:*)",
+      "Bash(rmdir:*)",
       "Bash(basename:*)",
       "Bash(dirname:*)",
-      "Bash(shasum:*)",
       "Bash(curl:*)",
-      "Skill(code-review)",
-      "Skill(update-config)",
-      "Skill(run)"
+      "Bash(pkill -f:*)",
+      "Skill(mvp-builder:prd)",
+      "Skill(mvp-builder:feature)",
+      "Skill(mvp-builder:clarify)",
+      "Skill(mvp-builder:validation)",
+      "Skill(mvp-builder:mvp-init)",
+      "Skill(mvp-builder:doc-templates)",
+      "Skill(mvp-builder:feature-analyzer)",
+      "Skill(mvp-builder:code-analyzer)",
+      "Skill(mvp-builder:system-design)",
+      "Skill(mvp-builder:sequential-thinking)",
+      "Skill(mvp-builder:context7)",
+      "Skill(mvp-builder:self-commenting)",
+      "Skill(mvp-builder:frontend-playwright)",
+      "Skill(mvp-builder:figma-extractor)"
     ],
     "deny": [
       "Read(./.env)",
@@ -93,20 +106,5 @@
       "Bash(git push:*)",
       "Bash(sudo:*)"
     ]
-  },
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "context7",
-    "sequential-thinking",
-    "playwright",
-    "figma"
-  ],
-  "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true
-  },
-  "autoMemoryEnabled": true
+  }
 }
