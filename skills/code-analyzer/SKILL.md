@@ -17,10 +17,11 @@ Analyze codebase to build comprehensive mental model for downstream operations.
 
 ## Step 1: Scan Project
 
-Run codebase scanner to collect facts:
+Run the codebase scanner to collect facts — `scripts/scan-codebase.sh` from this skill's
+directory:
 
 ```bash
-.claude/skills/code-analyzer/scripts/scan-codebase.sh
+bash "<this skill's directory>/scripts/scan-codebase.sh"
 ```
 
 Scanner auto-detects project root (git root or pwd) and collects:

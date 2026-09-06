@@ -50,32 +50,52 @@ The fix is not better prompts. It is **Document-Driven Development** — structu
 
 ## Quickstart
 
-In your project directory:
+**1. Install the plugin** — in Claude Code:
 
-**macOS, Linux, WSL:**
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.sh | bash
+```
+/plugin marketplace add app-builders-club/mvp-builder
+/plugin install mvp-builder@mvp-builder
 ```
 
-**Windows PowerShell:**
+This ships the pipeline itself: agents, skills, and MCP server configuration.
 
-```powershell
-irm https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.ps1 | iex
+**2. Initialize your project** — in your project directory:
+
+```
+/mvp-init
 ```
 
-This installs:
-- `.claude/` — agents, skills, rules
-- `CLAUDE.md` — agent identity and execution rules
-- `.mcp.json` — MCP server configuration
-
-Then in Claude Code:
+This materializes the scaffold: `CLAUDE.md` (execution rules), path-scoped rules in `.claude/rules/`, and curated permissions in `.claude/settings.json`. Restart the session, then:
 
 ```
 /prd
 ```
 
 That is it. The PRD skill interviews you on product, audience, and core problem, then generates `PRD.md` and a `references/` folder you can populate with design systems, schemas, and screenshots. The pipeline takes you from there.
+
+### Without the plugin
+
+The standalone installer copies everything — agents, skills, scaffold, MCP configuration — into `.claude/` directly:
+
+**macOS, Linux, WSL:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.sh | bash -s -- --standalone
+```
+
+**Windows PowerShell:**
+
+```powershell
+irm https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.ps1 -OutFile install.ps1; .\install.ps1 -Standalone; rm install.ps1
+```
+
+### Upgrading and migrating
+
+Run `/mvp-init` (or the installer) again at any time:
+
+- Files you have **not** modified are updated in place
+- Files you **have** modified are kept — the new version lands alongside as `<file>.new` for manual merge
+- A pre-plugin install (0.2.x and earlier) is detected automatically, backed up to `.mvp-builder-backup-<timestamp>/`, and replaced
 
 ---
 
@@ -204,7 +224,7 @@ Specialized agents execute tasks across pipeline phases. The main session is the
 | `mobile.md` | Cross-platform native mobile | `**/*.swift`, `**/*.kt`, `**/*.dart` |
 | `ios.md` | Swift style, concurrency, SwiftUI, SwiftData | `**/*.swift`, `**/*.xcodeproj/**` |
 
-**Skills** (`.claude/skills/`) come in two kinds: pipeline skills invoked directly in chat (`/prd`, `/feature`, `/clarify`, `/validation`) that drive the dialogue stages, and domain skills loaded on demand by agents when the task requires specific expertise.
+**Skills** (shipped with the plugin) come in two kinds: pipeline skills invoked directly in chat (`/prd`, `/feature`, `/clarify`, `/validation`) that drive the dialogue stages, and domain skills loaded on demand by agents when the task requires specific expertise.
 
 Each skill contains:
 - Instructions for a specific domain (analysis, documentation, pipeline stage)

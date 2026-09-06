@@ -2,9 +2,19 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
-## [Unreleased]
+## [0.3.0] - 2026-09-06
+
+Plugin release. MVP Builder now installs as a Claude Code plugin (`/plugin marketplace add app-builders-club/mvp-builder`), with a `/mvp-init` skill that materializes the per-project scaffold. All content is platform-universal, prepared for the Codex port.
+
+**Breaking**: `/docs:prd`, `/docs:feature`, `/docs:clarify`, `/docs:validation` commands are now the `/prd`, `/feature`, `/clarify`, `/validation` skills; the installation layout changed. Running `/mvp-init` (or `scripts/install.sh`) over a 0.2.x install migrates automatically: old files are backed up to `.mvp-builder-backup-<timestamp>/`.
 
 ### Added
+
+**Plugin packaging** (stage 3)
+- `.claude-plugin/plugin.json` (v0.3.0) and `marketplace.json` (`source: "./"`) — the repo root is the plugin; agents, skills, and `.mcp.json` ship with it. `claude plugin validate` passes
+- `mvp-init` skill — user-invoked only (`disable-model-invocation`); asks the platform preset (web / mobile / all), runs the installer from the plugin directory, relays clean/upgrade/legacy results. Named `mvp-init` to avoid colliding with the built-in `/init`
+- `scaffold/` — the per-project payload a plugin cannot carry: `INSTRUCTIONS.md` (ex-`CLAUDE.md`, header neutralized; installed as `CLAUDE.md` on Claude, `AGENTS.md` on Codex), the four path-scoped rules, curated `settings.json` (pipeline permissions with plugin-scoped `Skill(mvp-builder:*)` entries, no dev settings)
+- Installers rewritten (`install.sh` + `install.ps1`): `--platform claude|codex`, `--rules web|mobile|all`, `--standalone` (full no-plugin copy of agents+skills+scaffold+`.mcp.json`), `--yes`; sha256 manifest (`.mvp-builder-manifest`) drives three scenarios — clean (overwrite confirmation), upgrade (user-modified files kept, new version as `<file>.new`; the manifest records only what the installer wrote), legacy (backup + migration). `install.ps1` recreated — the old file had a trailing space in its filename, so the documented download URL returned 404
 
 **Skills**
 - `doc-templates` — all 10 pipeline artifact templates packaged as a skill (`SKILL.md` index + `references/`). Replaces `.claude/templates/` as the single source of artifact structure. Wired into `feature-docs`, `feature-review`, `design-setup` agents (frontmatter `skills:` + Skills section) and `/docs:feature`, `/docs:clarify`, `/docs:validation` commands. First step of the plugin migration: the skill is a portable unit (Agent Skills standard) that moves into the plugin unchanged.
@@ -37,6 +47,11 @@ All notable changes to MVP Builder will be documented in this file. The format i
 - `doc-templates` SKILL.md consumer column and README updated to the new skill names
 - Domain skills universalized to match: `allowed-tools` frontmatter removed from all 9 skills that carried it (full tool-pool inheritance, same rationale as the agent trim); last `mcp__` scoped-name literals neutralized in skill bodies — `context7` SKILL.md tool references → `context7 resolve-library-id` / `context7 get-library-docs` phrasing, `sequential-thinking` SKILL.md → "the sequential-thinking MCP tool". Repo now contains zero `mcp__` literals outside `.mcp.json`
 - Frontmatter made strict-YAML valid: `argument-hint` values quoted in the three new skills (`[feature-path]` unquoted parses as a YAML array), unquoted `description` values containing `: ` quoted in `doc-templates`, `feature-analyzer`, `frontend-playwright`, `self-commenting` — Claude Code's lenient parser accepted them, a strict parser (Codex) would not
+
+**Repository restructure** (plugin migration, stage 3)
+- `.claude/agents/` → `agents/`, `.claude/skills/` → `skills/` (plugin components at repo root), `.claude/rules/` → `scaffold/rules/`, `CLAUDE.md` → `scaffold/INSTRUCTIONS.md`, `settings.json` split into curated `scaffold/settings.json` and a thin dev `.claude/settings.json`
+- New thin dev `CLAUDE.md` describing the repo layout and content conventions (platform-universal phrasing, no `mcp__` literals, strict-YAML frontmatter)
+- README Quickstart rewritten: two-step plugin install + `/mvp-init`, standalone installer section, upgrade/migration section
 - Git Workflow Branch Naming: scope segment now optional (`<prefix>/<description>` or `<prefix>/<scope>/<description>`) — resolves the contradiction with pipeline branches (`feature/[name]`, single segment) that the old two-segment regex rejected; regex alternation also properly anchored
 
 ### Removed

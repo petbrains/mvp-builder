@@ -16,10 +16,11 @@ Load and analyze all feature artifacts to build comprehensive understanding for 
 
 ## Step 1: Scan Feature Directory
 
-Run prerequisites scanner to identify available artifacts:
+Run the prerequisites scanner to identify available artifacts — `scripts/check-prerequisites.sh`
+from this skill's directory:
 
 ```bash
-.claude/skills/feature-analyzer/scripts/check-prerequisites.sh <feature-directory>
+bash "<this skill's directory>/scripts/check-prerequisites.sh" <feature-directory>
 ```
 
 Scanner checks for:
