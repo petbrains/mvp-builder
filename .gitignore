@@ -1,0 +1,6 @@
+# Local dev-session files — not part of the plugin
+.claude/
+CLAUDE.md
+/AGENTS.md
+.codex/
+.DS_Store

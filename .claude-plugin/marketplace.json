@@ -1,0 +1,15 @@
+{
+  "name": "mvp-builder",
+  "description": "Official marketplace for MVP Builder — the Document-Driven Development pipeline by App Builders Club.",
+  "owner": {
+    "name": "App Builders Club",
+    "url": "https://app-builders.club"
+  },
+  "plugins": [
+    {
+      "name": "mvp-builder",
+      "source": "./",
+      "description": "Document-Driven Development pipeline for Claude Code: specs before code, TDD enforced, self-review with a fix loop."
+    }
+  ]
+}

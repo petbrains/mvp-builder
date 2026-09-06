@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Build MVPs with AI — without the half-built mess.</strong><br>
-  Document-Driven Development for Claude Code: specs before code, TDD enforced, self-review catches stubs.
+  Document-Driven Development for Claude Code and Codex: specs before code, TDD enforced, self-review catches stubs.
 </p>
 
 <p align="center">
@@ -50,32 +50,65 @@ The fix is not better prompts. It is **Document-Driven Development** — structu
 
 ## Quickstart
 
-In your project directory:
+**1. Install the plugin** — in Claude Code:
+
+```
+/plugin marketplace add app-builders-club/mvp-builder
+/plugin install mvp-builder@mvp-builder
+```
+
+This ships the pipeline itself: agents, skills, and MCP server configuration.
+
+**2. Initialize your project** — in your project directory:
+
+```
+/mvp-builder-init
+```
+
+This materializes the scaffold: `CLAUDE.md` (execution rules), path-scoped rules in `.claude/rules/`, and curated permissions in `.claude/settings.json`. Restart the session, then:
+
+```
+/prd
+```
+
+That is it. The PRD skill interviews you on product, audience, and core problem, then generates `PRD.md` and a `references/` folder you can populate with design systems, schemas, and screenshots. The pipeline takes you from there.
+
+### Codex CLI
+
+Same plugin, same flow:
+
+```
+codex plugin marketplace add app-builders-club/mvp-builder
+codex plugin add mvp-builder@mvp-builder
+```
+
+Then in your project directory ask for the `mvp-builder-init` skill — it installs `AGENTS.md` (execution rules + a Platform Rules section), path-scoped rules in `.codex/rules/`, and subagent definitions in `.codex/agents/`. Enable subagents once: `multi_agent = true` under `[features]` in `~/.codex/config.toml`, then restart the session.
+
+> Note: the `figma` MCP server is Claude-only for now (HTTP transport); `context7`, `sequential-thinking`, and `playwright` load on both platforms.
+
+### Without the plugin
+
+The standalone installer copies everything — agents, skills, scaffold, MCP configuration — into `.claude/` directly (Claude only):
 
 **macOS, Linux, WSL:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.sh | bash -s -- --standalone
 ```
 
 **Windows PowerShell:**
 
 ```powershell
-irm https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.ps1 | iex
+irm https://raw.githubusercontent.com/app-builders-club/mvp-builder/main/scripts/install.ps1 -OutFile install.ps1; .\install.ps1 -Standalone; rm install.ps1
 ```
 
-This installs:
-- `.claude/` — commands, agents, skills, rules
-- `CLAUDE.md` — agent identity and execution rules
-- `.mcp.json` — MCP server configuration
+### Upgrading and migrating
 
-Then in Claude Code:
+Run `/mvp-builder-init` (or the installer) again at any time:
 
-```
-/docs:prd
-```
-
-That is it. The PRD command interviews you on product, audience, and core problem, then generates `PRD.md` and a `references/` folder you can populate with design systems, schemas, and screenshots. The pipeline takes you from there.
+- Files you have **not** modified are updated in place
+- Files you **have** modified are kept — the new version lands alongside as `<file>.new` for manual merge
+- A pre-plugin install (0.2.x and earlier) is detected automatically, backed up to `.mvp-builder-backup-<timestamp>/`, and replaced
 
 ---
 
@@ -116,14 +149,14 @@ flowchart LR
 
 Transform product idea into structured specifications.
 
-| Command / Agent | Output | Purpose |
+| Skill / Agent | Output | Purpose |
 |---------|--------|---------|
-| `/docs:prd` | `PRD.md`, `references/` dir | Product vision, audience, core problem |
+| `/prd` | `PRD.md`, `references/` dir | Product vision, audience, core problem |
 | `design-setup` | `references/design-system.md`, `tokens/`, `style-guide.md` | Normalize design references, extract from Figma |
-| `/docs:feature` | `spec.md`, `FEATURES.md` | Feature specs with requirements (FR-XXX, UX-XXX) |
-| `/docs:clarify` | Updated `spec.md` | Resolve ambiguities through targeted questions |
+| `/feature` | `spec.md`, `FEATURES.md` | Feature specs with requirements (FR-XXX, UX-XXX) |
+| `/clarify` | Updated `spec.md` | Resolve ambiguities through targeted questions |
 
-**After `/docs:prd`**: Add supplementary materials to `ai-docs/references/` — design systems, tokens, schemas, API contracts, style guides, screenshots. Run `design-setup` agent to normalize raw generator output.
+**After `/prd`**: Add supplementary materials to `ai-docs/references/` — design systems, tokens, schemas, API contracts, style guides, screenshots. Run `design-setup` agent to normalize raw generator output.
 
 **Figma roundtrip** (optional): Run `design-setup [figma-url]` to extract tokens and screens from Figma. Refine in Figma, then re-run `design-setup [figma-url]` to pull changes back. Repeat until design is locked.
 
@@ -141,9 +174,9 @@ One agent generates the full derivative doc chain from the approved spec.
 
 Execute implementation through TDD cycles with self-verification.
 
-| Command / Agent | Output | Purpose |
+| Skill / Agent | Output | Purpose |
 |-----------------|--------|---------|
-| `/docs:validation` | `validation/*.md`, `resolutions.md` | Checklists with traceable checkpoints (CHK); architectural items resolved autonomously, intellectual ones through dialogue |
+| `/validation` | `validation/*.md`, `resolutions.md` | Checklists with traceable checkpoints (CHK); architectural items resolved autonomously, intellectual ones through dialogue |
 | `feature-setup` | Infrastructure code | Execute INIT tasks, scaffold project |
 | `feature-tdd` | Feature code + tests | RED-GREEN cycles, atomic commits |
 | `feature-review` | `feedback.md` | Verify implementation, generate findings (REV-XXX) |
@@ -182,7 +215,7 @@ Specialized agents execute tasks across pipeline phases. The main session is the
 
 | Agent | Role | When to use |
 |-------|------|-------------|
-| `feature-setup` | Scaffold infrastructure | After `/docs:validation`, executes INIT-XXX tasks |
+| `feature-setup` | Scaffold infrastructure | After `/validation`, executes INIT-XXX tasks |
 | `feature-tdd` | TDD implementation | After setup, runs RED-GREEN cycles |
 | `feature-review` | Quality gate | After TDD, verifies implementation and generates `feedback.md` |
 | `feature-fix` | Apply review fixes | When review status = BLOCKED, fixes one error at a time |
@@ -195,25 +228,20 @@ Specialized agents execute tasks across pipeline phases. The main session is the
 
 ### Rules & Skills
 
-**Rules** (`.claude/rules/`) are always-loaded standards — loaded automatically like `CLAUDE.md`. Platform-specific rules use `paths` frontmatter to load only when working with matching files.
+**Rules** (`.claude/rules/`) are platform standards scoped by `paths` frontmatter — each loads only when working with matching files. Universal standards (git workflow, authentication, docker, design, code quality) live in `CLAUDE.md` and are always loaded.
 
 | Rule | Scope | Paths |
 |------|-------|-------|
-| `git.md` | Branch naming, commits, secret protection | Always |
-| `authentication.md` | Auth library decisions per platform | Always |
-| `backend.md` | ORM, validation, API design, logging | `**/prisma/**`, `**/api/**`, `**/*.py` |
 | `frontend.md` | Next.js, Tailwind, testing, SSR | `**/*.tsx`, `**/*.jsx`, `**/*.css` |
-| `design.md` | Color, typography, animation, accessibility | Always |
-| `docker.md` | Multi-stage builds, dev compose | Always |
-| `code-quality.md` | Error handling, type design, simplification | Always |
+| `backend.md` | ORM, validation, API design, logging | `**/prisma/**`, `**/api/**`, `**/*.py` |
+| `mobile.md` | Cross-platform native mobile | `**/*.swift`, `**/*.kt`, `**/*.dart` |
 | `ios.md` | Swift style, concurrency, SwiftUI, SwiftData | `**/*.swift`, `**/*.xcodeproj/**` |
 
-**Skills** (`.claude/skills/`) are on-demand expertise — loaded by agents when the task requires specific domain knowledge.
+**Skills** (shipped with the plugin) come in two kinds: pipeline skills invoked directly in chat (`/prd`, `/feature`, `/clarify`, `/validation`) that drive the dialogue stages, and domain skills loaded on demand by agents when the task requires specific expertise.
 
 Each skill contains:
-- Instructions for a specific domain (analysis, documentation, git workflow)
+- Instructions for a specific domain (analysis, documentation, pipeline stage)
 - Decision rules with explicit conditions
-- Tool permissions and constraints
 
 Add new standards: create a rule file in `.claude/rules/`.  
 Add new expertise: create a skill folder in `.claude/skills/`.

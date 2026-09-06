@@ -1,0 +1,20 @@
+{
+  "name": "mvp-builder",
+  "interface": {
+    "displayName": "MVP Builder"
+  },
+  "plugins": [
+    {
+      "name": "mvp-builder",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "mvp-builder",
+  "version": "0.3.0",
+  "description": "Document-Driven Development pipeline for Codex: specs before code, TDD enforced, self-review with a fix loop. Run /mvp-builder-init in your project after installing.",
+  "author": {
+    "name": "App Builders Club",
+    "url": "https://app-builders.club"
+  },
+  "homepage": "https://github.com/app-builders-club/mvp-builder",
+  "repository": "https://github.com/app-builders-club/mvp-builder",
+  "license": "MIT",
+  "keywords": [
+    "mvp",
+    "tdd",
+    "specs",
+    "pipeline",
+    "document-driven-development"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

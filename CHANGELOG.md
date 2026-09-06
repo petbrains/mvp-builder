@@ -2,6 +2,74 @@
 
 All notable changes to MVP Builder will be documented in this file. The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.3.0] - 2026-09-06
+
+Plugin release for both platforms. MVP Builder now installs as a plugin on Claude Code (`/plugin marketplace add app-builders-club/mvp-builder`) and Codex (`codex plugin marketplace add app-builders-club/mvp-builder`), with a `mvp-builder-init` skill that materializes the per-project scaffold on either platform. All content is platform-universal.
+
+**Breaking**: `/docs:prd`, `/docs:feature`, `/docs:clarify`, `/docs:validation` commands are now the `/prd`, `/feature`, `/clarify`, `/validation` skills; the installation layout changed. Running `mvp-builder-init` (or `scripts/install.sh`) over a 0.2.x install migrates automatically: old files are backed up to `.mvp-builder-backup-<timestamp>/`.
+
+### Added
+
+**Codex support** (plugin migration, stage 4) — verified against the OpenAI plugin docs and a live `codex-cli 0.145.0` install: plugin install, skills (incl. cross-skill `references/` reads and `$ARGUMENTS`), AGENTS.md loading, and subagent spawn from `.codex/agents/` all pass headless runtime probes
+- `.codex-plugin/plugin.json` — Codex manifest (mirror of the Claude one plus `skills`/`mcpServers` pointers); `.agents/plugins/marketplace.json` — new-standard marketplace manifest (Codex prefers it over the legacy `.claude-plugin` one, which also worked as-is)
+- `scaffold/codex/agents/*.toml` — 7 subagent wrappers for `.codex/agents/`: spawn-oriented `description`, `developer_instructions` delegate to the co-installed `agents/*.md` role file, so behavior keeps a single source on both platforms; no `model` pinned (inherits the parent session)
+- `install.sh`/`install.ps1` `--platform codex` — installs `AGENTS.md` + `.codex/agents/` (7 md + 7 toml) under the same manifest/scenario machinery; prints the `multi_agent = true` enablement note and plugin install commands
+- `mvp-builder-init` — platform-aware: detects Claude vs Codex, runs the installer with the matching `--platform`; next-steps neutralized
+- Verified live: `codex plugin marketplace add` + `codex plugin add mvp-builder@mvp-builder` install the plugin as-is; skills ship unchanged (same `skills/<name>/SKILL.md` layout); Codex parses the Claude-wrapped `.mcp.json` — stdio servers (context7, sequential-thinking, playwright) load, the `figma` HTTP server is skipped
+- Platform rules on Codex: `--platform codex` installs the rules preset into `.codex/rules/` and generates `AGENTS.md` as `INSTRUCTIONS.md` + a "Platform Rules" section with read-on-match instructions (`*.tsx` → read `.codex/rules/frontend.md`, …) — Codex has no path-scoped auto-loading, so the read-instruction pattern (same as Required Context since stage 1) is the analog; rules content does not count against the AGENTS.md size budget
+- `.gitignore` — `/AGENTS.md` and `.codex/` are local dev-session files, same policy as `CLAUDE.md`/`.claude/`
+
+**Known gaps on Codex**
+- `figma` MCP server (HTTP transport) is not loaded by Codex; `design-setup` degrades gracefully without Figma by design
+- Rule loading is instruction-driven (model reads on match), not harness-guaranteed as on Claude
+
+**Plugin packaging** (stage 3)
+- `.claude-plugin/plugin.json` (v0.3.0) and `marketplace.json` (`source: "./"`) — the repo root is the plugin; agents, skills, and `.mcp.json` ship with it. `claude plugin validate` passes
+- `mvp-builder-init` skill — user-invoked only (`disable-model-invocation`); asks the platform preset (web / mobile / all), runs the installer from the plugin directory, relays clean/upgrade/legacy results. Named `mvp-builder-init` to avoid colliding with the built-in `/init`
+- `scaffold/` — the per-project payload a plugin cannot carry: `INSTRUCTIONS.md` (ex-`CLAUDE.md`, header neutralized; installed as `CLAUDE.md` on Claude, `AGENTS.md` on Codex), the four path-scoped rules, curated `settings.json` (pipeline permissions with plugin-scoped `Skill(mvp-builder:*)` entries, no dev settings)
+- Installers rewritten (`install.sh` + `install.ps1`): `--platform claude|codex`, `--rules web|mobile|all`, `--standalone` (full no-plugin copy of agents+skills+scaffold+`.mcp.json`), `--yes`; sha256 manifest (`.mvp-builder-manifest`) drives three scenarios — clean (overwrite confirmation), upgrade (user-modified files kept, new version as `<file>.new`; the manifest records only what the installer wrote), legacy (backup + migration). `install.ps1` recreated — the old file had a trailing space in its filename, so the documented download URL returned 404
+
+**Skills**
+- `doc-templates` — all 10 pipeline artifact templates packaged as a skill (`SKILL.md` index + `references/`). Replaces `.claude/templates/` as the single source of artifact structure. Wired into `feature-docs`, `feature-review`, `design-setup` agents (frontmatter `skills:` + Skills section) and `/docs:feature`, `/docs:clarify`, `/docs:validation` commands. First step of the plugin migration: the skill is a portable unit (Agent Skills standard) that moves into the plugin unchanged.
+
+### Changed
+
+**Rules — ios.md**
+- Liquid Glass (iOS 26+) expanded from 5 lines to full guidance: placement boundaries (navigation/controls layer only), API discipline (`GlassEffectContainer`, morph transitions, button styles), color & motion on glass, Icon Composer `.icon` bundles, accessibility/performance verification
+- New Lint Discipline section — SwiftLint violation triage (fix / config / suppress-with-reason), suppression formatting gotchas (`disable:this` vs `disable:next` near doc comments, no trailing text after rule names, never autocorrect `orphaned_doc_comment`), threshold policy, subtractive test configs
+
+**Rules — ballast trim** (91 → 84 KiB)
+- Removed content the model reproduces by default: HTTP method/status-code tables and resource-naming basics (`backend.md`), secrets-in-Dockerfile and compose/layer-order basics (`docker.md`), simplification/comments prose (`code-quality.md`), generic testing principles (`frontend.md`), VALIDATE→EXECUTE→VERIFY ceremony, branch/commit-type restatements and Interactive Mode (`git.md`), long-dead API warnings (`ios.md`)
+- Deduplicated cross-file rules to one canonical home: token lifetimes → `authentication.md`; animation rules and a11y principles → `design.md` (web mechanisms stay in `frontend.md`); tap targets → `design.md`; Verification Order → `CLAUDE.md`; secrets/comments/unit-tests-only lines out of `ios.md` Hygiene
+- Descoped over-prescription for MVP context: removed request-prioritization tiers, attestation infrastructure, staged-rollout/remote-flag choreography, cache-budget tuning and upload protocol detail (`mobile.md`); offline-first sections now conditional on the spec requiring offline; removed field-selection/embedding API features, idempotency keys scoped to irreversible mutations (`backend.md`)
+
+**Content universalization** (plugin migration, stage 1)
+- Pathless rules merged into `CLAUDE.md`: `git.md` → Git Workflow section (verbatim); `authentication.md` → Authentication ("secrets via env" dropped as duplicate; two Next.js-specific lines moved to `frontend.md`); `docker.md` → Docker (compressed to pins and decisions); `design.md` → Design Standards (decision tables, hard rules, Pipeline Artifacts Consumption kept; rationale prose dropped); `code-quality.md` dissolved into Error Handling, Simplification, Code Standards plus new Type Design block. `.claude/rules/` now holds only the four path-scoped platform rules (`frontend`, `backend`, `mobile`, `ios`)
+- Path references universalized: `.claude/rules/git.md` mentions (10 sites across agents, commands, CLAUDE.md) → "per Git Workflow conventions"; rule cross-references (`design.md`, `authentication.md`) → named sections ("Design Standards (project instructions)")
+- Template references: `@`-includes and `.claude/skills/doc-templates/...` paths in commands and agents → read instructions against the doc-templates skill (`references/<name>.md` from the doc-templates skill)
+- MCP tool literals (`mcp__server__tool`) removed from agent and command bodies → neutral names ("the sequential-thinking MCP tool", "context7 `resolve-library-id`"); frontmatter `tools:`/`allowed-tools:` untouched (stage 2 scope)
+- Harness-specific names generalized: `TodoWrite` → "Task tracking (TODO)", Plan Mode → Planning; Required Context `@`-imports → plain read instructions
+- README: rules table reduced to the four path-scoped rules (`mobile.md` added — was missing); universal standards noted as living in `CLAUDE.md`
+
+**Structural optimization** (plugin migration, stage 2)
+- Commands converted to skills: `/docs:prd` → `/prd`, `/docs:feature` → `/feature`, `/docs:clarify` → `/clarify`, `/docs:validation` → `/validation` — now `.claude/skills/{prd,feature,clarify,validation}/SKILL.md` with `argument-hint` and `$ARGUMENTS` input parsing where the command took a path/description. `.claude/commands/` removed. Bodies unchanged apart from input handling and next-step pointers
+- Agents: `tools:` and `skills:` frontmatter removed from all 7 agents — agents inherit the full tool pool (a partial `tools:` list acts as an allowlist and would block MCP tools), and bodies already instruct which skills to load. Frontmatter keeps the Codex-shared core: `name`, `description`, `model`, `color`
+- New skills carry no `allowed-tools` — they run in the main session and inherit its permissions (same rationale as the agent trim; removes the last `mcp__` scoped-name literals from pipeline frontmatter)
+- `settings.json` — `Skill(docs:*)` permissions replaced with `Skill(prd)`, `Skill(feature)`, `Skill(clarify)`, `Skill(validation)`; stale `Skill(figma-design-extraction)`/`Skill(figma-design-generate)` (skill renamed to `figma-extractor` in 0.1.x) replaced with `Skill(figma-extractor)` and missing `Skill(system-design)` added — with `skills:` preload gone, agents load skills only via the Skill tool, so these gaps would have blocked design-setup and feature-docs
+- `CLAUDE.md` Harness Orchestration — pipeline names updated; dialogue stages documented as skills executed in the main session, which now orchestrates everything (skills + agent dispatch)
+- `doc-templates` SKILL.md consumer column and README updated to the new skill names
+- Domain skills universalized to match: `allowed-tools` frontmatter removed from all 9 skills that carried it (full tool-pool inheritance, same rationale as the agent trim); last `mcp__` scoped-name literals neutralized in skill bodies — `context7` SKILL.md tool references → `context7 resolve-library-id` / `context7 get-library-docs` phrasing, `sequential-thinking` SKILL.md → "the sequential-thinking MCP tool". Repo now contains zero `mcp__` literals outside `.mcp.json`
+- Frontmatter made strict-YAML valid: `argument-hint` values quoted in the three new skills (`[feature-path]` unquoted parses as a YAML array), unquoted `description` values containing `: ` quoted in `doc-templates`, `feature-analyzer`, `frontend-playwright`, `self-commenting` — Claude Code's lenient parser accepted them, a strict parser (Codex) would not
+
+**Repository restructure** (plugin migration, stage 3)
+- `.claude/agents/` → `agents/`, `.claude/skills/` → `skills/` (plugin components at repo root), `.claude/rules/` → `scaffold/rules/`, `CLAUDE.md` → `scaffold/INSTRUCTIONS.md`, `settings.json` curated into `scaffold/settings.json`; dev-session files (`CLAUDE.md`, `.claude/`) are local-only now — gitignored, the repo ships only the product
+- README Quickstart rewritten: two-step plugin install + `/mvp-builder-init`, standalone installer section, upgrade/migration section
+- Git Workflow Branch Naming: scope segment now optional (`<prefix>/<description>` or `<prefix>/<scope>/<description>`) — resolves the contradiction with pipeline branches (`feature/[name]`, single segment) that the old two-segment regex rejected; regex alternation also properly anchored
+
+### Removed
+
+- `xcode` skill and `xcode` MCP server (`xcrun mcpbridge`) — extracted to a separate plugin. The skill was fully self-contained (zero references from agents, pipeline skills, or docs) and the server is macOS-only; with both gone the remaining four MCP servers (context7, sequential-thinking, playwright, figma) are universal, so `.mcp.json` can ship with the plugin unconditionally. Platform code standards (`ios.md`, `mobile.md` rules) stay — only tooling moved.
+
 ## [0.2.0] - 2026-09-01
 
 Harness Orchestration — the feature pipeline is now an agent chain. The main session is the orchestrator and validator between agents: it dispatches, validates reports, and owns the docs — it does not implement inside the pipeline.
@@ -304,7 +372,8 @@ Full consistency audit of CLAUDE.md + all rules:
 - Skills Registry for automatic skill matching
 - Cross-platform installation scripts (bash, PowerShell)
 
-[0.2.0]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.2.0
+[0.3.0]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.3.0
+[0.2.0]: https://github.com/app-builders-club/mvp-builder/releases/tag/0.2.0
 [0.1.3]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.3
 [0.1.2]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.2
 [0.1.1]: https://github.com/app-builders-club/mvp-builder/releases/tag/v0.1.1
