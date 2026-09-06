@@ -1,7 +1,4 @@
-# CLAUDE.md
-
-Development context for the mvp-builder repository. The product is the content — nothing
-here is live pipeline configuration for this repo itself.
+# Contributing
 
 ## Layout
 
@@ -12,7 +9,10 @@ here is live pipeline configuration for this repo itself.
   `settings.json`
 - `scripts/` — standalone installers (scaffold + full no-plugin mode)
 
-## Conventions
+Nothing in this repo is live pipeline configuration for the repo itself — the product is
+the content.
+
+## Content conventions
 
 - Branches and commits follow scaffold/INSTRUCTIONS.md → Git Workflow → Conventions
 - Content stays platform-universal: no Claude-only or Codex-only phrasing inside
@@ -20,4 +20,9 @@ here is live pipeline configuration for this repo itself.
   installers, manifests, and the `mvp-init` skill
 - No `mcp__` scoped-tool literals anywhere outside `.mcp.json` — reference tools by
   function ("the sequential-thinking MCP tool")
+- Skills reference their bundled files relative to the skill directory — never via
+  `.claude/skills/...` paths (they do not exist under a plugin install)
 - Frontmatter must be strict-YAML (quote values containing `: ` or starting with `[`)
+- Agent frontmatter carries only `name`, `description`, `model`, `color`; skills carry
+  `name`, `description`, optional `argument-hint` — no `tools:`, `skills:`, or
+  `allowed-tools:` allowlists

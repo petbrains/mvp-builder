@@ -49,8 +49,8 @@ Plugin release. MVP Builder now installs as a Claude Code plugin (`/plugin marke
 - Frontmatter made strict-YAML valid: `argument-hint` values quoted in the three new skills (`[feature-path]` unquoted parses as a YAML array), unquoted `description` values containing `: ` quoted in `doc-templates`, `feature-analyzer`, `frontend-playwright`, `self-commenting` — Claude Code's lenient parser accepted them, a strict parser (Codex) would not
 
 **Repository restructure** (plugin migration, stage 3)
-- `.claude/agents/` → `agents/`, `.claude/skills/` → `skills/` (plugin components at repo root), `.claude/rules/` → `scaffold/rules/`, `CLAUDE.md` → `scaffold/INSTRUCTIONS.md`, `settings.json` split into curated `scaffold/settings.json` and a thin dev `.claude/settings.json`
-- New thin dev `CLAUDE.md` describing the repo layout and content conventions (platform-universal phrasing, no `mcp__` literals, strict-YAML frontmatter)
+- `.claude/agents/` → `agents/`, `.claude/skills/` → `skills/` (plugin components at repo root), `.claude/rules/` → `scaffold/rules/`, `CLAUDE.md` → `scaffold/INSTRUCTIONS.md`, `settings.json` curated into `scaffold/settings.json`; `.claude/` and dev configs removed from the repo entirely (gitignored — the repo ships only the product)
+- `CONTRIBUTING.md` — repo layout and content conventions (platform-universal phrasing, no `mcp__` literals, strict-YAML frontmatter, skill-relative file references)
 - README Quickstart rewritten: two-step plugin install + `/mvp-init`, standalone installer section, upgrade/migration section
 - Git Workflow Branch Naming: scope segment now optional (`<prefix>/<description>` or `<prefix>/<scope>/<description>`) — resolves the contradiction with pipeline branches (`feature/[name]`, single segment) that the old two-segment regex rejected; regex alternation also properly anchored
 
